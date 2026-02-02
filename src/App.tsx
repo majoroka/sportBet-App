@@ -26,6 +26,7 @@ const countryCodeToNameMap: Record<string, string> = {
   SVK: 'Eslováquia',
   HUN: 'Hungria',
   ROU: 'Roménia',
+  ROM: 'Roménia',
   BUL: 'Bulgária',
   GRE: 'Grécia',
   TUR: 'Turquia',
@@ -40,6 +41,7 @@ const countryCodeToNameMap: Record<string, string> = {
   MKD: 'Macedónia do Norte',
   IRL: 'Irlanda',
   ISL: 'Islândia',
+  ISR: 'Israel',
   USA: 'Estados Unidos',
   MEX: 'México',
   BRA: 'Brasil',
@@ -67,6 +69,19 @@ const countryCodeToNameMap: Record<string, string> = {
   GHA: 'Gana',
   SEN: 'Senegal',
   CIV: 'Costa do Marfim',
+};
+
+const countryCodeToFlagMap: Record<string, string> = {
+  POR: '🇵🇹', ESP: '🇪🇸', FRA: '🇫🇷', ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', SCO: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', WAL: '🏴󠁧󠁢󠁷󠁬󠁳󠁿', NIR: '🇬🇧',
+  GER: '🇩🇪', ITA: '🇮🇹', NED: '🇳🇱', BEL: '🇧🇪', SUI: '🇨🇭', AUT: '🇦🇹', DEN: '🇩🇰',
+  SWE: '🇸🇪', NOR: '🇳🇴', FIN: '🇫🇮', POL: '🇵🇱', CZE: '🇨🇿', SVK: '🇸🇰', HUN: '🇭🇺',
+  ROU: '🇷🇴', BUL: '🇧🇬', GRE: '🇬🇷', TUR: '🇹🇷', RUS: '🇷🇺', UKR: '🇺🇦', SRB: '🇷🇸',
+  CRO: '🇭🇷', BIH: '🇧🇦', SVN: '🇸🇮', MNE: '🇲🇪', ALB: '🇦🇱', MKD: '🇲🇰', IRL: '🇮🇪',
+  ISL: '🇮🇸', ISR: '🇮🇱', USA: '🇺🇸', MEX: '🇲🇽', BRA: '🇧🇷', ARG: '🇦🇷', URU: '🇺🇾', CHI: '🇨🇱',
+  ROM: '🇷🇴',
+  COL: '🇨🇴', PER: '🇵🇪', ECU: '🇪🇨', VEN: '🇻🇪', BOL: '🇧🇴', PAR: '🇵🇾', JPN: '🇯🇵',
+  KOR: '🇰🇷', CHN: '🇨🇳', AUS: '🇦🇺', NZL: '🇳🇿', MAR: '🇲🇦', ALG: '🇩🇿', TUN: '🇹🇳',
+  EGY: '🇪🇬', RSA: '🇿🇦', NGA: '🇳🇬', CMR: '🇨🇲', GHA: '🇬🇭', SEN: '🇸🇳', CIV: '🇨🇮',
 };
 
 // Fallback para derivar o país a partir da competição, caso a propriedade 'country' falhe.
@@ -166,7 +181,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 font-sans text-gray-900">
       <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold font-rajdhani text-gray-800">
+        <h1 className="text-4xl font-bold font-rajdhani text-[#60A5FA]">
           Analisador de Futebol
         </h1>
         <p className="text-gray-500">
@@ -211,7 +226,7 @@ function App() {
                 <option value="">2. Selecione o País</option>
                 {availableCountries.map(countryCode => (
                   <option key={countryCode} value={countryCode}>
-                    {countryCodeToNameMap[countryCode] || countryCode}
+                    {countryCodeToFlagMap[countryCode] ? `${countryCodeToFlagMap[countryCode]} ` : ''}{countryCodeToNameMap[countryCode] || countryCode}
                   </option>
                 ))}
               </select>

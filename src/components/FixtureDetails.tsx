@@ -179,7 +179,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       <div className="flex justify-center items-center mb-4 border-b pb-2">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">{homeTeam} <span className="text-gray-400 text-lg font-normal">vs</span> {awayTeam}</h2>
-          <p className="text-sm text-gray-500">{fixture.competition} | {new Date(fixture.date).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-500"><span className="font-bold text-gray-800">{fixture.competition}</span> | {new Date(fixture.date).toLocaleDateString()}</p>
         </div>
       </div>
       
@@ -309,18 +309,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
         {/* COLUNA 3: Especial (Handicap, Margem, Correct Score) */}
         <div className="space-y-4">
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Handicap & Margem</h3>
-            <div className="grid grid-cols-2 gap-2 mb-2">
-              <OddBox label="Casa -1" value={probabilities.handicap.homeMinus1} />
-              <OddBox label="Fora +1" value={probabilities.handicap.awayPlus1} />
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <OddBox label="Casa por 1" value={probabilities.winningMargin.home1} />
-              <OddBox label="Casa por 2+" value={probabilities.winningMargin.home2Plus} />
-            </div>
-          </div>
-
           <div className="bg-gray-50 p-3 rounded-lg">
             <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Heatmap de Resultados (%)</h3>
             <Heatmap data={probabilities.correctScore} />
