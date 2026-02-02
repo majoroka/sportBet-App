@@ -1,0 +1,37 @@
+name: Fetch ClubElo Data Daily
+
+on:
+  workflow_dispatch: # Permite o acionamento manual
+  schedule:
+    - cron: '0 5 * * *' # Corre todos os dias às 5 da manhã UTC
+
+permissions:
+  contents: write # Necessário para fazer commit das alterações de volta para o repositório
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch and process ClubElo data
+        run: node ./scripts/fetch-clubelo.js
+
+      - name: Commit and push if there are changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add public/data/clubelo_latest.csv
+          # Faz commit apenas se existirem alterações para evitar commits vazios
+          git diff --staged --quiet || git commit -m "Update ClubElo fixture data"
+          git push

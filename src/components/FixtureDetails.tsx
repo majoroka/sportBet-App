@@ -24,7 +24,6 @@ ChartJS.register(
 
 interface Props {
   fixture: Fixture;
-  onBack: () => void;
 }
 
 // Componente auxiliar para mostrar Odd e Probabilidade de forma compacta
@@ -42,7 +41,7 @@ const OddBox: React.FC<{ label: string; value: number; highlight?: boolean }> = 
   </div>
 );
 
-export const FixtureDetails: React.FC<Props> = ({ fixture, onBack }) => {
+export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
   const [standings, setStandings] = useState<StandingRow[]>([]);
   const [loadingStandings, setLoadingStandings] = useState(false);
@@ -177,13 +176,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture, onBack }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
-      <div className="flex justify-between items-center mb-4 border-b pb-2">
-        <button onClick={onBack} className="text-indigo-600 hover:text-indigo-800 font-bold text-lg">← Voltar</button>
+      <div className="flex justify-center items-center mb-4 border-b pb-2">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800">{homeTeam} <span className="text-gray-400 text-lg font-normal">vs</span> {awayTeam}</h2>
           <p className="text-sm text-gray-500">{fixture.competition} | {new Date(fixture.date).toLocaleDateString()}</p>
         </div>
-        <div className="w-16"></div> {/* Spacer */}
       </div>
       
       {/* Layout Grid Principal */}

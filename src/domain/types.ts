@@ -82,6 +82,7 @@ export interface Probabilities {
 export interface Fixture {
   id: string;
   date: string;
+  country: string;
   competition: string;
   homeTeam: string;
   awayTeam: string;

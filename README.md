@@ -13,8 +13,8 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Handicap e Margem de Vitória
   - Resultado Exato (Correct Score)
 - **Interface de Análise:**
-  - Seleção de jogos por Data e Confronto.
-  - Visualização detalhada com tabelas e gráficos (Chart.js).
+  - Dashboard de página única com filtros para **Data, País e Jogo**.
+  - Ao selecionar um jogo, a análise detalhada com probabilidades, gráficos (Chart.js) e estatísticas é exibida instantaneamente na mesma página.
   - Tabela de Classificação com forma recente (para ligas suportadas).
 - **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono).
 - **Funcionamento Offline:** Suporte a dados locais (CSV) para demonstração e fallback.
