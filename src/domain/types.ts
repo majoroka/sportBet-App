@@ -1,0 +1,97 @@
+/**
+ * Representa as odds de um mercado específico, oferecidas por uma casa de apostas.
+ */
+export interface MarketOdds {
+  provider: string;
+  home: number;
+  draw: number;
+  away: number;
+  over25?: number;
+  under25?: number;
+  bttsYes?: number;
+  bttsNo?: number;
+}
+
+/**
+ * Representa uma linha da tabela de classificação.
+ */
+export interface StandingRow {
+  rank: number;
+  team: string;
+  played: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  goalDiff: number;
+  points: number;
+  form: string[]; // Array de 'W', 'D', 'L' (do mais antigo para o mais recente)
+}
+
+/**
+ * Representa as probabilidades calculadas pelo nosso modelo.
+ */
+export interface Probabilities {
+  homeWin: number;
+  draw: number;
+  awayWin: number;
+  // Mercados derivados de GD (Goal Difference)
+  doubleChance: {
+    homeDraw: number;
+    homeAway: number;
+    drawAway: number;
+  };
+  drawNoBet: {
+    home: number;
+    away: number;
+  };
+  winningMargin: {
+    home1: number; // Casa vence por exatamente 1
+    home2Plus: number; // Casa vence por 2+
+    away1: number;
+    away2Plus: number;
+  };
+  handicap: {
+    homeMinus1: number; // Handicap Europeu Casa -1
+    awayPlus1: number;  // Handicap Europeu Fora +1
+  };
+  // Mercados derivados de R (Result Matrix)
+  bttsYes: number;
+  bttsNo: number;
+  overUnder: Record<string, { over: number; under: number }>; // ex: "1.5": { over: 0.8, under: 0.2 }
+  teamGoals: {
+    home: Record<number, number>; // Probabilidade exata de golos (0, 1, 2...)
+    away: Record<number, number>;
+  };
+  teamOver: {
+    home: Record<string, number>; // "0.5", "1.5", "2.5"
+    away: Record<string, number>;
+  };
+  cleanSheet: {
+    home: number;
+    away: number;
+  };
+  correctScore: Record<string, number>; // ex: { "1-0": 0.15, "1-1": 0.12 }
+  otherScore: number; // Probabilidade agregada de 7+ golos
+}
+
+/**
+ * O nosso modelo de dados principal, que representa um jogo.
+ */
+export interface Fixture {
+  id: string;
+  date: string;
+  competition: string;
+  homeTeam: string;
+  awayTeam: string;
+  // Dados da fonte (Expected Goals)
+  homeXG: number;
+  awayXG: number;
+  // Dados calculados
+  probabilities: Probabilities;
+  // Dados de fontes externas
+  bookmakerOdds?: MarketOdds[];
+  // Classificação (opcional)
+  standings?: StandingRow[];
+}
