@@ -41,6 +41,13 @@ const OddBox: React.FC<{ label: string; value: number; highlight?: boolean }> = 
   </div>
 );
 
+// Helper para construir o caminho do logo
+// Assume que os ficheiros estão em public/logos/<Competição>/<Equipa>.png
+const getTeamLogoUrl = (competition: string, teamName: string) => {
+  // encodeURIComponent garante que espaços e caracteres especiais são tratados no URL
+  return `./logos/${encodeURIComponent(competition)}/${encodeURIComponent(teamName)}.png`;
+};
+
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
   const [standings, setStandings] = useState<StandingRow[]>([]);
@@ -53,7 +60,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     'Championship': 'https://www.football-data.co.uk/mmz4281/2526/E1.csv',
     'La Liga': 'https://www.football-data.co.uk/mmz4281/2526/SP1.csv',
     'La Liga2': 'https://www.football-data.co.uk/mmz4281/2526/SP2.csv',
-    'Bundesliga1': 'https://www.football-data.co.uk/mmz4281/2526/D1.csv',
+    'Bundesliga': 'https://www.football-data.co.uk/mmz4281/2526/D1.csv',
     'Bundesliga2': 'https://www.football-data.co.uk/mmz4281/2526/D2.csv',
     'Ligue1': 'https://www.football-data.co.uk/mmz4281/2526/F1.csv',
     'Ligue2': 'https://www.football-data.co.uk/mmz4281/2526/F2.csv',
@@ -62,22 +69,22 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     'Eredivise': 'https://www.football-data.co.uk/mmz4281/2526/N1.csv',
     'Super Lig': 'https://www.football-data.co.uk/mmz4281/2526/T1.csv',
     'Jupiler Ligue': 'https://www.football-data.co.uk/mmz4281/2526/B1.csv',
-    'Superliga': 'https://www.football-data.co.uk/mmz4281/2526/G1.csv', // Grécia
-    'Superliga (Suiça)': 'https://www.football-data.co.uk/new/SWZ.csv',
-    'Superliga (Dinamarca)': 'https://www.football-data.co.uk/new/DNK.csv',
-    'Premier League (Escócia)': 'https://www.football-data.co.uk/mmz4281/2526/SC0.csv',
-    'Superliga (Noruega)': 'https://www.football-data.co.uk/new/NOR.csv',
-    'Bundesliga1 (Austria)': 'https://www.football-data.co.uk/new/AUT.csv',
-    'Superliga (Finlandia)': 'https://www.football-data.co.uk/new/FIN.csv',
-    'Premier League (Irlanda)': 'https://www.football-data.co.uk/ireland.php',
-    'Primeira Liga (Polónia)': 'https://www.football-data.co.uk/new/POL.csv',
-    'Superliga (Roménia)': 'https://www.football-data.co.uk/new/ROU.csv',
-    'Superliga (Suécia)': 'https://www.football-data.co.uk/new/SWE.csv',
+    'Super League 1': 'https://www.football-data.co.uk/mmz4281/2526/G1.csv', // Grécia
+    'Swiss Super League': 'https://www.football-data.co.uk/new/SWZ.csv',
+    'Danish Superliga': 'https://www.football-data.co.uk/new/DNK.csv',
+    'Premier League (SCO)': 'https://www.football-data.co.uk/mmz4281/2526/SC0.csv',
+    'Eliteserien': 'https://www.football-data.co.uk/new/NOR.csv',
+    'Bundesliga (AUT)': 'https://www.football-data.co.uk/new/AUT.csv',
+    'Veikkausliiga': 'https://www.football-data.co.uk/new/FIN.csv',
+    'Premier Division': 'https://www.football-data.co.uk/new/IRL.csv',
+    'Ekstraklasa': 'https://www.football-data.co.uk/new/POL.csv',
+    'Superliga (ROM)': 'https://www.football-data.co.uk/new/ROU.csv',
+    'Allsvenskan': 'https://www.football-data.co.uk/new/SWE.csv',
     'Primeira': 'https://www.football-data.co.uk/new/ARG.csv', // Argentina
     'Brasileirão': 'https://www.football-data.co.uk/new/BRA.csv',
     'China 1': 'https://www.football-data.co.uk/new/CHN.csv',
     'J League': 'https://www.football-data.co.uk/new/JPN.csv',
-    'Superliga A': 'https://www.football-data.co.uk/new/MEX.csv' // México
+    'Superliga A': 'https://www.football-data.co.uk/new/MEX.csv'
   };
 
   useEffect(() => {
@@ -178,7 +185,31 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
       <div className="flex justify-center items-center mb-4 border-b pb-2">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800">{homeTeam} <span className="text-gray-400 text-lg font-normal">vs</span> {awayTeam}</h2>
+          <div className="flex items-center justify-center gap-3 mb-1">
+            {/* Casa: Nome + Logo (Logo à direita do nome) */}
+            <div className="flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-gray-800">{homeTeam}</h2>
+              <img 
+                src={getTeamLogoUrl(fixture.competition, homeTeam)} 
+                alt={homeTeam} 
+                className="w-10 h-10 object-contain"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+            </div>
+
+            <span className="text-gray-400 text-lg font-normal">vs</span>
+
+            {/* Fora: Logo + Nome (Logo à esquerda do nome) */}
+            <div className="flex items-center gap-2">
+              <img 
+                src={getTeamLogoUrl(fixture.competition, awayTeam)} 
+                alt={awayTeam} 
+                className="w-10 h-10 object-contain"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+              <h2 className="text-2xl font-bold text-gray-800">{awayTeam}</h2>
+            </div>
+          </div>
           <p className="text-sm text-gray-500"><span className="font-bold text-gray-800">{fixture.competition}</span> | {new Date(fixture.date).toLocaleDateString()}</p>
         </div>
       </div>

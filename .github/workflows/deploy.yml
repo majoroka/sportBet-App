@@ -4,6 +4,11 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  # Adicionar este trigger para fazer deploy automático quando os dados forem atualizados
+  workflow_run:
+    workflows: ["Fetch ClubElo Data Daily"]
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -16,6 +21,8 @@ concurrency:
 
 jobs:
   build:
+    # Garante que só corre se o workflow de dados tiver terminado com sucesso (ou se for um push manual)
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
