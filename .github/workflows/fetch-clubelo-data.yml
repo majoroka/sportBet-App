@@ -24,8 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Fetch and process ClubElo data
-        run: node ./scripts/fetch-clubelo.js
+      - name: Fetch ClubElo Data (with retries)
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 300 # Espera 5 minutos entre tentativas
+          command: node ./scripts/fetch-clubelo.js
 
       - name: Commit and push if there are changes
         run: |

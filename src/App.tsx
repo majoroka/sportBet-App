@@ -4,27 +4,69 @@ import { parseCsvFixtures } from './adapters/csvAdapter';
 import { FixtureDetails } from './components/FixtureDetails';
 
 const countryCodeToNameMap: Record<string, string> = {
-  ENG: 'Inglaterra',
-  ESP: 'Espanha',
-  GER: 'Alemanha',
-  FRA: 'França',
-  ITA: 'Itália',
   POR: 'Portugal',
-  NED: 'Paises Baixos',
-  TUR: 'Turquia',
-  BEL: 'Bélgica',
-  GRE: 'Grécia',
-  SUI: 'Suiça',
-  DEN: 'Dinamarca',
+  ESP: 'Espanha',
+  FRA: 'França',
+  ENG: 'Inglaterra',
   SCO: 'Escócia',
-  NOR: 'Noruega',
-  AUT: 'Austria',
-  POL: 'Polónia',
-  ROM: 'Roménia',
+  WAL: 'País de Gales',
+  NIR: 'Irlanda do Norte',
+  GER: 'Alemanha',
+  ITA: 'Itália',
+  NED: 'Países Baixos',
+  BEL: 'Bélgica',
+  SUI: 'Suíça',
+  AUT: 'Áustria',
+  DEN: 'Dinamarca',
   SWE: 'Suécia',
-  SVN: 'Eslovénia',
-  ISR: 'Israel',
+  NOR: 'Noruega',
+  FIN: 'Finlândia',
+  POL: 'Polónia',
+  CZE: 'Chéquia',
+  SVK: 'Eslováquia',
+  HUN: 'Hungria',
+  ROU: 'Roménia',
+  BUL: 'Bulgária',
+  GRE: 'Grécia',
+  TUR: 'Turquia',
+  RUS: 'Rússia',
+  UKR: 'Ucrânia',
+  SRB: 'Sérvia',
   CRO: 'Croácia',
+  BIH: 'Bósnia e Herzegovina',
+  SVN: 'Eslovénia',
+  MNE: 'Montenegro',
+  ALB: 'Albânia',
+  MKD: 'Macedónia do Norte',
+  IRL: 'Irlanda',
+  ISL: 'Islândia',
+  USA: 'Estados Unidos',
+  MEX: 'México',
+  BRA: 'Brasil',
+  ARG: 'Argentina',
+  URU: 'Uruguai',
+  CHI: 'Chile',
+  COL: 'Colômbia',
+  PER: 'Peru',
+  ECU: 'Equador',
+  VEN: 'Venezuela',
+  BOL: 'Bolívia',
+  PAR: 'Paraguai',
+  JPN: 'Japão',
+  KOR: 'Coreia do Sul',
+  CHN: 'China',
+  AUS: 'Austrália',
+  NZL: 'Nova Zelândia',
+  MAR: 'Marrocos',
+  ALG: 'Argélia',
+  TUN: 'Tunísia',
+  EGY: 'Egito',
+  RSA: 'África do Sul',
+  NGA: 'Nigéria',
+  CMR: 'Camarões',
+  GHA: 'Gana',
+  SEN: 'Senegal',
+  CIV: 'Costa do Marfim',
 };
 
 // Fallback para derivar o país a partir da competição, caso a propriedade 'country' falhe.
@@ -103,10 +145,7 @@ function App() {
     if (!selectedDate) return [];
     const countries = new Set(
       fixtures.filter(f => f.date === selectedDate)
-        .map(f => {
-          // Tenta usar f.country, senão usa o mapa de competições como fallback
-          return f.country || competitionToCountryCodeMap[f.competition];
-        })
+        .map(f => f.country) // O CSV do ClubElo já traz o código do país (ex: POR, ENG)
         .filter(Boolean) // Remove valores nulos ou indefinidos
     );
     // Ordena alfabeticamente pelo nome completo do país para melhor UX
@@ -117,8 +156,7 @@ function App() {
   const availableGames = useMemo(() => {
     if (!selectedCountry) return [];
     // Usa a mesma lógica de fallback para garantir que a filtragem funciona
-    return fixtures.filter(f => f.date === selectedDate && 
-      (f.country === selectedCountry || competitionToCountryCodeMap[f.competition] === selectedCountry));
+    return fixtures.filter(f => f.date === selectedDate && f.country === selectedCountry);
   }, [fixtures, selectedDate, selectedCountry]);
 
   const selectedFixture = useMemo(() => 
