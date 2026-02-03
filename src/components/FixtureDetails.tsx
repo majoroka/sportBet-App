@@ -53,6 +53,13 @@ const getTeamLogoUrl = (_competition: string, teamName: string) => {
   return url;
 };
 
+// Helper para obter a cor e texto da forma
+const getFormAttributes = (result: string) => {
+  if (result === 'W') return { color: 'bg-green-500', label: 'Vitória' };
+  if (result === 'D') return { color: 'bg-[#c1c1c1]', label: 'Empate' }; // Cor personalizada
+  return { color: 'bg-red-500', label: 'Derrota' };
+};
+
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
   const [standings, setStandings] = useState<StandingRow[]>([]);
@@ -130,6 +137,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     setHomeLogoError(false);
     setAwayLogoError(false);
   }, [fixture]);
+
+  // Encontrar a linha da classificação para as equipas do jogo atual
+  const homeStanding = standings.find(s => s.team === homeTeam);
+  const awayStanding = standings.find(s => s.team === awayTeam);
+
   const chartData = {
     labels: [homeTeam, 'Empate', awayTeam],
     datasets: [
@@ -167,10 +179,30 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
       <div className="flex justify-center items-center mb-4 border-b pb-2">
-        <div className="text-center">
-          <div className="flex items-center justify-center gap-3 mb-1">
+        <div className="text-center w-full max-w-3xl">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-1">
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-end gap-2">
+              {/* Forma da equipa da casa (Esquerda do nome) */}
+              {homeStanding && (
+                <div className="flex gap-1 mr-2">
+                  {homeStanding.form.map((match, i) => {
+                    const { color, label } = getFormAttributes(match.result);
+                    const ringColor = match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
+                    const isLast = i === homeStanding.form.length - 1;
+                    const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
+                    const tooltip = `${label} vs ${match.opponent} (${match.score})`;
+                    return (
+                      <div key={i} className="relative group cursor-pointer">
+                        <div className={`rounded-full w-3 h-3 ${color} ${extraClass}`}></div>
+                        <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 whitespace-nowrap z-50">
+                          {tooltip}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
               <h2 className="text-2xl font-bold text-gray-800">{homeTeam}</h2>
               {homeLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
@@ -190,7 +222,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <span className="text-gray-400 text-lg font-normal">vs</span>
 
             {/* Fora: Logo + Nome (Logo à esquerda do nome) */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-start gap-2">
               {awayLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
               ) : (
@@ -205,6 +237,26 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 />
               )}
               <h2 className="text-2xl font-bold text-gray-800">{awayTeam}</h2>
+              {/* Forma da equipa de fora (Direita do nome) */}
+              {awayStanding && (
+                <div className="flex gap-1 ml-2">
+                  {awayStanding.form.map((match, i) => {
+                    const { color, label } = getFormAttributes(match.result);
+                    const ringColor = match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
+                    const isLast = i === awayStanding.form.length - 1;
+                    const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
+                    const tooltip = `${label} vs ${match.opponent} (${match.score})`;
+                    return (
+                      <div key={i} className="relative group cursor-pointer">
+                        <div className={`rounded-full w-3 h-3 ${color} ${extraClass}`}></div>
+                        <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 whitespace-nowrap z-50">
+                          {tooltip}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
           <p className="text-sm text-gray-500"><span className="font-bold text-gray-800">{fixture.competition}</span> | {new Date(fixture.date).toLocaleDateString()}</p>
@@ -389,7 +441,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
                         <th className="pb-1 text-center" title="Diferença">Dif</th>
                         <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                        <th className="pb-1 text-center w-20">Form</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600">
@@ -405,17 +456,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           <td className="text-center text-gray-400">{row.goalsAgainst}</td>
                           <td className="text-center text-gray-500">{row.goalDiff}</td>
                           <td className="text-center font-bold text-gray-900">{row.points}</td>
-                          <td className="text-center">
-                            <div className="flex items-center justify-center gap-1">
-                              {row.form.map((res, i) => {
-                                const color = res === 'W' ? 'bg-green-500' : res === 'D' ? 'bg-gray-400' : 'bg-red-500';
-                                const ringColor = res === 'W' ? 'ring-green-500' : res === 'D' ? 'ring-gray-400' : 'ring-red-500';
-                                const isLast = i === row.form.length - 1;
-                                const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
-                                return <div key={i} className={`rounded-full ${color} w-2.5 h-2.5 ${extraClass}`} title={res}></div>;
-                              })}
-                            </div>
-                          </td>
                         </tr>
                       ))}
                     </tbody>

@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { StandingRow } from '../domain/types';
+import { FormMatch, StandingRow } from '../domain/types';
 import { normalizeTeamName } from '../components/teamNameMapper';
 
 interface MatchRow {
@@ -32,7 +32,7 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
         goalsAgainst: 0,
         goalDiff: 0,
         points: 0,
-        form: []
+        form: [] as FormMatch[]
       };
     }
   };
@@ -64,22 +64,22 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
     if (match.FTR === 'H') {
       home.wins++;
       home.points += 3;
-      home.form.push('W');
+      home.form.push({ result: 'W', opponent: canonicalAwayName, score: `${hg}-${ag}` });
       away.losses++;
-      away.form.push('L');
+      away.form.push({ result: 'L', opponent: canonicalHomeName, score: `${ag}-${hg}` });
     } else if (match.FTR === 'A') {
       away.wins++;
       away.points += 3;
-      away.form.push('W');
+      away.form.push({ result: 'W', opponent: canonicalHomeName, score: `${ag}-${hg}` });
       home.losses++;
-      home.form.push('L');
+      home.form.push({ result: 'L', opponent: canonicalAwayName, score: `${hg}-${ag}` });
     } else {
       home.draws++;
       home.points += 1;
-      home.form.push('D');
+      home.form.push({ result: 'D', opponent: canonicalAwayName, score: `${hg}-${ag}` });
       away.draws++;
       away.points += 1;
-      away.form.push('D');
+      away.form.push({ result: 'D', opponent: canonicalHomeName, score: `${ag}-${hg}` });
     }
   });
 

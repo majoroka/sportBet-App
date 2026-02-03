@@ -13,6 +13,15 @@ export interface MarketOdds {
 }
 
 /**
+ * Representa um jogo individual no histórico de forma de uma equipa.
+ */
+export interface FormMatch {
+  result: 'W' | 'D' | 'L';
+  opponent: string;
+  score: string;
+}
+
+/**
  * Representa uma linha da tabela de classificação.
  */
 export interface StandingRow {
@@ -26,7 +35,7 @@ export interface StandingRow {
   goalsAgainst: number;
   goalDiff: number;
   points: number;
-  form: string[]; // Array de 'W', 'D', 'L' (do mais antigo para o mais recente)
+  form: FormMatch[]; // Array de jogos (do mais antigo para o mais recente)
 }
 
 /**
