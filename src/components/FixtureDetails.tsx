@@ -44,92 +44,73 @@ const OddBox: React.FC<{ label: string; value: number; highlight?: boolean }> = 
 // Helper para construir o caminho do logo
 // Assume que os ficheiros estão em public/logos/<Competição>/<Equipa>.png
 const getTeamLogoUrl = (competition: string, teamName: string) => {
-  // encodeURIComponent garante que espaços e caracteres especiais são tratados no URL
-  return `./logos/${encodeURIComponent(competition)}/${encodeURIComponent(teamName)}.png`;
+  // Se BASE_URL for './', usamos caminho relativo simples 'logos/...' para evitar problemas com './logos'
+  const base = import.meta.env.BASE_URL === './' ? '' : import.meta.env.BASE_URL;
+  const url = `${base}logos/${encodeURIComponent(competition)}/${encodeURIComponent(teamName)}.png`;
+  // console.log(`Tentativa de carregar logo: ${url} (Comp: ${competition}, Team: ${teamName})`);
+  return url;
 };
 
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
   const [standings, setStandings] = useState<StandingRow[]>([]);
   const [loadingStandings, setLoadingStandings] = useState(false);
+  const [homeLogoError, setHomeLogoError] = useState(false);
+  const [awayLogoError, setAwayLogoError] = useState(false);
 
   // Mapeamento de Ligas para URLs CSV
   const leagueMap: Record<string, string> = {
-    'Primeira Liga': 'https://www.football-data.co.uk/mmz4281/2526/P1.csv',
-    'Premier League': 'https://www.football-data.co.uk/mmz4281/2526/E0.csv',
-    'Championship': 'https://www.football-data.co.uk/mmz4281/2526/E1.csv',
-    'La Liga': 'https://www.football-data.co.uk/mmz4281/2526/SP1.csv',
-    'La Liga2': 'https://www.football-data.co.uk/mmz4281/2526/SP2.csv',
-    'Bundesliga': 'https://www.football-data.co.uk/mmz4281/2526/D1.csv',
-    'Bundesliga2': 'https://www.football-data.co.uk/mmz4281/2526/D2.csv',
-    'Ligue1': 'https://www.football-data.co.uk/mmz4281/2526/F1.csv',
-    'Ligue2': 'https://www.football-data.co.uk/mmz4281/2526/F2.csv',
-    'Serie A': 'https://www.football-data.co.uk/mmz4281/2526/I1.csv',
-    'Série B': 'https://www.football-data.co.uk/mmz4281/2526/I2.csv',
-    'Eredivise': 'https://www.football-data.co.uk/mmz4281/2526/N1.csv',
-    'Super Lig': 'https://www.football-data.co.uk/mmz4281/2526/T1.csv',
-    'Jupiler Ligue': 'https://www.football-data.co.uk/mmz4281/2526/B1.csv',
-    'Super League 1': 'https://www.football-data.co.uk/mmz4281/2526/G1.csv', // Grécia
-    'Swiss Super League': 'https://www.football-data.co.uk/new/SWZ.csv',
-    'Danish Superliga': 'https://www.football-data.co.uk/new/DNK.csv',
-    'Premier League (SCO)': 'https://www.football-data.co.uk/mmz4281/2526/SC0.csv',
-    'Eliteserien': 'https://www.football-data.co.uk/new/NOR.csv',
-    'Bundesliga (AUT)': 'https://www.football-data.co.uk/new/AUT.csv',
-    'Veikkausliiga': 'https://www.football-data.co.uk/new/FIN.csv',
-    'Premier Division': 'https://www.football-data.co.uk/new/IRL.csv',
-    'Ekstraklasa': 'https://www.football-data.co.uk/new/POL.csv',
-    'Superliga (ROM)': 'https://www.football-data.co.uk/new/ROU.csv',
-    'Allsvenskan': 'https://www.football-data.co.uk/new/SWE.csv',
-    'Primeira': 'https://www.football-data.co.uk/new/ARG.csv', // Argentina
-    'Brasileirão': 'https://www.football-data.co.uk/new/BRA.csv',
-    'China 1': 'https://www.football-data.co.uk/new/CHN.csv',
-    'J League': 'https://www.football-data.co.uk/new/JPN.csv',
-    'Superliga A': 'https://www.football-data.co.uk/new/MEX.csv'
+    'Primeira Liga': 'data/standings/Primeira Liga.csv',
+    'Premier League': 'data/standings/Premier League.csv',
+    'Championship': 'data/standings/Championship.csv',
+    'La Liga': 'data/standings/La Liga.csv',
+    'La Liga2': 'data/standings/La Liga2.csv',
+    'Bundesliga': 'data/standings/Bundesliga.csv',
+    'Bundesliga2': 'data/standings/Bundesliga2.csv',
+    'Ligue1': 'data/standings/Ligue1.csv',
+    'Ligue2': 'data/standings/Ligue2.csv',
+    'Serie A': 'data/standings/Serie A.csv',
+    'Série B': 'data/standings/Série B.csv',
+    'Eredivise': 'data/standings/Eredivise.csv',
+    'Super Lig': 'data/standings/Super Lig.csv',
+    'Jupiler Ligue': 'data/standings/Jupiler Ligue.csv',
+    'Super League 1': 'data/standings/Super League 1.csv',
+    'Swiss Super League': 'data/standings/Swiss Super League.csv',
+    'Danish Superliga': 'data/standings/Danish Superliga.csv',
+    'Premier League (SCO)': 'data/standings/Premier League (SCO).csv',
+    'Eliteserien': 'data/standings/Eliteserien.csv',
+    'Bundesliga (AUT)': 'data/standings/Bundesliga (AUT).csv',
+    'Veikkausliiga': 'data/standings/Veikkausliiga.csv',
+    'Premier Division': 'data/standings/Premier Division.csv',
+    'Ekstraklasa': 'data/standings/Ekstraklasa.csv',
+    'Superliga (ROM)': 'data/standings/Superliga (ROM).csv',
+    'Allsvenskan': 'data/standings/Allsvenskan.csv',
+    'Primeira': 'data/standings/Primeira.csv',
+    'Brasileirão': 'data/standings/Brasileirão.csv',
+    'China 1': 'data/standings/China 1.csv',
+    'J League': 'data/standings/J League.csv',
+    'Superliga A': 'data/standings/Superliga A.csv'
   };
 
   useEffect(() => {
     const fetchStandings = async () => {
-      const csvUrl = leagueMap[fixture.competition];
-      if (!csvUrl) {
+      const csvPath = leagueMap[fixture.competition];
+      if (!csvPath) {
         setStandings([]);
         return;
       }
 
       setLoadingStandings(true);
       try {
-        let text = '';
-        
-        // Estratégia de Fetch em Cascata para garantir que os dados chegam
-        // 1. Tentativa Direta
-        try {
-          const res = await fetch(csvUrl);
-          if (res.ok) text = await res.text();
-        } catch (e) {
-          console.warn('Fetch direto falhou, a tentar proxies...');
-        }
-
-        // 2. Fallback: Proxy AllOrigins (se direto falhou ou retornou HTML de erro)
-        if (!text || text.trim().startsWith('<')) {
-          try {
-            const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(csvUrl)}`);
-            if (res.ok) text = await res.text();
-          } catch (e) { console.warn('AllOrigins falhou'); }
-        }
-
-        // 3. Fallback final: CorsProxy.io
-        if (!text || text.trim().startsWith('<')) {
-          try {
-            const res2 = await fetch(`https://corsproxy.io/?${encodeURIComponent(csvUrl)}`);
-            if (res2.ok) text = await res2.text();
-          } catch (e) { console.warn('CorsProxy falhou'); }
-        }
-        
-        // Verifica se temos texto e se não é HTML (erro comum de proxies)
-        if (text && !text.trim().startsWith('<')) {
+        // Fetch direto ao ficheiro local (cache)
+        // Usamos import.meta.env.BASE_URL para garantir o caminho correto
+        const res = await fetch(import.meta.env.BASE_URL + csvPath);
+        if (res.ok) {
+          const text = await res.text();
           const data = calculateStandings(text);
           setStandings(data);
         } else {
-          console.error('Não foi possível carregar a classificação de nenhuma fonte.');
+          console.warn(`Classificação não encontrada em cache para: ${fixture.competition}`);
           setStandings([]);
         }
       } catch (error) {
@@ -141,6 +122,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
     fetchStandings();
   }, [fixture.competition]);
+
+  // Resetar erros de imagem quando o jogo muda
+  useEffect(() => {
+    setHomeLogoError(false);
+    setAwayLogoError(false);
+  }, [fixture]);
 
   // Ordenar Correct Score para mostrar os top 6 mais prováveis
   const topScores = Object.entries(probabilities.correctScore)
@@ -189,24 +176,38 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
             <div className="flex items-center gap-2">
               <h2 className="text-2xl font-bold text-gray-800">{homeTeam}</h2>
-              <img 
-                src={getTeamLogoUrl(fixture.competition, homeTeam)} 
-                alt={homeTeam} 
-                className="w-10 h-10 object-contain"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
+              {homeLogoError ? (
+                <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
+              ) : (
+                <img 
+                  src={getTeamLogoUrl(fixture.competition, homeTeam)} 
+                  alt={homeTeam} 
+                  className="w-10 h-10 object-contain"
+                  onError={(e) => {
+                    console.warn(`Falha ao carregar logo Casa: ${e.currentTarget.src}`);
+                    setHomeLogoError(true);
+                  }}
+                />
+              )}
             </div>
 
             <span className="text-gray-400 text-lg font-normal">vs</span>
 
             {/* Fora: Logo + Nome (Logo à esquerda do nome) */}
             <div className="flex items-center gap-2">
-              <img 
-                src={getTeamLogoUrl(fixture.competition, awayTeam)} 
-                alt={awayTeam} 
-                className="w-10 h-10 object-contain"
-                onError={(e) => { e.currentTarget.style.display = 'none'; }}
-              />
+              {awayLogoError ? (
+                <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
+              ) : (
+                <img 
+                  src={getTeamLogoUrl(fixture.competition, awayTeam)} 
+                  alt={awayTeam} 
+                  className="w-10 h-10 object-contain"
+                  onError={(e) => {
+                    console.warn(`Falha ao carregar logo Fora: ${e.currentTarget.src}`);
+                    setAwayLogoError(true);
+                  }}
+                />
+              )}
               <h2 className="text-2xl font-bold text-gray-800">{awayTeam}</h2>
             </div>
           </div>

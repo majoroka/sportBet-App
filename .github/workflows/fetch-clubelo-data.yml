@@ -32,11 +32,16 @@ jobs:
           retry_wait_seconds: 300 # Espera 5 minutos entre tentativas
           command: node ./scripts/fetch-clubelo.js
 
+      - name: Fetch Standings Data
+        run: node ./scripts/fetch-standings.js
+
       - name: Commit and push if there are changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/data/clubelo_latest.csv
+          # Adiciona também a pasta de classificações
+          git add public/data/standings/
           # Faz commit apenas se existirem alterações para evitar commits vazios
-          git diff --staged --quiet || git commit -m "Update ClubElo fixture data"
+          git diff --staged --quiet || git commit -m "Update Data (ClubElo + Standings)"
           git push

@@ -14,10 +14,11 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Resultado Exato (Correct Score)
 - **Interface de Análise:**
   - Dashboard de página única com filtros para **Data, País e Jogo**.
-  - Ao selecionar um jogo, a análise detalhada com probabilidades, gráficos (Chart.js) e estatísticas é exibida instantaneamente na mesma página.
+  - Visualização imediata de probabilidades, gráficos (Chart.js) e estatísticas ao selecionar um jogo.
   - Tabela de Classificação com forma recente (para ligas suportadas).
+  - Logótipos dos clubes (com fallback visual).
 - **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono).
-- **Funcionamento Offline:** Suporte a dados locais (CSV) para demonstração e fallback.
+- **Dados Atualizados:** Pipeline automatizada (GitHub Actions) que atualiza diariamente os dados de jogos (ClubElo) e classificações (Football-Data).
 
 ## 🛠️ Stack Tecnológica
 
@@ -25,6 +26,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - **Estilos:** Tailwind CSS
 - **Dados:** PapaParse (CSV Parsing)
 - **Testes:** Vitest
+- **Automação:** GitHub Actions (Data Fetching diário)
 - **Deploy:** GitHub Actions -> GitHub Pages
 - **Backend (Opcional):** Cloudflare Workers (para proxy de APIs e gestão de segredos).
 

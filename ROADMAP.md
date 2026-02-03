@@ -11,12 +11,14 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] UI Básica: Lista de jogos e Detalhes do jogo.
 - [x] Filtros de seleção (Data -> Jogo).
 - [x] Design System inicial (Fontes Tech).
+- [x] **Pipeline de Dados:** Automação via GitHub Actions para atualização diária de jogos e classificações.
 
 ## 🚧 Em Progresso (Fase 2 - Visualização e UX)
 
 - [x] **Heatmap de Resultados:** Substituir a lista de "Correct Score" por uma grelha visual colorida (Heatmap).
 - [x] **Gráficos:** Implementar Chart.js para visualizar probabilidades (1X2).
 - [x] **Classificação:** Tabela de classificação com forma recente e cálculo automático via CSV.
+- [x] **Logótipos:** Exibição de emblemas das equipas com fallback.
 - [ ] **Favoritos:** Permitir guardar jogos numa "Watchlist" (usando `localStorage`).
 - [ ] **Dark Mode:** Implementar alternância de tema claro/escuro.
 

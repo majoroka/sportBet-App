@@ -8,7 +8,9 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 
 ### Fluxo de Dados
 
-1. **Input:** CSV (local) ou JSON (via API/Worker).
+1. **Input:** CSVs estáticos alojados no repositório (`public/data/`).
+   - `clubelo_latest.csv`: Dados de jogos e xG (atualizado diariamente).
+   - `standings/*.csv`: Tabelas de classificação por liga.
 2. **Adapter:** Normaliza os dados brutos para o modelo de domínio `Fixture`.
 3. **Calculators:** Aplica modelos matemáticos (Poisson) aos dados normalizados (`xG` -> `Probabilities`).
 4. **UI Components:** Renderiza os dados processados para o utilizador.
@@ -39,6 +41,10 @@ O núcleo da aplicação baseia-se na **Distribuição de Poisson**.
 ## ☁️ Infraestrutura
 
 - **GitHub Pages:** Alojamento estático dos assets (HTML/JS/CSS).
+- **GitHub Actions (Data Pipeline):**
+  - Workflow diário (`fetch-clubelo-data.yml`) que executa scripts Node.js.
+  - Scripts (`scripts/fetch-*.js`) descarregam dados de fontes externas (ClubElo, Football-Data).
+  - Os dados são processados e guardados na pasta `public/data`, servindo como uma "cache estática" para o frontend.
 - **Cloudflare Workers:** (Opcional/Híbrido)
   - Função: Proxy para APIs de odds externas.
   - Segurança: Armazena API Keys (ex: The Odds API) que não podem estar no frontend.
