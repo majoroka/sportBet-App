@@ -49,6 +49,12 @@ export const TEAM_ALIASES: Record<string, string> = {
   
   // Exemplo genérico
   "real": "real-sociedad", // Cuidado com ambiguidades (Real Madrid vs Real Sociedad)
+
+  // Exemplo Polónia
+  "lechia-gdansk": "lechia",
+  "korona": "korona-kielce",
+  "motor": "motor-lublin",
+  "lubin": "motor-lublin",
 };
 
 /**
@@ -85,7 +91,9 @@ export const getTeamLogoFilename = (name: string): string => {
   // Ex: normalized = "derby-county" -> Encontra "derby-county.football-logos.png"
   const fuzzyMatch = availableLogos.find(filePath => {
     const fileName = filePath.split('/').pop() || ''; // Ignora a pasta (ex: "Premier League/")
-    return normalizeTeamName(fileName).includes(normalized);
+    // Remove a extensão para comparar apenas o nome (ex: "Lechia.png" -> "Lechia")
+    const nameWithoutExt = fileName.replace(/\.[^/.]+$/, "");
+    return normalizeTeamName(nameWithoutExt).includes(normalized);
   });
 
   if (fuzzyMatch) {

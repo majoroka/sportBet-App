@@ -121,7 +121,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     "SWZ": {"country": "Suiça", "competitions": [{"division": 1, "league_name": "Swiss Super League", "standings_url": "https://www.football-data.co.uk/new/SWZ.csv", "teams": []}]},
     "SCO": {"country": "Escócia", "competitions": [{"division": 1, "league_name": "Premiership", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/SCO.csv", "teams": ["Celtic","Rangers","Aberdeen","Hearts","Heart of Midlothian","Hibernian","Kilmarnock","St Mirren","St. Mirren","Dundee","Dundee FC","Motherwell","Ross County","St Johnstone","St. Johnstone","Dundee United","Dundee Utd"]}]},
     "AUT": {"country": "Austria", "competitions": [{"division": 1, "league_name": "Bundesliga", "standings_url": "https://www.football-data.co.uk/new/AUT.csv", "teams": []}]},
-    "POL": {"country": "Polónia", "competitions": [{"division": 1, "league_name": "Ekstraklasa", "standings_url": "https://www.football-data.co.uk/new/POL.csv", "teams": ["Jagiellonia", "Slask Wroclaw", "Legia", "Pogon Szczecin", "Lech", "Lech Poznan", "Gornik Zabrze", "Rakow", "Zaglebie", "Widzew", "Piast Gliwice", "Stal Mielec", "Puszcza", "Cracovia", "Korona Kielce", "Radomiak", "Warta Poznan", "Ruch", "LKS Lodz"]}]},
+    "POL": {"country": "Polónia", "competitions": [{"division": 1, "league_name": "Ekstraklasa", "standings_url": "https://www.football-data.co.uk/new/POL.csv", "teams": ["Jagiellonia", "Slask Wroclaw", "Legia", "Pogon Szczecin", "Lech", "Lech Poznan", "Gornik Zabrze", "Rakow", "Zaglebie", "Widzew", "Piast Gliwice", "Stal Mielec", "Puszcza", "Cracovia", "Korona Kielce", "Radomiak", "Warta Poznan", "Ruch", "LKS Lodz", "Lechia", "Lechia Gdansk", "Korona", "Motor", "Lubin"]}]},
     "ROM": {"country": "Roménia", "competitions": [{"division": 1, "league_name": "Liga 1", "standings_url": "https://www.football-data.co.uk/new/ROU.csv", "teams": []}]},
     "ROU": {"country": "Roménia", "competitions": [{"division": 1, "league_name": "Liga 1", "standings_url": "https://www.football-data.co.uk/new/ROU.csv", "teams": []}]},
     "SWE": {"country": "Suécia", "competitions": [{"division": 1, "league_name": "Allsvenskan", "standings_url": "https://www.football-data.co.uk/new/SWE.csv", "teams": []}]},
@@ -340,7 +340,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   alt={homeTeam} 
                   className="w-10 h-10 object-contain"
                   onError={() => {
-                    console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${getTeamLogoFilename(homeTeam)}"`);
+                    const attempt = getTeamLogoFilename(homeTeam);
+                    console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
+                    if (!attempt.includes('/')) {
+                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/generate-logo-manifest.js" para atualizar o índice.`);
+                    }
                     setHomeLogoError(true);
                   }}
                 />
@@ -359,7 +363,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   alt={awayTeam} 
                   className="w-10 h-10 object-contain"
                   onError={() => {
-                    console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${getTeamLogoFilename(awayTeam)}"`);
+                    const attempt = getTeamLogoFilename(awayTeam);
+                    console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
+                    if (!attempt.includes('/')) {
+                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/generate-logo-manifest.js" para atualizar o índice.`);
+                    }
                     setAwayLogoError(true);
                   }}
                 />
