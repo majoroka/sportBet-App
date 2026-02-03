@@ -38,6 +38,8 @@ export const TEAM_ALIASES: Record<string, string> = {
   // Exemplo Inglaterra
   "man-utd": "manchester-united",
   "man-city": "manchester-city",
+  "man-united": "manchester-united", // Corrige a ligação com a classificação
+  "manchester-utd": "manchester-united",
   "wolves": "wolverhampton",
   "spurs": "tottenham",
   "ipswich": "ipswich-town", // O nome completo é Ipswich Town
@@ -47,6 +49,15 @@ export const TEAM_ALIASES: Record<string, string> = {
   
   // Exemplo genérico
   "real": "real-sociedad", // Cuidado com ambiguidades (Real Madrid vs Real Sociedad)
+};
+
+/**
+ * Obtém o "slug" canónico da equipa (Normalizado + Alias).
+ * Usado para garantir que "Man United" e "Manchester United" geram a mesma chave.
+ */
+export const getCanonicalTeamName = (name: string): string => {
+  const normalized = normalizeTeamName(name);
+  return TEAM_ALIASES[normalized] || normalized;
 };
 
 /**

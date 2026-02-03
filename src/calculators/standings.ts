@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { FormMatch, StandingRow } from '../domain/types';
-import { normalizeTeamName } from '../components/teamNameMapper';
+import { getCanonicalTeamName } from '../components/teamLogos';
 
 interface MatchRow {
   HomeTeam: string;
@@ -19,7 +19,7 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
   const teams: Record<string, StandingRow> = {};
 
   const initTeam = (externalName: string) => {
-    const canonicalName = normalizeTeamName(externalName);
+    const canonicalName = getCanonicalTeamName(externalName);
     if (!teams[canonicalName]) {
       teams[canonicalName] = {
         rank: 0,
@@ -45,8 +45,8 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
     initTeam(match.HomeTeam);
     initTeam(match.AwayTeam);
 
-    const canonicalHomeName = normalizeTeamName(match.HomeTeam);
-    const canonicalAwayName = normalizeTeamName(match.AwayTeam);
+    const canonicalHomeName = getCanonicalTeamName(match.HomeTeam);
+    const canonicalAwayName = getCanonicalTeamName(match.AwayTeam);
     const home = teams[canonicalHomeName];
     const away = teams[canonicalAwayName];
     const hg = parseInt(match.FTHG, 10);
