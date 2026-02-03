@@ -84,22 +84,6 @@ const countryCodeToFlagMap: Record<string, string> = {
   EGY: '🇪🇬', RSA: '🇿🇦', NGA: '🇳🇬', CMR: '🇨🇲', GHA: '🇬🇭', SEN: '🇸🇳', CIV: '🇨🇮',
 };
 
-// Fallback para derivar o país a partir da competição, caso a propriedade 'country' falhe.
-const competitionToCountryCodeMap: Record<string, string> = {
-  'Primeira Liga': 'POR',
-  'Premier League': 'ENG', 'Championship': 'ENG',
-  'La Liga': 'ESP', 'La Liga2': 'ESP', 'Segunda División': 'ESP',
-  'Bundesliga': 'GER', 'Bundesliga2': 'GER',
-  'Ligue1': 'FRA', 'Ligue2': 'FRA',
-  'Serie A': 'ITA', 'Série B': 'ITA',
-  'Eredivise': 'NED', 'Super Lig': 'TUR', 'Jupiler Ligue': 'BEL', 'Super League 1': 'GRE',
-  'Swiss Super League': 'SUI', 'Danish Superliga': 'DEN', 'Premier League (SCO)': 'SCO',
-  'Eliteserien': 'NOR', 'Bundesliga (AUT)': 'AUT', 'Ekstraklasa': 'POL',
-  'Superliga (ROM)': 'ROM', 'Allsvenskan': 'SWE',
-  'Superliga (Eslovénia)': 'SVN', 'Superliga (Israel)': 'ISR', 'Superliga (Croácia)': 'CRO',
-  'Superliga (Turquia)': 'TUR',
-};
-
 function App() {
   const [fixtures, setFixtures] = useState<Fixture[]>([]);
   const [loading, setLoading] = useState(true);

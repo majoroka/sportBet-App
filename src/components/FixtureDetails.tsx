@@ -129,11 +129,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     setAwayLogoError(false);
   }, [fixture]);
 
-  // Ordenar Correct Score para mostrar os top 6 mais prováveis
-  const topScores = Object.entries(probabilities.correctScore)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 5);
-
   const chartData = {
     labels: [homeTeam, 'Empate', awayTeam],
     datasets: [
