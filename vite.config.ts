@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Usar './' torna os caminhos dos assets relativos ao index.html.
-  // Isto resolve o problema de 404 no GitHub Pages e funciona em qualquer subpasta.
-  base: './',
+  // Define a base URL para o deploy no GitHub Pages.
+  // O valor deve ser o nome do teu repositório, entre barras.
+  base: '/sportBet-App/',
 });
