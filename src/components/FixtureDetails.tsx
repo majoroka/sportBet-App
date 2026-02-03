@@ -113,15 +113,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {"division": 2, "league_name": "Serie B", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/I2.csv", "teams": ["Venezia","Frosinone","Monza","Palermo","Empoli","Catanzaro","Juve Stabia","Modena","Cesena","Suedtirol","Spezia","Carrarese","Sampdoria","Bari","Padova","Reggiana","Mantova","Avellino","Entella","Pescara"]}
       ]
     },
-    "POR": {"country": "Portugal", "competitions": [{"division": 1, "league_name": "Primeira Liga", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/P1.csv", "teams": []}]},
+    "POR": {"country": "Portugal", "competitions": [{"division": 1, "league_name": "Primeira Liga", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/P1.csv", "teams": ["Benfica", "Porto", "Sporting CP", "Sporting", "Braga", "Vitoria Guimaraes", "Vitoria SC", "Famalicao", "Moreirense", "Arouca", "Gil Vicente", "Casa Pia", "Rio Ave", "Estoril", "Estrela", "Boavista", "Santa Clara", "Nacional", "AVS", "Farense"]}]},
     "NED": {"country": "Paises Baixos", "competitions": [{"division": 1, "league_name": "Eredivisie", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/N1.csv", "teams": []}]},
     "TUR": {"country": "Turquia", "competitions": [{"division": 1, "league_name": "Super Lig", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/T1.csv", "teams": []}]},
-    "BEL": {"country": "Bélgica", "competitions": [{"division": 1, "league_name": "Jupiler League", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/B1.csv", "teams": []}]},
+    "BEL": {"country": "Bélgica", "competitions": [{"division": 1, "league_name": "Jupiler League", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/B1.csv", "teams": ["Club Brugge", "Union Saint-Gilloise", "Anderlecht", "Antwerp", "Genk", "Gent", "Cercle Brugge", "Mechelen", "Sint-Truiden", "Standard Liege", "Westerlo", "OH Leuven", "Charleroi", "Kortrijk", "Beerschot", "Dender"]}]},
     "GRE": {"country": "Grécia", "competitions": [{"division": 1, "league_name": "Super League 1", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/G1.csv", "teams": []}]},
     "SWZ": {"country": "Suiça", "competitions": [{"division": 1, "league_name": "Swiss Super League", "standings_url": "https://www.football-data.co.uk/new/SWZ.csv", "teams": []}]},
-    "SCO": {"country": "Escócia", "competitions": [{"division": 1, "league_name": "Premiership", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/SC0.csv", "teams": []}]},
+    "SCO": {"country": "Escócia", "competitions": [{"division": 1, "league_name": "Premiership", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/SCO.csv", "teams": ["Celtic","Rangers","Aberdeen","Hearts","Heart of Midlothian","Hibernian","Kilmarnock","St Mirren","St. Mirren","Dundee","Dundee FC","Motherwell","Ross County","St Johnstone","St. Johnstone","Dundee United","Dundee Utd"]}]},
     "AUT": {"country": "Austria", "competitions": [{"division": 1, "league_name": "Bundesliga", "standings_url": "https://www.football-data.co.uk/new/AUT.csv", "teams": []}]},
-    "POL": {"country": "Polónia", "competitions": [{"division": 1, "league_name": "Ekstraklasa", "standings_url": "https://www.football-data.co.uk/new/POL.csv", "teams": []}]},
+    "POL": {"country": "Polónia", "competitions": [{"division": 1, "league_name": "Ekstraklasa", "standings_url": "https://www.football-data.co.uk/new/POL.csv", "teams": ["Jagiellonia", "Slask Wroclaw", "Legia", "Pogon Szczecin", "Lech", "Lech Poznan", "Gornik Zabrze", "Rakow", "Zaglebie", "Widzew", "Piast Gliwice", "Stal Mielec", "Puszcza", "Cracovia", "Korona Kielce", "Radomiak", "Warta Poznan", "Ruch", "LKS Lodz"]}]},
     "ROM": {"country": "Roménia", "competitions": [{"division": 1, "league_name": "Liga 1", "standings_url": "https://www.football-data.co.uk/new/ROU.csv", "teams": []}]},
     "ROU": {"country": "Roménia", "competitions": [{"division": 1, "league_name": "Liga 1", "standings_url": "https://www.football-data.co.uk/new/ROU.csv", "teams": []}]},
     "SWE": {"country": "Suécia", "competitions": [{"division": 1, "league_name": "Allsvenskan", "standings_url": "https://www.football-data.co.uk/new/SWE.csv", "teams": []}]},
@@ -143,23 +143,34 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
   // Função inteligente para obter a informação da Liga (Nome e URL)
   const getLeagueInfo = (competition: string, country: string, homeTeam: string, awayTeam: string) => {
-    const config = LEAGUE_CONFIG[country.toUpperCase()];
-    if (!config) return null;
+    const countryKey = country.toUpperCase();
+    console.log(`🔍 [Debug] getLeagueInfo -> Country: "${country}" (Key: "${countryKey}"), Comp: "${competition}"`);
+    console.log(`🔍 [Debug] Teams: "${homeTeam}" vs "${awayTeam}"`);
+
+    const config = LEAGUE_CONFIG[countryKey];
+    if (!config) {
+      console.warn(`⚠️ [Debug] Nenhuma configuração encontrada no LEAGUE_CONFIG para o país: "${countryKey}"`);
+      return null;
+    }
 
     // 1. Tentar encontrar pela lista de equipas (Mais preciso)
     // Normalizamos os nomes para comparar (remove acentos, pontuação, etc)
     const normHome = normalizeTeamName(homeTeam);
     const normAway = normalizeTeamName(awayTeam);
+    console.log(`🔍 [Debug] Normalized Teams: "${normHome}" vs "${normAway}"`);
 
     for (const comp of config.competitions) {
       if (comp.teams && comp.teams.length > 0) {
         // Verifica se alguma das equipas do jogo está na lista desta competição
         const match = comp.teams.some(team => {
           const normTeam = normalizeTeamName(team);
-          return normTeam === normHome || normTeam === normAway;
+          const isMatch = normTeam === normHome || normTeam === normAway;
+          if (isMatch) console.log(`✅ [Debug] Match de equipa encontrado: "${team}" (Norm: "${normTeam}")`);
+          return isMatch;
         });
         
         if (match && comp.standings_url) {
+          console.log(`✅ [Debug] Liga encontrada por equipa: "${comp.league_name}" -> URL: ${comp.standings_url}`);
           return { name: comp.league_name, url: comp.standings_url };
         }
       }
@@ -169,25 +180,31 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     const normComp = competition.toLowerCase();
     for (const comp of config.competitions) {
       if (normComp.includes(comp.league_name.toLowerCase()) && comp.standings_url) {
+        console.log(`✅ [Debug] Liga encontrada por nome da competição: "${comp.league_name}"`);
         return { name: comp.league_name, url: comp.standings_url };
       }
     }
 
     // 3. Fallback: Se só houver uma competição, assume essa
     if (config.competitions.length === 1 && config.competitions[0].standings_url) {
+      console.log(`✅ [Debug] Liga única encontrada para o país: "${config.competitions[0].league_name}"`);
       return { name: config.competitions[0].league_name, url: config.competitions[0].standings_url };
     }
 
     // 4. Fallback: Se houver várias e nada bater, tenta a 1ª divisão
     const div1 = config.competitions.find(c => c.division === 1);
-    if (div1 && div1.standings_url) return { name: div1.league_name, url: div1.standings_url };
+    if (div1 && div1.standings_url) {
+      console.log(`⚠️ [Debug] Fallback para 1ª divisão: "${div1.league_name}"`);
+      return { name: div1.league_name, url: div1.standings_url };
+    }
 
+    console.warn(`❌ [Debug] Nenhuma liga encontrada para: ${country} - ${competition}`);
     return null;
   };
 
   useEffect(() => {
     const fetchStandings = async () => {
-      console.log(`🔍 [Debug] A iniciar busca de classificação para competição: "${fixture.competition}"`);
+      // console.log(`🔍 [Debug] A iniciar busca...`); // Removido para evitar spam, já temos logs no getLeagueInfo
       const leagueInfo = getLeagueInfo(fixture.competition, fixture.country, fixture.homeTeam, fixture.awayTeam);
       
       if (leagueInfo) {
@@ -218,6 +235,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
         if (res.ok) {
           const text = await res.text();
+          
+          // Verificação de segurança: Se o servidor devolver HTML (ex: 404 page), não é um CSV válido
+          if (text.trim().startsWith('<')) {
+             console.warn(`❌ [Debug] O ficheiro recebido parece ser HTML (provavelmente 404 Soft Error): ${localUrl}`);
+             setStandings([]);
+             return;
+          }
+
           const data = calculateStandings(text);
           console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${data.length}`);
           setStandings(data);

@@ -3,11 +3,18 @@ import { FormMatch, StandingRow } from '../domain/types';
 import { getCanonicalTeamName } from '../components/teamLogos';
 
 interface MatchRow {
-  HomeTeam: string;
-  AwayTeam: string;
-  FTHG: string; // Full Time Home Goals
-  FTAG: string; // Full Time Away Goals
-  FTR: string;  // Full Time Result (H, D, A)
+  HomeTeam?: string;
+  AwayTeam?: string;
+  FTHG?: string; // Full Time Home Goals
+  FTAG?: string; // Full Time Away Goals
+  FTR?: string;  // Full Time Result (H, D, A)
+  // Campos alternativos para ligas "new" (ex: Polónia, Roménia)
+  Home?: string;
+  Away?: string;
+  HG?: string;
+  AG?: string;
+  Res?: string;
+  Season?: string;
 }
 
 export const calculateStandings = (csvText: string): StandingRow[] => {
@@ -40,17 +47,32 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data.forEach((row: any) => {
     const match = row as MatchRow;
-    if (!match.HomeTeam || !match.AwayTeam || !match.FTR) return;
+    
+    // Filtrar apenas a época 2025/2026 se a coluna Season existir
+    // Nos ficheiros agregados (POL.csv), Season costuma ser o ano de início (2025) ou "2025/2026"
+    if (match.Season) {
+      const season = match.Season.toString().trim();
+      if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;
+    }
 
-    initTeam(match.HomeTeam);
-    initTeam(match.AwayTeam);
+    // Suporte para formatos "Standard" (HomeTeam, FTR) e "New" (Home, Res) do football-data.co.uk
+    const homeTeamName = match.HomeTeam || match.Home;
+    const awayTeamName = match.AwayTeam || match.Away;
+    const result = match.FTR || match.Res;
+    const fthg = match.FTHG || match.HG;
+    const ftag = match.FTAG || match.AG;
 
-    const canonicalHomeName = getCanonicalTeamName(match.HomeTeam);
-    const canonicalAwayName = getCanonicalTeamName(match.AwayTeam);
+    if (!homeTeamName || !awayTeamName || !result || fthg === undefined || ftag === undefined) return;
+
+    initTeam(homeTeamName);
+    initTeam(awayTeamName);
+
+    const canonicalHomeName = getCanonicalTeamName(homeTeamName);
+    const canonicalAwayName = getCanonicalTeamName(awayTeamName);
     const home = teams[canonicalHomeName];
     const away = teams[canonicalAwayName];
-    const hg = parseInt(match.FTHG, 10);
-    const ag = parseInt(match.FTAG, 10);
+    const hg = parseInt(fthg, 10);
+    const ag = parseInt(ftag, 10);
 
     home.played++;
     away.played++;
@@ -61,13 +83,13 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
     away.goalsAgainst += hg;
     away.goalDiff += (ag - hg);
 
-    if (match.FTR === 'H') {
+    if (result === 'H') {
       home.wins++;
       home.points += 3;
       home.form.push({ result: 'W', opponent: canonicalAwayName, score: `${hg}-${ag}` });
       away.losses++;
       away.form.push({ result: 'L', opponent: canonicalHomeName, score: `${ag}-${hg}` });
-    } else if (match.FTR === 'A') {
+    } else if (result === 'A') {
       away.wins++;
       away.points += 3;
       away.form.push({ result: 'W', opponent: canonicalHomeName, score: `${ag}-${hg}` });
