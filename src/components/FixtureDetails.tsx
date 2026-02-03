@@ -11,6 +11,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { getTeamSlug } from './teamLogos';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -42,12 +43,13 @@ const OddBox: React.FC<{ label: string; value: number; highlight?: boolean }> = 
 );
 
 // Helper para construir o caminho do logo
-// Assume que os ficheiros estão em public/logos/<Competição>/<Equipa>.png
-const getTeamLogoUrl = (competition: string, teamName: string) => {
+// Usa a estratégia de Slugs normalizados.
+// Espera ficheiros em: public/logos/<slug>.png
+const getTeamLogoUrl = (_competition: string, teamName: string) => {
   // Se BASE_URL for './', usamos caminho relativo simples 'logos/...' para evitar problemas com './logos'
   const base = import.meta.env.BASE_URL === './' ? '' : import.meta.env.BASE_URL;
-  const url = `${base}logos/${encodeURIComponent(competition)}/${encodeURIComponent(teamName)}.png`;
-  // console.log(`Tentativa de carregar logo: ${url} (Comp: ${competition}, Team: ${teamName})`);
+  const slug = getTeamSlug(teamName);
+  const url = `${base}logos/${slug}.png`;
   return url;
 };
 
@@ -128,7 +130,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     setHomeLogoError(false);
     setAwayLogoError(false);
   }, [fixture]);
-
   const chartData = {
     labels: [homeTeam, 'Empate', awayTeam],
     datasets: [
@@ -179,7 +180,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   alt={homeTeam} 
                   className="w-10 h-10 object-contain"
                   onError={(e) => {
-                    console.warn(`Falha ao carregar logo Casa: ${e.currentTarget.src}`);
+                    console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Slug: "${getTeamSlug(homeTeam)}" | URL: ${e.currentTarget.src}`);
                     setHomeLogoError(true);
                   }}
                 />
@@ -198,7 +199,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   alt={awayTeam} 
                   className="w-10 h-10 object-contain"
                   onError={(e) => {
-                    console.warn(`Falha ao carregar logo Fora: ${e.currentTarget.src}`);
+                    console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Slug: "${getTeamSlug(awayTeam)}" | URL: ${e.currentTarget.src}`);
                     setAwayLogoError(true);
                   }}
                 />
