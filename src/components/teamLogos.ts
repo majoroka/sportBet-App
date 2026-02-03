@@ -62,16 +62,20 @@ export const getTeamLogoFilename = (name: string): string => {
     // Se o alias já tiver extensão (ex: "benfica.svg"), usa-o. Se não, assume .png depois.
     // Mas para manter compatibilidade com a lógica abaixo, vamos tentar achar o ficheiro do alias.
     const aliasSlug = TEAM_ALIASES[normalized];
-    const aliasMatch = availableLogos.find(file => file.toLowerCase().includes(aliasSlug.toLowerCase()));
+    const aliasMatch = availableLogos.find(filePath => {
+      const fileName = filePath.split('/').pop() || ''; // Ignora a pasta, olha só para o ficheiro
+      return fileName.toLowerCase().includes(aliasSlug.toLowerCase());
+    });
     if (aliasMatch) return aliasMatch;
     return `${aliasSlug}.png`; // Fallback se o alias não estiver no manifesto
   }
 
   // 2. Procura "Inteligente" no Manifesto (O que pediste)
   // Ex: normalized = "derby-county" -> Encontra "derby-county.football-logos.png"
-  const fuzzyMatch = availableLogos.find(filename => 
-    normalizeTeamName(filename).includes(normalized)
-  );
+  const fuzzyMatch = availableLogos.find(filePath => {
+    const fileName = filePath.split('/').pop() || ''; // Ignora a pasta (ex: "Premier League/")
+    return normalizeTeamName(fileName).includes(normalized);
+  });
 
   if (fuzzyMatch) {
     return fuzzyMatch;
