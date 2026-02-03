@@ -1,3 +1,10 @@
+// Importamos o manifesto gerado pelo script.
+// Se o VS Code der erro aqui, corre "node scripts/generate-logo-manifest.js"
+import logoManifest from './logoManifest.json';
+
+// Tipagem para garantir que é tratado como array de strings
+const availableLogos: string[] = logoManifest as string[];
+
 /**
  * Normaliza o nome de uma equipa para gerar um "slug" consistente para o nome do ficheiro do logo.
  * Ex: "S.L. Benfica" -> "benfica"
@@ -33,13 +40,43 @@ export const TEAM_ALIASES: Record<string, string> = {
   "man-city": "manchester-city",
   "wolves": "wolverhampton",
   "spurs": "tottenham",
+  "ipswich": "ipswich-town", // O nome completo é Ipswich Town
+
+  // Exemplo Escócia
+  "hearts": "heart-of-midlothian", // O nome completo é Heart of Midlothian
   
   // Exemplo genérico
   "real": "real-sociedad", // Cuidado com ambiguidades (Real Madrid vs Real Sociedad)
 };
 
-export const getTeamSlug = (name: string): string => {
+/**
+ * Tenta encontrar o nome exato do ficheiro do logo.
+ * 1. Verifica Aliases manuais.
+ * 2. Procura na lista de ficheiros reais (manifesto) por correspondência parcial.
+ */
+export const getTeamLogoFilename = (name: string): string => {
   const normalized = normalizeTeamName(name);
-  // Retorna o alias se existir, caso contrário usa o normalizado
-  return TEAM_ALIASES[normalized] || normalized;
+  
+  // 1. Verificar se existe um Alias manual (prioridade máxima)
+  if (TEAM_ALIASES[normalized]) {
+    // Se o alias já tiver extensão (ex: "benfica.svg"), usa-o. Se não, assume .png depois.
+    // Mas para manter compatibilidade com a lógica abaixo, vamos tentar achar o ficheiro do alias.
+    const aliasSlug = TEAM_ALIASES[normalized];
+    const aliasMatch = availableLogos.find(file => file.toLowerCase().includes(aliasSlug.toLowerCase()));
+    if (aliasMatch) return aliasMatch;
+    return `${aliasSlug}.png`; // Fallback se o alias não estiver no manifesto
+  }
+
+  // 2. Procura "Inteligente" no Manifesto (O que pediste)
+  // Ex: normalized = "derby-county" -> Encontra "derby-county.football-logos.png"
+  const fuzzyMatch = availableLogos.find(filename => 
+    normalizeTeamName(filename).includes(normalized)
+  );
+
+  if (fuzzyMatch) {
+    return fuzzyMatch;
+  }
+
+  // 3. Fallback padrão
+  return `${normalized}.png`;
 };
