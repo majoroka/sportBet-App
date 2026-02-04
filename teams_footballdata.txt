@@ -1,0 +1,294 @@
+AEK
+AVS
+AZ Alkmaar
+Aberdeen
+Ajax
+Alanyaspor
+Alaves
+Albacete
+Almeria
+Alverca
+Amiens
+Anderlecht
+Andorra
+Angers
+Annecy
+Antalyaspor
+Antwerp
+Aris
+Arouca
+Arsenal
+Asteras Tripolis
+Aston Villa
+Atalanta
+Ath Bilbao
+Ath Madrid
+Atromitos
+Augsburg
+Auxerre
+Avellino
+Barcelona
+Bari
+Bastia
+Bayern Munich
+Benfica
+Besiktas
+Betis
+Bielefeld
+Birmingham
+Blackburn
+Bochum
+Bologna
+Boulogne
+Bournemouth
+Braunschweig
+Brentford
+Brest
+Brighton
+Bristol City
+Burgos
+Burnley
+Buyuksehyr
+Cadiz
+Cagliari
+Carrarese
+Casa Pia
+Castellon
+Catanzaro
+Celta
+Celtic
+Cercle Brugge
+Cesena
+Ceuta
+Charleroi
+Charlton
+Chelsea
+Clermont
+Club Brugge
+Como
+Cordoba
+Coventry
+Cremonese
+Crystal Palace
+Cultural Leonesa
+Darmstadt
+Dender
+Derby
+Dortmund
+Dresden
+Dundee
+Dundee United
+Dunkerque
+Eibar
+Ein Frankfurt
+Elche
+Elversberg
+Empoli
+Espanol
+Estoril
+Estrela
+Everton
+Excelsior
+Eyupspor
+FC Koln
+Falkirk
+Famalicao
+Fenerbahce
+Feyenoord
+Fiorentina
+For Sittard
+Fortuna Dusseldorf
+Freiburg
+Frosinone
+Fulham
+Galatasaray
+Gaziantep
+Genclerbirligi
+Genk
+Genoa
+Gent
+Getafe
+Gil Vicente
+Girona
+Go Ahead Eagles
+Goztep
+Granada
+Grenoble
+Greuther Furth
+Groningen
+Guimaraes
+Guingamp
+Hamburg
+Hannover
+Hearts
+Heerenveen
+Heidenheim
+Heracles
+Hertha
+Hibernian
+Hoffenheim
+Holstein Kiel
+Huesca
+Hull
+Inter
+Ipswich
+Juve Stabia
+Juventus
+Kaiserslautern
+Karagumruk
+Karlsruhe
+Kasimpasa
+Kayserispor
+Kifisia
+Kilmarnock
+Kocaelispor
+Konyaspor
+La Coruna
+Larisa
+Las Palmas
+Laval
+Lazio
+Le Havre
+Le Mans
+Lecce
+Leeds
+Leganes
+Leicester
+Lens
+Levadeiakos
+Levante
+Leverkusen
+Lille
+Liverpool
+Livingston
+Lorient
+Lyon
+M'gladbach
+Magdeburg
+Mainz
+Malaga
+Mallorca
+Man City
+Man United
+Mantova
+Marseille
+Mechelen
+Metz
+Middlesbrough
+Milan
+Millwall
+Mirandes
+Modena
+Monaco
+Montpellier
+Monza
+Moreirense
+Motherwell
+NAC Breda
+Nacional
+Nancy
+Nantes
+Napoli
+Newcastle
+Nice
+Nijmegen
+Norwich
+Nott'm Forest
+Nurnberg
+OFI Crete
+Olympiakos
+Osasuna
+Oud-Heverlee Leuven
+Oviedo
+Oxford
+PAOK
+PSV Eindhoven
+Paderborn
+Padova
+Palermo
+Panathinaikos
+Panetolikos
+Panserraikos
+Paris FC
+Paris SG
+Parma
+Pau FC
+Pescara
+Pisa
+Porto
+Portsmouth
+Preston
+Preußen Münster
+QPR
+RAAL La Louviere
+RB Leipzig
+Rangers
+Real Madrid
+Red Star
+Reggiana
+Reims
+Rennes
+Rio Ave
+Rizespor
+Rodez
+Roma
+Sampdoria
+Samsunspor
+Santa Clara
+Santander
+Sassuolo
+Schalke 04
+Sevilla
+Sheffield United
+Sheffield Weds
+Sociedad
+Sociedad B
+Southampton
+Sp Braga
+Sp Gijon
+Sp Lisbon
+Sparta Rotterdam
+Spezia
+St Etienne
+St Mirren
+St Pauli
+St Truiden
+St. Gilloise
+Standard
+Stoke
+Strasbourg
+Stuttgart
+Sudtirol
+Sunderland
+Swansea
+Telstar
+Tondela
+Torino
+Tottenham
+Toulouse
+Trabzonspor
+Troyes
+Twente
+Udinese
+Union Berlin
+Utrecht
+Valencia
+Valladolid
+Vallecano
+Venezia
+Verona
+Villarreal
+Virtus Entella
+Volendam
+Volos NFC
+Waregem
+Watford
+Werder Bremen
+West Brom
+West Ham
+Westerlo
+Wolfsburg
+Wolves
+Wrexham
+Zaragoza
+Zwolle

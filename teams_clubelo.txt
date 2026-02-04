@@ -1,0 +1,213 @@
+Aarhus
+Aberdeen
+Almeria
+Aluminij
+Andorra CF
+Annecy
+Antalyaspor
+Arouca
+Arsenal
+Asteras Tripolis
+Aston Villa
+Augsburg
+Austria Wien
+Banik Ostrava
+Barcelona
+Bari
+Bastia
+Birmingham
+Blackburn
+Bochum
+Bologna
+Botosani
+Boulogne
+Bournemouth
+Bravo
+Breda
+Brentford
+Brest
+Bristol City
+Burgos
+Burnley
+CFR Cluj
+Cadiz
+Celje
+Celta
+Celtic
+Cercle Brugge
+Charleroi
+Charlton
+Chelsea
+Coventry
+Cracovia
+Craiova
+Csikszereda
+Darmstadt
+Dender
+Derby
+Dinamo Bucuresti
+Dortmund
+Dresden
+Dundee
+Dundee United
+Dunkerque
+Eibar
+Elche
+Elversberg
+Estoril
+Estrela Amadora
+Everton
+Excelsior
+Falkirk
+Fatih Karaguemruek
+Fiorentina
+Forest
+Frankfurt
+Freiburg
+Fuerth
+Fulham
+Genoa
+Gent
+Gil Vicente
+Girona
+Gladbach
+Granada
+Grasshoppers
+Grenoble
+Guimaraes
+Guingamp
+HNK Gorica
+Hajduk
+Hamburg
+Hearts
+Heerenveen
+Heidenheim
+Heracles
+Hermannstadt
+Hertha
+Hibernian
+Hull
+Ipswich
+Jablonec
+Karvina
+Kilmarnock
+Koper
+Korona
+Las Palmas
+Lautern
+Laval
+Le Mans
+Lech
+Lechia
+Leeds
+Leganes
+Leicester
+Lens
+Leuven
+Leverkusen
+Lille
+Livingston
+Lok Zagreb
+Lorient
+Lubin
+Lugano
+Luzern
+Lyon
+Magdeburg
+Mainz
+Mallorca
+Man United
+Mantova
+Metaloglobus
+Metz
+Milan
+Millwall
+Mlada Boleslav
+Montpellier
+Moreirense
+Motherwell
+Muenster
+Mura
+Nancy
+Nantes
+Napoli
+Newcastle
+Nijmegen
+Norwich
+Nuernberg
+Odense
+Olimpija Ljubljana
+Olympiakos
+Osasuna
+Otelul Galati
+Oviedo
+Oxford
+Paderborn
+Pau
+Petrolul Ploiesti
+Piast Gliwice
+Pisa
+Portsmouth
+Preston
+Primorje
+QPR
+Radomlje
+Rangers
+Rapid Bucuresti
+Rayo Vallecano
+Red Star
+Reims
+Rennes
+Rodez
+Saint-Etienne
+Salzburg
+Samsunspor
+Santa Clara
+Schalke
+Sevilla
+Sheffield United
+Sheffield Weds
+Sigma Olomouc
+Sion
+Sittard
+Slaven Belupo
+Slavia Praha
+Slovacko
+Sociedad
+Sociedad B
+Southampton
+Sparta Rotterdam
+St Mirren
+St Pauli
+St Truiden
+Steaua
+Stoke
+Stuttgart
+Sunderland
+Teplice
+Tondela
+Torino
+Tottenham
+Trabzonspor
+Troyes
+Twente
+UTA Arad
+Union Berlin
+Unirea Slobozia
+Universitatea Cluj
+Verona
+Viitorul
+Volendam
+Watford
+Werder
+West Brom
+West Ham
+Westerlo
+Winterthur
+Wolfsburg
+Wolves
+Wrexham
+Young Boys
+Zaragoza
+Zulte Waregem
+Zwolle
