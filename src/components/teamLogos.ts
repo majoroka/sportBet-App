@@ -17,7 +17,7 @@ export const normalizeTeamName = (name: string): string => {
     .replace(/&/g, "and") // Substitui & por and
     .replace(/['.]/g, "") // Remove pontuação específica (St. -> st)
     // Remove prefixos comuns de clubes (podes adicionar mais aqui)
-    .replace(/\b(fc|sc|sl|ac|cf|cd|ud|afc|fk|sv|bv|ssc|rb)\b/g, "")
+    .replace(/\b(fc|sc|sl|ac|cf|cd|ud|afc|fk|sv|bv|ssc|rb|sp)\b/g, "")
     .trim()
     .replace(/\s+/g, "-"); // Substitui espaços restantes por hífens
 };
@@ -34,6 +34,9 @@ export const TEAM_ALIASES: Record<string, string> = {
   "sporting": "sporting-cp",
   "porto": "fc-porto",
   "vitoria-sc": "vitoria-guimaraes",
+  "sp-braga": "sporting-braga", // Garante que Sp Braga vai para o sítio certo
+  "braga": "sporting-braga",
+  "nacional": "cd-nacional", // Garante que é o da Madeira e não do Brasil/Uruguai
   
   // Exemplo Inglaterra
   "man-utd": "manchester-united",
@@ -54,7 +57,37 @@ export const TEAM_ALIASES: Record<string, string> = {
   "lechia-gdansk": "lechia",
   "korona": "korona-kielce",
   "motor": "motor-lublin",
-  "lubin": "motor-lublin",
+  "lubin": "zaglebie-lubin", // Zaglebie Lubin
+  "lech": "lech-poznan",
+  "gornik": "gornik-zabrze",
+
+  // Exemplo Roménia
+  "fcsb": "steaua", // O nome canónico agora é FCSB, mas o ficheiro deve ser steaua
+  "univ-craiova": "craiova",
+  "otelul": "otelul-galati",
+
+  // Exemplo Alemanha
+  "greuther-furth": "fuerth",
+  "preußen-munster": "preussen-munster",
+  "muenster": "preussen-munster",
+  "ein-frankfurt": "eintracht-frankfurt",
+  "mgladbach": "borussia-monchengladbach",
+  "frankfurt": "eintracht-frankfurt",
+  "schalke": "schalke-04",
+  "schalke-04": "schalke-04",
+  "gladbach": "borussia-monchengladbach",
+  "lautern": "kaiserslautern",
+  "kaiserslautern": "kaiserslautern",
+  "werder": "werder-bremen",
+  "werder-bremen": "werder-bremen",
+  "nuernberg": "nurnberg",
+  "nurnberg": "nurnberg",
+  "koeln": "koln",
+  "fc-koln": "koln",
+  "holstein": "holstein-kiel",
+  "duesseldorf": "fortuna-dusseldorf",
+  "bayern": "bayern-munchen",
+  "bayern-munich": "bayern-munchen",
 };
 
 /**
@@ -73,6 +106,8 @@ export const getCanonicalTeamName = (name: string): string => {
  */
 export const getTeamLogoFilename = (name: string): string => {
   const normalized = normalizeTeamName(name);
+  // LOG DE DEBUG: Abre a consola do browser para ver isto
+  // console.log(`🔍 Logo Lookup: '${name}' -> Normalized: '${normalized}'`);
   
   // 1. Verificar se existe um Alias manual (prioridade máxima)
   if (TEAM_ALIASES[normalized]) {
@@ -83,7 +118,11 @@ export const getTeamLogoFilename = (name: string): string => {
       const fileName = filePath.split('/').pop() || ''; // Ignora a pasta, olha só para o ficheiro
       return fileName.toLowerCase().includes(aliasSlug.toLowerCase());
     });
-    if (aliasMatch) return aliasMatch;
+    if (aliasMatch) {
+      // console.log(`   ✅ Alias Match: '${aliasSlug}' -> ${aliasMatch}`);
+      return aliasMatch;
+    }
+    // console.log(`   ⚠️ Alias defined '${aliasSlug}' but file not found. Using fallback.`);
     return `${aliasSlug}.png`; // Fallback se o alias não estiver no manifesto
   }
 
@@ -97,9 +136,11 @@ export const getTeamLogoFilename = (name: string): string => {
   });
 
   if (fuzzyMatch) {
+    // console.log(`   ✅ Fuzzy Match: ${fuzzyMatch}`);
     return fuzzyMatch;
   }
 
   // 3. Fallback padrão
+  // console.log(`   ❌ No match. Fallback: ${normalized}.png`);
   return `${normalized}.png`;
 };
