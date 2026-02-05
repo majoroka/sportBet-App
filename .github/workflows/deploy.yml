@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Fetch ClubElo Data"] # ⚠️ IMPORTANTE: Este nome tem de ser IGUAL ao 'name:' dentro do ficheiro fetch-clubelo-data.yml
+    types:
+      - completed
 
 permissions:
   contents: read
@@ -16,10 +20,13 @@ concurrency:
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name != 'workflow_run' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main # Garante que baixamos a versão mais recente (com os dados novos)
 
       - name: Setup Node
         uses: actions/setup-node@v4

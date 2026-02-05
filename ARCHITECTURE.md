@@ -11,6 +11,7 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 1. **Input:** CSVs estáticos alojados no repositório (`public/data/`).
    - `clubelo_latest.csv`: Dados de jogos e xG (atualizado diariamente).
    - `standings/*.csv`: Tabelas de classificação por liga.
+   - `teams_mapping_package_clean.json`: Base de dados de normalização de nomes de equipas e mapeamento de ligas.
 2. **Adapter:** Normaliza os dados brutos para o modelo de domínio `Fixture`.
 3. **Calculators:** Aplica modelos matemáticos (Poisson) aos dados normalizados (`xG` -> `Probabilities`).
 4. **UI Components:** Renderiza os dados processados para o utilizador.
@@ -27,6 +28,8 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 - **`components/`**: Componentes React de UI.
   - `FixtureCard.tsx`: Resumo do jogo.
   - `FixtureDetails.tsx`: Vista detalhada.
+- **`lib/`**: Bibliotecas utilitárias.
+  - `teamMapping.ts`: Sistema de normalização de nomes e resolução de IDs de equipas/ligas.
 - **`services/`**: (Planeado) Gestão de fetch e caching.
 
 ## 🧮 Modelo Matemático

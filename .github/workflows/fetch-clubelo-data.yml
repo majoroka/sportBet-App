@@ -1,4 +1,4 @@
-name: Fetch ClubElo Data Daily
+name: Fetch ClubElo Data
 
 on:
   workflow_dispatch: # Permite o acionamento manual
@@ -45,13 +45,3 @@ jobs:
           # Faz commit apenas se existirem alterações para evitar commits vazios
           git diff --staged --quiet || git commit -m "Update Data (ClubElo + Standings)"
           git push
-
-      - name: Build Application
-        run: npm run build
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist # A pasta que o Vite gera
-          branch: gh-pages # O branch que o GitHub Pages usa
-          clean: true
