@@ -5,10 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predev": "node scripts/fetch-clubelo.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "predeploy": "node scripts/generate-logo-manifest.js && npm run build",
+    "update-data": "node scripts/fetch-clubelo.js --force",
+    "predeploy": "npm run update-data && node scripts/generate-logo-manifest.js && npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
