@@ -76,7 +76,7 @@ export const getTeamLogoFilename = (name: string): string => {
   if (bySlug) return bySlug;
 
   // 2) fuzzy inclui no path
-  const fuzzyMatch = logoIndex.find(({ raw, lower, slug }) => slug === normalized || lower.includes(normalized));
+  const fuzzyMatch = logoIndex.find(({ lower, slug }) => slug === normalized || lower.includes(normalized));
   if (fuzzyMatch) return fuzzyMatch.raw;
 
   return `${normalized}.png`;
