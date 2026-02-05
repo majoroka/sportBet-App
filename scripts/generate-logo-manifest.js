@@ -8,7 +8,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const LOGOS_DIR = path.join(__dirname, '../public/logos');
-const OUTPUT_FILE = path.join(__dirname, '../src/components/logoManifest.json');
+// O logo.ts lê o manifest de src/lib. Geramos direto lá para evitar duplicados.
+const OUTPUT_FILE = path.join(__dirname, '../src/lib/logoManifest.json');
 
 console.log('🔍 A procurar logos em:', LOGOS_DIR);
 

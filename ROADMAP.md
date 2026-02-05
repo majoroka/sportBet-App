@@ -11,6 +11,8 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] UI Básica: Lista de jogos e Detalhes do jogo.
 - [x] Filtros de seleção (Data -> Jogo).
 - [x] Design System inicial (Fontes Tech).
+- [x] **Normalização de Dados:** Implementação de `teamMapping.ts` para mapear nomes de equipas e ligas de forma centralizada.
+- [x] **Resiliência:** Tratamento de erros robusto para falhas no carregamento de dados (JSON/CSV) e seletores de data vazios.
 - [x] **Pipeline de Dados:** Automação via GitHub Actions para atualização diária de jogos e classificações.
 
 ## 🚧 Em Progresso (Fase 2 - Visualização e UX)

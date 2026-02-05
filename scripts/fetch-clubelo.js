@@ -1,50 +1,56 @@
-import fs from 'fs/promises';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ajusta onde queres guardar o cache (public/data para a app ler)
-const OUT_DIR = path.join(__dirname, "..", "public", "data");
-const OUT_FILE = path.join(OUT_DIR, "clubelo_latest.csv");
+const CLUBELO_LOCAL_PATH = path.join(__dirname, '../public/data/clubelo_latest.csv');
+const REMOTE_DATA_URL = 'http://api.clubelo.com/Fixtures';
+const LAST_FETCH_TIMESTAMP_FILE = path.join(__dirname, 'last-fetch.json');
 
-// O ClubElo disponibiliza este endpoint em HTTP
-const CLUB_ELO_URL = "http://api.clubelo.com/Fixtures";
+const forceUpdate = process.argv.includes('--force');
 
-async function fetchCsv(url) {
-    const response = await fetch(url, {
-        redirect: "follow",
-        headers: {
-            "User-Agent": "sportBet-App/1.0",
-            "Accept": "text/csv,*/*",
-        },
-    });
+async function fetchAndSaveClubeloData() {
+  const now = new Date();
+  const today8AM = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0); // Hoje às 8 AM
 
-    if (!response.ok) {
-        const body = await response.text().catch(() => "");
-        throw new Error(`Falha ao aceder a ${url}: ${response.status} ${response.statusText}\n${body.slice(0, 200)}`);
+  let lastFetchDate = null;
+  try {
+    const lastFetchContent = fs.readFileSync(LAST_FETCH_TIMESTAMP_FILE, 'utf8');
+    const lastFetchData = JSON.parse(lastFetchContent);
+    if (lastFetchData.date) {
+      lastFetchDate = new Date(lastFetchData.date);
     }
+  } catch (err) {
+    // Ficheiro pode não existir ou estar mal formatado. Ignorar e continuar.
+  }
 
-    return response.text();
+  const needsAutomaticUpdate = now.getTime() > today8AM.getTime() && (!lastFetchDate || lastFetchDate.toDateString() !== now.toDateString());
+
+  if (forceUpdate || needsAutomaticUpdate) {
+    if (forceUpdate) {
+      console.log('🔄 [Script] Forçando atualização manual a pedido...');
+    } else {
+      console.log('🔄 [Script] É depois das 8H00 e os dados não foram atualizados hoje. A tentar buscar dados mais recentes...');
+    }
+    console.log(`🔄 [Script] A buscar dados diretamente da API: ${REMOTE_DATA_URL}`);
+    try {
+      const response = await fetch(REMOTE_DATA_URL);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const csvText = await response.text();
+      fs.writeFileSync(CLUBELO_LOCAL_PATH, csvText);
+      fs.writeFileSync(LAST_FETCH_TIMESTAMP_FILE, JSON.stringify({ date: now.toISOString() }));
+      console.log('✅ [Script] clubelo_latest.csv atualizado com sucesso da API ClubElo.');
+    } catch (error) {
+      console.error(`❌ [Script] Erro ao buscar e guardar clubelo_latest.csv: ${error.message}`);
+      console.error('⚠️ [Script] A aplicação pode usar dados desatualizados ou de fallback.');
+    }
+  } else {
+    console.log('ℹ️ [Script] Não é necessário atualizar clubelo_latest.csv neste momento (já atualizado hoje ou antes das 8H00).');
+  }
 }
 
-async function main() {
-    console.log("A executar script fetch-clubelo.js...");
-    console.log('A iniciar o processo de busca de dados do ClubElo...');
-    console.log(`A aceder a: ${CLUB_ELO_URL}`);
-
-    const csv = await fetchCsv(CLUB_ELO_URL);
-
-    await fs.mkdir(OUT_DIR, { recursive: true });
-    await fs.writeFile(OUT_FILE, csv, "utf8");
-
-    console.log(`✅ CSV guardado: ${OUT_FILE} (${csv.length} chars)`);
-}
-
-main().catch((err) => {
-    console.error("\n--- ❌ ERRO NO SCRIPT ---");
-    console.error("Ocorreu um erro durante a execução:");
-    console.error(err);
-    process.exit(1);
-});
+fetchAndSaveClubeloData();

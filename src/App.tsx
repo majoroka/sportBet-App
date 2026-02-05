@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Fixture } from './domain/types';
 import { parseCsvFixtures } from './adapters/csvAdapter';
 import { FixtureDetails } from './components/FixtureDetails';
+import { loadTeamMapping, getMappingStats } from './lib/teamMapping';
 
 const countryCodeToNameMap: Record<string, string> = {
   POR: 'Portugal',
@@ -92,26 +93,40 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedFixtureId, setSelectedFixtureId] = useState<string>('');
+  const [mappingInfo, setMappingInfo] = useState<{ loaded: boolean; count: number } | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError(null);
       try {
-        // 1. Tenta carregar os dados mais recentes do CSV gerado pela Action
-        // Usamos import.meta.env.BASE_URL para garantir o caminho correto no GitHub Pages e localmente
-        const response = await fetch(`${import.meta.env.BASE_URL}data/clubelo_latest.csv`);
+        // Carregar o mapeamento de equipas antes de processar os jogos
+        await loadTeamMapping();
+        setMappingInfo(getMappingStats());
+
+        // O script 'predev' garante que este ficheiro está atualizado antes do servidor arrancar.
+        // Adicionamos cache-busting para garantir que o browser não serve uma versão antiga.
+        const localUrl = `${import.meta.env.BASE_URL}data/clubelo_latest.csv?t=${Date.now()}`;
+        console.log(`🔄 [App] A carregar dados de: ${localUrl}`);
+        const response = await fetch(localUrl);
         if (!response.ok) {
-          throw new Error(`Could not find clubelo_latest.csv (status: ${response.status}). Trying fallback.`);
+          throw new Error(`Erro ${response.status} ao carregar clubelo_latest.csv.`);
         }
         const csvText = await response.text();
+        console.log(`✅ [App] Dados carregados com sucesso.`);
+
         const parsedFixtures = parseCsvFixtures(csvText);
+        if (parsedFixtures.length > 0) {
+          console.log(`🔍 [App] Data do primeiro jogo carregado: ${parsedFixtures[0].date}`);
+        }
+
         setFixtures(parsedFixtures);
 
       } catch (e) {
         console.warn((e as Error).message);
         setError('A usar dados de fallback. Os dados mais recentes não puderam ser carregados.');
         // 2. Se o JSON falhar, recorre ao CSV estático original
+        console.log(`🔄 [App] A tentar carregar dados de fallback: data/fixtures_fallback.csv`);
         try {
           const fallbackResponse = await fetch(`${import.meta.env.BASE_URL}data/fixtures_fallback.csv`);
           if (!fallbackResponse.ok) {
@@ -137,7 +152,7 @@ function App() {
 
   // Obter datas únicas ordenadas
   const availableDates = useMemo(() => {
-    const dates = new Set(fixtures.map(f => f.date));
+    const dates = new Set(fixtures.map(f => f.date).filter(Boolean));
     return [...dates].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
   }, [fixtures]);
 
@@ -191,9 +206,12 @@ function App() {
                   setSelectedFixtureId('');
                 }}
                 value={selectedDate}
-                className="w-full p-2 border rounded-md appearance-none bg-white bg-no-repeat pr-10 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22M6 8l4 4 4-4%22/%3E%3C/svg%3E')] bg-[position:right_0.5rem_center] bg-[length:1.5em_1.5em]"
+                disabled={availableDates.length === 0}
+                className="w-full p-2 border rounded-md appearance-none bg-white bg-no-repeat pr-10 disabled:opacity-50 disabled:bg-gray-100 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22M6 8l4 4 4-4%22/%3E%3C/svg%3E')] bg-[position:right_0.5rem_center] bg-[length:1.5em_1.5em]"
               >
-                <option value="">1. Selecione a Data</option>
+                <option value="">
+                  {availableDates.length > 0 ? '1. Selecione a Data' : 'Sem datas disponíveis'}
+                </option>
                 {availableDates.map(date => (
                   <option key={date} value={date}>{new Date(date).toLocaleDateString('pt-PT', { year: 'numeric', month: 'long', day: 'numeric' })}</option>
                 ))}
@@ -236,6 +254,14 @@ function App() {
               </div>
             )}
           </div>
+        )}
+
+        {!loading && (
+          <footer className="mt-12 py-6 text-center text-gray-400 text-sm border-t border-gray-200">
+            <p>
+              Dados: {fixtures.length} jogos | Mapeamento: {mappingInfo?.loaded ? `✅ Ativo (${mappingInfo.count} equipas)` : '⚠️ Inativo (Nomes originais)'}
+            </p>
+          </footer>
         )}
       </main>
     </div>

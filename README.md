@@ -25,6 +25,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - **Core:** React + TypeScript + Vite
 - **Estilos:** Tailwind CSS
 - **Dados:** PapaParse (CSV Parsing)
+- **Normalização:** Sistema personalizado de mapeamento de equipas (JSON)
 - **Testes:** Vitest
 - **Automação:** GitHub Actions (Data Fetching diário)
 - **Deploy:** GitHub Actions -> GitHub Pages
@@ -45,14 +46,40 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
     npm install
     ```
 
-3. **Rodar localmente:**
+3. **Atualizar dados (necessário internet):**
+
+    ```bash
+    # Fixtures (ClubElo)
+    npm run update-data
+    # Classificações (football-data)
+    node scripts/fetch-standings.js
+    ```
+
+    - Os ficheiros ficam em `public/data/clubelo_latest.csv` e `public/data/standings/*.csv` usando **códigos canónicos** (ex.: `E0.csv`, `P1.csv`, `SC0.csv`).
+    - Se estiveres offline, a app cai para `public/data/fixtures_fallback.csv` e standings existentes.
+
+4. **Rodar localmente:**
 
     ```bash
     npm run dev
     ```
 
-4. **Build para produção:**
+    - Por omissão Vite arranca em `http://localhost:5173`.
+
+5. **Build para produção:**
 
     ```bash
     npm run build
     ```
+
+6. **Testes (Vitest):**
+
+    ```bash
+    npm test -- --run
+    ```
+
+## 📈 Pipeline e Deploy
+
+- **Atualização diária**: `.github/workflows/fetch-clubelo-data.yml` busca ClubElo + standings e faz commit dos CSVs.
+- **Deploy**: `.github/workflows/deploy.yml` (GitHub Pages) após push para `main` ou conclusão bem-sucedida do fetch.
+- **Cloudflare Worker** opcional para proxy de odds / CORS (`cloudflare/worker.ts`).

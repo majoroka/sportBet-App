@@ -68,11 +68,23 @@ async function main() {
 
     for (const [leagueName, url] of leagues) {
         try {
-            // Nome do ficheiro seguro (sem caracteres estranhos)
-            // Mas como vamos usar o nome da liga para carregar, mantemos simples.
-            // O ideal é usar o próprio nome da liga como nome do ficheiro.
-            const fileName = `${leagueName}.csv`;
+            // O frontend procura pelos códigos dos ficheiros (ex: E0.csv, P1.csv) presentes no URL.
+            // Para manter alinhado, usamos o basename do caminho em vez do nome da liga.
+            const urlObj = new URL(url);
+            const fileName = path.basename(urlObj.pathname);
             const filePath = path.join(OUT_DIR, fileName);
+
+            // Se existir um ficheiro legado com o nome da liga, removemos para evitar confusão/peso morto.
+            const legacyPath = path.join(OUT_DIR, `${leagueName}.csv`);
+            if (legacyPath !== filePath) {
+                try {
+                    await fs.access(legacyPath);
+                    await fs.unlink(legacyPath);
+                    console.log(`🧹 Removido ficheiro legado: ${legacyPath}`);
+                } catch (_) {
+                    // Se não existir, ignoramos.
+                }
+            }
 
             console.log(`Downloading: ${leagueName}...`);
             const csvData = await fetchCsv(url);
