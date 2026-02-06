@@ -44,11 +44,11 @@ export const LEAGUE_CONFIG: Record<string, {
       ]
     },
     "POR": {"country": "Portugal", "competitions": [{"division": 1, "league_name": "Primeira Liga", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/P1.csv", "teams": ["Benfica", "Porto", "Sporting CP", "Sporting", "Braga", "Vitoria Guimaraes", "Vitoria SC", "Famalicao", "Moreirense", "Arouca", "Gil Vicente", "Casa Pia", "Rio Ave", "Estoril", "Estrela", "Boavista", "Santa Clara", "Nacional", "AVS", "Farense"]}]},
-    "NED": {"country": "Paises Baixos", "competitions": [{"division": 1, "league_name": "Eredivisie", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/N1.csv", "teams": []}]},
+    "NED": {"country": "Paises Baixos", "competitions": [{"division": 1, "league_name": "Eredivisie", "aliases": ["Eredivise", "Eredivise (NLD)", "N1"], "standings_url": "https://www.football-data.co.uk/mmz4281/2526/N1.csv", "teams": []}]},
     "TUR": {"country": "Turquia", "competitions": [{"division": 1, "league_name": "Super Lig", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/T1.csv", "teams": []}]},
-    "BEL": {"country": "Bélgica", "competitions": [{"division": 1, "league_name": "Jupiler League", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/B1.csv", "teams": ["Club Brugge", "Union Saint-Gilloise", "Anderlecht", "Antwerp", "Genk", "Gent", "Cercle Brugge", "Mechelen", "Sint-Truiden", "Standard Liege", "Westerlo", "OH Leuven", "Charleroi", "Kortrijk", "Beerschot", "Dender"]}]},
-    "GRE": {"country": "Grécia", "competitions": [{"division": 1, "league_name": "Super League 1", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/G1.csv", "teams": []}]},
-    "SWZ": {"country": "Suiça", "competitions": [{"division": 1, "league_name": "Swiss Super League", "standings_url": "https://www.football-data.co.uk/new/SWZ.csv", "teams": []}]},
+    "BEL": {"country": "Bélgica", "competitions": [{"division": 1, "league_name": "Jupiler League", "aliases": ["Jupiler Ligue", "Jupiler Ligue (BEL)", "B1"], "standings_url": "https://www.football-data.co.uk/mmz4281/2526/B1.csv", "teams": ["Club Brugge", "Union Saint-Gilloise", "Anderlecht", "Antwerp", "Genk", "Gent", "Cercle Brugge", "Mechelen", "Sint-Truiden", "Standard Liege", "Westerlo", "OH Leuven", "Charleroi", "Kortrijk", "Beerschot", "Dender"]}]},
+    "GRE": {"country": "Grécia", "competitions": [{"division": 1, "league_name": "Super League 1", "aliases": ["Super League 1 (GRE)", "G1"], "standings_url": "https://www.football-data.co.uk/mmz4281/2526/G1.csv", "teams": []}]},
+    "SWZ": {"country": "Suiça", "competitions": [{"division": 1, "league_name": "Swiss Super League", "aliases": ["Swiss Super League (SUI)", "SUI"], "standings_url": "https://www.football-data.co.uk/new/SWZ.csv", "teams": []}]},
     // Nota: o código oficial da Scottish Premiership no football-data é SC0 (zero), não \"SCO\".
     "SCO": {"country": "Escócia", "competitions": [{"division": 1, "league_name": "Premiership", "standings_url": "https://www.football-data.co.uk/mmz4281/2526/SC0.csv", "teams": ["Celtic","Rangers","Aberdeen","Hearts","Heart of Midlothian","Hibernian","Kilmarnock","St Mirren","St. Mirren","Dundee","Dundee FC","Motherwell","Ross County","St Johnstone","St. Johnstone","Dundee United","Dundee Utd"]}]},
     "AUT": {"country": "Austria", "competitions": [{"division": 1, "league_name": "Bundesliga", "standings_url": "https://www.football-data.co.uk/new/AUT.csv", "teams": []}]},
@@ -57,17 +57,25 @@ export const LEAGUE_CONFIG: Record<string, {
     "ROU": {"country": "Roménia", "competitions": [{"division": 1, "league_name": "Liga 1", "standings_url": "https://www.football-data.co.uk/new/ROU.csv", "teams": []}]},
     "SWE": {"country": "Suécia", "competitions": [{"division": 1, "league_name": "Allsvenskan", "standings_url": "https://www.football-data.co.uk/new/SWE.csv", "teams": []}]},
     "NOR": {"country": "Noruega", "competitions": [{"division": 1, "league_name": "Eliteserien", "standings_url": "https://www.football-data.co.uk/new/NOR.csv", "teams": []}]},
-    "DNK": {"country": "Dinamarca", "competitions": [{"division": 1, "league_name": "Superligaen", "standings_url": "https://www.football-data.co.uk/new/DNK.csv", "teams": []}]},
+    "DNK": {"country": "Dinamarca", "competitions": [{"division": 1, "league_name": "Danish Superliga (DNK)", "aliases": ["Danish Superliga", "Superligaen", "DNK"], "standings_url": "https://www.football-data.co.uk/new/DNK.csv", "teams": []}]},
     "IRL": {"country": "Irlanda", "competitions": [{"division": 1, "league_name": "LI Premier Division", "standings_url": "https://www.football-data.co.uk/new/IRL.csv", "teams": []}]},
-    "ARG": {"country": "Argentina", "competitions": [{"division": 1, "league_name": "Primera División", "standings_url": "https://www.football-data.co.uk/new/ARG.csv", "teams": []}]},
-    "BRA": {"country": "Brasil", "competitions": [{"division": 1, "league_name": "Brasileirao", "standings_url": "https://www.football-data.co.uk/new/BRA.csv", "teams": []}]},
-    "CHN": {"country": "China", "competitions": [{"division": 1, "league_name": "Chinese SL", "standings_url": "https://www.football-data.co.uk/new/CHN.csv", "teams": []}]},
-    "JPN": {"country": "Japão", "competitions": [{"division": 1, "league_name": "J1 League", "standings_url": "https://www.football-data.co.uk/new/JPN.csv", "teams": []}]},
-    "MEX": {"country": "México", "competitions": [{"division": 1, "league_name": "Liga MX", "standings_url": "https://www.football-data.co.uk/new/MEX.csv", "teams": []}]},
-    "CRO": {"country": "Croácia", "competitions": [{"division": 1, "league_name": "Prva HNL", "standings_url": null, "teams": []}]},
-    "CZE": {"country": "República Checa", "competitions": [{"division": 1, "league_name": "Fortuna Liga", "standings_url": null, "teams": []}]},
-    "HUN": {"country": "Hungria", "competitions": [{"division": 1, "league_name": "NB I", "standings_url": null, "teams": []}]},
+    "ARG": {"country": "Argentina", "competitions": [{"division": 1, "league_name": "Primera División", "aliases": ["Liga Profissional (ARG)", "Liga Profesional", "ARG"], "standings_url": "https://www.football-data.co.uk/new/ARG.csv", "teams": []}]},
+    "BRA": {"country": "Brasil", "competitions": [{"division": 1, "league_name": "Brasileirao", "aliases": ["Brasileirao (BRA)", "BRA"], "standings_url": "https://www.football-data.co.uk/new/BRA.csv", "teams": []}]},
+    "CHN": {"country": "China", "competitions": [{"division": 1, "league_name": "Chinese SL", "aliases": ["Chinese Super League (CHN)", "CSL", "CHN"], "standings_url": "https://www.football-data.co.uk/new/CHN.csv", "teams": []}]},
+    "JPN": {"country": "Japão", "competitions": [{"division": 1, "league_name": "J1 League", "aliases": ["J League", "J League (JAP)", "JAP"], "standings_url": "https://www.football-data.co.uk/new/JPN.csv", "teams": []}]},
+    "MEX": {"country": "México", "competitions": [{"division": 1, "league_name": "Liga MX", "aliases": ["Liga MX (MEX)", "MEX"], "standings_url": "https://www.football-data.co.uk/new/MEX.csv", "teams": []}]},
+    "CRO": {"country": "Croácia", "competitions": [{"division": 1, "league_name": "Super Sport HNL (CRO)", "aliases": ["Prva HNL", "Super Sport HNL", "CRO"], "standings_url": null, "teams": []}]},
+    "CZE": {
+      "country": "República Checa",
+      "competitions": [
+        {"division": 1, "league_name": "Fortuna Liga", "aliases": ["Fortuna Liga (CZE)"], "standings_url": null, "teams": []},
+        {"division": 2, "league_name": "Chance Liga (CZE)", "aliases": ["Chance Liga", "CZE2"], "standings_url": null, "teams": []}
+      ]
+    },
+    "HUN": {"country": "Hungria", "competitions": [{"division": 1, "league_name": "NB I (HUN)", "aliases": ["NB I", "NB1", "HUN", "NB I (HUN)"], "standings_url": null, "teams": []}]},
     "ISR": {"country": "Israel", "competitions": [{"division": 1, "league_name": "Ligat Ha Al", "standings_url": null, "teams": []}]},
-    "SRB": {"country": "Sérvia", "competitions": [{"division": 1, "league_name": "SL Srbije", "standings_url": null, "teams": []}]},
-    "SVN": {"country": "Eslovénia", "competitions": [{"division": 1, "league_name": "Prva liga Telemach", "standings_url": null, "teams": []}]}
+    "SRB": {"country": "Sérvia", "competitions": [{"division": 1, "league_name": "Superliga Servia (SRB)", "aliases": ["SL Srbije", "Superliga Servia"], "standings_url": null, "teams": []}]},
+    "SVK": {"country": "Eslováquia", "competitions": [{"division": 1, "league_name": "Nike Liga (SVK)", "aliases": ["Nike Liga", "SVK"], "standings_url": null, "teams": []}]},
+    "SVN": {"country": "Eslovénia", "competitions": [{"division": 1, "league_name": "Prva liga Telemach", "standings_url": null, "teams": []}]},
+    "BUL": {"country": "Bulgária", "competitions": [{"division": 1, "league_name": "Parva Liga (BUL)", "aliases": ["Parva Liga", "BUL"], "standings_url": null, "teams": []}]}
   };

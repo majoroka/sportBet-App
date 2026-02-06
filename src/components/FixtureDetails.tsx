@@ -70,11 +70,41 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [displayLeagueName, setDisplayLeagueName] = useState(fixture.competition);
 
   // Função inteligente para obter a informação da Liga (Nome e URL)
-  const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
-    const countryKey = country.toUpperCase();
-    const config = LEAGUE_CONFIG[countryKey];
-    if (!config) return null;
+  const COUNTRY_ALIASES: Record<string, string> = {
+    DEN: 'DNK', // Denmark IOC -> ISO3
+    ROM: 'ROU',
+    BUL: 'BUL', // already ISO3 but ensure uppercase handling
+    CZE: 'CZE',
+    CRO: 'CRO',
+    SUI: 'SWZ', // Swiss Super League uses SWZ code in our config
+    HUN: 'HUN',
+  };
 
+  const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
+    const normalizedCountry = country?.trim().toUpperCase() || '';
+    const countryKey = COUNTRY_ALIASES[normalizedCountry] || normalizedCountry;
+    let config = LEAGUE_CONFIG[countryKey];
+
+    // Se não encontrarmos o país, tentamos encontrar a competição por alias globalmente
+    if (!config) {
+      const globalMatch = Object.values(LEAGUE_CONFIG).find((c) =>
+        c.competitions.some((comp) => {
+          const normalizeName = (s: string) =>
+            s
+              ?.normalize('NFKD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/[^a-z0-9\s]/gi, ' ')
+              .replace(/\s+/g, '')
+              .toLowerCase();
+          const target = normalizeName(competitionName);
+          const base = normalizeName(comp.league_name);
+          const aliasHit = comp.aliases?.some((a) => normalizeName(a) === target);
+          return base === target || aliasHit;
+        })
+      );
+      if (globalMatch) config = globalMatch;
+      else return null;
+    }
     const normalizeName = (s: string) =>
       s
         ?.normalize('NFKD')
@@ -158,8 +188,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         setDisplayLeagueName(fixture.competition);
       }
 
-      if (!leagueInfo || !leagueInfo.url) {
+      if (!leagueInfo) {
         console.log(`⚠️ [Debug] Caminho não encontrado para: "${fixture.competition}" (${fixture.country})`);
+        setStandings([]);
+        return;
+      }
+
+      // Se houver liga mas não houver URL (ex: ligas sem standings disponíveis), não logamos como erro.
+      if (!leagueInfo.url) {
         setStandings([]);
         return;
       }
