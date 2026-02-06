@@ -101,22 +101,22 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
     if (result === 'H') {
       home.wins++;
       home.points += 3;
-      home.form.push({ result: 'W', opponent: canonicalAwayName, score: `${hg}-${ag}` });
+      home.form.push({ result: 'W', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
       away.losses++;
-      away.form.push({ result: 'L', opponent: canonicalHomeName, score: `${ag}-${hg}` });
+      away.form.push({ result: 'L', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
     } else if (result === 'A') {
       away.wins++;
       away.points += 3;
-      away.form.push({ result: 'W', opponent: canonicalHomeName, score: `${ag}-${hg}` });
+      away.form.push({ result: 'W', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
       home.losses++;
-      home.form.push({ result: 'L', opponent: canonicalAwayName, score: `${hg}-${ag}` });
+      home.form.push({ result: 'L', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
     } else {
       home.draws++;
       home.points += 1;
-      home.form.push({ result: 'D', opponent: canonicalAwayName, score: `${hg}-${ag}` });
+      home.form.push({ result: 'D', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
       away.draws++;
       away.points += 1;
-      away.form.push({ result: 'D', opponent: canonicalHomeName, score: `${ag}-${hg}` });
+      away.form.push({ result: 'D', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
     }
   });
 

@@ -393,10 +393,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <div className="flex gap-1 mr-2">
                   {homeStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
+                    const side = match.side === 'A' ? 'A' : 'H';
                     const ringColor = match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
                     const isLast = i === homeStanding.form.length - 1;
                     const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
-                    const tooltip = `${label} vs ${match.opponent} (${match.score})`;
+                    const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
                     return (
                       <div key={i} className="relative group cursor-pointer">
                         <div className={`rounded-full w-3 h-3 ${color} ${extraClass}`}></div>
@@ -455,10 +456,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <div className="flex gap-1 ml-2">
                   {awayStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
+                    const side = match.side === 'A' ? 'A' : 'H';
                     const ringColor = match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
                     const isLast = i === awayStanding.form.length - 1;
                     const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
-                    const tooltip = `${label} vs ${match.opponent} (${match.score})`;
+                    const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
                     return (
                       <div key={i} className="relative group cursor-pointer">
                         <div className={`rounded-full w-3 h-3 ${color} ${extraClass}`}></div>

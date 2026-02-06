@@ -19,6 +19,7 @@ export interface FormMatch {
   result: 'W' | 'D' | 'L';
   opponent: string;
   score: string;
+  side?: 'H' | 'A'; // posição no jogo (Casa/Fora)
 }
 
 /**
