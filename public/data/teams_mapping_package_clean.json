@@ -15386,22 +15386,32 @@
       "league": "Ligue 2",
       "names": {
         "football-data": "St Etienne",
-        "clubelo": null
+        "clubelo": "Saint-Etienne"
       },
       "aliases": {
         "football-data": [
-          "St Etienne"
+          "St Etienne",
+          "Saint-Etienne",
+          "Saint Etienne"
+        ],
+        "clubelo": [
+          "Saint-Etienne",
+          "Saint Etienne",
+          "St Etienne",
+          "ASSE"
         ]
       },
       "keys": {
         "norm": [
-          "st etienne"
+          "st etienne",
+          "saint etienne",
+          "asse"
         ]
       },
       "logo": {
         "key": "as-saint-etienne",
         "file": "As-saint-etienne.png",
-        "path": "/logos/Ligue2/As-saint-etienne.png"
+        "path": "/logos/Ligue2 (FRA)/As-saint-etienne.png"
       }
     },
     "team_4160245b00c3": {
@@ -29277,19 +29287,34 @@
         "pt": "Farul Constanta"
       },
       "country": "UNK",
-      "league": "ROU",
+      "league": "Superliga (ROM)",
       "names": {
         "football-data": "Farul Constanta",
-        "clubelo": null
+        "clubelo": "Farul Constanta"
       },
       "aliases": {
         "football-data": [
-          "Farul Constanta"
+          "Farul Constanta",
+          "Viitorul",
+          "Viitorul Constanta",
+          "FC Viitorul",
+          "FC Farul Constanta"
+        ],
+        "clubelo": [
+          "Farul Constanta",
+          "Viitorul",
+          "Viitorul Constanta",
+          "FC Viitorul",
+          "FC Farul Constanta"
         ]
       },
       "keys": {
         "norm": [
-          "farul constanta"
+          "farul constanta",
+          "viitorul",
+          "viitorul constanta",
+          "fc viitorul",
+          "fc farul constanta"
         ]
       },
       "logo": {
@@ -29662,19 +29687,26 @@
         "pt": "U. Cluj"
       },
       "country": "UNK",
-      "league": "ROU",
+      "league": "Superliga (ROM)",
       "names": {
         "football-data": "U. Cluj",
-        "clubelo": null
+        "clubelo": "Universitatea Cluj"
       },
       "aliases": {
         "football-data": [
+          "U. Cluj",
+          "Universitatea Cluj"
+        ],
+        "clubelo": [
+          "Universitatea Cluj",
+          "U Cluj",
           "U. Cluj"
         ]
       },
       "keys": {
         "norm": [
-          "u cluj"
+          "u cluj",
+          "universitatea cluj"
         ]
       },
       "logo": {
@@ -34287,16 +34319,36 @@
       "league": "Super Lig",
       "names": {
         "football-data": "Karagumruk",
-        "clubelo": null
+        "clubelo": "Fatih Karaguemruek"
       },
       "aliases": {
         "football-data": [
-          "Karagumruk"
+          "Karagumruk",
+          "Fatih Karagumruek",
+          "Fatih Karaguemruek",
+          "Fatih Karagümrük",
+          "Karagümrük",
+          "Fatih Karagumruk",
+          "Fatih Karagümruk"
+        ],
+        "clubelo": [
+          "Fatih Karagumruek",
+          "Fatih Karaguemruek",
+          "Fatih Karagümrük",
+          "Karagumruk",
+          "Karagümrük",
+          "Fatih Karagumruk"
         ]
       },
       "keys": {
         "norm": [
-          "karagumruk"
+          "karagumruk",
+          "fatih karagumruek",
+          "fatih karaguemruek",
+          "fatih karagumruk",
+          "karagumruk",
+          "karaguemruek",
+          "fatih karagumruk"
         ]
       },
       "logo": {
@@ -38968,12 +39020,18 @@
       },
       "aliases": {
         "clubelo": [
-          "Rayo Vallecano"
+          "Rayo Vallecano",
+          "Vallecano"
+        ],
+        "football-data": [
+          "Rayo Vallecano",
+          "Vallecano"
         ]
       },
       "keys": {
         "norm": [
-          "rayo vallecano"
+          "rayo vallecano",
+          "vallecano"
         ]
       },
       "logo": {
@@ -38990,17 +39048,32 @@
       "country": "ROU",
       "league": "Superliga (ROM)",
       "names": {
-        "football-data": null,
+        "football-data": "Viitorul",
         "clubelo": "Viitorul"
       },
       "aliases": {
         "clubelo": [
-          "Viitorul"
+          "Viitorul",
+          "Farul Constanta",
+          "Farul",
+          "Viitorul Constanta",
+          "FC Farul Constanta"
+        ],
+        "football-data": [
+          "Viitorul",
+          "Farul Constanta",
+          "Farul",
+          "Viitorul Constanta",
+          "FC Farul Constanta"
         ]
       },
       "keys": {
         "norm": [
-          "viitorul"
+          "viitorul",
+          "farul constanta",
+          "farul",
+          "viitorul constanta",
+          "fc farul constanta"
         ]
       }
     },
@@ -39297,17 +39370,28 @@
       "country": "FRA",
       "league": "Ligue 2",
       "names": {
-        "football-data": null,
+        "football-data": "St Etienne",
         "clubelo": "Saint-Etienne"
       },
       "aliases": {
         "clubelo": [
-          "Saint-Etienne"
+          "Saint-Etienne",
+          "St Etienne",
+          "Saint Etienne",
+          "AS Saint-Etienne",
+          "ASSE"
+        ],
+        "football-data": [
+          "St Etienne",
+          "Saint-Etienne",
+          "Saint Etienne"
         ]
       },
       "keys": {
         "norm": [
-          "saint etienne"
+          "saint etienne",
+          "st etienne",
+          "asse"
         ]
       }
     },

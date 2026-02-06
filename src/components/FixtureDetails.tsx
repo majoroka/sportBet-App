@@ -136,7 +136,21 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       });
     }
 
-    // Fallback 2: se houver 2 competições, tenta heurística por código/indicadores (1/A vs 2/B)
+    // Fallback 2: tentar inferir pela presença da equipa na lista da competição
+    if (!competitionConfig && config.competitions.length > 1) {
+      const hNorm = normalizeName(home);
+      const aNorm = normalizeName(away);
+      const matchByTeam = config.competitions.find((c) => {
+        const hasTeam = c.teams.some((t: string) => {
+          const tn = normalizeName(t);
+          return tn === hNorm || tn === aNorm;
+        });
+        return hasTeam;
+      });
+      if (matchByTeam) competitionConfig = matchByTeam;
+    }
+
+    // Fallback 3: se houver 2 competições, tenta heurística por código/indicadores (1/A vs 2/B)
     if (!competitionConfig && config.competitions.length === 2) {
       const isDiv2 =
         /2\b/.test(competitionName) ||
@@ -154,20 +168,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       competitionConfig = config.competitions.find((c) =>
         isDiv2 ? c.division === 2 : isDiv1 ? c.division === 1 : false
       );
-    }
-
-    // Fallback 3: tentar inferir pela presença da equipa na lista da competição
-    if (!competitionConfig && config.competitions.length > 1) {
-      const hNorm = normalizeName(home);
-      const aNorm = normalizeName(away);
-      const matchByTeam = config.competitions.find((c) => {
-        const hasTeam = c.teams.some((t: string) => {
-          const tn = normalizeName(t);
-          return tn === hNorm || tn === aNorm;
-        });
-        return hasTeam;
-      });
-      if (matchByTeam) competitionConfig = matchByTeam;
     }
 
     // Fallback 3: só usa a primeira se existir apenas uma competição para o país
@@ -248,9 +248,60 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     setAwayLogoError(false);
   }, [fixture]);
 
+  // Helper para comparar nomes de equipa com normalização e alias aproximado
+  const normalize = (s: string) =>
+    s
+      ?.normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\bsaint\b/gi, 'st') // trata Saint == St
+      .replace(/[^a-z0-9]+/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .toLowerCase();
+
+  const tokenize = (s: string) => normalize(s).split(/\s+/).filter(Boolean);
+
+  // Equivalências manuais de nomes (sinónimos/renomeações)
+  const TEAM_SYNONYMS: Record<string, string[]> = {
+    'viitorul': ['farul constanta', 'farul'],
+    'viitorul constanta': ['farul constanta', 'farul'],
+    'farul constanta': ['viitorul', 'viitorul constanta'],
+    'fatih karagumruk': ['karagumruk'],
+    'fatih karaguemruek': ['karagumruk'],
+    'karagumruk': ['fatih karagumruk', 'fatih karaguemruek', 'fatih karagumruek'],
+  };
+
+  const namesMatch = (a: string, b: string) => {
+    const ta = tokenize(a);
+    const tb = tokenize(b);
+    if (ta.length === 0 || tb.length === 0) return false;
+    if (ta.join('') === tb.join('')) return true; // exact after normalization
+    // subset check with tolerance for abreviações de 1 letra (ex: "U." vs "Universitatea")
+    const shorter = ta.length <= tb.length ? ta : tb;
+    const longer = ta.length <= tb.length ? tb : ta;
+    const tokenInLonger = (t: string) =>
+      longer.includes(t) || (t.length === 1 && longer.some((x) => x.startsWith(t)));
+    if (shorter.every((t) => tokenInLonger(t))) return true;
+
+    // Verificar sinónimos conhecidos
+    const aKey = ta.join(' ');
+    const bKey = tb.join(' ');
+    if (TEAM_SYNONYMS[aKey]?.includes(bKey)) return true;
+    if (TEAM_SYNONYMS[bKey]?.includes(aKey)) return true;
+
+    return false;
+  };
+
+  const findStanding = (teamName: string) => {
+    return (
+      standings.find((s) => namesMatch(s.team, teamName)) ||
+      standings.find((s) => s.team.toLowerCase() === teamName.toLowerCase())
+    );
+  };
+
   // Encontrar a linha da classificação para as equipas do jogo atual
-  const homeStanding = standings.find(s => s.team === homeTeam);
-  const awayStanding = standings.find(s => s.team === awayTeam);
+  const homeStanding = findStanding(homeTeam);
+  const awayStanding = findStanding(awayTeam);
 
   const chartData = {
     labels: [homeTeam, 'Empate', awayTeam],
@@ -563,7 +614,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     </thead>
                     <tbody className="text-gray-600">
                       {standings.map((row, index) => {
-                        const isMatchTeam = row.team === homeTeam || row.team === awayTeam;
+                        const isMatchTeam = namesMatch(row.team, homeTeam) || namesMatch(row.team, awayTeam);
                         const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
                         return (
