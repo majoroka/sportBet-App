@@ -13417,26 +13417,38 @@
       "display": {
         "pt": "Termalica B-B."
       },
-      "country": "PL",
-      "league": "Ekstraklasa",
+      "country": "POL",
+      "league": "Ekstraklasa (POL)",
       "names": {
         "football-data": "Termalica B-B.",
-        "clubelo": null
+        "clubelo": "Termalica"
       },
       "aliases": {
         "football-data": [
+          "Termalica B-B.",
+          "Bruk-Bet Termalica Nieciecza",
+          "Nieciecza",
+          "Termalica"
+        ],
+        "clubelo": [
+          "Termalica",
+          "Nieciecza",
+          "Bruk-Bet Termalica Nieciecza",
           "Termalica B-B."
         ]
       },
       "keys": {
         "norm": [
-          "termalica b b"
+          "termalica b b",
+          "nieciecza",
+          "bruk bet termalica nieciecza",
+          "termalica"
         ]
       },
       "logo": {
         "key": "nieciecza",
         "file": "nieciecza.png",
-        "path": "/logos/Ekstraklasa/nieciecza.png"
+        "path": "/logos/Ekstraklasa (POL)/nieciecza.png"
       }
     },
     "team_7e8a9be84f39": {
@@ -24470,7 +24482,7 @@
         "pt": "Moreirense"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Moreirense",
         "clubelo": "Moreirense"
@@ -24791,21 +24803,33 @@
     "team_368547a8fb17": {
       "id": "team_368547a8fb17",
       "display": {
-        "pt": "Sp Lisbon"
+        "pt": "Sporting"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
-        "football-data": "Sp Lisbon",
-        "clubelo": null
+        "football-data": "Sporting CP",
+        "clubelo": "Sporting CP"
       },
       "aliases": {
         "football-data": [
+          "Sporting CP",
+          "Sporting",
+          "Sp Lisbon",
+          "Sporting Lisbon"
+        ],
+        "clubelo": [
+          "Sporting CP",
+          "Sporting",
+          "Sporting Lisbon",
           "Sp Lisbon"
         ]
       },
       "keys": {
         "norm": [
+          "sporting",
+          "sporting cp",
+          "sporting lisbon",
           "sp lisbon"
         ]
       },
@@ -24929,7 +24953,7 @@
       "logo": {
         "key": "cd-nacional",
         "file": "cd-nacional.png",
-        "path": "/logos/Primeira Liga/cd-nacional.png"
+        "path": "/logos/Primeira Liga (POR)/cd-nacional.png"
       }
     },
     "team_8fcf8cb54fcf": {
@@ -29173,19 +29197,28 @@
         "pt": "Din. Bucuresti"
       },
       "country": "ROU",
-      "league": "ROU",
+      "league": "Superliga (ROM)",
       "names": {
         "football-data": "Din. Bucuresti",
-        "clubelo": null
+        "clubelo": "Dinamo Bucuresti"
       },
       "aliases": {
         "football-data": [
-          "Din. Bucuresti"
+          "Din. Bucuresti",
+          "Dinamo Bucuresti",
+          "Dinamo Bucarest"
+        ],
+        "clubelo": [
+          "Dinamo Bucuresti",
+          "Din. Bucuresti",
+          "Dinamo"
         ]
       },
       "keys": {
         "norm": [
-          "din bucuresti"
+          "din bucuresti",
+          "dinamo bucuresti",
+          "dinamo"
         ]
       },
       "logo": {
@@ -30398,19 +30431,25 @@
         "pt": "Espanol"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Espanol",
-        "clubelo": null
+        "clubelo": "Espanol"
       },
       "aliases": {
         "football-data": [
-          "Espanol"
+          "Espanol",
+          "Espanyol"
+        ],
+        "clubelo": [
+          "Espanol",
+          "Espanyol"
         ]
       },
       "keys": {
         "norm": [
-          "espanol"
+          "espanol",
+          "espanyol"
         ]
       },
       "logo": {
@@ -34272,16 +34311,22 @@
       "league": "Super Lig",
       "names": {
         "football-data": "Kayserispor",
-        "clubelo": null
+        "clubelo": "Kayserispor"
       },
       "aliases": {
         "football-data": [
-          "Kayserispor"
+          "Kayserispor",
+          "Kayseri"
+        ],
+        "clubelo": [
+          "Kayserispor",
+          "Kayseri"
         ]
       },
       "keys": {
         "norm": [
-          "kayserispor"
+          "kayserispor",
+          "kayseri"
         ]
       },
       "logo": {
@@ -38388,17 +38433,25 @@
       "country": "SUI",
       "league": "Swiss Super League (SUI)",
       "names": {
-        "football-data": null,
+        "football-data": "Zurich",
         "clubelo": "Zuerich"
       },
       "aliases": {
         "clubelo": [
-          "Zuerich"
+          "Zuerich",
+          "Zurich"
+        ],
+        "football-data": [
+          "Zurich",
+          "Zuerich",
+          "FC Zurich"
         ]
       },
       "keys": {
         "norm": [
-          "zuerich"
+          "zuerich",
+          "zurich",
+          "fc zurich"
         ]
       }
     },
@@ -38809,17 +38862,28 @@
       "country": "TUR",
       "league": "Super Lig (TUR)",
       "names": {
-        "football-data": null,
+        "football-data": "Goztep",
         "clubelo": "Goeztepe"
       },
       "aliases": {
+        "football-data": [
+          "Goztep",
+          "Goeztepe",
+          "Goztepe",
+          "Göztepe"
+        ],
         "clubelo": [
-          "Goeztepe"
+          "Goeztepe",
+          "Goztepe",
+          "Göztepe",
+          "Goztep"
         ]
       },
       "keys": {
         "norm": [
-          "goeztepe"
+          "goeztepe",
+          "goztepe",
+          "goztep"
         ]
       }
     },
@@ -39163,17 +39227,34 @@
       "country": "TUR",
       "league": "Super Lig (TUR)",
       "names": {
-        "football-data": null,
+        "football-data": "Bueyueksehir",
         "clubelo": "Bueyueksehir"
       },
       "aliases": {
+        "football-data": [
+          "Bueyueksehir",
+          "Buyuksehyr",
+          "Buyuksehir",
+          "Büyüksehir",
+          "Istanbul Basaksehir",
+          "Basaksehir"
+        ],
         "clubelo": [
-          "Bueyueksehir"
+          "Bueyueksehir",
+          "Buyuksehyr",
+          "Buyuksehir",
+          "Büyüksehir",
+          "Istanbul Basaksehir",
+          "Basaksehir"
         ]
       },
       "keys": {
         "norm": [
-          "bueyueksehir"
+          "bueyueksehir",
+          "buyuksehyr",
+          "buyuksehir",
+          "basaksehir",
+          "istanbul basaksehir"
         ]
       }
     },
@@ -39255,25 +39336,35 @@
         "pt": "Depor"
       },
       "country": "ESP",
-      "league": "UNK",
+      "league": "La Liga2 (ESP)",
       "names": {
-        "football-data": null,
+        "football-data": "La Coruna",
         "clubelo": "Depor"
       },
       "aliases": {
-        "clubelo": [
+        "football-data": [
+          "La Coruna",
+          "Deportivo La Coruna",
           "Depor"
+        ],
+        "clubelo": [
+          "Depor",
+          "Deportivo",
+          "La Coruna"
         ]
       },
       "keys": {
         "norm": [
-          "depor"
+          "depor",
+          "la coruna",
+          "deportivo la coruna",
+          "deportivo"
         ]
       },
       "logo": {
-        "key": "fc-andorra",
-        "file": "Fc-andorra.png",
-        "path": "/logos/La Liga2/Fc-andorra.png"
+        "key": "deportivo-la-coruna",
+        "file": "Deportivo-la-coruna.png",
+        "path": "/logos/La Liga2 (ESP)/Deportivo-la-coruna.png"
       }
     },
     "team_34b3eaed426b": {
@@ -39459,17 +39550,23 @@
       "country": "ROU",
       "league": "Superliga (ROM)",
       "names": {
-        "football-data": null,
+        "football-data": "FCSB",
         "clubelo": "Steaua"
       },
       "aliases": {
-        "clubelo": [
+        "football-data": [
+          "FCSB",
           "Steaua"
+        ],
+        "clubelo": [
+          "Steaua",
+          "FCSB"
         ]
       },
       "keys": {
         "norm": [
-          "steaua"
+          "steaua",
+          "fcsb"
         ]
       },
       "logo": {
@@ -39584,7 +39681,7 @@
       "country": "DNK",
       "league": "Danish Superliga (DNK)",
       "names": {
-        "football-data": null,
+        "football-data": "FC Copenhagen",
         "clubelo": "FC Kobenhavn"
       },
       "aliases": {
@@ -39593,11 +39690,19 @@
           "FC Copenhagen",
           "Copenhagen",
           "FC Kobenhavn (Copenhaga)"
+        ],
+        "football-data": [
+          "FC Copenhagen",
+          "FC Kobenhavn",
+          "Kobenhavn",
+          "Copenhagen"
         ]
       },
       "keys": {
         "norm": [
-          "kobenhavn"
+          "kobenhavn",
+          "copenhagen",
+          "fc copenhagen"
         ]
       }
     },
@@ -39680,18 +39785,37 @@
       "country": "ESP",
       "league": "La Liga (ESP)",
       "names": {
-        "football-data": null,
+        "football-data": "Ath Madrid",
         "clubelo": "Atletico"
       },
       "aliases": {
+        "football-data": [
+          "Ath Madrid",
+          "Atletico",
+          "Atletico Madrid",
+          "At. Madrid",
+          "Atl Madrid"
+        ],
         "clubelo": [
-          "Atletico"
+          "Atletico",
+          "Atletico Madrid",
+          "At. Madrid",
+          "Atl Madrid",
+          "Ath Madrid"
         ]
       },
       "keys": {
         "norm": [
-          "atletico"
+          "atletico",
+          "atletico madrid",
+          "ath madrid",
+          "atl madrid"
         ]
+      },
+      "logo": {
+        "key": "atletico-madrid",
+        "file": "Atletico-madrid.png",
+        "path": "/logos/La Liga (ESP)/Atletico-madrid.png"
       }
     },
     "team_6e3ffba3a8a3": {
