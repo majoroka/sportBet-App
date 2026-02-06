@@ -1,0 +1,277 @@
+[
+  {
+    "original_name": "NFC Volos",
+    "normalized_name": "nfc volos",
+    "matched": Volos
+  },
+  {
+    "original_name": "Ferencvaros",
+    "normalized_name": "ferencvaros",
+    "matched": false
+  },
+  {
+    "original_name": "Ujpest",
+    "normalized_name": "ujpest",
+    "matched": false
+  },
+  {
+    "original_name": "Diosgyori",
+    "normalized_name": "diosgyori",
+    "matched": false
+  },
+  {
+    "original_name": "Gyoer",
+    "normalized_name": "gyoer",
+    "matched": false
+  },
+  {
+    "original_name": "Debrecen",
+    "normalized_name": "debrecen",
+    "matched": false
+  },
+  {
+    "original_name": "Paksi",
+    "normalized_name": "paksi",
+    "matched": false
+  },
+  {
+    "original_name": "Hapoel Haifa",
+    "normalized_name": "hapoel haifa",
+    "matched": false
+  },
+  {
+    "original_name": "Ashdod",
+    "normalized_name": "ashdod",
+    "matched": false
+  },
+  {
+    "original_name": "Hapoel Jerusalem",
+    "normalized_name": "hapoel jerusalem",
+    "matched": false
+  },
+  {
+    "original_name": "Maccabi Haifa",
+    "normalized_name": "maccabi haifa",
+    "matched": false
+  },
+  {
+    "original_name": "Netanya",
+    "normalized_name": "netanya",
+    "matched": false
+  },
+  {
+    "original_name": "Kiryat Shmona",
+    "normalized_name": "kiryat shmona",
+    "matched": false
+  },
+  {
+    "original_name": "Bnei Sakhinin",
+    "normalized_name": "bnei sakhinin",
+    "matched": false
+  },
+  {
+    "original_name": "H Petach Tikva",
+    "normalized_name": "h petach tikva",
+    "matched": false
+  },
+  {
+    "original_name": "Ironi Tiberias",
+    "normalized_name": "ironi tiberias",
+    "matched": false
+  },
+  {
+    "original_name": "H Tel Aviv",
+    "normalized_name": "h tel aviv",
+    "matched": false
+  },
+  {
+    "original_name": "Crvena Zvezda",
+    "normalized_name": "crvena zvezda",
+    "matched": false
+  },
+  {
+    "original_name": "Novi Pazar",
+    "normalized_name": "novi pazar",
+    "matched": false
+  },
+  {
+    "original_name": "Ivanjica",
+    "normalized_name": "ivanjica",
+    "matched": false
+  },
+  {
+    "original_name": "Backa Topola",
+    "normalized_name": "backa topola",
+    "matched": false
+  },
+  {
+    "original_name": "Radnik Surdulica",
+    "normalized_name": "radnik surdulica",
+    "matched": false
+  },
+  {
+    "original_name": "Partizan",
+    "normalized_name": "partizan",
+    "matched": false
+  },
+  {
+    "original_name": "Primorje",
+    "normalized_name": "primorje",
+    "matched": false
+  },
+  {
+    "original_name": "Bravo",
+    "normalized_name": "bravo",
+    "matched": false
+  },
+  {
+    "original_name": "St Gillis",
+    "normalized_name": "st gillis",
+    "matched": false
+  },
+  {
+    "original_name": "RAAL",
+    "normalized_name": "raal",
+    "matched": false
+  },
+  {
+    "original_name": "Rijeka",
+    "normalized_name": "rijeka",
+    "matched": false
+  },
+  {
+    "original_name": "Dinamo Zagreb",
+    "normalized_name": "dinamo zagreb",
+    "matched": false
+  },
+  {
+    "original_name": "Varazdin",
+    "normalized_name": "varazdin",
+    "matched": false
+  },
+  {
+    "original_name": "Osijek",
+    "normalized_name": "osijek",
+    "matched": false
+  },
+  {
+    "original_name": "OFI",
+    "normalized_name": "ofi",
+    "matched": false
+  },
+  {
+    "original_name": "Nyiregyhaza",
+    "normalized_name": "nyiregyhaza",
+    "matched": false
+  },
+  {
+    "original_name": "MTK",
+    "normalized_name": "mtk",
+    "matched": false
+  },
+  {
+    "original_name": "Puskas Akademia",
+    "normalized_name": "puskas akademia",
+    "matched": false
+  },
+  {
+    "original_name": "Zalaegerszegi",
+    "normalized_name": "zalaegerszegi",
+    "matched": false
+  },
+  {
+    "original_name": "Novi Sad",
+    "normalized_name": "novi sad",
+    "matched": false
+  },
+  {
+    "original_name": "Mladost Lucani",
+    "normalized_name": "mladost lucani",
+    "matched": false
+  },
+  {
+    "original_name": "Nis",
+    "normalized_name": "nis",
+    "matched": false
+  },
+  {
+    "original_name": "Kragujevac",
+    "normalized_name": "kragujevac",
+    "matched": false
+  },
+  {
+    "original_name": "Zlatibor",
+    "normalized_name": "zlatibor",
+    "matched": false
+  },
+  {
+    "original_name": "Zeleznicar Pancevo",
+    "normalized_name": "zeleznicar pancevo",
+    "matched": false
+  },
+  {
+    "original_name": "IMT",
+    "normalized_name": "imt",
+    "matched": false
+  },
+  {
+    "original_name": "Krusevac",
+    "normalized_name": "krusevac",
+    "matched": false
+  },
+  {
+    "original_name": "Maribor",
+    "normalized_name": "maribor",
+    "matched": false
+  },
+  {
+    "original_name": "Koper",
+    "normalized_name": "koper",
+    "matched": false
+  },
+  {
+    "original_name": "Espanyol",
+    "normalized_name": "espanyol",
+    "matched": false
+  },
+  {
+    "original_name": "M Tel Aviv",
+    "normalized_name": "m tel aviv",
+    "matched": false
+  },
+  {
+    "original_name": "Maccabi Bnei Raina",
+    "normalized_name": "maccabi bnei raina",
+    "matched": false
+  },
+  {
+    "original_name": "Plock",
+    "normalized_name": "plock",
+    "matched": false
+  },
+  {
+    "original_name": "Sporting",
+    "normalized_name": "sporting",
+    "matched": false
+  },
+  {
+    "original_name": "AVS Futebol",
+    "normalized_name": "avs futebol",
+    "matched": false
+  },
+  {
+    "original_name": "OFK",
+    "normalized_name": "ofk",
+    "matched": false
+  },
+  {
+    "original_name": "Cukaricki",
+    "normalized_name": "cukaricki",
+    "matched": false
+  },
+  {
+    "original_name": "Kayseri",
+    "normalized_name": "kayseri",
+    "matched": false
+  }
+]

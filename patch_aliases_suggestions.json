@@ -1,0 +1,332 @@
+[
+  {
+    "alias_key_clubelo": "clubelo:nfc volos",
+    "alias_key_football_data": "football-data:nfc volos",
+    "original_name": "NFC Volos",
+    "normalized_name": "nfc volos"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ferencvaros",
+    "alias_key_football_data": "football-data:ferencvaros",
+    "original_name": "Ferencvaros",
+    "normalized_name": "ferencvaros"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ujpest",
+    "alias_key_football_data": "football-data:ujpest",
+    "original_name": "Ujpest",
+    "normalized_name": "ujpest"
+  },
+  {
+    "alias_key_clubelo": "clubelo:diosgyori",
+    "alias_key_football_data": "football-data:diosgyori",
+    "original_name": "Diosgyori",
+    "normalized_name": "diosgyori"
+  },
+  {
+    "alias_key_clubelo": "clubelo:gyoer",
+    "alias_key_football_data": "football-data:gyoer",
+    "original_name": "Gyoer",
+    "normalized_name": "gyoer"
+  },
+  {
+    "alias_key_clubelo": "clubelo:debrecen",
+    "alias_key_football_data": "football-data:debrecen",
+    "original_name": "Debrecen",
+    "normalized_name": "debrecen"
+  },
+  {
+    "alias_key_clubelo": "clubelo:paksi",
+    "alias_key_football_data": "football-data:paksi",
+    "original_name": "Paksi",
+    "normalized_name": "paksi"
+  },
+  {
+    "alias_key_clubelo": "clubelo:hapoel haifa",
+    "alias_key_football_data": "football-data:hapoel haifa",
+    "original_name": "Hapoel Haifa",
+    "normalized_name": "hapoel haifa"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ashdod",
+    "alias_key_football_data": "football-data:ashdod",
+    "original_name": "Ashdod",
+    "normalized_name": "ashdod"
+  },
+  {
+    "alias_key_clubelo": "clubelo:hapoel jerusalem",
+    "alias_key_football_data": "football-data:hapoel jerusalem",
+    "original_name": "Hapoel Jerusalem",
+    "normalized_name": "hapoel jerusalem"
+  },
+  {
+    "alias_key_clubelo": "clubelo:maccabi haifa",
+    "alias_key_football_data": "football-data:maccabi haifa",
+    "original_name": "Maccabi Haifa",
+    "normalized_name": "maccabi haifa"
+  },
+  {
+    "alias_key_clubelo": "clubelo:netanya",
+    "alias_key_football_data": "football-data:netanya",
+    "original_name": "Netanya",
+    "normalized_name": "netanya"
+  },
+  {
+    "alias_key_clubelo": "clubelo:kiryat shmona",
+    "alias_key_football_data": "football-data:kiryat shmona",
+    "original_name": "Kiryat Shmona",
+    "normalized_name": "kiryat shmona"
+  },
+  {
+    "alias_key_clubelo": "clubelo:bnei sakhinin",
+    "alias_key_football_data": "football-data:bnei sakhinin",
+    "original_name": "Bnei Sakhinin",
+    "normalized_name": "bnei sakhinin"
+  },
+  {
+    "alias_key_clubelo": "clubelo:h petach tikva",
+    "alias_key_football_data": "football-data:h petach tikva",
+    "original_name": "H Petach Tikva",
+    "normalized_name": "h petach tikva"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ironi tiberias",
+    "alias_key_football_data": "football-data:ironi tiberias",
+    "original_name": "Ironi Tiberias",
+    "normalized_name": "ironi tiberias"
+  },
+  {
+    "alias_key_clubelo": "clubelo:h tel aviv",
+    "alias_key_football_data": "football-data:h tel aviv",
+    "original_name": "H Tel Aviv",
+    "normalized_name": "h tel aviv"
+  },
+  {
+    "alias_key_clubelo": "clubelo:crvena zvezda",
+    "alias_key_football_data": "football-data:crvena zvezda",
+    "original_name": "Crvena Zvezda",
+    "normalized_name": "crvena zvezda"
+  },
+  {
+    "alias_key_clubelo": "clubelo:novi pazar",
+    "alias_key_football_data": "football-data:novi pazar",
+    "original_name": "Novi Pazar",
+    "normalized_name": "novi pazar"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ivanjica",
+    "alias_key_football_data": "football-data:ivanjica",
+    "original_name": "Ivanjica",
+    "normalized_name": "ivanjica"
+  },
+  {
+    "alias_key_clubelo": "clubelo:backa topola",
+    "alias_key_football_data": "football-data:backa topola",
+    "original_name": "Backa Topola",
+    "normalized_name": "backa topola"
+  },
+  {
+    "alias_key_clubelo": "clubelo:radnik surdulica",
+    "alias_key_football_data": "football-data:radnik surdulica",
+    "original_name": "Radnik Surdulica",
+    "normalized_name": "radnik surdulica"
+  },
+  {
+    "alias_key_clubelo": "clubelo:partizan",
+    "alias_key_football_data": "football-data:partizan",
+    "original_name": "Partizan",
+    "normalized_name": "partizan"
+  },
+  {
+    "alias_key_clubelo": "clubelo:primorje",
+    "alias_key_football_data": "football-data:primorje",
+    "original_name": "Primorje",
+    "normalized_name": "primorje"
+  },
+  {
+    "alias_key_clubelo": "clubelo:bravo",
+    "alias_key_football_data": "football-data:bravo",
+    "original_name": "Bravo",
+    "normalized_name": "bravo"
+  },
+  {
+    "alias_key_clubelo": "clubelo:st gillis",
+    "alias_key_football_data": "football-data:st gillis",
+    "original_name": "St Gillis",
+    "normalized_name": "st gillis"
+  },
+  {
+    "alias_key_clubelo": "clubelo:raal",
+    "alias_key_football_data": "football-data:raal",
+    "original_name": "RAAL",
+    "normalized_name": "raal"
+  },
+  {
+    "alias_key_clubelo": "clubelo:rijeka",
+    "alias_key_football_data": "football-data:rijeka",
+    "original_name": "Rijeka",
+    "normalized_name": "rijeka"
+  },
+  {
+    "alias_key_clubelo": "clubelo:dinamo zagreb",
+    "alias_key_football_data": "football-data:dinamo zagreb",
+    "original_name": "Dinamo Zagreb",
+    "normalized_name": "dinamo zagreb"
+  },
+  {
+    "alias_key_clubelo": "clubelo:varazdin",
+    "alias_key_football_data": "football-data:varazdin",
+    "original_name": "Varazdin",
+    "normalized_name": "varazdin"
+  },
+  {
+    "alias_key_clubelo": "clubelo:osijek",
+    "alias_key_football_data": "football-data:osijek",
+    "original_name": "Osijek",
+    "normalized_name": "osijek"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ofi",
+    "alias_key_football_data": "football-data:ofi",
+    "original_name": "OFI",
+    "normalized_name": "ofi"
+  },
+  {
+    "alias_key_clubelo": "clubelo:nyiregyhaza",
+    "alias_key_football_data": "football-data:nyiregyhaza",
+    "original_name": "Nyiregyhaza",
+    "normalized_name": "nyiregyhaza"
+  },
+  {
+    "alias_key_clubelo": "clubelo:mtk",
+    "alias_key_football_data": "football-data:mtk",
+    "original_name": "MTK",
+    "normalized_name": "mtk"
+  },
+  {
+    "alias_key_clubelo": "clubelo:puskas akademia",
+    "alias_key_football_data": "football-data:puskas akademia",
+    "original_name": "Puskas Akademia",
+    "normalized_name": "puskas akademia"
+  },
+  {
+    "alias_key_clubelo": "clubelo:zalaegerszegi",
+    "alias_key_football_data": "football-data:zalaegerszegi",
+    "original_name": "Zalaegerszegi",
+    "normalized_name": "zalaegerszegi"
+  },
+  {
+    "alias_key_clubelo": "clubelo:novi sad",
+    "alias_key_football_data": "football-data:novi sad",
+    "original_name": "Novi Sad",
+    "normalized_name": "novi sad"
+  },
+  {
+    "alias_key_clubelo": "clubelo:mladost lucani",
+    "alias_key_football_data": "football-data:mladost lucani",
+    "original_name": "Mladost Lucani",
+    "normalized_name": "mladost lucani"
+  },
+  {
+    "alias_key_clubelo": "clubelo:nis",
+    "alias_key_football_data": "football-data:nis",
+    "original_name": "Nis",
+    "normalized_name": "nis"
+  },
+  {
+    "alias_key_clubelo": "clubelo:kragujevac",
+    "alias_key_football_data": "football-data:kragujevac",
+    "original_name": "Kragujevac",
+    "normalized_name": "kragujevac"
+  },
+  {
+    "alias_key_clubelo": "clubelo:zlatibor",
+    "alias_key_football_data": "football-data:zlatibor",
+    "original_name": "Zlatibor",
+    "normalized_name": "zlatibor"
+  },
+  {
+    "alias_key_clubelo": "clubelo:zeleznicar pancevo",
+    "alias_key_football_data": "football-data:zeleznicar pancevo",
+    "original_name": "Zeleznicar Pancevo",
+    "normalized_name": "zeleznicar pancevo"
+  },
+  {
+    "alias_key_clubelo": "clubelo:imt",
+    "alias_key_football_data": "football-data:imt",
+    "original_name": "IMT",
+    "normalized_name": "imt"
+  },
+  {
+    "alias_key_clubelo": "clubelo:krusevac",
+    "alias_key_football_data": "football-data:krusevac",
+    "original_name": "Krusevac",
+    "normalized_name": "krusevac"
+  },
+  {
+    "alias_key_clubelo": "clubelo:maribor",
+    "alias_key_football_data": "football-data:maribor",
+    "original_name": "Maribor",
+    "normalized_name": "maribor"
+  },
+  {
+    "alias_key_clubelo": "clubelo:koper",
+    "alias_key_football_data": "football-data:koper",
+    "original_name": "Koper",
+    "normalized_name": "koper"
+  },
+  {
+    "alias_key_clubelo": "clubelo:espanyol",
+    "alias_key_football_data": "football-data:espanyol",
+    "original_name": "Espanyol",
+    "normalized_name": "espanyol"
+  },
+  {
+    "alias_key_clubelo": "clubelo:m tel aviv",
+    "alias_key_football_data": "football-data:m tel aviv",
+    "original_name": "M Tel Aviv",
+    "normalized_name": "m tel aviv"
+  },
+  {
+    "alias_key_clubelo": "clubelo:maccabi bnei raina",
+    "alias_key_football_data": "football-data:maccabi bnei raina",
+    "original_name": "Maccabi Bnei Raina",
+    "normalized_name": "maccabi bnei raina"
+  },
+  {
+    "alias_key_clubelo": "clubelo:plock",
+    "alias_key_football_data": "football-data:plock",
+    "original_name": "Plock",
+    "normalized_name": "plock"
+  },
+  {
+    "alias_key_clubelo": "clubelo:sporting",
+    "alias_key_football_data": "football-data:sporting",
+    "original_name": "Sporting",
+    "normalized_name": "sporting"
+  },
+  {
+    "alias_key_clubelo": "clubelo:avs futebol",
+    "alias_key_football_data": "football-data:avs futebol",
+    "original_name": "AVS Futebol",
+    "normalized_name": "avs futebol"
+  },
+  {
+    "alias_key_clubelo": "clubelo:ofk",
+    "alias_key_football_data": "football-data:ofk",
+    "original_name": "OFK",
+    "normalized_name": "ofk"
+  },
+  {
+    "alias_key_clubelo": "clubelo:cukaricki",
+    "alias_key_football_data": "football-data:cukaricki",
+    "original_name": "Cukaricki",
+    "normalized_name": "cukaricki"
+  },
+  {
+    "alias_key_clubelo": "clubelo:kayseri",
+    "alias_key_football_data": "football-data:kayseri",
+    "original_name": "Kayseri",
+    "normalized_name": "kayseri"
+  }
+]

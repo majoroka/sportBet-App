@@ -70,7 +70,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [displayLeagueName, setDisplayLeagueName] = useState(fixture.competition);
 
   // Função inteligente para obter a informação da Liga (Nome e URL)
-  const getLeagueInfo = (country: string, competitionName: string) => {
+  const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
     const countryKey = country.toUpperCase();
     const config = LEAGUE_CONFIG[countryKey];
     if (!config) return null;
@@ -126,6 +126,20 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       );
     }
 
+    // Fallback 3: tentar inferir pela presença da equipa na lista da competição
+    if (!competitionConfig && config.competitions.length > 1) {
+      const hNorm = normalizeName(home);
+      const aNorm = normalizeName(away);
+      const matchByTeam = config.competitions.find((c) => {
+        const hasTeam = c.teams.some((t: string) => {
+          const tn = normalizeName(t);
+          return tn === hNorm || tn === aNorm;
+        });
+        return hasTeam;
+      });
+      if (matchByTeam) competitionConfig = matchByTeam;
+    }
+
     // Fallback 3: só usa a primeira se existir apenas uma competição para o país
     if (!competitionConfig && config.competitions.length === 1) {
       competitionConfig = config.competitions[0];
@@ -136,7 +150,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
   useEffect(() => {
     const fetchStandings = async () => {
-      const leagueInfo = getLeagueInfo(fixture.country, fixture.competition);
+      const leagueInfo = getLeagueInfo(fixture.country, fixture.competition, fixture.homeTeam, fixture.awayTeam);
       
       if (leagueInfo) {
         setDisplayLeagueName(leagueInfo.name);

@@ -3021,11 +3021,15 @@
       "aliases": {
         "football-data": [
           "Waregem"
+        ],
+        "clubelo": [
+          "Zulte Waregem"
         ]
       },
       "keys": {
         "norm": [
-          "waregem"
+          "waregem",
+          "zulte waregem"
         ]
       },
       "logo": {
@@ -3048,11 +3052,15 @@
       "aliases": {
         "football-data": [
           "Oud-Heverlee Leuven"
+        ],
+        "clubelo": [
+          "Leuven"
         ]
       },
       "keys": {
         "norm": [
-          "oud heverlee leuven"
+          "oud heverlee leuven",
+          "leuven"
         ]
       },
       "logo": {
@@ -5285,22 +5293,29 @@
     "team_8590f692cb49": {
       "id": "team_8590f692cb49",
       "display": {
-        "pt": "Austria Vienna"
+        "pt": "Austria Wien"
       },
       "country": "AT",
       "league": "Bundesliga (AUT)",
       "names": {
         "football-data": "Austria Vienna",
-        "clubelo": null
+        "clubelo": "Austria Wien"
       },
       "aliases": {
         "football-data": [
           "Austria Vienna"
+        ],
+        "clubelo": [
+          "Austria Wien",
+          "Austria Vienna",
+          "Austria Wien (AUT)"
         ]
       },
       "keys": {
         "norm": [
-          "austria vienna"
+          "austria vienna",
+          "austria wien",
+          "austria wien aut"
         ]
       }
     },
@@ -5601,11 +5616,15 @@
       "aliases": {
         "football-data": [
           "M'gladbach"
+        ],
+        "clubelo": [
+          "Gladbach"
         ]
       },
       "keys": {
         "norm": [
-          "m gladbach"
+          "m gladbach",
+          "gladbach"
         ]
       }
     },
@@ -5673,11 +5692,15 @@
       "aliases": {
         "football-data": [
           "Werder Bremen"
+        ],
+        "clubelo": [
+          "Werder"
         ]
       },
       "keys": {
         "norm": [
-          "werder bremen"
+          "werder bremen",
+          "werder"
         ]
       },
       "logo": {
@@ -6101,11 +6124,15 @@
       "aliases": {
         "football-data": [
           "Schalke 04"
+        ],
+        "clubelo": [
+          "Schalke"
         ]
       },
       "keys": {
         "norm": [
-          "schalke 04"
+          "schalke 04",
+          "schalke"
         ]
       },
       "logo": {
@@ -6153,11 +6180,15 @@
       "aliases": {
         "football-data": [
           "Kaiserslautern"
+        ],
+        "clubelo": [
+          "Lautern"
         ]
       },
       "keys": {
         "norm": [
-          "kaiserslautern"
+          "kaiserslautern",
+          "lautern"
         ]
       },
       "logo": {
@@ -6285,11 +6316,15 @@
       "aliases": {
         "football-data": [
           "Nurnberg"
+        ],
+        "clubelo": [
+          "Nuernberg"
         ]
       },
       "keys": {
         "norm": [
-          "nurnberg"
+          "nurnberg",
+          "nuernberg"
         ]
       },
       "logo": {
@@ -6357,16 +6392,31 @@
       "league": "Bundesliga2",
       "names": {
         "football-data": "Preußen Münster",
-        "clubelo": null
+        "clubelo": "Muenster"
       },
       "aliases": {
         "football-data": [
           "Preußen Münster"
+        ],
+        "clubelo": [
+          "Muenster",
+          "Munster",
+          "Preussen Munster",
+          "Preußen Münster",
+          "Preussen Münster",
+          "Preußen Munster",
+          "Preussen Muenster",
+          "Preußen Muenster"
         ]
       },
       "keys": {
         "norm": [
-          "preußen munster"
+          "preußen munster",
+          "muenster",
+          "munster",
+          "preussen munster",
+          "preussen muenster",
+          "preuBen munster"
         ]
       },
       "logo": {
@@ -11286,16 +11336,23 @@
       "league": "E0",
       "names": {
         "football-data": "Nott'm Forest",
-        "clubelo": null
+        "clubelo": "Nott'm Forest"
       },
       "aliases": {
         "football-data": [
           "Nott'm Forest"
+        ],
+        "clubelo": [
+          "Nott'm Forest",
+          "Forest",
+          "Nottingham Forest"
         ]
       },
       "keys": {
         "norm": [
-          "nott m forest"
+          "nott m forest",
+          "forest",
+          "nottingham forest"
         ]
       }
     },
@@ -12921,12 +12978,14 @@
           "Motor Lublin"
         ],
         "clubelo": [
-          "Motor Lublin"
+          "Motor Lublin",
+          "Lubin"
         ]
       },
       "keys": {
         "norm": [
-          "motor lublin"
+          "motor lublin",
+          "lubin"
         ]
       },
       "logo": {
@@ -12949,11 +13008,15 @@
       "aliases": {
         "football-data": [
           "Lechia Gdansk"
+        ],
+        "clubelo": [
+          "Lechia"
         ]
       },
       "keys": {
         "norm": [
-          "lechia gdansk"
+          "lechia gdansk",
+          "lechia"
         ]
       },
       "logo": {
@@ -12998,11 +13061,15 @@
       "aliases": {
         "football-data": [
           "Korona Kielce"
+        ],
+        "clubelo": [
+          "Korona"
         ]
       },
       "keys": {
         "norm": [
-          "korona kielce"
+          "korona kielce",
+          "korona"
         ]
       },
       "logo": {
@@ -15315,8 +15382,8 @@
       "display": {
         "pt": "St Etienne"
       },
-      "country": "UNK",
-      "league": "F2",
+      "country": "FRA",
+      "league": "Ligue 2",
       "names": {
         "football-data": "St Etienne",
         "clubelo": null
@@ -16472,11 +16539,15 @@
       "aliases": {
         "football-data": [
           "Volos NFC"
+        ],
+        "clubelo": [
+          "NFC Volos"
         ]
       },
       "keys": {
         "norm": [
-          "volos nfc"
+          "volos nfc",
+          "nfc volos"
         ]
       },
       "logo": {
@@ -22194,8 +22265,8 @@
       "display": {
         "pt": "St Etienne"
       },
-      "country": "FR",
-      "league": "Ligue2",
+      "country": "FRA",
+      "league": "Ligue 2",
       "names": {
         "football-data": "St Etienne",
         "clubelo": null
@@ -29109,11 +29180,15 @@
       "aliases": {
         "football-data": [
           "Petrolul"
+        ],
+        "clubelo": [
+          "Petrolul Ploiesti"
         ]
       },
       "keys": {
         "norm": [
-          "petrolul"
+          "petrolul",
+          "petrolul ploiesti"
         ]
       },
       "logo": {
@@ -38976,22 +39051,28 @@
     "team_504a374dca0e": {
       "id": "team_504a374dca0e",
       "display": {
-        "pt": "Breda"
+        "pt": "NAC Breda"
       },
       "country": "NLD",
       "league": "Eredivise (NLD)",
       "names": {
-        "football-data": null,
+        "football-data": "NAC Breda",
         "clubelo": "Breda"
       },
       "aliases": {
         "clubelo": [
-          "Breda"
+          "Breda",
+          "NAC Breda"
+        ],
+        "football-data": [
+          "Breda",
+          "NAC Breda"
         ]
       },
       "keys": {
         "norm": [
-          "breda"
+          "breda",
+          "nac breda"
         ]
       }
     },
@@ -39214,7 +39295,7 @@
         "pt": "Saint-Etienne"
       },
       "country": "FRA",
-      "league": "Ligue1 (FRA)",
+      "league": "Ligue 2",
       "names": {
         "football-data": null,
         "clubelo": "Saint-Etienne"
@@ -40387,7 +40468,7 @@
     "football-data:az alkmaar": "team_ae0a850230f9",
     "football-data:go ahead eagles": "team_e3a6a3ecc19a",
     "clubelo:go ahead eagles": "team_e3a6a3ecc19a",
-    "football-data:nac breda": "team_27a4574b68ff",
+    "football-data:nac breda": "team_504a374dca0e",
     "football-data:sparta rotterdam": "team_ad419a469367",
     "clubelo:sparta rotterdam": "team_ad419a469367",
     "football-data:telstar": "team_0b12c215b5e7",
@@ -40891,15 +40972,15 @@
     "clubelo:spartak varna": "team_556cab841b31",
     "clubelo:lok sofia": "team_f7a759c8e510",
     "clubelo:celje": "team_d6305bfbd391",
-    "clubelo:werder": "team_2049de87b0da",
+    "clubelo:werder": "team_d142fd0e1cf0",
     "clubelo:hnk gorica": "team_f82a75ea88bd",
-    "clubelo:lautern": "team_967c940c6a87",
+    "clubelo:lautern": "team_d0365387cd54",
     "clubelo:braga": "team_0d1961676ac2",
     "clubelo:hradec kralove": "team_f4664add7f69",
     "clubelo:dukla": "team_3f1dc054d65a",
     "clubelo:slavia sofia": "team_5b71f61c5d16",
     "clubelo:jablonec": "team_535464d6e14e",
-    "clubelo:austria wien": "team_7fbf3bf99405",
+    "clubelo:austria wien": "team_8590f692cb49",
     "clubelo:banik ostrava": "team_c0634711f124",
     "clubelo:estrela amadora": "team_d821fd2d9ef6",
     "clubelo:slavia praha": "team_f5b9d1202233",
@@ -40909,7 +40990,7 @@
     "clubelo:bohemians praha": "team_ae0e78de53ea",
     "clubelo:radomlje": "team_1c5b90288764",
     "clubelo:kazincbarcika": "team_5e57a7fe439b",
-    "clubelo:leuven": "team_35e804f8e774",
+    "clubelo:leuven": "team_c0c180eaec45",
     "clubelo:frankfurt": "team_e976c854aa37",
     "clubelo:botev vratsa": "team_995f5c1c10ed",
     "clubelo:lok zagreb": "team_12d204eaa7c4",
@@ -40921,7 +41002,7 @@
     "clubelo:zuerich": "team_527b1b38b630",
     "clubelo:beroe stara zagora": "team_0b82c7cf6224",
     "clubelo:csikszereda": "team_6409feb8ab9c",
-    "clubelo:muenster": "team_d42b763b5c7e",
+    "clubelo:muenster": "team_32756b8b26ba",
     "clubelo:bilbao": "team_a8b49e5e8223",
     "clubelo:botev plovdiv": "team_e12b0ba3d6ce",
     "clubelo:bayern": "team_3129ccf79757",
@@ -40932,12 +41013,12 @@
     "clubelo:olimpija ljubljana": "team_34ad1138ba59",
     "clubelo:katowice": "team_4470c9cfc1a9",
     "clubelo:cska sofia": "team_73921fe69518",
-    "clubelo:lubin": "team_24e58fd40896",
+    "clubelo:lubin": "team_ff7c6798a227",
     "clubelo:karvina": "team_8424d1c7175b",
-    "clubelo:petrolul ploiesti": "team_39be29e068cf",
+    "clubelo:petrolul ploiesti": "team_8589b6be1cec",
     "clubelo:levski": "team_d0923b8e1a12",
     "clubelo:goeztepe": "team_102790751671",
-    "clubelo:zulte waregem": "team_e985f6446066",
+    "clubelo:zulte waregem": "team_d22eb78fc390",
     "clubelo:leonesa": "team_3caacbe4a746",
     "clubelo:fatih karaguemruek": "team_acae9c6d2ab1",
     "clubelo:lech": "team_bdf4228be97e",
@@ -40945,7 +41026,7 @@
     "clubelo:razgrad": "team_41536cb9a9b1",
     "clubelo:arka": "team_8036fbccf601",
     "clubelo:cherno more": "team_b5c6dc27c68c",
-    "clubelo:lechia": "team_32e84a4e178f",
+    "clubelo:lechia": "team_25751e9bdd53",
     "clubelo:alkmaar": "team_b005eaf38b35",
     "clubelo:rayo vallecano": "team_26ec6addaf67",
     "clubelo:viitorul": "team_fdd5d559b4c3",
@@ -40955,7 +41036,7 @@
     "clubelo:hajduk": "team_44047bf20884",
     "clubelo:pardubice": "team_f9e513458c68",
     "clubelo:depor": "team_a748637a7e92",
-    "clubelo:korona": "team_34b3eaed426b",
+    "clubelo:korona": "team_78642712d7c5",
     "clubelo:aluminij": "team_9e1ae953682c",
     "clubelo:widzew": "team_0cca76655566",
     "clubelo:stgallen": "team_f17cc738c26f",
@@ -40963,7 +41044,7 @@
     "clubelo:slovan liberec": "team_41b01bec5148",
     "clubelo:saint etienne": "team_6fedaa818e4b",
     "clubelo:steaua": "team_4dfc4fe3e1a7",
-    "clubelo:forest": "team_c76854a04feb",
+    "clubelo:forest": "team_c425d2a61a2b",
     "clubelo:viktoria plzen": "team_f7582f01ca4e",
     "clubelo:sparta praha": "team_115c4aa5c748",
     "clubelo:universitatea cluj": "team_945c5e4a59eb",
@@ -40972,11 +41053,11 @@
     "clubelo:fuerth": "team_79b65dbbf97b",
     "clubelo:dobrudzha": "team_5665e0ea0a8e",
     "clubelo:atletico": "team_c435cd0431c9",
-    "clubelo:nuernberg": "team_6e3ffba3a8a3",
-    "clubelo:schalke": "team_2f4aac5ce407",
+    "clubelo:nuernberg": "team_456c51a44022",
+    "clubelo:schalke": "team_9b0f448e96d7",
     "clubelo:holstein": "team_b9fc40887421",
     "clubelo:mlada boleslav": "team_e9ea6c10a78b",
-    "clubelo:gladbach": "team_082d749f5f49",
+    "clubelo:gladbach": "team_ac7c23436f77",
     "clubelo:slovacko": "team_88536505da41",
     "clubelo:dinamo bucuresti": "team_8c1e2363f141",
     "clubelo:cska 1948 sofia": "team_f4689630c362",
@@ -41036,7 +41117,18 @@
     "clubelo:sudtirol": "team_845df13e044f",
     "clubelo:monza": "team_72cbc33a3572",
     "clubelo:avellino": "team_12b91218cd9c",
-    "football-data:entella": "team_863e276361fe"
+    "football-data:entella": "team_863e276361fe",
+    "clubelo:munster": "team_32756b8b26ba",
+    "clubelo:preussen munster": "team_32756b8b26ba",
+    "clubelo:preussen m nster": "team_32756b8b26ba",
+    "clubelo:preussen muenster": "team_32756b8b26ba",
+    "clubelo:austria vienna": "team_8590f692cb49",
+    "clubelo:austria wien aut": "team_8590f692cb49",
+    "clubelo:nott m forest": "team_c425d2a61a2b",
+    "clubelo:nottingham forest": "team_c425d2a61a2b",
+    "football-data:breda": "team_504a374dca0e",
+    "clubelo:nac breda": "team_504a374dca0e",
+    "clubelo:nfc volos": "team_b337f8e2b381"
   },
   "needs_review": [
     {
