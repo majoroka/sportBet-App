@@ -21,6 +21,7 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] **Gráficos:** Implementar Chart.js para visualizar probabilidades (1X2).
 - [x] **Classificação:** Tabela de classificação com forma recente e cálculo automático via CSV.
 - [x] **Logótipos:** Exibição de emblemas das equipas com fallback.
+- [x] **Normalização Avançada:** Aliases cruzados fixtures/standings + sinónimos (ex.: Farul/Viitorul, Saint‑Étienne/St Etienne) e deteção de liga por equipas.
 - [ ] **Favoritos:** Permitir guardar jogos numa "Watchlist" (usando `localStorage`).
 - [ ] **Dark Mode:** Implementar alternância de tema claro/escuro.
 
@@ -41,3 +42,4 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 
 - O cálculo de Poisson assume independência entre golos da casa e fora (limitação do modelo simples).
 - Atualmente a app depende de um CSV estático (`fixtures_fallback.csv`) se a API não estiver configurada.
+- Algumas ligas secundárias ainda não têm standings_url oficial; a UI apenas suprime o aviso quando não há fonte disponível.

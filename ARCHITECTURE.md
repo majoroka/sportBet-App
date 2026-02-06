@@ -10,8 +10,8 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 
 1. **Input:** CSVs estáticos alojados no repositório (`public/data/`).
    - `clubelo_latest.csv`: Dados de jogos e xG (atualizado diariamente).
-   - `standings/*.csv`: Tabelas de classificação por liga.
-   - `teams_mapping_package_clean.json`: Base de dados de normalização de nomes de equipas e mapeamento de ligas.
+   - `standings/*.csv`: Tabelas de classificação por liga (códigos E0, P1, D1, etc.).
+   - `teams_mapping_package_clean.json`: Base de dados de normalização de nomes de equipas e mapeamento de ligas/logos.
 2. **Adapter:** Normaliza os dados brutos para o modelo de domínio `Fixture`.
 3. **Calculators:** Aplica modelos matemáticos (Poisson) aos dados normalizados (`xG` -> `Probabilities`).
 4. **UI Components:** Renderiza os dados processados para o utilizador.
@@ -30,6 +30,13 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
   - `FixtureDetails.tsx`: Vista detalhada.
 - **`lib/`**: Bibliotecas utilitárias.
   - `teamMapping.ts`: Sistema de normalização de nomes e resolução de IDs de equipas/ligas.
+  - `logo.ts`: Resolve nomes de equipas para ficheiros de logo usando `src/lib/logoManifest.json`.
+- **`config/`**:
+  - `leagues.ts`: Configuração canónica de ligas (divisão, nome de exibição, aliases e `standings_url`).
+- **`scripts/`** (Node):
+  - `fetch-clubelo.js`: Atualiza `public/data/clubelo_latest.csv`.
+  - `generate-logo-manifest.js`: Indexa `public/logos` em `src/lib/logoManifest.json`.
+  - `map-fixtures.ts`: Gera relatórios de equipas mapeadas/não mapeadas entre fixtures e o JSON.
 - **`services/`**: (Planeado) Gestão de fetch e caching.
 
 ## 🧮 Modelo Matemático

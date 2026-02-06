@@ -49,10 +49,8 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 3. **Atualizar dados (necessário internet):**
 
     ```bash
-    # Fixtures (ClubElo)
-    npm run update-data
-    # Classificações (football-data)
-    node scripts/fetch-standings.js
+    npm run update-data              # Atualiza fixtures (ClubElo) + standings (Football-Data)
+    node scripts/generate-logo-manifest.js   # Reindexa logos em public/logos
     ```
 
     - Os ficheiros ficam em `public/data/clubelo_latest.csv` e `public/data/standings/*.csv` usando **códigos canónicos** (ex.: `E0.csv`, `P1.csv`, `SC0.csv`).
@@ -77,6 +75,30 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
     ```bash
     npm test -- --run
     ```
+
+## 🗺️ Dados & Mapeamento de Equipas
+
+- Base principal: `public/data/teams_mapping_package_clean.json`
+  - Contém IDs, nomes canónicos, aliases (football-data / clubelo), país, liga e caminho do logo.
+  - Pastas de logos devem incluir o código do país entre parêntesis. Ex.: `public/logos/Bundesliga (GER)/Bayern-munchen.png`.
+- Manifesto de logos: `src/lib/logoManifest.json` (gerado por `scripts/generate-logo-manifest.js`).
+  - Se adicionares/removeres logos ou pastas, corre o script para reindexar.
+- Resolver aliases automaticamente (fixtures → mapping):
+  - `scripts/map-fixtures.ts` cria relatórios `mapped_teams_from_fixtures.json` e `unmapped_teams_from_fixtures.json`.
+  - Usa a mesma normalização do runtime (lowercase, sem acentos, tokens) e cai para aliases/IDs.
+
+## 🔧 Scripts úteis
+
+- `npm run update-data` — força refresh de fixtures + standings.
+- `node scripts/generate-logo-manifest.js` — reindexa todos os logos em `public/logos`.
+- `node scripts/map-fixtures.ts` — lista equipas dos fixtures e diz quais casam com o mapping/aliases.
+- `npm run build` — valida o projeto (TypeScript + Vite).
+
+## 🩹 Troubleshooting rápido
+
+- **Logo não aparece**: confirma nome/pasta em `public/logos`, corre `node scripts/generate-logo-manifest.js` e volta a abrir a UI.
+- **Sem FORMA/destaque na classificação**: acrescenta alias no `teams_mapping_package_clean.json` (football-data/clubelo) e garante que a liga existe em `src/config/leagues.ts` com aliases/código correto.
+- **Logs “Caminho não encontrado”**: verifica se a competição está em `src/config/leagues.ts` com `standings_url` ou `aliases` que coincidam com o nome do fixture.
 
 ## 📈 Pipeline e Deploy
 
