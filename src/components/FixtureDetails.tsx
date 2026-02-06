@@ -81,6 +81,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   };
 
   const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
+
     const normalizedCountry = country?.trim().toUpperCase() || '';
     const countryKey = COUNTRY_ALIASES[normalizedCountry] || normalizedCountry;
     let config = LEAGUE_CONFIG[countryKey];
@@ -113,22 +114,24 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         .replace(/\s+/g, '')
         .toLowerCase();
 
-    const target = normalizeName(competitionName);
+    const target = normalizeName(competitionName || '');
 
-    // Encontra a competição pela correspondência do nome ou aliases
-    let competitionConfig = config.competitions.find(
-      (c: { league_name: string; aliases?: string[] }) => {
-        const base = normalizeName(c.league_name);
-        if (base === target) return true;
-        if (c.aliases) {
-          return c.aliases.some((a) => normalizeName(a) === target);
-        }
-        return false;
-      }
-    );
+    // Encontra a competição pela correspondência do nome ou aliases (se existir nome)
+    let competitionConfig = target
+      ? config.competitions.find(
+          (c: { league_name: string; aliases?: string[] }) => {
+            const base = normalizeName(c.league_name);
+            if (base === target) return true;
+            if (c.aliases) {
+              return c.aliases.some((a) => normalizeName(a) === target);
+            }
+            return false;
+          }
+        )
+      : undefined;
 
     // Fallback 1: tentar casar pelo código do ficheiro (ex: D2, E1, I2)
-    if (!competitionConfig) {
+    if (!competitionConfig && target) {
       const code = target; // já normalizado sem espaços/acentos
       competitionConfig = config.competitions.find((c) => {
         const basename = c.standings_url?.split('/').pop()?.replace('.csv', '')?.toLowerCase();
@@ -189,7 +192,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       }
 
       if (!leagueInfo) {
-        console.log(`⚠️ [Debug] Caminho não encontrado para: "${fixture.competition}" (${fixture.country})`);
+        if (fixture.competition) {
+          console.log(`⚠️ [Debug] Caminho não encontrado para: "${fixture.competition}" (${fixture.country})`);
+        }
         setStandings([]);
         return;
       }
@@ -269,6 +274,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     'fatih karagumruk': ['karagumruk'],
     'fatih karaguemruek': ['karagumruk'],
     'karagumruk': ['fatih karagumruk', 'fatih karaguemruek', 'fatih karagumruek'],
+    'koeln': ['fc koln', '1. fc koln', '1. fc köln', 'koln', 'köln'],
+    'fc koln': ['koeln', 'koln', 'köln', '1. fc koln', '1. fc köln'],
+    'fortuna dusseldorf': ['duesseldorf', 'dusseldorf', 'fortuna duesseldorf', 'fortuna düsseldorf'],
+    'duesseldorf': ['fortuna dusseldorf', 'fortuna duesseldorf', 'fortuna düsseldorf', 'dusseldorf'],
+    'dusseldorf': ['fortuna dusseldorf', 'duesseldorf', 'fortuna duesseldorf', 'fortuna düsseldorf'],
+    'union saint gilloise': ['st gilloise', 'st. gilloise', 'st gillis', 'union sg', 'st. gillis', 'st gilloise'],
+    'st gilloise': ['union saint gilloise', 'union sg', 'st gillis', 'st. gillis'],
+    'st gillis': ['union saint gilloise', 'union sg', 'st gilloise', 'st. gilloise'],
+    'union sg': ['union saint gilloise', 'st gilloise', 'st gillis', 'st. gilloise', 'st. gillis'],
+    'raal la louviere': ['raal', 'raal la louvière'],
+    'raal': ['raal la louviere', 'raal la louvière'],
   };
 
   const namesMatch = (a: string, b: string) => {

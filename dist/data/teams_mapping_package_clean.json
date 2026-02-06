@@ -2749,16 +2749,34 @@
       "league": "B1",
       "names": {
         "football-data": "St. Gilloise",
-        "clubelo": null
+        "clubelo": "Union Saint-Gilloise"
       },
       "aliases": {
         "football-data": [
-          "St. Gilloise"
+          "St. Gilloise",
+          "Union SG",
+          "Union Saint-Gilloise",
+          "Union St Gilloise",
+          "St Gillis",
+          "St. Gillis",
+          "Union SG"
+        ],
+        "clubelo": [
+          "Union Saint-Gilloise",
+          "Union SG",
+          "St. Gilloise",
+          "St Gillis",
+          "St. Gillis",
+          "Union SG"
         ]
       },
       "keys": {
         "norm": [
-          "st gilloise"
+          "st gilloise",
+          "union saint gilloise",
+          "union sg",
+          "st gillis",
+          "union st gilloise"
         ]
       },
       "logo": {
@@ -9798,16 +9816,29 @@
       "league": "D2",
       "names": {
         "football-data": "Fortuna Dusseldorf",
-        "clubelo": null
+        "clubelo": "Fortuna Dusseldorf"
       },
       "aliases": {
         "football-data": [
-          "Fortuna Dusseldorf"
+          "Fortuna Dusseldorf",
+          "Duesseldorf",
+          "Dusseldorf",
+          "Fortuna Düsseldorf",
+          "Fortuna Duesseldorf"
+        ],
+        "clubelo": [
+          "Fortuna Dusseldorf",
+          "Duesseldorf",
+          "Dusseldorf",
+          "Fortuna Düsseldorf",
+          "Fortuna Duesseldorf"
         ]
       },
       "keys": {
         "norm": [
-          "fortuna dusseldorf"
+          "fortuna dusseldorf",
+          "duesseldorf",
+          "dusseldorf"
         ]
       },
       "logo": {
@@ -19930,19 +19961,28 @@
       "display": {
         "pt": "RAAL La Louviere"
       },
-      "country": "BE",
-      "league": "Jupiler Ligue",
+      "country": "BEL",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "RAAL La Louviere",
-        "clubelo": null
+        "clubelo": "RAAL La Louviere"
       },
       "aliases": {
         "football-data": [
-          "RAAL La Louviere"
+          "RAAL La Louviere",
+          "RAAL",
+          "RAAL La Louvière"
+        ],
+        "clubelo": [
+          "RAAL La Louviere",
+          "RAAL La Louvière",
+          "RAAL"
         ]
       },
       "keys": {
         "norm": [
+          "raal la louviere",
+          "raal",
           "raal la louviere"
         ]
       },
@@ -37581,17 +37621,33 @@
       "country": "GER",
       "league": "Bundesliga (GER)",
       "names": {
-        "football-data": null,
+        "football-data": "FC Koln",
         "clubelo": "Koeln"
       },
       "aliases": {
-        "clubelo": [
+        "football-data": [
+          "FC Koln",
+          "1. FC Koln",
+          "1. FC Köln",
+          "Koln",
+          "Köln",
           "Koeln"
+        ],
+        "clubelo": [
+          "Koeln",
+          "Koln",
+          "Köln",
+          "1. FC Koln",
+          "1. FC Köln",
+          "FC Koln"
         ]
       },
       "keys": {
         "norm": [
-          "koeln"
+          "koeln",
+          "koln",
+          "1 fckoln",
+          "1 fcköln"
         ]
       }
     },
