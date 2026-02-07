@@ -17,7 +17,9 @@ interface MatchRow {
   Season?: string;
 }
 
-export const calculateStandings = (csvText: string): StandingRow[] => {
+export type StandingMode = 'overall' | 'home' | 'away' | 'last10';
+
+export const calculateStandings = (csvText: string, mode: StandingMode = 'overall', maxForm: number = 5): StandingRow[] => {
   const { data } = Papa.parse(csvText, {
     header: true,
     skipEmptyLines: true,
@@ -92,34 +94,53 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
     const hg = parseInt(fthg, 10);
     const ag = parseInt(ftag, 10);
 
-    home.played++;
-    away.played++;
-    home.goalsFor += hg;
-    home.goalsAgainst += ag;
-    home.goalDiff += (hg - ag);
-    away.goalsFor += ag;
-    away.goalsAgainst += hg;
-    away.goalDiff += (ag - hg);
+    const includeHome = mode !== 'away';
+    const includeAway = mode !== 'home';
+
+    if (includeHome) {
+      home.played++;
+      home.goalsFor += hg;
+      home.goalsAgainst += ag;
+      home.goalDiff += (hg - ag);
+    }
+    if (includeAway) {
+      away.played++;
+      away.goalsFor += ag;
+      away.goalsAgainst += hg;
+      away.goalDiff += (ag - hg);
+    }
 
     if (result === 'H') {
-      home.wins++;
-      home.points += 3;
-      home.form.push({ result: 'W', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
-      away.losses++;
-      away.form.push({ result: 'L', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
+      if (includeHome) {
+        home.wins++;
+        home.points += 3;
+        home.form.push({ result: 'W', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
+      }
+      if (includeAway) {
+        away.losses++;
+        away.form.push({ result: 'L', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
+      }
     } else if (result === 'A') {
-      away.wins++;
-      away.points += 3;
-      away.form.push({ result: 'W', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
-      home.losses++;
-      home.form.push({ result: 'L', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
+      if (includeAway) {
+        away.wins++;
+        away.points += 3;
+        away.form.push({ result: 'W', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
+      }
+      if (includeHome) {
+        home.losses++;
+        home.form.push({ result: 'L', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
+      }
     } else {
-      home.draws++;
-      home.points += 1;
-      home.form.push({ result: 'D', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
-      away.draws++;
-      away.points += 1;
-      away.form.push({ result: 'D', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
+      if (includeHome) {
+        home.draws++;
+        home.points += 1;
+        home.form.push({ result: 'D', opponent: canonicalAwayName, score: `${hg}-${ag}`, side: 'H' });
+      }
+      if (includeAway) {
+        away.draws++;
+        away.points += 1;
+        away.form.push({ result: 'D', opponent: canonicalHomeName, score: `${ag}-${hg}`, side: 'A' });
+      }
     }
   });
 
@@ -127,7 +148,7 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
   return Object.values(teams)
     .map(t => ({
       ...t,
-      form: t.form.slice(-5) // Manter apenas os últimos 5 jogos
+      form: t.form.slice(-maxForm) // Mantém apenas os últimos N jogos
     }))
     .sort((a, b) => {
       if (b.points !== a.points) return b.points - a.points;

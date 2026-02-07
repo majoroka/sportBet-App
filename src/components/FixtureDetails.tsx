@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Fixture, StandingRow } from '../domain/types';
-import { calculateStandings } from '../calculators/standings';
+import { calculateStandings, StandingMode } from '../calculators/standings';
 import { Heatmap } from './Heatmap';
 import { LEAGUE_CONFIG } from '../config/leagues';
 import {
@@ -149,7 +149,11 @@ const getFormAttributes = (result: string) => {
 
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
-  const [standings, setStandings] = useState<StandingRow[]>([]);
+  const [standingsOverall, setStandingsOverall] = useState<StandingRow[]>([]);
+  const [standingsHome, setStandingsHome] = useState<StandingRow[]>([]);
+  const [standingsAway, setStandingsAway] = useState<StandingRow[]>([]);
+  const [standingsLast10, setStandingsLast10] = useState<StandingRow[]>([]);
+  const [standingsTab, setStandingsTab] = useState<StandingMode>('overall');
   const [loadingStandings, setLoadingStandings] = useState(false);
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
@@ -277,18 +281,25 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       } else {
         setDisplayLeagueName(fixture.competition);
       }
+      setStandingsTab('overall');
 
       if (!leagueInfo) {
         if (fixture.competition) {
           console.log(`⚠️ [Debug] Caminho não encontrado para: "${fixture.competition}" (${fixture.country})`);
         }
-        setStandings([]);
+        setStandingsOverall([]);
+        setStandingsHome([]);
+        setStandingsAway([]);
+        setStandingsLast10([]);
         return;
       }
 
       // Se houver liga mas não houver URL (ex: ligas sem standings disponíveis), não logamos como erro.
       if (!leagueInfo.url) {
-        setStandings([]);
+        setStandingsOverall([]);
+        setStandingsHome([]);
+        setStandingsAway([]);
+        setStandingsLast10([]);
         return;
       }
 
@@ -313,16 +324,28 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           // Verificação de segurança: Se o servidor devolver HTML (ex: 404 page), não é um CSV válido
           if (text.trim().startsWith('<')) {
              console.warn(`❌ [Debug] O ficheiro recebido parece ser HTML (provavelmente 404 Soft Error): ${localUrl}`);
-             setStandings([]);
+             setStandingsOverall([]);
+             setStandingsHome([]);
+             setStandingsAway([]);
+             setStandingsLast10([]);
              return;
           }
 
-          const data = calculateStandings(text);
-          console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${data.length}`);
-          setStandings(data);
+          const dataOverall = calculateStandings(text, 'overall', 5);
+          const dataHome = calculateStandings(text, 'home', 5);
+          const dataAway = calculateStandings(text, 'away', 5);
+          const dataLast10 = calculateStandings(text, 'overall', 10);
+          console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${dataOverall.length}`);
+          setStandingsOverall(dataOverall);
+          setStandingsHome(dataHome);
+          setStandingsAway(dataAway);
+          setStandingsLast10(dataLast10);
         } else {
           console.warn(`❌ [Debug] Falha ao carregar ficheiro CSV: ${localUrl}`);
-          setStandings([]);
+          setStandingsOverall([]);
+          setStandingsHome([]);
+          setStandingsAway([]);
+          setStandingsLast10([]);
         }
       } catch (error) {
         console.error("Erro ao carregar classificação:", error);
@@ -426,8 +449,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
   const findStanding = (teamName: string) => {
     return (
-      standings.find((s) => namesMatch(s.team, teamName)) ||
-      standings.find((s) => s.team.toLowerCase() === teamName.toLowerCase())
+      standingsOverall.find((s) => namesMatch(s.team, teamName)) ||
+      standingsOverall.find((s) => s.team.toLowerCase() === teamName.toLowerCase())
     );
   };
 
@@ -476,6 +499,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       x: { grid: { display: false } },
     },
   };
+
+  const currentStandings =
+    standingsTab === 'home'
+      ? standingsHome
+      : standingsTab === 'away'
+        ? standingsAway
+        : standingsTab === 'overall'
+          ? standingsOverall
+          : standingsLast10;
 
   const leagueLogoUrl = getLeagueLogoUrl(displayLeagueName, fixture.country);
 
@@ -720,29 +752,65 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {/* COLUNA 4: Classificação (Nova) */}
         <div className="space-y-4">
           <div className="bg-gray-50 p-3 rounded-lg h-full flex flex-col">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Classificação</h3>
+            <div className="flex items-center justify-between gap-4 mb-3">
+              <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
+              <div className="grid grid-cols-4 min-w-[320px] rounded-md border border-gray-300 overflow-hidden ml-auto">
+                {[
+                  { key: 'overall' as StandingMode, label: 'Global' },
+                  { key: 'home' as StandingMode, label: 'Casa' },
+                  { key: 'away' as StandingMode, label: 'Fora' },
+                  { key: 'last10' as StandingMode, label: 'Últimos 10' },
+                ].map((tab, idx) => {
+                  const active = standingsTab === tab.key;
+                  return (
+                    <button
+                      key={tab.key}
+                      onClick={() => setStandingsTab(tab.key)}
+                      className={[
+                        'relative flex items-center justify-center text-xs font-semibold py-2 px-3 transition-colors duration-150',
+                        active
+                          ? 'bg-[#f2f2f2] text-black after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
+                          : 'bg-white text-black hover:bg-gray-100',
+                        idx > 0 ? 'border-l border-gray-300' : '',
+                      ].join(' ')}
+                    >
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
             {loadingStandings ? (
               <div className="text-center py-10 text-gray-500">A carregar...</div>
-            ) : standings.length > 0 ? (
+            ) : currentStandings.length > 0 ? (
               <div className="flex-grow flex flex-col justify-between">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="text-gray-500 border-b">
-                        <th className="pb-1 text-center w-6">#</th>
-                        <th className="pb-1 text-left">Equipa</th>
-                        <th className="pb-1 text-center" title="Jogos">J</th>
-                        <th className="pb-1 text-center" title="Vitórias">V</th>
-                        <th className="pb-1 text-center" title="Empates">E</th>
-                        <th className="pb-1 text-center" title="Derrotas">D</th>
-                        <th className="pb-1 text-center" title="Golos Marcados">GM</th>
-                        <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
-                        <th className="pb-1 text-center" title="Diferença">Dif</th>
-                        <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                      </tr>
+                      {standingsTab === 'last10' ? (
+                        <tr className="text-gray-500 border-b">
+                          <th className="pb-1 text-center w-6">#</th>
+                          <th className="pb-1 text-left">Equipa</th>
+                          <th className="pb-1 text-left">Últimos 10</th>
+                          <th className="pb-1 text-center font-bold" title="Pontos">P</th>
+                        </tr>
+                      ) : (
+                        <tr className="text-gray-500 border-b">
+                          <th className="pb-1 text-center w-6">#</th>
+                          <th className="pb-1 text-left">Equipa</th>
+                          <th className="pb-1 text-center" title="Jogos">J</th>
+                          <th className="pb-1 text-center" title="Vitórias">V</th>
+                          <th className="pb-1 text-center" title="Empates">E</th>
+                          <th className="pb-1 text-center" title="Derrotas">D</th>
+                          <th className="pb-1 text-center" title="Golos Marcados">GM</th>
+                          <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
+                          <th className="pb-1 text-center" title="Diferença">Dif</th>
+                          <th className="pb-1 text-center font-bold" title="Pontos">P</th>
+                        </tr>
+                      )}
                     </thead>
                     <tbody className="text-gray-600">
-                      {standings.map((row, index) => {
+                      {currentStandings.map((row, index) => {
                         const matches = (teamName: string, teamId: string | null) => {
                           if (teamId && row.teamId) return row.teamId === teamId;
                           if (teamId && !row.teamId) return namesMatch(row.team, teamName);
@@ -755,18 +823,50 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           matches(awayTeam, awayTeamId);
                         const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
+                        const showLast10 = standingsTab === 'last10' && row.form?.length;
+                        const last10Cells = showLast10
+                          ? (
+                            <td className="py-1">
+                              <div className="flex gap-1">
+                                {row.form.slice(-10).map((match, idxForm, arr) => {
+                                  const [hg, ag] = match.score.split('-').map(Number);
+                                  const over = (hg ?? 0) + (ag ?? 0) > 2.5;
+                                  const isLast = idxForm === arr.length - 1;
+                                  return (
+                                    <div
+                                      key={idxForm}
+                                      className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-green-500 text-white' : 'bg-red-500 text-white'} ${isLast ? `ring-[1.5px] ring-offset-1 ${over ? 'ring-green-500' : 'ring-red-500'}` : ''}`}
+                                      title={`${match.opponent} ${match.score}`}
+                                    >
+                                      {over ? '+' : '-'}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </td>
+                          ) : null;
+
                         return (
                         <tr key={row.team} className={`border-b border-gray-100 hover:bg-gray-100 ${rowClass}`}>
                           <td className="py-1 text-center">{row.rank}</td>
                           <td className="py-1 font-medium truncate max-w-[100px]" title={row.team}>{row.team}</td>
-                          <td className="text-center">{row.played}</td>
-                          <td className="text-center text-gray-400">{row.wins}</td>
-                          <td className="text-center text-gray-400">{row.draws}</td>
-                          <td className="text-center text-gray-400">{row.losses}</td>
-                          <td className="text-center text-gray-400">{row.goalsFor}</td>
-                          <td className="text-center text-gray-400">{row.goalsAgainst}</td>
-                          <td className="text-center text-gray-500">{row.goalDiff}</td>
-                          <td className="text-center font-bold text-gray-900">{row.points}</td>
+                          {standingsTab === 'last10' ? (
+                            <>
+                              {last10Cells}
+                              <td className="text-center font-bold text-gray-900">{row.points}</td>
+                            </>
+                          ) : (
+                            <>
+                              <td className="text-center">{row.played}</td>
+                              <td className="text-center text-gray-400">{row.wins}</td>
+                              <td className="text-center text-gray-400">{row.draws}</td>
+                              <td className="text-center text-gray-400">{row.losses}</td>
+                              <td className="text-center text-gray-400">{row.goalsFor}</td>
+                              <td className="text-center text-gray-400">{row.goalsAgainst}</td>
+                              <td className="text-center text-gray-500">{row.goalDiff}</td>
+                              <td className="text-center font-bold text-gray-900">{row.points}</td>
+                            </>
+                          )}
                         </tr>
                         );
                       })}
