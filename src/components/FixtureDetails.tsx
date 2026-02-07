@@ -759,7 +759,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   { key: 'overall' as StandingMode, label: 'Global' },
                   { key: 'home' as StandingMode, label: 'Casa' },
                   { key: 'away' as StandingMode, label: 'Fora' },
-                  { key: 'last10' as StandingMode, label: 'Últimos 10' },
+                  { key: 'last10' as StandingMode, label: '+2,5\n(Últimos 10)' },
                 ].map((tab, idx) => {
                   const active = standingsTab === tab.key;
                   return (
@@ -767,14 +767,22 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                       key={tab.key}
                       onClick={() => setStandingsTab(tab.key)}
                       className={[
-                        'relative flex items-center justify-center text-xs font-semibold py-2 px-3 transition-colors duration-150',
+                        'relative flex items-center justify-center text-xs font-semibold py-2 px-3 transition-colors duration-150 text-center whitespace-pre leading-tight',
                         active
                           ? 'bg-[#f2f2f2] text-black after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
                           : 'bg-white text-black hover:bg-gray-100',
                         idx > 0 ? 'border-l border-gray-300' : '',
                       ].join(' ')}
                     >
-                      {tab.label}
+                      {tab.key === 'last10' ? (
+                        <span className="leading-tight text-center">
+                          +2,5
+                          <br />
+                          <span className="text-[11px] text-gray-500">(Últimos 10)</span>
+                        </span>
+                      ) : (
+                        tab.label
+                      )}
                     </button>
                   );
                 })}
