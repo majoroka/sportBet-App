@@ -55,6 +55,91 @@ const getTeamLogoUrl = (_competition: string, teamName: string) => {
   return url;
 };
 
+// Liga: resolve logo a partir da pasta /logos/Ligas
+const leagueLogoMap: Record<string, string> = {
+  allsvenskanswe: 'Allsvenskan (SWE).png',
+  brasileiraobra: 'Brasileirao (BRA).svg',
+  bundesligager: 'Bundesliga (GER).svg',
+  bundesligaaut: 'Bundesliga (AUT).png',
+  bundesliga2ger: 'Bundesliga2 (GER).svg',
+  championshipeng: 'Championship-(ENG).png',
+  chanceligacze: 'Chance Liga (CZE).svg',
+  chinesesuperleaguechn: 'Chinese Super League (CHN).svg',
+  danishsuperligadnk: 'Danish Superliga (DNK).svg',
+  ekstraklasapol: 'Ekstraklasa (POL).svg',
+  eliteseriennor: 'Eliteserien (NOR).svg',
+  eredivisenld: 'Eredivise (NLD).svg',
+  eredivisienld: 'Eredivise (NLD).svg',
+  eredivisie: 'Eredivise (NLD).svg',
+  eredivisiened: 'Eredivise (NLD).svg',
+  jleaguejap: 'J League (JAP).svg',
+  jupilerliguebel: 'Jupiler Ligue (BEL).svg',
+  laligaesp: 'La Liga (ESP).svg',
+  laliga2esp: 'La Liga2.png',
+  segundadivisionesp: 'La Liga2.png',
+  segundadivision: 'La Liga2.png',
+  laliga2: 'La Liga2.png',
+  laliga2es: 'La Liga2.png',
+  laliga2espana: 'La Liga2.png',
+  segundadivisionespana: 'La Liga2.png',
+  ligamxmex: 'Liga MX (MEX).svg',
+  ligaprofissionalarg: 'Liga Profissional (ARG).svg',
+  ligatahalisr: 'Ligat Ah Al (ISR).svg',
+  ligathaal: 'Ligat Ah Al (ISR).svg',
+  ligathaalisr: 'Ligat Ah Al (ISR).svg',
+  ligue1fra: 'Ligue1 (FRA).svg',
+  ligue2fra: 'Ligue2 (FRA).svg',
+  nbihun: 'NB I (HUN).png',
+  nikeligasvk: 'Nike Liga (SVK).png',
+  parvaligabul: 'Parva Liga (BUL).png',
+  jupilerleaguebel: 'Jupiler Ligue (BEL).svg',
+  jupilerleague: 'Jupiler Ligue (BEL).svg',
+  premierdivisionirl: 'Premier Division (IRL).png',
+  premierleagueeng: 'Premier League (ENG).svg',
+  premierleaguesco: 'Premier League (SCO).svg',
+  primeiraligapor: 'Primeira Liga (POR).svg',
+  prvaligatelemachsvn: 'Prva Liga Telemach (SVN).png',
+  serieaita: 'Serie A (ITA).png',
+  seriebita: 'Serie B (ITA).svg',
+  superleague1gre: 'Super League 1 (GRE).svg',
+  superligtur: 'Super Lig (TUR).svg',
+  supersporthnlcro: 'Super Sport HNL (CRO).png',
+  superligarom: 'Superliga-(ROM).png',
+  superligasrb: 'Superliga-Servia-(SRB).png',
+  superligaserviasrb: 'Superliga-Servia-(SRB).png',
+  swisssuperleaguesui: 'Swiss Super League (SUI).png',
+  veikkausliigafin: 'Veikkausliiga (FIN).svg',
+  premiershipsco: 'Premier League (SCO).svg',
+  liga1rou: 'Liga 1 (ROU).png',
+  liga1: 'Liga 1 (ROU).png',
+  liga1romenia: 'Liga 1 (ROU).png',
+};
+
+const normalizeKey = (s: string) =>
+  (s || '')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
+    .toLowerCase();
+
+const getLeagueLogoUrl = (leagueName: string, countryCode: string) => {
+  const base = import.meta.env.BASE_URL === './' ? '' : import.meta.env.BASE_URL;
+  const keyName = normalizeKey(leagueName);
+  const candidates = [
+    keyName,
+    normalizeKey(`${leagueName} ${countryCode}`),
+  ];
+  for (const key of candidates) {
+    const filename = leagueLogoMap[key];
+    if (filename) return `${base}logos/Ligas/${filename}`;
+  }
+  // Fallback heurístico para La Liga 2 / Segunda Divisão
+  if (keyName.includes('laliga2') || keyName.includes('segundadivision')) {
+    return `${base}logos/Ligas/La Liga2.png`;
+  }
+  return null;
+};
+
 // Helper para obter a cor e texto da forma
 const getFormAttributes = (result: string) => {
   if (result === 'W') return { color: 'bg-green-500', label: 'Vitória' };
@@ -68,6 +153,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [loadingStandings, setLoadingStandings] = useState(false);
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
+  const [leagueLogoError, setLeagueLogoError] = useState(false);
   const [displayLeagueName, setDisplayLeagueName] = useState(fixture.competition);
 
   // Função inteligente para obter a informação da Liga (Nome e URL)
@@ -252,6 +338,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   useEffect(() => {
     setHomeLogoError(false);
     setAwayLogoError(false);
+    setLeagueLogoError(false);
   }, [fixture]);
 
   // Helper para comparar nomes de equipa com normalização e alias aproximado
@@ -390,9 +477,25 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     },
   };
 
+  const leagueLogoUrl = getLeagueLogoUrl(displayLeagueName, fixture.country);
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
-      <div className="flex justify-center items-center mb-4 border-b pb-2">
+      <div className="flex flex-col items-center gap-3 mb-4 border-b pb-4 w-full">
+        <div className="flex items-center gap-3">
+          {leagueLogoUrl && !leagueLogoError ? (
+            <img
+              src={leagueLogoUrl}
+              alt={displayLeagueName}
+              className="w-10 h-10 object-contain"
+              onError={() => setLeagueLogoError(true)}
+            />
+          ) : (
+            <span className="text-base font-semibold text-gray-700">{displayLeagueName}</span>
+          )}
+          <span className="text-lg font-semibold text-gray-800">{displayLeagueName}</span>
+        </div>
+
         <div className="text-center w-full max-w-3xl">
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-1">
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
@@ -483,7 +586,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               )}
             </div>
           </div>
-          <p className="text-sm text-gray-500"><span className="font-bold text-gray-800">{displayLeagueName}</span> | {new Date(fixture.date).toLocaleDateString()}</p>
+          <p className="text-sm text-gray-500 text-center">{new Date(fixture.date).toLocaleDateString()}</p>
         </div>
       </div>
       
