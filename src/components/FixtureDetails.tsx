@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import { getTeamLogoFilename } from '../lib/logo';
+import { resolveTeamId } from '../lib/teamMapping';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -344,6 +345,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   };
 
   // Encontrar a linha da classificação para as equipas do jogo atual
+  const homeTeamId =
+    resolveTeamId('clubelo', homeTeam) ||
+    resolveTeamId('football-data', homeTeam) ||
+    null;
+  const awayTeamId =
+    resolveTeamId('clubelo', awayTeam) ||
+    resolveTeamId('football-data', awayTeam) ||
+    null;
   const homeStanding = findStanding(homeTeam);
   const awayStanding = findStanding(awayTeam);
 
@@ -504,13 +513,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             </div>
           </div>
 
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Draw No Bet (Empate Anula)</h3>
-            <div className="grid grid-cols-2 gap-2">
-              <OddBox label="DNB Casa" value={probabilities.drawNoBet.home} />
-              <OddBox label="DNB Fora" value={probabilities.drawNoBet.away} />
-            </div>
-          </div>
         </div>
 
         {/* COLUNA 2: Golos (O/U, BTTS, Clean Sheet) */}
@@ -545,30 +547,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 ))}
               </tbody>
             </table>
-          </div>
-
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos da Equipa (Over)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
-                {['0.5', '1.5', '2.5'].map(line => (
-                  <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                    <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}</span>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
-                {['0.5', '1.5', '2.5'].map(line => (
-                  <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                    <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2">
@@ -610,28 +588,30 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           </div>
 
           <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos Exatos (1, 2, 3)</h3>
+            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos da Equipa (Over)</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
-                {[1, 2, 3].map(g => (
-                  <div key={`h-${g}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                    <span className="text-sm">{g} Golo{g > 1 ? 's' : ''}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamGoals.home[g] > 0 ? (1 / probabilities.teamGoals.home[g]).toFixed(2) : '-'}</span>
+                {['0.5', '1.5', '2.5'].map(line => (
+                  <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
+                    <span className="text-sm">+{line}</span>
+                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}</span>
                   </div>
                 ))}
               </div>
               <div>
                 <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
-                {[1, 2, 3].map(g => (
-                  <div key={`a-${g}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                    <span className="text-sm">{g} Golo{g > 1 ? 's' : ''}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamGoals.away[g] > 0 ? (1 / probabilities.teamGoals.away[g]).toFixed(2) : '-'}</span>
+                {['0.5', '1.5', '2.5'].map(line => (
+                  <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
+                    <span className="text-sm">+{line}</span>
+                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}</span>
                   </div>
                 ))}
               </div>
             </div>
           </div>
+
+          {/* Card removido: Golos Exatos (1, 2, 3) */}
         </div>
 
         {/* COLUNA 4: Classificação (Nova) */}
@@ -660,7 +640,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     </thead>
                     <tbody className="text-gray-600">
                       {standings.map((row, index) => {
-                        const isMatchTeam = namesMatch(row.team, homeTeam) || namesMatch(row.team, awayTeam);
+                        const matches = (teamName: string, teamId: string | null) => {
+                          if (teamId && row.teamId) return row.teamId === teamId;
+                          if (teamId && !row.teamId) return namesMatch(row.team, teamName);
+                          if (!teamId && row.teamId) return namesMatch(row.team, teamName);
+                          return namesMatch(row.team, teamName);
+                        };
+
+                        const isMatchTeam =
+                          matches(homeTeam, homeTeamId) ||
+                          matches(awayTeam, awayTeamId);
                         const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
                         return (

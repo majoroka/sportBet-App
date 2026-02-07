@@ -1,606 +1,27 @@
 [
   {
-    "original_name": "Salzburg",
-    "normalized_name": "salzburg",
+    "original_name": "Hartberg",
+    "normalized_name": "hartberg",
     "matched": true,
-    "team_id": "team_3a095d07e496",
-    "display_pt": "Salzburg",
+    "team_id": "team_14b71f934006",
+    "display_pt": "Hartberg",
     "names": {
-      "football-data": "Salzburg",
-      "clubelo": "Salzburg"
+      "football-data": "Hartberg",
+      "clubelo": null
     },
-    "logo_path": "/logos/Bundesliga (AUT)/Salzburg.png"
+    "logo_path": "/logos/Bundesliga (AUT)/Hartberg.png"
   },
   {
-    "original_name": "Austria Wien",
-    "normalized_name": "austria wien",
+    "original_name": "LASK",
+    "normalized_name": "lask",
     "matched": true,
-    "team_id": "team_8590f692cb49",
-    "display_pt": "Austria Wien",
+    "team_id": "team_4c4cacb52e89",
+    "display_pt": "LASK",
     "names": {
-      "football-data": "Austria Vienna",
-      "clubelo": "Austria Wien"
-    }
-  },
-  {
-    "original_name": "Westerlo",
-    "normalized_name": "westerlo",
-    "matched": true,
-    "team_id": "team_974df216e6fa",
-    "display_pt": "Westerlo",
-    "names": {
-      "football-data": "Westerlo",
-      "clubelo": "Westerlo"
+      "football-data": "LASK",
+      "clubelo": null
     },
-    "logo_path": "/logos/Jupiler Ligue/Westerlo.png"
-  },
-  {
-    "original_name": "St Truiden",
-    "normalized_name": "st truiden",
-    "matched": true,
-    "team_id": "team_a4ab9b4543b1",
-    "display_pt": "St Truiden",
-    "names": {
-      "football-data": "St Truiden",
-      "clubelo": "St Truiden"
-    }
-  },
-  {
-    "original_name": "CSKA Sofia",
-    "normalized_name": "cska sofia",
-    "matched": true,
-    "team_id": "team_73921fe69518",
-    "display_pt": "CSKA Sofia",
-    "names": {
-      "football-data": null,
-      "clubelo": "CSKA Sofia"
-    },
-    "logo_path": "/logos/Parva Liga (BUL)/Cska-sofia.png"
-  },
-  {
-    "original_name": "Arda",
-    "normalized_name": "arda",
-    "matched": true,
-    "team_id": "team_bf29d13d04d8",
-    "display_pt": "Arda",
-    "names": {
-      "football-data": null,
-      "clubelo": "Arda"
-    },
-    "logo_path": "/logos/Parva Liga (BUL)/Arda.png"
-  },
-  {
-    "original_name": "Montana 1921",
-    "normalized_name": "montana 1921",
-    "matched": true,
-    "team_id": "team_f192b510f44d",
-    "display_pt": "Montana 1921",
-    "names": {
-      "football-data": null,
-      "clubelo": "Montana 1921"
-    }
-  },
-  {
-    "original_name": "CSKA 1948 Sofia",
-    "normalized_name": "cska 1948 sofia",
-    "matched": true,
-    "team_id": "team_f4689630c362",
-    "display_pt": "CSKA 1948 Sofia",
-    "names": {
-      "football-data": null,
-      "clubelo": "CSKA 1948 Sofia"
-    }
-  },
-  {
-    "original_name": "Lok Zagreb",
-    "normalized_name": "lok zagreb",
-    "matched": true,
-    "team_id": "team_12d204eaa7c4",
-    "display_pt": "Lok Zagreb",
-    "names": {
-      "football-data": null,
-      "clubelo": "Lok Zagreb"
-    }
-  },
-  {
-    "original_name": "HNK Gorica",
-    "normalized_name": "hnk gorica",
-    "matched": true,
-    "team_id": "team_f82a75ea88bd",
-    "display_pt": "HNK Gorica",
-    "names": {
-      "football-data": null,
-      "clubelo": "HNK Gorica"
-    },
-    "logo_path": "/logos/Super Sport HNL (CRO)/Hnk-gorica.png"
-  },
-  {
-    "original_name": "Aarhus",
-    "normalized_name": "aarhus",
-    "matched": true,
-    "team_id": "team_eab502730fa8",
-    "display_pt": "Aarhus",
-    "names": {
-      "football-data": "Aarhus",
-      "clubelo": "Aarhus"
-    }
-  },
-  {
-    "original_name": "Odense",
-    "normalized_name": "odense",
-    "matched": true,
-    "team_id": "team_3d9703f0a6b5",
-    "display_pt": "Odense",
-    "names": {
-      "football-data": "Odense",
-      "clubelo": "Odense"
-    }
-  },
-  {
-    "original_name": "Leeds",
-    "normalized_name": "leeds",
-    "matched": true,
-    "team_id": "team_d12467d2271c",
-    "display_pt": "Leeds",
-    "names": {
-      "football-data": "Leeds",
-      "clubelo": "Leeds"
-    },
-    "logo_path": "/logos/Premier League/Leeds-united.png"
-  },
-  {
-    "original_name": "Forest",
-    "normalized_name": "forest",
-    "matched": true,
-    "team_id": "team_c425d2a61a2b",
-    "display_pt": "Nott'm Forest",
-    "names": {
-      "football-data": "Nott'm Forest",
-      "clubelo": "Nott'm Forest"
-    }
-  },
-  {
-    "original_name": "Charlton",
-    "normalized_name": "charlton",
-    "matched": true,
-    "team_id": "team_70aa077ad870",
-    "display_pt": "Charlton",
-    "names": {
-      "football-data": "Charlton",
-      "clubelo": "Charlton"
-    },
-    "logo_path": "/logos/Championship/Charlton.png"
-  },
-  {
-    "original_name": "QPR",
-    "normalized_name": "qpr",
-    "matched": true,
-    "team_id": "team_c06d000e45d9",
-    "names": {}
-  },
-  {
-    "original_name": "Celta",
-    "normalized_name": "celta",
-    "matched": true,
-    "team_id": "team_d9a38b593813",
-    "display_pt": "Celta",
-    "names": {
-      "football-data": "Celta",
-      "clubelo": "Celta"
-    },
-    "logo_path": "/logos/La Liga/Celta.png"
-  },
-  {
-    "original_name": "Osasuna",
-    "normalized_name": "osasuna",
-    "matched": true,
-    "team_id": "team_95a54f516389",
-    "display_pt": "Osasuna",
-    "names": {
-      "football-data": "Osasuna",
-      "clubelo": "Osasuna"
-    },
-    "logo_path": "/logos/La Liga/Osasuna.png"
-  },
-  {
-    "original_name": "Leganes",
-    "normalized_name": "leganes",
-    "matched": true,
-    "team_id": "team_5c0d7580a175",
-    "display_pt": "Leganes",
-    "names": {
-      "football-data": "Leganes",
-      "clubelo": "Leganes"
-    },
-    "logo_path": "/logos/La Liga2/Leganes.png"
-  },
-  {
-    "original_name": "Granada",
-    "normalized_name": "granada",
-    "matched": true,
-    "team_id": "team_419bf620d5c3",
-    "display_pt": "Granada",
-    "names": {
-      "football-data": "Granada",
-      "clubelo": "Granada"
-    },
-    "logo_path": "/logos/La Liga2/Granada.png"
-  },
-  {
-    "original_name": "Reims",
-    "normalized_name": "reims",
-    "matched": true,
-    "team_id": "team_4460a0a3707b",
-    "display_pt": "Reims",
-    "names": {
-      "football-data": "Reims",
-      "clubelo": "Reims"
-    },
-    "logo_path": "/logos/Ligue2/Stade-de-reims.png"
-  },
-  {
-    "original_name": "Bastia",
-    "normalized_name": "bastia",
-    "matched": true,
-    "team_id": "team_9da62f4fa822",
-    "display_pt": "Bastia",
-    "names": {
-      "football-data": "Bastia",
-      "clubelo": "Bastia"
-    },
-    "logo_path": "/logos/Ligue2/Bastia.png"
-  },
-  {
-    "original_name": "Red Star",
-    "normalized_name": "red star",
-    "matched": true,
-    "team_id": "team_a56c00f84230",
-    "display_pt": "Red Star",
-    "names": {
-      "football-data": "Red Star",
-      "clubelo": "Red Star"
-    },
-    "logo_path": "/logos/Ligue2/Red-star-fc.png"
-  },
-  {
-    "original_name": "Pau",
-    "normalized_name": "pau",
-    "matched": true,
-    "team_id": "team_c6ee8ffa93a5",
-    "display_pt": "Pau FC",
-    "names": {
-      "football-data": "Pau FC",
-      "clubelo": "Pau"
-    },
-    "logo_path": "/logos/Ligue2/Pau.png"
-  },
-  {
-    "original_name": "Metz",
-    "normalized_name": "metz",
-    "matched": true,
-    "team_id": "team_b34b8ac129ff",
-    "display_pt": "Metz",
-    "names": {
-      "football-data": "Metz",
-      "clubelo": "Metz"
-    },
-    "logo_path": "/logos/Ligue1/Fc-metz.png"
-  },
-  {
-    "original_name": "Lille",
-    "normalized_name": "lille",
-    "matched": true,
-    "team_id": "team_c8223e0b0643",
-    "display_pt": "Lille",
-    "names": {
-      "football-data": "Lille",
-      "clubelo": "Lille"
-    },
-    "logo_path": "/logos/Ligue1/Lille.png"
-  },
-  {
-    "original_name": "Dunkerque",
-    "normalized_name": "dunkerque",
-    "matched": true,
-    "team_id": "team_0a33bc65369e",
-    "display_pt": "Dunkerque",
-    "names": {
-      "football-data": "Dunkerque",
-      "clubelo": "Dunkerque"
-    },
-    "logo_path": "/logos/Ligue2/Dunkerque.png"
-  },
-  {
-    "original_name": "Guingamp",
-    "normalized_name": "guingamp",
-    "matched": true,
-    "team_id": "team_34fbda161ce7",
-    "display_pt": "Guingamp",
-    "names": {
-      "football-data": "Guingamp",
-      "clubelo": "Guingamp"
-    },
-    "logo_path": "/logos/Ligue2/Guingamp.png"
-  },
-  {
-    "original_name": "Boulogne",
-    "normalized_name": "boulogne",
-    "matched": true,
-    "team_id": "team_f5c7ef9f074a",
-    "display_pt": "Boulogne",
-    "names": {
-      "football-data": "Boulogne",
-      "clubelo": "Boulogne"
-    },
-    "logo_path": "/logos/Ligue2/Boulogne.png"
-  },
-  {
-    "original_name": "Rodez",
-    "normalized_name": "rodez",
-    "matched": true,
-    "team_id": "team_504b49467dca",
-    "display_pt": "Rodez",
-    "names": {
-      "football-data": "Rodez",
-      "clubelo": "Rodez"
-    },
-    "logo_path": "/logos/Ligue2/Rodez-af.png"
-  },
-  {
-    "original_name": "Annecy",
-    "normalized_name": "annecy",
-    "matched": true,
-    "team_id": "team_4b8cd136da51",
-    "display_pt": "Annecy",
-    "names": {
-      "football-data": "Annecy",
-      "clubelo": "Annecy"
-    },
-    "logo_path": "/logos/Ligue2/Annecy.png"
-  },
-  {
-    "original_name": "Grenoble",
-    "normalized_name": "grenoble",
-    "matched": true,
-    "team_id": "team_1c06b5dfa927",
-    "display_pt": "Grenoble",
-    "names": {
-      "football-data": "Grenoble",
-      "clubelo": "Grenoble"
-    },
-    "logo_path": "/logos/Ligue2/Grenoble-foot-38.png"
-  },
-  {
-    "original_name": "Fuerth",
-    "normalized_name": "fuerth",
-    "matched": true,
-    "team_id": "team_79b65dbbf97b",
-    "display_pt": "Greuther Furth",
-    "names": {
-      "football-data": "Greuther Furth",
-      "clubelo": "Fuerth"
-    },
-    "logo_path": "/logos/Bundesliga2/Fuerth.png"
-  },
-  {
-    "original_name": "Magdeburg",
-    "normalized_name": "magdeburg",
-    "matched": true,
-    "team_id": "team_342fce914806",
-    "display_pt": "Magdeburg",
-    "names": {
-      "football-data": "Magdeburg",
-      "clubelo": "Magdeburg"
-    },
-    "logo_path": "/logos/Bundesliga2/fc-magdeburg.png"
-  },
-  {
-    "original_name": "Muenster",
-    "normalized_name": "muenster",
-    "matched": true,
-    "team_id": "team_32756b8b26ba",
-    "display_pt": "Preußen Münster",
-    "names": {
-      "football-data": "Preußen Münster",
-      "clubelo": "Muenster"
-    },
-    "logo_path": "/logos/Bundesliga2/Preussen-munster.png"
-  },
-  {
-    "original_name": "Bochum",
-    "normalized_name": "bochum",
-    "matched": true,
-    "team_id": "team_2eaad8a88ba9",
-    "display_pt": "Bochum",
-    "names": {
-      "football-data": "Bochum",
-      "clubelo": "Bochum"
-    },
-    "logo_path": "/logos/Bundesliga2/Vfl-bochum.png"
-  },
-  {
-    "original_name": "Union Berlin",
-    "normalized_name": "union berlin",
-    "matched": true,
-    "team_id": "team_35aa24d7e560",
-    "display_pt": "Union Berlin",
-    "names": {
-      "football-data": "Union Berlin",
-      "clubelo": "Union Berlin"
-    },
-    "logo_path": "/logos/Bundesliga (GER)/Union-berlin.png"
-  },
-  {
-    "original_name": "Frankfurt",
-    "normalized_name": "frankfurt",
-    "matched": true,
-    "team_id": "team_e976c854aa37",
-    "display_pt": "Eintracht Frankfurt",
-    "names": {
-      "football-data": "Eintracht Frankfurt",
-      "clubelo": "Frankfurt"
-    },
-    "logo_path": "/logos/Bundesliga (GER)/Eintracht-frankfurt.png"
-  },
-  {
-    "original_name": "Kisvarda",
-    "normalized_name": "kisvarda",
-    "matched": true,
-    "team_id": "team_c82d98dfc1c9",
-    "display_pt": "Kisvarda",
-    "names": {
-      "football-data": null,
-      "clubelo": "Kisvarda"
-    },
-    "logo_path": "/logos/NB I (HUN)/Kisvarda.png"
-  },
-  {
-    "original_name": "Kazincbarcika",
-    "normalized_name": "kazincbarcika",
-    "matched": true,
-    "team_id": "team_5e57a7fe439b",
-    "display_pt": "Kazincbarcika",
-    "names": {
-      "football-data": null,
-      "clubelo": "Kazincbarcika"
-    }
-  },
-  {
-    "original_name": "Verona",
-    "normalized_name": "verona",
-    "matched": true,
-    "team_id": "team_95f39cab6e81",
-    "display_pt": "Verona",
-    "names": {
-      "football-data": "Verona",
-      "clubelo": "Verona"
-    },
-    "logo_path": "/logos/Serie A/Verona.png"
-  },
-  {
-    "original_name": "Pisa",
-    "normalized_name": "pisa",
-    "matched": true,
-    "team_id": "team_235dda413ab6",
-    "display_pt": "Pisa",
-    "names": {
-      "football-data": "Pisa",
-      "clubelo": "Pisa"
-    },
-    "logo_path": "/logos/Serie A/Pisa.png"
-  },
-  {
-    "original_name": "Cesena",
-    "normalized_name": "cesena",
-    "matched": true,
-    "team_id": "team_3949407f0d12",
-    "display_pt": "Cesena",
-    "names": {
-      "football-data": "Cesena",
-      "clubelo": "Cesena"
-    }
-  },
-  {
-    "original_name": "Pescara",
-    "normalized_name": "pescara",
-    "matched": true,
-    "team_id": "team_1b2c71194bf2",
-    "display_pt": "Pescara",
-    "names": {
-      "football-data": "Pescara",
-      "clubelo": "Pescara"
-    },
-    "logo_path": "/logos/Serie B (ITA)/Pescara.png"
-  },
-  {
-    "original_name": "Breda",
-    "normalized_name": "breda",
-    "matched": true,
-    "team_id": "team_504a374dca0e",
-    "display_pt": "NAC Breda",
-    "names": {
-      "football-data": "NAC Breda",
-      "clubelo": "Breda"
-    }
-  },
-  {
-    "original_name": "Excelsior",
-    "normalized_name": "excelsior",
-    "matched": true,
-    "team_id": "team_a4ce0237c807",
-    "display_pt": "Excelsior",
-    "names": {
-      "football-data": "Excelsior",
-      "clubelo": "Excelsior"
-    }
-  },
-  {
-    "original_name": "Lechia",
-    "normalized_name": "lechia",
-    "matched": true,
-    "team_id": "team_32e84a4e178f",
-    "display_pt": "Lechia",
-    "names": {
-      "football-data": null,
-      "clubelo": "Lechia"
-    },
-    "logo_path": "/logos/Ekstraklasa (POL)/lechia.png"
-  },
-  {
-    "original_name": "Cracovia",
-    "normalized_name": "cracovia",
-    "matched": true,
-    "team_id": "team_c394a029c672",
-    "display_pt": "Cracovia",
-    "names": {
-      "football-data": "Cracovia",
-      "clubelo": "Cracovia"
-    },
-    "logo_path": "/logos/Ekstraklasa/cracovia.png"
-  },
-  {
-    "original_name": "Korona",
-    "normalized_name": "korona",
-    "matched": true,
-    "team_id": "team_34b3eaed426b",
-    "display_pt": "Korona",
-    "names": {
-      "football-data": null,
-      "clubelo": "Korona"
-    }
-  },
-  {
-    "original_name": "Lubin",
-    "normalized_name": "lubin",
-    "matched": true,
-    "team_id": "team_24e58fd40896",
-    "display_pt": "Lubin",
-    "names": {
-      "football-data": null,
-      "clubelo": "Lubin"
-    }
-  },
-  {
-    "original_name": "Rapid Bucuresti",
-    "normalized_name": "rapid bucuresti",
-    "matched": true,
-    "team_id": "team_b88e0c13e003",
-    "display_pt": "FC Rapid Bucuresti",
-    "names": {
-      "football-data": "FC Rapid Bucuresti",
-      "clubelo": "Rapid Bucuresti"
-    }
-  },
-  {
-    "original_name": "Petrolul Ploiesti",
-    "normalized_name": "petrolul ploiesti",
-    "matched": true,
-    "team_id": "team_39be29e068cf",
-    "display_pt": "Petrolul Ploiesti",
-    "names": {
-      "football-data": null,
-      "clubelo": "Petrolul Ploiesti"
-    }
+    "logo_path": "/logos/Bundesliga (AUT)/Lask.png"
   },
   {
     "original_name": "Gent",
@@ -618,12 +39,13 @@
     "original_name": "Leuven",
     "normalized_name": "leuven",
     "matched": true,
-    "team_id": "team_35e804f8e774",
-    "display_pt": "Leuven",
+    "team_id": "team_c0c180eaec45",
+    "display_pt": "Oud-Heverlee Leuven",
     "names": {
-      "football-data": null,
-      "clubelo": "Leuven"
-    }
+      "football-data": "Oud-Heverlee Leuven",
+      "clubelo": null
+    },
+    "logo_path": "/logos/Jupiler Ligue/oud-heverlee-leuven.png"
   },
   {
     "original_name": "Charleroi",
@@ -653,13 +75,13 @@
     "original_name": "Zulte Waregem",
     "normalized_name": "zulte waregem",
     "matched": true,
-    "team_id": "team_e985f6446066",
-    "display_pt": "Zulte Waregem",
+    "team_id": "team_d22eb78fc390",
+    "display_pt": "Waregem",
     "names": {
-      "football-data": null,
-      "clubelo": "Zulte Waregem"
+      "football-data": "Waregem",
+      "clubelo": null
     },
-    "logo_path": "/logos/Jupiler Ligue (BEL)/Zulte-waregem.png"
+    "logo_path": "/logos/Jupiler Ligue/zulte-waregem.png"
   },
   {
     "original_name": "Dender",
@@ -1163,30 +585,6 @@
     "logo_path": "/logos/Premier League/Aston-villa.png"
   },
   {
-    "original_name": "Sevilla",
-    "normalized_name": "sevilla",
-    "matched": true,
-    "team_id": "team_4f10eac150f0",
-    "display_pt": "Sevilla",
-    "names": {
-      "football-data": "Sevilla",
-      "clubelo": "Sevilla"
-    },
-    "logo_path": "/logos/La Liga/Sevilla.png"
-  },
-  {
-    "original_name": "Girona",
-    "normalized_name": "girona",
-    "matched": true,
-    "team_id": "team_6ab1f9b4d040",
-    "display_pt": "Girona",
-    "names": {
-      "football-data": "Girona",
-      "clubelo": "Girona"
-    },
-    "logo_path": "/logos/La Liga/Girona.png"
-  },
-  {
     "original_name": "Zaragoza",
     "normalized_name": "zaragoza",
     "matched": true,
@@ -1283,30 +681,6 @@
     "logo_path": "/logos/La Liga2/Burgos.png"
   },
   {
-    "original_name": "Cadiz",
-    "normalized_name": "cadiz",
-    "matched": true,
-    "team_id": "team_0c9c2551d851",
-    "display_pt": "Cadiz",
-    "names": {
-      "football-data": "Cadiz",
-      "clubelo": "Cadiz"
-    },
-    "logo_path": "/logos/La Liga2/Cadiz.png"
-  },
-  {
-    "original_name": "Almeria",
-    "normalized_name": "almeria",
-    "matched": true,
-    "team_id": "team_c2a0c7a4b152",
-    "display_pt": "Almeria",
-    "names": {
-      "football-data": "Almeria",
-      "clubelo": "Almeria"
-    },
-    "logo_path": "/logos/La Liga2/Almeria.png"
-  },
-  {
     "original_name": "Rayo Vallecano",
     "normalized_name": "rayo vallecano",
     "matched": true,
@@ -1359,7 +733,7 @@
     "team_id": "team_6fedaa818e4b",
     "display_pt": "Saint-Etienne",
     "names": {
-      "football-data": null,
+      "football-data": "St Etienne",
       "clubelo": "Saint-Etienne"
     }
   },
@@ -1523,12 +897,13 @@
     "original_name": "Schalke",
     "normalized_name": "schalke",
     "matched": true,
-    "team_id": "team_2f4aac5ce407",
-    "display_pt": "Schalke",
+    "team_id": "team_9b0f448e96d7",
+    "display_pt": "Schalke 04",
     "names": {
-      "football-data": null,
-      "clubelo": "Schalke"
-    }
+      "football-data": "Schalke 04",
+      "clubelo": null
+    },
+    "logo_path": "/logos/Bundesliga2/Schalke-04.png"
   },
   {
     "original_name": "Dresden",
@@ -1546,11 +921,11 @@
     "original_name": "Gladbach",
     "normalized_name": "gladbach",
     "matched": true,
-    "team_id": "team_082d749f5f49",
-    "display_pt": "Gladbach",
+    "team_id": "team_ac7c23436f77",
+    "display_pt": "M'gladbach",
     "names": {
-      "football-data": null,
-      "clubelo": "Gladbach"
+      "football-data": "M'gladbach",
+      "clubelo": null
     }
   },
   {
@@ -1581,12 +956,13 @@
     "original_name": "Lautern",
     "normalized_name": "lautern",
     "matched": true,
-    "team_id": "team_967c940c6a87",
-    "display_pt": "Lautern",
+    "team_id": "team_d0365387cd54",
+    "display_pt": "Kaiserslautern",
     "names": {
-      "football-data": null,
-      "clubelo": "Lautern"
-    }
+      "football-data": "Kaiserslautern",
+      "clubelo": null
+    },
+    "logo_path": "/logos/Bundesliga2/Fc-kaiserslautern.png"
   },
   {
     "original_name": "Freiburg",
@@ -1604,12 +980,13 @@
     "original_name": "Werder",
     "normalized_name": "werder",
     "matched": true,
-    "team_id": "team_2049de87b0da",
-    "display_pt": "Werder",
+    "team_id": "team_d142fd0e1cf0",
+    "display_pt": "Werder Bremen",
     "names": {
-      "football-data": null,
-      "clubelo": "Werder"
-    }
+      "football-data": "Werder Bremen",
+      "clubelo": null
+    },
+    "logo_path": "/logos/Bundesliga/Werder-bremen.png"
   },
   {
     "original_name": "Mainz",
@@ -1675,12 +1052,13 @@
     "original_name": "Nuernberg",
     "normalized_name": "nuernberg",
     "matched": true,
-    "team_id": "team_6e3ffba3a8a3",
-    "display_pt": "Nuernberg",
+    "team_id": "team_456c51a44022",
+    "display_pt": "Nurnberg",
     "names": {
-      "football-data": null,
-      "clubelo": "Nuernberg"
-    }
+      "football-data": "Nurnberg",
+      "clubelo": null
+    },
+    "logo_path": "/logos/Bundesliga2/Fc-nurnberg.png"
   },
   {
     "original_name": "Heidenheim",
@@ -1755,6 +1133,18 @@
       "clubelo": "Asteras Tripolis"
     },
     "logo_path": "/logos/Super League 1/asteras-tripolis.png"
+  },
+  {
+    "original_name": "NFC Volos",
+    "normalized_name": "nfc volos",
+    "matched": true,
+    "team_id": "team_b337f8e2b381",
+    "display_pt": "Volos NFC",
+    "names": {
+      "football-data": "Volos NFC",
+      "clubelo": null
+    },
+    "logo_path": "/logos/Super League 1/volos-nfc.png"
   },
   {
     "original_name": "Kifisias",
@@ -2312,7 +1702,7 @@
     "team_id": "team_fdd5d559b4c3",
     "display_pt": "Viitorul",
     "names": {
-      "football-data": null,
+      "football-data": "Viitorul",
       "clubelo": "Viitorul"
     }
   },
@@ -2794,7 +2184,7 @@
     "team_id": "team_0c5842d91a92",
     "display_pt": "FC Kobenhavn",
     "names": {
-      "football-data": null,
+      "football-data": "FC Copenhagen",
       "clubelo": "FC Kobenhavn"
     }
   },
@@ -2941,9 +2331,10 @@
     "team_id": "team_c435cd0431c9",
     "display_pt": "Atletico",
     "names": {
-      "football-data": null,
+      "football-data": "Ath Madrid",
       "clubelo": "Atletico"
-    }
+    },
+    "logo_path": "/logos/La Liga (ESP)/Atletico-madrid.png"
   },
   {
     "original_name": "Betis",
@@ -2964,10 +2355,10 @@
     "team_id": "team_a748637a7e92",
     "display_pt": "Depor",
     "names": {
-      "football-data": null,
+      "football-data": "La Coruna",
       "clubelo": "Depor"
     },
-    "logo_path": "/logos/La Liga2/Fc-andorra.png"
+    "logo_path": "/logos/La Liga2 (ESP)/Deportivo-la-coruna.png"
   },
   {
     "original_name": "Albacete",
@@ -3226,7 +2617,7 @@
     "team_id": "team_a0fafa93c2b6",
     "display_pt": "Koeln",
     "names": {
-      "football-data": null,
+      "football-data": "FC Koln",
       "clubelo": "Koeln"
     }
   },
@@ -3789,7 +3180,7 @@
     "team_id": "team_4dfc4fe3e1a7",
     "display_pt": "Steaua",
     "names": {
-      "football-data": null,
+      "football-data": "FCSB",
       "clubelo": "Steaua"
     },
     "logo_path": "/logos/Superliga (ROM)/steaua.png"
@@ -3879,9 +3270,44 @@
     "team_id": "team_527b1b38b630",
     "display_pt": "Zuerich",
     "names": {
-      "football-data": null,
+      "football-data": "Zurich",
       "clubelo": "Zuerich"
     }
+  },
+  {
+    "original_name": "Olimpija Ljubljana",
+    "normalized_name": "olimpija ljubljana",
+    "matched": true,
+    "team_id": "team_34ad1138ba59",
+    "display_pt": "Olimpija Ljubljana",
+    "names": {
+      "football-data": null,
+      "clubelo": "Olimpija Ljubljana"
+    }
+  },
+  {
+    "original_name": "Celje",
+    "normalized_name": "celje",
+    "matched": true,
+    "team_id": "team_d6305bfbd391",
+    "display_pt": "Celje",
+    "names": {
+      "football-data": null,
+      "clubelo": "Celje"
+    },
+    "logo_path": "/logos/Prva Liga Telemach (SVN)/Celje.png"
+  },
+  {
+    "original_name": "Aluminij",
+    "normalized_name": "aluminij",
+    "matched": true,
+    "team_id": "team_9e1ae953682c",
+    "display_pt": "Aluminij",
+    "names": {
+      "football-data": null,
+      "clubelo": "Aluminij"
+    },
+    "logo_path": "/logos/Prva Liga Telemach (SVN)/Aluminij.png"
   },
   {
     "original_name": "Besiktas",
@@ -3950,7 +3376,7 @@
     "team_id": "team_102790751671",
     "display_pt": "Goeztepe",
     "names": {
-      "football-data": null,
+      "football-data": "Goztep",
       "clubelo": "Goeztepe"
     }
   },
@@ -3973,8 +3399,30 @@
     "team_id": "team_7402aaf8a928",
     "display_pt": "Bueyueksehir",
     "names": {
-      "football-data": null,
+      "football-data": "Bueyueksehir",
       "clubelo": "Bueyueksehir"
+    }
+  },
+  {
+    "original_name": "Aarhus",
+    "normalized_name": "aarhus",
+    "matched": true,
+    "team_id": "team_eab502730fa8",
+    "display_pt": "Aarhus",
+    "names": {
+      "football-data": "Aarhus",
+      "clubelo": "Aarhus"
+    }
+  },
+  {
+    "original_name": "Odense",
+    "normalized_name": "odense",
+    "matched": true,
+    "team_id": "team_3d9703f0a6b5",
+    "display_pt": "Odense",
+    "names": {
+      "football-data": "Odense",
+      "clubelo": "Odense"
     }
   },
   {
@@ -4242,5 +3690,160 @@
       "clubelo": null
     },
     "logo_path": "/logos/Super Lig/Kasimpasa.png"
+  },
+  {
+    "original_name": "Leeds",
+    "normalized_name": "leeds",
+    "matched": true,
+    "team_id": "team_d12467d2271c",
+    "display_pt": "Leeds",
+    "names": {
+      "football-data": "Leeds",
+      "clubelo": "Leeds"
+    },
+    "logo_path": "/logos/Premier League/Leeds-united.png"
+  },
+  {
+    "original_name": "Hearts",
+    "normalized_name": "hearts",
+    "matched": true,
+    "team_id": "team_546c36b17712",
+    "display_pt": "Hearts",
+    "names": {
+      "football-data": "Hearts",
+      "clubelo": null
+    }
+  },
+  {
+    "original_name": "Hibernian",
+    "normalized_name": "hibernian",
+    "matched": true,
+    "team_id": "team_23d688228771",
+    "display_pt": "Hibernian",
+    "names": {
+      "football-data": "Hibernian",
+      "clubelo": "Hibernian"
+    }
+  },
+  {
+    "original_name": "Forest",
+    "normalized_name": "forest",
+    "matched": true,
+    "team_id": "team_c425d2a61a2b",
+    "display_pt": "Nott'm Forest",
+    "names": {
+      "football-data": "Nott'm Forest",
+      "clubelo": "Nott'm Forest"
+    }
+  },
+  {
+    "original_name": "Falkirk",
+    "normalized_name": "falkirk",
+    "matched": true,
+    "team_id": "team_9dd56356b373",
+    "display_pt": "Falkirk",
+    "names": {
+      "football-data": "Falkirk",
+      "clubelo": "Falkirk"
+    }
+  },
+  {
+    "original_name": "Dundee",
+    "normalized_name": "dundee",
+    "matched": true,
+    "team_id": "team_f7b8321a96b7",
+    "display_pt": "Dundee",
+    "names": {
+      "football-data": "Dundee",
+      "clubelo": "Dundee"
+    }
+  },
+  {
+    "original_name": "Celtic",
+    "normalized_name": "celtic",
+    "matched": true,
+    "team_id": "team_d06b4105a9aa",
+    "display_pt": "Celtic",
+    "names": {
+      "football-data": "Celtic",
+      "clubelo": "Celtic"
+    }
+  },
+  {
+    "original_name": "Livingston",
+    "normalized_name": "livingston",
+    "matched": true,
+    "team_id": "team_24158b404947",
+    "display_pt": "Livingston",
+    "names": {
+      "football-data": "Livingston",
+      "clubelo": "Livingston"
+    }
+  },
+  {
+    "original_name": "Motherwell",
+    "normalized_name": "motherwell",
+    "matched": true,
+    "team_id": "team_fc2498276de4",
+    "display_pt": "Motherwell",
+    "names": {
+      "football-data": "Motherwell",
+      "clubelo": "Motherwell"
+    }
+  },
+  {
+    "original_name": "Rangers",
+    "normalized_name": "rangers",
+    "matched": true,
+    "team_id": "team_3d6495557ee1",
+    "display_pt": "Rangers",
+    "names": {
+      "football-data": "Rangers",
+      "clubelo": "Rangers"
+    }
+  },
+  {
+    "original_name": "Kilmarnock",
+    "normalized_name": "kilmarnock",
+    "matched": true,
+    "team_id": "team_d437e5091302",
+    "display_pt": "Kilmarnock",
+    "names": {
+      "football-data": "Kilmarnock",
+      "clubelo": "Kilmarnock"
+    }
+  },
+  {
+    "original_name": "St Mirren",
+    "normalized_name": "st mirren",
+    "matched": true,
+    "team_id": "team_3fc878aeafa4",
+    "display_pt": "St Mirren",
+    "names": {
+      "football-data": "St Mirren",
+      "clubelo": null
+    }
+  },
+  {
+    "original_name": "Dundee United",
+    "normalized_name": "dundee united",
+    "matched": true,
+    "team_id": "team_f440c198c6b5",
+    "display_pt": "Dundee United",
+    "names": {
+      "football-data": "Dundee United",
+      "clubelo": "Dundee United"
+    }
+  },
+  {
+    "original_name": "Aberdeen",
+    "normalized_name": "aberdeen",
+    "matched": true,
+    "team_id": "team_cae1dd98ca9c",
+    "display_pt": "Aberdeen",
+    "names": {
+      "football-data": "Aberdeen",
+      "clubelo": "Aberdeen"
+    }
   }
 ]

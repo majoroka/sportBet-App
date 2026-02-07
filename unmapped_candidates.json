@@ -1,0 +1,465 @@
+[
+  {
+    "original": "Rapid Wien",
+    "norm": "rapid wien",
+    "candidates": [
+      {
+        "id": "team_149d9d8d1b8e",
+        "name": "SK Rapid",
+        "score": 0.8
+      },
+      {
+        "id": "team_d1dbb0b518ac",
+        "name": "SK Rapid",
+        "score": 0.8
+      }
+    ]
+  },
+  {
+    "original": "Wattens",
+    "norm": "wattens",
+    "candidates": [team_0475501b31ff]
+  },
+  {
+    "original": "Vukovar",
+    "norm": "vukovar",
+    "candidates": [não existe, podes criar - Pertence à liga: Super Sport HNL (CRO)]
+  },
+  {
+    "original": "Istra 1961",
+    "norm": "istra 1961",
+    "candidates": [não existe, podes criar - Pertence à liga: Super Sport HNL (CRO)]
+  },
+  {
+    "original": "Ferencvaros",
+    "norm": "ferencvaros",
+    "candidates": []
+  },
+  {
+    "original": "Ujpest",
+    "norm": "ujpest",
+    "candidates": []
+  },
+  {
+    "original": "Diosgyori",
+    "norm": "diosgyori",
+    "candidates": []
+  },
+  {
+    "original": "Gyoer",
+    "norm": "gyoer",
+    "candidates": []
+  },
+  {
+    "original": "Debrecen",
+    "norm": "debrecen",
+    "candidates": []
+  },
+  {
+    "original": "Paksi",
+    "norm": "paksi",
+    "candidates": []
+  },
+  {
+    "original": "Hapoel Haifa",
+    "norm": "hapoel haifa",
+    "candidates": []
+  },
+  {
+    "original": "Ashdod",
+    "norm": "ashdod",
+    "candidates": []
+  },
+  {
+    "original": "Hapoel Jerusalem",
+    "norm": "hapoel jerusalem",
+    "candidates": []
+  },
+  {
+    "original": "Maccabi Haifa",
+    "norm": "maccabi haifa",
+    "candidates": []
+  },
+  {
+    "original": "Netanya",
+    "norm": "netanya",
+    "candidates": []
+  },
+  {
+    "original": "Kiryat Shmona",
+    "norm": "kiryat shmona",
+    "candidates": []
+  },
+  {
+    "original": "Bnei Sakhinin",
+    "norm": "bnei sakhinin",
+    "candidates": []
+  },
+  {
+    "original": "H Petach Tikva",
+    "norm": "h petach tikva",
+    "candidates": []
+  },
+  {
+    "original": "Ironi Tiberias",
+    "norm": "ironi tiberias",
+    "candidates": []
+  },
+  {
+    "original": "H Tel Aviv",
+    "norm": "h tel aviv",
+    "candidates": []
+  },
+  {
+    "original": "Crvena Zvezda",
+    "norm": "crvena zvezda",
+    "candidates": []
+  },
+  {
+    "original": "Novi Pazar",
+    "norm": "novi pazar",
+    "candidates": []
+  },
+  {
+    "original": "Ivanjica",
+    "norm": "ivanjica",
+    "candidates": []
+  },
+  {
+    "original": "Backa Topola",
+    "norm": "backa topola",
+    "candidates": []
+  },
+  {
+    "original": "Radnik Surdulica",
+    "norm": "radnik surdulica",
+    "candidates": []
+  },
+  {
+    "original": "Partizan",
+    "norm": "partizan",
+    "candidates": []
+  },
+  {
+    "original": "Primorje",
+    "norm": "primorje",
+    "candidates": []
+  },
+  {
+    "original": "Bravo",
+    "norm": "bravo",
+    "candidates": []
+  },
+  {
+    "original": "Wolfsberg",
+    "norm": "wolfsberg",
+    "candidates": [
+      {
+        "id": "team_43e4f72e68f2",
+        "name": "Wolfsberger AC",
+        "score": 0.8
+      },
+      {
+        "id": "team_68d4f632fd5d",
+        "name": "Wolfsberger AC",
+        "score": 0.8
+      }
+    ]
+  },
+  {
+    "original": "GAK",
+    "norm": "gak",
+    "candidates": []
+  },
+  {
+    "original": "St Gillis",
+    "norm": "st gillis",
+    "candidates": [
+      {
+        "id": "team_b8f7e2a9af2f",
+        "name": "St. Gilloise",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "original": "RAAL",
+    "norm": "raal",
+    "candidates": [
+      {
+        "id": "team_75bae08580bf",
+        "name": "RAAL La Louviere",
+        "score": 1
+      },
+      {
+        "id": "team_c02b49e4fdec",
+        "name": "RAAL La Louviere",
+        "score": 0.8
+      },
+      {
+        "id": "team_75bae08580bf",
+        "name": "RAAL La Louviere",
+        "score": 0.8
+      }
+    ]
+  },
+  {
+    "original": "Rijeka",
+    "norm": "rijeka",
+    "candidates": []
+  },
+  {
+    "original": "Dinamo Zagreb",
+    "norm": "dinamo zagreb",
+    "candidates": [
+      {
+        "id": "team_a2ca1d07d122",
+        "name": "Din. Bucuresti",
+        "score": 0.8
+      }
+    ]
+  },
+  {
+    "original": "Varazdin",
+    "norm": "varazdin",
+    "candidates": []
+  },
+  {
+    "original": "Osijek",
+    "norm": "osijek",
+    "candidates": []
+  },
+  {
+    "original": "OFI",
+    "norm": "ofi",
+    "candidates": [
+      {
+        "id": "team_f1bd4374f593",
+        "name": "OFI Crete",
+        "score": 0.8
+      },
+      {
+        "id": "team_8c754a63fa11",
+        "name": "OFI Crete",
+        "score": 0.8
+      },
+      {
+        "id": "team_7456af81ecf7",
+        "name": "Septemvri Sofia",
+        "score": 0.6
+      }
+    ]
+  },
+  {
+    "original": "Nyiregyhaza",
+    "norm": "nyiregyhaza",
+    "candidates": []
+  },
+  {
+    "original": "MTK",
+    "norm": "mtk",
+    "candidates": []
+  },
+  {
+    "original": "Puskas Akademia",
+    "norm": "puskas akademia",
+    "candidates": []
+  },
+  {
+    "original": "Zalaegerszegi",
+    "norm": "zalaegerszegi",
+    "candidates": []
+  },
+  {
+    "original": "Novi Sad",
+    "norm": "novi sad",
+    "candidates": []
+  },
+  {
+    "original": "Mladost Lucani",
+    "norm": "mladost lucani",
+    "candidates": []
+  },
+  {
+    "original": "Nis",
+    "norm": "nis",
+    "candidates": [
+      {
+        "id": "team_b9d0636d7322",
+        "name": "Gnistan",
+        "score": 0.6
+      },
+      {
+        "id": "team_e7273481c724",
+        "name": "Gnistan",
+        "score": 0.6
+      }
+    ]
+  },
+  {
+    "original": "Kragujevac",
+    "norm": "kragujevac",
+    "candidates": []
+  },
+  {
+    "original": "Zlatibor",
+    "norm": "zlatibor",
+    "candidates": []
+  },
+  {
+    "original": "Zeleznicar Pancevo",
+    "norm": "zeleznicar pancevo",
+    "candidates": []
+  },
+  {
+    "original": "IMT",
+    "norm": "imt",
+    "candidates": [
+      {
+        "id": "team_8acfc8359271",
+        "name": "Bodo/Glimt",
+        "score": 0.6
+      },
+      {
+        "id": "team_27c9f9982bed",
+        "name": "Bodo/Glimt",
+        "score": 0.6
+      }
+    ]
+  },
+  {
+    "original": "Krusevac",
+    "norm": "krusevac",
+    "candidates": []
+  },
+  {
+    "original": "Maribor",
+    "norm": "maribor",
+    "candidates": []
+  },
+  {
+    "original": "Koper",
+    "norm": "koper",
+    "candidates": []
+  },
+  {
+    "original": "Mura",
+    "norm": "mura",
+    "candidates": []
+  },
+  {
+    "original": "Espanyol",
+    "norm": "espanyol",
+    "candidates": [
+      {
+        "id": "team_1b1439823e04",
+        "name": "Espanol",
+        "score": 1
+      }
+    ]
+  },
+  {
+    "original": "M Tel Aviv",
+    "norm": "m tel aviv",
+    "candidates": []
+  },
+  {
+    "original": "Maccabi Bnei Raina",
+    "norm": "maccabi bnei raina",
+    "candidates": []
+  },
+  {
+    "original": "Beer-Sheva",
+    "norm": "beer sheva",
+    "candidates": []
+  },
+  {
+    "original": "Beitar",
+    "norm": "beitar",
+    "candidates": []
+  },
+  {
+    "original": "Plock",
+    "norm": "plock",
+    "candidates": [
+      {
+        "id": "team_7e8a9be84f39",
+        "name": "Wisla Plock",
+        "score": 0.6
+      },
+      {
+        "id": "team_f4b2d63a51f0",
+        "name": "Wisla Plock",
+        "score": 0.6
+      }
+    ]
+  },
+  {
+    "original": "Sporting",
+    "norm": "sporting",
+    "candidates": [
+      {
+        "id": "team_368547a8fb17",
+        "name": "Sporting",
+        "score": 1
+      },
+      {
+        "id": "team_368547a8fb17",
+        "name": "Sporting",
+        "score": 0.8
+      },
+      {
+        "id": "team_368547a8fb17",
+        "name": "Sporting",
+        "score": 0.8
+      }
+    ]
+  },
+  {
+    "original": "AVS Futebol",
+    "norm": "avs futebol",
+    "candidates": [
+      {
+        "id": "team_b129fc117e9c",
+        "name": "AVS",
+        "score": 0.8
+      },
+      {
+        "id": "team_924d724f0df2",
+        "name": "AVS",
+        "score": 0.8
+      }
+    ]
+  },
+  {
+    "original": "OFK",
+    "norm": "ofk",
+    "candidates": []
+  },
+  {
+    "original": "Cukaricki",
+    "norm": "cukaricki",
+    "candidates": []
+  },
+  {
+    "original": "Kayseri",
+    "norm": "kayseri",
+    "candidates": [
+      {
+        "id": "team_c5666a149f88",
+        "name": "Kayserispor",
+        "score": 1
+      },
+      {
+        "id": "team_c5666a149f88",
+        "name": "Kayserispor",
+        "score": 0.8
+      },
+      {
+        "id": "team_fe034f7801b1",
+        "name": "Kayserispor",
+        "score": 0.8
+      }
+    ]
+  }
+]

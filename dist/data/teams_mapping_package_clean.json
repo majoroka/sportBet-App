@@ -2599,7 +2599,7 @@
         "pt": "Antwerp"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Antwerp",
         "clubelo": "Antwerp"
@@ -2629,7 +2629,7 @@
         "pt": "RAAL La Louviere"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "RAAL La Louviere",
         "clubelo": null
@@ -2656,7 +2656,7 @@
         "pt": "Club Brugge"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Club Brugge",
         "clubelo": "Brugge"
@@ -2686,7 +2686,7 @@
         "pt": "Anderlecht"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Anderlecht",
         "clubelo": "Anderlecht"
@@ -2716,7 +2716,7 @@
         "pt": "Dender"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Dender",
         "clubelo": "Dender"
@@ -2746,7 +2746,7 @@
         "pt": "St. Gilloise"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "St. Gilloise",
         "clubelo": "Union Saint-Gilloise"
@@ -2791,7 +2791,7 @@
         "pt": "Genk"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Genk",
         "clubelo": "Genk"
@@ -2821,7 +2821,7 @@
         "pt": "Gent"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Gent",
         "clubelo": "Gent"
@@ -2851,7 +2851,7 @@
         "pt": "Cercle Brugge"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Cercle Brugge",
         "clubelo": "Cercle Brugge"
@@ -2881,7 +2881,7 @@
         "pt": "Westerlo"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Westerlo",
         "clubelo": "Westerlo"
@@ -2911,7 +2911,7 @@
         "pt": "Charleroi"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Charleroi",
         "clubelo": "Charleroi"
@@ -2941,7 +2941,7 @@
         "pt": "Mechelen"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Mechelen",
         "clubelo": "Mechelen"
@@ -2971,7 +2971,7 @@
         "pt": "St Truiden"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "St Truiden",
         "clubelo": "St Truiden"
@@ -3001,7 +3001,7 @@
         "pt": "Standard"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Standard",
         "clubelo": "Standard"
@@ -3031,7 +3031,7 @@
         "pt": "Waregem"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Waregem",
         "clubelo": null
@@ -3062,7 +3062,7 @@
         "pt": "Oud-Heverlee Leuven"
       },
       "country": "BEL",
-      "league": "B1",
+      "league": "Jupiler Ligue (BEL)",
       "names": {
         "football-data": "Oud-Heverlee Leuven",
         "clubelo": null
@@ -9288,7 +9288,7 @@
         "pt": "Bayern Munich"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Bayern Munich",
         "clubelo": null
@@ -9315,7 +9315,7 @@
         "pt": "Freiburg"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Freiburg",
         "clubelo": "Freiburg"
@@ -9375,7 +9375,7 @@
         "pt": "M'gladbach"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "M'gladbach",
         "clubelo": null
@@ -9402,7 +9402,7 @@
         "pt": "Dortmund"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Dortmund",
         "clubelo": "Dortmund"
@@ -9432,7 +9432,7 @@
         "pt": "Leverkusen"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Leverkusen",
         "clubelo": "Leverkusen"
@@ -9462,7 +9462,7 @@
         "pt": "Werder Bremen"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Werder Bremen",
         "clubelo": null
@@ -9489,7 +9489,7 @@
         "pt": "Heidenheim"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Heidenheim",
         "clubelo": "Heidenheim"
@@ -9519,7 +9519,7 @@
         "pt": "Wolfsburg"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Wolfsburg",
         "clubelo": "Wolfsburg"
@@ -9549,7 +9549,7 @@
         "pt": "Hoffenheim"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Hoffenheim",
         "clubelo": "Hoffenheim"
@@ -9579,7 +9579,7 @@
         "pt": "Stuttgart"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Stuttgart",
         "clubelo": "Stuttgart"
@@ -9609,7 +9609,7 @@
         "pt": "Ein Frankfurt"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Ein Frankfurt",
         "clubelo": null
@@ -9636,7 +9636,7 @@
         "pt": "Augsburg"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Augsburg",
         "clubelo": "Augsburg"
@@ -9666,7 +9666,7 @@
         "pt": "St Pauli"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "St Pauli",
         "clubelo": "St Pauli"
@@ -9696,7 +9696,7 @@
         "pt": "Hamburg"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Hamburg",
         "clubelo": "Hamburg"
@@ -9726,7 +9726,7 @@
         "pt": "FC Koln"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "FC Koln",
         "clubelo": null
@@ -9753,7 +9753,7 @@
         "pt": "RB Leipzig"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "RB Leipzig",
         "clubelo": "RB Leipzig"
@@ -9783,7 +9783,7 @@
         "pt": "Mainz"
       },
       "country": "GER",
-      "league": "D1",
+      "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Mainz",
         "clubelo": "Mainz"
@@ -9813,7 +9813,7 @@
         "pt": "Fortuna Dusseldorf"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Fortuna Dusseldorf",
         "clubelo": "Fortuna Dusseldorf"
@@ -9853,7 +9853,7 @@
         "pt": "Karlsruhe"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Karlsruhe",
         "clubelo": "Karlsruhe"
@@ -9883,7 +9883,7 @@
         "pt": "Elversberg"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Elversberg",
         "clubelo": "Elversberg"
@@ -9913,7 +9913,7 @@
         "pt": "Dresden"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Dresden",
         "clubelo": "Dresden"
@@ -9943,7 +9943,7 @@
         "pt": "Schalke 04"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Schalke 04",
         "clubelo": null
@@ -9970,7 +9970,7 @@
         "pt": "Hannover"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Hannover",
         "clubelo": "Hannover"
@@ -10000,7 +10000,7 @@
         "pt": "Kaiserslautern"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Kaiserslautern",
         "clubelo": null
@@ -10022,7 +10022,7 @@
         "pt": "Magdeburg"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Magdeburg",
         "clubelo": "Magdeburg"
@@ -10052,7 +10052,7 @@
         "pt": "Darmstadt"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Darmstadt",
         "clubelo": "Darmstadt"
@@ -10082,7 +10082,7 @@
         "pt": "Hertha"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Hertha",
         "clubelo": "Hertha"
@@ -10112,7 +10112,7 @@
         "pt": "Bochum"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Bochum",
         "clubelo": "Bochum"
@@ -10142,7 +10142,7 @@
         "pt": "Nurnberg"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Nurnberg",
         "clubelo": null
@@ -10164,7 +10164,7 @@
         "pt": "Bielefeld"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Bielefeld",
         "clubelo": "Bielefeld"
@@ -10194,7 +10194,7 @@
         "pt": "Braunschweig"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Braunschweig",
         "clubelo": "Braunschweig"
@@ -10224,7 +10224,7 @@
         "pt": "Preußen Münster"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Preußen Münster",
         "clubelo": null
@@ -10246,7 +10246,7 @@
         "pt": "Holstein Kiel"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Holstein Kiel",
         "clubelo": null
@@ -10273,7 +10273,7 @@
         "pt": "Greuther Furth"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Greuther Furth",
         "clubelo": null
@@ -10295,7 +10295,7 @@
         "pt": "Paderborn"
       },
       "country": "GER",
-      "league": "D2",
+      "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Paderborn",
         "clubelo": "Paderborn"
@@ -11333,7 +11333,7 @@
         "pt": "Tottenham"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Tottenham",
         "clubelo": "Tottenham"
@@ -11364,7 +11364,7 @@
         "pt": "Nott'm Forest"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Nott'm Forest",
         "clubelo": "Nott'm Forest"
@@ -11393,7 +11393,7 @@
         "pt": "Man United"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Man United",
         "clubelo": "Man United"
@@ -11418,7 +11418,7 @@
         "pt": "Man City"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Man City",
         "clubelo": "Man City"
@@ -11443,7 +11443,7 @@
         "pt": "Chelsea"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Chelsea",
         "clubelo": "Chelsea"
@@ -11473,7 +11473,7 @@
         "pt": "Crystal Palace"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Crystal Palace",
         "clubelo": "Crystal Palace"
@@ -11503,7 +11503,7 @@
         "pt": "West Ham"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "West Ham",
         "clubelo": "West Ham"
@@ -11533,7 +11533,7 @@
         "pt": "Leeds"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Leeds",
         "clubelo": "Leeds"
@@ -11558,7 +11558,7 @@
         "pt": "Arsenal"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Arsenal",
         "clubelo": "Arsenal"
@@ -11588,7 +11588,7 @@
         "pt": "Fulham"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Fulham",
         "clubelo": "Fulham"
@@ -11618,7 +11618,7 @@
         "pt": "Wolves"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Wolves",
         "clubelo": "Wolves"
@@ -11648,7 +11648,7 @@
         "pt": "Brentford"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Brentford",
         "clubelo": "Brentford"
@@ -11678,7 +11678,7 @@
         "pt": "Everton"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Everton",
         "clubelo": "Everton"
@@ -11708,7 +11708,7 @@
         "pt": "Brighton"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Brighton",
         "clubelo": "Brighton"
@@ -11738,7 +11738,7 @@
         "pt": "Burnley"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Burnley",
         "clubelo": "Burnley"
@@ -11768,7 +11768,7 @@
         "pt": "Newcastle"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Newcastle",
         "clubelo": "Newcastle"
@@ -11798,7 +11798,7 @@
         "pt": "Aston Villa"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Aston Villa",
         "clubelo": "Aston Villa"
@@ -11828,7 +11828,7 @@
         "pt": "Liverpool"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Liverpool",
         "clubelo": "Liverpool"
@@ -11858,7 +11858,7 @@
         "pt": "Bournemouth"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Bournemouth",
         "clubelo": "Bournemouth"
@@ -11888,7 +11888,7 @@
         "pt": "Sunderland"
       },
       "country": "ENG",
-      "league": "E0",
+      "league": "Premier League (ENG)",
       "names": {
         "football-data": "Sunderland",
         "clubelo": "Sunderland"
@@ -11918,7 +11918,7 @@
         "pt": "Middlesbrough"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Middlesbrough",
         "clubelo": null
@@ -11945,7 +11945,7 @@
         "pt": "Bristol City"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Bristol City",
         "clubelo": "Bristol City"
@@ -11975,7 +11975,7 @@
         "pt": "Ipswich"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Ipswich",
         "clubelo": "Ipswich"
@@ -12005,7 +12005,7 @@
         "pt": "Birmingham"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Birmingham",
         "clubelo": "Birmingham"
@@ -12035,7 +12035,7 @@
         "pt": "Stoke"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Stoke",
         "clubelo": "Stoke"
@@ -12060,7 +12060,7 @@
         "pt": "Portsmouth"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Portsmouth",
         "clubelo": "Portsmouth"
@@ -12090,7 +12090,7 @@
         "pt": "Southampton"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Southampton",
         "clubelo": "Southampton"
@@ -12120,7 +12120,7 @@
         "pt": "West Brom"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "West Brom",
         "clubelo": "West Brom"
@@ -12145,7 +12145,7 @@
         "pt": "Watford"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Watford",
         "clubelo": "Watford"
@@ -12175,7 +12175,7 @@
         "pt": "Coventry"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Coventry",
         "clubelo": "Coventry"
@@ -12200,7 +12200,7 @@
         "pt": "Preston"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Preston",
         "clubelo": "Preston"
@@ -12225,7 +12225,7 @@
         "pt": "Derby"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Derby",
         "clubelo": "Derby"
@@ -12250,7 +12250,7 @@
         "pt": "Hull"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Hull",
         "clubelo": "Hull"
@@ -12280,7 +12280,7 @@
         "pt": "Oxford"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Oxford",
         "clubelo": "Oxford"
@@ -12305,7 +12305,7 @@
         "pt": "Swansea"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Swansea",
         "clubelo": "Swansea"
@@ -12330,7 +12330,7 @@
         "pt": "Norwich"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Norwich",
         "clubelo": "Norwich"
@@ -12355,7 +12355,7 @@
         "pt": "Sheffield Weds"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Sheffield Weds",
         "clubelo": "Sheffield Weds"
@@ -12380,7 +12380,7 @@
         "pt": "Sheffield United"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Sheffield United",
         "clubelo": null
@@ -12407,7 +12407,7 @@
         "pt": "QPR"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "QPR",
         "clubelo": "QPR"
@@ -12432,7 +12432,7 @@
         "pt": "Wrexham"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Wrexham",
         "clubelo": "Wrexham"
@@ -12462,7 +12462,7 @@
         "pt": "Leicester"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Leicester",
         "clubelo": "Leicester"
@@ -12492,7 +12492,7 @@
         "pt": "Charlton"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Charlton",
         "clubelo": "Charlton"
@@ -12522,7 +12522,7 @@
         "pt": "Millwall"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Millwall",
         "clubelo": "Millwall"
@@ -12552,7 +12552,7 @@
         "pt": "Blackburn"
       },
       "country": "ENG",
-      "league": "E1",
+      "league": "Championship (ENG)",
       "names": {
         "football-data": "Blackburn",
         "clubelo": "Blackburn"
@@ -14719,7 +14719,7 @@
         "pt": "Nice"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Nice",
         "clubelo": "Nice"
@@ -14749,7 +14749,7 @@
         "pt": "Lens"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Lens",
         "clubelo": "Lens"
@@ -14774,7 +14774,7 @@
         "pt": "Le Havre"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Le Havre",
         "clubelo": "Le Havre"
@@ -14799,7 +14799,7 @@
         "pt": "Lille"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Lille",
         "clubelo": "Lille"
@@ -14829,7 +14829,7 @@
         "pt": "Angers"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Angers",
         "clubelo": "Angers"
@@ -14859,7 +14859,7 @@
         "pt": "Nantes"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Nantes",
         "clubelo": "Nantes"
@@ -14889,7 +14889,7 @@
         "pt": "Lorient"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Lorient",
         "clubelo": "Lorient"
@@ -14919,7 +14919,7 @@
         "pt": "Paris FC"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Paris FC",
         "clubelo": "Paris FC"
@@ -14949,7 +14949,7 @@
         "pt": "Auxerre"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Auxerre",
         "clubelo": "Auxerre"
@@ -14979,7 +14979,7 @@
         "pt": "Lyon"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Lyon",
         "clubelo": "Lyon"
@@ -15009,7 +15009,7 @@
         "pt": "Brest"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Brest",
         "clubelo": "Brest"
@@ -15039,7 +15039,7 @@
         "pt": "Rennes"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Rennes",
         "clubelo": "Rennes"
@@ -15069,7 +15069,7 @@
         "pt": "Monaco"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Monaco",
         "clubelo": "Monaco"
@@ -15094,7 +15094,7 @@
         "pt": "Toulouse"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Toulouse",
         "clubelo": "Toulouse"
@@ -15124,7 +15124,7 @@
         "pt": "Marseille"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Marseille",
         "clubelo": "Marseille"
@@ -15154,7 +15154,7 @@
         "pt": "Paris SG"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Paris SG",
         "clubelo": "Paris SG"
@@ -15179,7 +15179,7 @@
         "pt": "Metz"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Metz",
         "clubelo": "Metz"
@@ -15204,7 +15204,7 @@
         "pt": "Strasbourg"
       },
       "country": "FRA",
-      "league": "F1",
+      "league": "Ligue1 (FRA)",
       "names": {
         "football-data": "Strasbourg",
         "clubelo": "Strasbourg"
@@ -15229,7 +15229,7 @@
         "pt": "Amiens"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Amiens",
         "clubelo": null
@@ -15256,7 +15256,7 @@
         "pt": "Boulogne"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Boulogne",
         "clubelo": "Boulogne"
@@ -15286,7 +15286,7 @@
         "pt": "Guingamp"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Guingamp",
         "clubelo": "Guingamp"
@@ -15316,7 +15316,7 @@
         "pt": "Laval"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Laval",
         "clubelo": "Laval"
@@ -15341,7 +15341,7 @@
         "pt": "Dunkerque"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Dunkerque",
         "clubelo": "Dunkerque"
@@ -15371,7 +15371,7 @@
         "pt": "Grenoble"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Grenoble",
         "clubelo": "Grenoble"
@@ -15396,7 +15396,7 @@
         "pt": "Bastia"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Bastia",
         "clubelo": "Bastia"
@@ -15463,7 +15463,7 @@
         "pt": "Le Mans"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Le Mans",
         "clubelo": "Le Mans"
@@ -15493,7 +15493,7 @@
         "pt": "Nancy"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Nancy",
         "clubelo": "Nancy"
@@ -15523,7 +15523,7 @@
         "pt": "Reims"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Reims",
         "clubelo": "Reims"
@@ -15548,7 +15548,7 @@
         "pt": "Rodez"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Rodez",
         "clubelo": "Rodez"
@@ -15573,7 +15573,7 @@
         "pt": "Red Star"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Red Star",
         "clubelo": "Red Star"
@@ -15598,7 +15598,7 @@
         "pt": "Pau FC"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Pau FC",
         "clubelo": "Pau"
@@ -15628,7 +15628,7 @@
         "pt": "Troyes"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Troyes",
         "clubelo": "Troyes"
@@ -15658,7 +15658,7 @@
         "pt": "Montpellier"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Montpellier",
         "clubelo": "Montpellier"
@@ -15688,7 +15688,7 @@
         "pt": "Annecy"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Annecy",
         "clubelo": "Annecy"
@@ -15718,7 +15718,7 @@
         "pt": "Clermont"
       },
       "country": "FRA",
-      "league": "F2",
+      "league": "Ligue2 (FRA)",
       "names": {
         "football-data": "Clermont",
         "clubelo": null
@@ -16276,7 +16276,7 @@
         "pt": "AEK"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "AEK",
         "clubelo": null
@@ -16303,7 +16303,7 @@
         "pt": "Larisa"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Larisa",
         "clubelo": "Larisa"
@@ -16335,7 +16335,7 @@
         "pt": "Panetolikos"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Panetolikos",
         "clubelo": "Panetolikos"
@@ -16365,7 +16365,7 @@
         "pt": "Atromitos"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Atromitos",
         "clubelo": null
@@ -16392,7 +16392,7 @@
         "pt": "PAOK"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "PAOK",
         "clubelo": null
@@ -16419,7 +16419,7 @@
         "pt": "Aris"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Aris",
         "clubelo": null
@@ -16446,7 +16446,7 @@
         "pt": "Panserraikos"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Panserraikos",
         "clubelo": null
@@ -16473,7 +16473,7 @@
         "pt": "OFI Crete"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "OFI Crete",
         "clubelo": null
@@ -16500,7 +16500,7 @@
         "pt": "Kifisia"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Kifisia",
         "clubelo": null
@@ -16527,7 +16527,7 @@
         "pt": "Levadeiakos"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Levadeiakos",
         "clubelo": null
@@ -16554,7 +16554,7 @@
         "pt": "Olympiakos"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Olympiakos",
         "clubelo": "Olympiakos"
@@ -16584,7 +16584,7 @@
         "pt": "Volos NFC"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Volos NFC",
         "clubelo": null
@@ -16615,7 +16615,7 @@
         "pt": "Panathinaikos"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Panathinaikos",
         "clubelo": null
@@ -16642,7 +16642,7 @@
         "pt": "Asteras Tripolis"
       },
       "country": "GRE",
-      "league": "G1",
+      "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Asteras Tripolis",
         "clubelo": "Asteras Tripolis"
@@ -16672,7 +16672,7 @@
         "pt": "Lecce"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Lecce",
         "clubelo": "Lecce"
@@ -16702,7 +16702,7 @@
         "pt": "Lazio"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Lazio",
         "clubelo": "Lazio"
@@ -16732,7 +16732,7 @@
         "pt": "Pisa"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Pisa",
         "clubelo": "Pisa"
@@ -16762,7 +16762,7 @@
         "pt": "Sassuolo"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Sassuolo",
         "clubelo": "Sassuolo"
@@ -16792,7 +16792,7 @@
         "pt": "Como"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Como",
         "clubelo": "Como"
@@ -16817,7 +16817,7 @@
         "pt": "Napoli"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Napoli",
         "clubelo": "Napoli"
@@ -16847,7 +16847,7 @@
         "pt": "Verona"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Verona",
         "clubelo": "Verona"
@@ -16877,7 +16877,7 @@
         "pt": "Fiorentina"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Fiorentina",
         "clubelo": "Fiorentina"
@@ -16907,7 +16907,7 @@
         "pt": "Atalanta"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Atalanta",
         "clubelo": null
@@ -16934,7 +16934,7 @@
         "pt": "Cagliari"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Cagliari",
         "clubelo": null
@@ -16961,7 +16961,7 @@
         "pt": "Roma"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Roma",
         "clubelo": null
@@ -16988,7 +16988,7 @@
         "pt": "Parma"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Parma",
         "clubelo": "Parma"
@@ -17018,7 +17018,7 @@
         "pt": "Genoa"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Genoa",
         "clubelo": "Genoa"
@@ -17048,7 +17048,7 @@
         "pt": "Cremonese"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Cremonese",
         "clubelo": null
@@ -17075,7 +17075,7 @@
         "pt": "Udinese"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Udinese",
         "clubelo": "Udinese"
@@ -17105,7 +17105,7 @@
         "pt": "Torino"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Torino",
         "clubelo": "Torino"
@@ -17135,7 +17135,7 @@
         "pt": "Inter"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Inter",
         "clubelo": "Inter"
@@ -17165,7 +17165,7 @@
         "pt": "Bologna"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Bologna",
         "clubelo": "Bologna"
@@ -17195,7 +17195,7 @@
         "pt": "Milan"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Milan",
         "clubelo": "Milan"
@@ -17225,7 +17225,7 @@
         "pt": "Juventus"
       },
       "country": "ITA",
-      "league": "I1",
+      "league": "Serie A (ITA)",
       "names": {
         "football-data": "Juventus",
         "clubelo": "Juventus"
@@ -23257,7 +23257,7 @@
         "pt": "For Sittard"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "For Sittard",
         "clubelo": null
@@ -23279,7 +23279,7 @@
         "pt": "Feyenoord"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Feyenoord",
         "clubelo": "Feyenoord"
@@ -23309,7 +23309,7 @@
         "pt": "Heerenveen"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Heerenveen",
         "clubelo": "Heerenveen"
@@ -23334,7 +23334,7 @@
         "pt": "Zwolle"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Zwolle",
         "clubelo": "Zwolle"
@@ -23359,7 +23359,7 @@
         "pt": "AZ Alkmaar"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "AZ Alkmaar",
         "clubelo": null
@@ -23386,7 +23386,7 @@
         "pt": "Go Ahead Eagles"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Go Ahead Eagles",
         "clubelo": "Go Ahead Eagles"
@@ -23416,7 +23416,7 @@
         "pt": "NAC Breda"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "NAC Breda",
         "clubelo": null
@@ -23443,7 +23443,7 @@
         "pt": "Sparta Rotterdam"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Sparta Rotterdam",
         "clubelo": "Sparta Rotterdam"
@@ -23473,7 +23473,7 @@
         "pt": "Telstar"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Telstar",
         "clubelo": "Telstar"
@@ -23503,7 +23503,7 @@
         "pt": "Heracles"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Heracles",
         "clubelo": "Heracles"
@@ -23528,7 +23528,7 @@
         "pt": "Twente"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Twente",
         "clubelo": "Twente"
@@ -23558,7 +23558,7 @@
         "pt": "Excelsior"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Excelsior",
         "clubelo": "Excelsior"
@@ -23583,7 +23583,7 @@
         "pt": "Nijmegen"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Nijmegen",
         "clubelo": "Nijmegen"
@@ -23608,7 +23608,7 @@
         "pt": "Volendam"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Volendam",
         "clubelo": "Volendam"
@@ -23638,7 +23638,7 @@
         "pt": "Groningen"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Groningen",
         "clubelo": "Groningen"
@@ -23663,7 +23663,7 @@
         "pt": "PSV Eindhoven"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "PSV Eindhoven",
         "clubelo": null
@@ -23685,7 +23685,7 @@
         "pt": "Utrecht"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Utrecht",
         "clubelo": "Utrecht"
@@ -23710,7 +23710,7 @@
         "pt": "Ajax"
       },
       "country": "NLD",
-      "league": "N1",
+      "league": "Eredivise (NLD)",
       "names": {
         "football-data": "Ajax",
         "clubelo": "Ajax"
@@ -24512,7 +24512,7 @@
         "pt": "Estoril"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Estoril",
         "clubelo": "Estoril"
@@ -24542,7 +24542,7 @@
         "pt": "Guimaraes"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Guimaraes",
         "clubelo": "Guimaraes"
@@ -24572,7 +24572,7 @@
         "pt": "Casa Pia"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Casa Pia",
         "clubelo": "Casa Pia"
@@ -24602,7 +24602,7 @@
         "pt": "Famalicao"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Famalicao",
         "clubelo": null
@@ -24629,7 +24629,7 @@
         "pt": "Estrela"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Estrela",
         "clubelo": null
@@ -24656,7 +24656,7 @@
         "pt": "Rio Ave"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Rio Ave",
         "clubelo": "Rio Ave"
@@ -24686,7 +24686,7 @@
         "pt": "Tondela"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Tondela",
         "clubelo": "Tondela"
@@ -24716,7 +24716,7 @@
         "pt": "Benfica"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Benfica",
         "clubelo": "Benfica"
@@ -24746,7 +24746,7 @@
         "pt": "Arouca"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Arouca",
         "clubelo": "Arouca"
@@ -24776,7 +24776,7 @@
         "pt": "Gil Vicente"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Gil Vicente",
         "clubelo": "Gil Vicente"
@@ -24845,7 +24845,7 @@
         "pt": "Alverca"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Alverca",
         "clubelo": "Alverca"
@@ -24875,7 +24875,7 @@
         "pt": "AVS"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "AVS",
         "clubelo": null
@@ -24902,7 +24902,7 @@
         "pt": "Santa Clara"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Santa Clara",
         "clubelo": "Santa Clara"
@@ -24932,7 +24932,7 @@
         "pt": "Nacional"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Nacional",
         "clubelo": "Nacional"
@@ -24962,7 +24962,7 @@
         "pt": "Porto"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Porto",
         "clubelo": null
@@ -24989,7 +24989,7 @@
         "pt": "Sp Braga"
       },
       "country": "POR",
-      "league": "P1",
+      "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Sp Braga",
         "clubelo": null
@@ -30167,7 +30167,7 @@
         "pt": "Villarreal"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Villarreal",
         "clubelo": null
@@ -30194,7 +30194,7 @@
         "pt": "Sevilla"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Sevilla",
         "clubelo": "Sevilla"
@@ -30224,7 +30224,7 @@
         "pt": "Osasuna"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Osasuna",
         "clubelo": "Osasuna"
@@ -30254,7 +30254,7 @@
         "pt": "Celta"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Celta",
         "clubelo": "Celta"
@@ -30284,7 +30284,7 @@
         "pt": "Barcelona"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Barcelona",
         "clubelo": "Barcelona"
@@ -30314,7 +30314,7 @@
         "pt": "Alaves"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Alaves",
         "clubelo": "Alaves"
@@ -30344,7 +30344,7 @@
         "pt": "Levante"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Levante",
         "clubelo": "Levante"
@@ -30374,7 +30374,7 @@
         "pt": "Sociedad"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Sociedad",
         "clubelo": "Sociedad"
@@ -30404,7 +30404,7 @@
         "pt": "Ath Bilbao"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Ath Bilbao",
         "clubelo": null
@@ -30464,7 +30464,7 @@
         "pt": "Mallorca"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Mallorca",
         "clubelo": "Mallorca"
@@ -30494,7 +30494,7 @@
         "pt": "Valencia"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Valencia",
         "clubelo": "Valencia"
@@ -30524,7 +30524,7 @@
         "pt": "Betis"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Betis",
         "clubelo": "Betis"
@@ -30554,7 +30554,7 @@
         "pt": "Elche"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Elche",
         "clubelo": "Elche"
@@ -30584,7 +30584,7 @@
         "pt": "Oviedo"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Oviedo",
         "clubelo": "Oviedo"
@@ -30614,7 +30614,7 @@
         "pt": "Real Madrid"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Real Madrid",
         "clubelo": "Real Madrid"
@@ -30644,7 +30644,7 @@
         "pt": "Girona"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Girona",
         "clubelo": "Girona"
@@ -30674,7 +30674,7 @@
         "pt": "Vallecano"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Vallecano",
         "clubelo": null
@@ -30701,7 +30701,7 @@
         "pt": "Getafe"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Getafe",
         "clubelo": "Getafe"
@@ -30731,7 +30731,7 @@
         "pt": "Ath Madrid"
       },
       "country": "ESP",
-      "league": "SP1",
+      "league": "La Liga (ESP)",
       "names": {
         "football-data": "Ath Madrid",
         "clubelo": null
@@ -30758,7 +30758,7 @@
         "pt": "Huesca"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Huesca",
         "clubelo": "Huesca"
@@ -30788,7 +30788,7 @@
         "pt": "Sp Gijon"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Sp Gijon",
         "clubelo": null
@@ -30815,7 +30815,7 @@
         "pt": "Valladolid"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Valladolid",
         "clubelo": "Valladolid"
@@ -30845,7 +30845,7 @@
         "pt": "Sociedad B"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Sociedad B",
         "clubelo": "Sociedad B"
@@ -30870,7 +30870,7 @@
         "pt": "Castellon"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Castellon",
         "clubelo": "Castellon"
@@ -30900,7 +30900,7 @@
         "pt": "Granada"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Granada",
         "clubelo": "Granada"
@@ -30930,7 +30930,7 @@
         "pt": "Cordoba"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Cordoba",
         "clubelo": "Cordoba"
@@ -30960,7 +30960,7 @@
         "pt": "Albacete"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Albacete",
         "clubelo": "Albacete"
@@ -30990,7 +30990,7 @@
         "pt": "Almeria"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Almeria",
         "clubelo": "Almeria"
@@ -31020,7 +31020,7 @@
         "pt": "Cultural Leonesa"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Cultural Leonesa",
         "clubelo": null
@@ -31047,7 +31047,7 @@
         "pt": "Zaragoza"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Zaragoza",
         "clubelo": "Zaragoza"
@@ -31077,7 +31077,7 @@
         "pt": "Mirandes"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Mirandes",
         "clubelo": null
@@ -31104,7 +31104,7 @@
         "pt": "Cadiz"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Cadiz",
         "clubelo": "Cadiz"
@@ -31134,7 +31134,7 @@
         "pt": "Santander"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Santander",
         "clubelo": null
@@ -31161,7 +31161,7 @@
         "pt": "Ceuta"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Ceuta",
         "clubelo": "Ceuta"
@@ -31191,7 +31191,7 @@
         "pt": "Burgos"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Burgos",
         "clubelo": "Burgos"
@@ -31221,7 +31221,7 @@
         "pt": "Eibar"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Eibar",
         "clubelo": "Eibar"
@@ -31251,7 +31251,7 @@
         "pt": "Malaga"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Malaga",
         "clubelo": "Malaga"
@@ -31281,7 +31281,7 @@
         "pt": "Andorra"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Andorra",
         "clubelo": "Andorra CF"
@@ -31306,7 +31306,7 @@
         "pt": "Las Palmas"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Las Palmas",
         "clubelo": "Las Palmas"
@@ -31336,7 +31336,7 @@
         "pt": "La Coruna"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "La Coruna",
         "clubelo": null
@@ -31363,7 +31363,7 @@
         "pt": "Leganes"
       },
       "country": "ESP",
-      "league": "SP2",
+      "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Leganes",
         "clubelo": "Leganes"
@@ -36559,7 +36559,7 @@
         "pt": "Goztep"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Goztep",
         "clubelo": null
@@ -36581,7 +36581,7 @@
         "pt": "Rizespor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Rizespor",
         "clubelo": "Rizespor"
@@ -36611,7 +36611,7 @@
         "pt": "Antalyaspor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Antalyaspor",
         "clubelo": "Antalyaspor"
@@ -36641,7 +36641,7 @@
         "pt": "Kasimpasa"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Kasimpasa",
         "clubelo": null
@@ -36668,7 +36668,7 @@
         "pt": "Eyupspor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Eyupspor",
         "clubelo": "Eyupspor"
@@ -36698,7 +36698,7 @@
         "pt": "Buyuksehyr"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Buyuksehyr",
         "clubelo": null
@@ -36720,7 +36720,7 @@
         "pt": "Alanyaspor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Alanyaspor",
         "clubelo": "Alanyaspor"
@@ -36750,7 +36750,7 @@
         "pt": "Gaziantep"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Gaziantep",
         "clubelo": null
@@ -36777,7 +36777,7 @@
         "pt": "Fenerbahce"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Fenerbahce",
         "clubelo": null
@@ -36804,7 +36804,7 @@
         "pt": "Kayserispor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Kayserispor",
         "clubelo": null
@@ -36831,7 +36831,7 @@
         "pt": "Konyaspor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Konyaspor",
         "clubelo": "Konyaspor"
@@ -36861,7 +36861,7 @@
         "pt": "Trabzonspor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Trabzonspor",
         "clubelo": "Trabzonspor"
@@ -36891,7 +36891,7 @@
         "pt": "Karagumruk"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Karagumruk",
         "clubelo": null
@@ -36913,7 +36913,7 @@
         "pt": "Galatasaray"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Galatasaray",
         "clubelo": "Galatasaray"
@@ -36943,7 +36943,7 @@
         "pt": "Samsunspor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Samsunspor",
         "clubelo": "Samsunspor"
@@ -36973,7 +36973,7 @@
         "pt": "Kocaelispor"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Kocaelispor",
         "clubelo": null
@@ -37000,7 +37000,7 @@
         "pt": "Genclerbirligi"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Genclerbirligi",
         "clubelo": null
@@ -37027,7 +37027,7 @@
         "pt": "Besiktas"
       },
       "country": "TUR",
-      "league": "T1",
+      "league": "Super Lig (TUR)",
       "names": {
         "football-data": "Besiktas",
         "clubelo": "Besiktas"

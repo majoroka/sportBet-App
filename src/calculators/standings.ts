@@ -25,9 +25,10 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
 
   const teams: Record<string, StandingRow> = {};
 
-  const initTeam = (canonicalName: string) => {
+  const initTeam = (canonicalName: string, teamId: string | null) => {
     if (!teams[canonicalName]) {
       teams[canonicalName] = {
+        teamId,
         rank: 0,
         team: canonicalName,
         played: 0,
@@ -40,22 +41,24 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
         points: 0,
         form: [] as FormMatch[]
       };
+    } else if (teamId && !teams[canonicalName].teamId) {
+      teams[canonicalName].teamId = teamId;
     }
   };
 
   // Helper para resolver o nome canónico usando o novo sistema de mapeamento
   // Usamos 'football-data' como fonte porque este calculador processa CSVs dessa origem
-  const getCanonicalName = (name: string): string => {
+  const getCanonicalName = (name: string): { canonical: string; id: string | null } => {
     // 1) fonte oficial das standings
     const fdId = resolveTeamId('football-data', name);
-    if (fdId) return getDisplayNamePt(fdId) || name;
+    if (fdId) return { canonical: getDisplayNamePt(fdId) || name, id: fdId };
 
     // 2) fallback: tentar casar com o mapeamento de fixtures (ClubElo)
     const ceId = resolveTeamId('clubelo', name);
-    if (ceId) return getDisplayNamePt(ceId) || name;
+    if (ceId) return { canonical: getDisplayNamePt(ceId) || name, id: ceId };
 
     // 3) sem mapeamento conhecido, devolve o nome original
-    return name;
+    return { canonical: name, id: null };
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -78,11 +81,11 @@ export const calculateStandings = (csvText: string): StandingRow[] => {
 
     if (!homeTeamName || !awayTeamName || !result || fthg === undefined || ftag === undefined) return;
 
-    const canonicalHomeName = getCanonicalName(homeTeamName);
-    const canonicalAwayName = getCanonicalName(awayTeamName);
+    const { canonical: canonicalHomeName, id: homeId } = getCanonicalName(homeTeamName);
+    const { canonical: canonicalAwayName, id: awayId } = getCanonicalName(awayTeamName);
 
-    initTeam(canonicalHomeName);
-    initTeam(canonicalAwayName);
+    initTeam(canonicalHomeName, homeId);
+    initTeam(canonicalAwayName, awayId);
 
     const home = teams[canonicalHomeName];
     const away = teams[canonicalAwayName];

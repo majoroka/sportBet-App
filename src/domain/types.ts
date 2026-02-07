@@ -26,6 +26,7 @@ export interface FormMatch {
  * Representa uma linha da tabela de classificação.
  */
 export interface StandingRow {
+  teamId?: string | null;
   rank: number;
   team: string;
   played: number;

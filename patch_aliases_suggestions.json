@@ -1,9 +1,27 @@
 [
   {
-    "alias_key_clubelo": "clubelo:nfc volos",
-    "alias_key_football_data": "football-data:nfc volos",
-    "original_name": "NFC Volos",
-    "normalized_name": "nfc volos"
+    "alias_key_clubelo": "clubelo:rapid wien",
+    "alias_key_football_data": "football-data:rapid wien",
+    "original_name": "Rapid Wien",
+    "normalized_name": "rapid wien"
+  },
+  {
+    "alias_key_clubelo": "clubelo:wattens",
+    "alias_key_football_data": "football-data:wattens",
+    "original_name": "Wattens",
+    "normalized_name": "wattens"
+  },
+  {
+    "alias_key_clubelo": "clubelo:vukovar",
+    "alias_key_football_data": "football-data:vukovar",
+    "original_name": "Vukovar",
+    "normalized_name": "vukovar"
+  },
+  {
+    "alias_key_clubelo": "clubelo:istra 1961",
+    "alias_key_football_data": "football-data:istra 1961",
+    "original_name": "Istra 1961",
+    "normalized_name": "istra 1961"
   },
   {
     "alias_key_clubelo": "clubelo:ferencvaros",
@@ -150,6 +168,18 @@
     "normalized_name": "bravo"
   },
   {
+    "alias_key_clubelo": "clubelo:wolfsberg",
+    "alias_key_football_data": "football-data:wolfsberg",
+    "original_name": "Wolfsberg",
+    "normalized_name": "wolfsberg"
+  },
+  {
+    "alias_key_clubelo": "clubelo:gak",
+    "alias_key_football_data": "football-data:gak",
+    "original_name": "GAK",
+    "normalized_name": "gak"
+  },
+  {
     "alias_key_clubelo": "clubelo:st gillis",
     "alias_key_football_data": "football-data:st gillis",
     "original_name": "St Gillis",
@@ -276,6 +306,12 @@
     "normalized_name": "koper"
   },
   {
+    "alias_key_clubelo": "clubelo:mura",
+    "alias_key_football_data": "football-data:mura",
+    "original_name": "Mura",
+    "normalized_name": "mura"
+  },
+  {
     "alias_key_clubelo": "clubelo:espanyol",
     "alias_key_football_data": "football-data:espanyol",
     "original_name": "Espanyol",
@@ -292,6 +328,18 @@
     "alias_key_football_data": "football-data:maccabi bnei raina",
     "original_name": "Maccabi Bnei Raina",
     "normalized_name": "maccabi bnei raina"
+  },
+  {
+    "alias_key_clubelo": "clubelo:beer sheva",
+    "alias_key_football_data": "football-data:beer sheva",
+    "original_name": "Beer-Sheva",
+    "normalized_name": "beer sheva"
+  },
+  {
+    "alias_key_clubelo": "clubelo:beitar",
+    "alias_key_football_data": "football-data:beitar",
+    "original_name": "Beitar",
+    "normalized_name": "beitar"
   },
   {
     "alias_key_clubelo": "clubelo:plock",

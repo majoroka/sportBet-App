@@ -1,8 +1,23 @@
 [
   {
-    "original_name": "NFC Volos",
-    "normalized_name": "nfc volos",
-    "matched": Volos
+    "original_name": "Rapid Wien",
+    "normalized_name": "rapid wien",
+    "matched": false
+  },
+  {
+    "original_name": "Wattens",
+    "normalized_name": "wattens",
+    "matched": false
+  },
+  {
+    "original_name": "Vukovar",
+    "normalized_name": "vukovar",
+    "matched": false
+  },
+  {
+    "original_name": "Istra 1961",
+    "normalized_name": "istra 1961",
+    "matched": false
   },
   {
     "original_name": "Ferencvaros",
@@ -125,6 +140,16 @@
     "matched": false
   },
   {
+    "original_name": "Wolfsberg",
+    "normalized_name": "wolfsberg",
+    "matched": false
+  },
+  {
+    "original_name": "GAK",
+    "normalized_name": "gak",
+    "matched": false
+  },
+  {
     "original_name": "St Gillis",
     "normalized_name": "st gillis",
     "matched": false
@@ -230,6 +255,11 @@
     "matched": false
   },
   {
+    "original_name": "Mura",
+    "normalized_name": "mura",
+    "matched": false
+  },
+  {
     "original_name": "Espanyol",
     "normalized_name": "espanyol",
     "matched": false
@@ -242,6 +272,16 @@
   {
     "original_name": "Maccabi Bnei Raina",
     "normalized_name": "maccabi bnei raina",
+    "matched": false
+  },
+  {
+    "original_name": "Beer-Sheva",
+    "normalized_name": "beer sheva",
+    "matched": false
+  },
+  {
+    "original_name": "Beitar",
+    "normalized_name": "beitar",
     "matched": false
   },
   {

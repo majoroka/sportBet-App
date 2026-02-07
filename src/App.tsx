@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Fixture } from './domain/types';
 import { parseCsvFixtures } from './adapters/csvAdapter';
 import { FixtureDetails } from './components/FixtureDetails';
-import { loadTeamMapping, getMappingStats } from './lib/teamMapping';
+import { loadTeamMapping } from './lib/teamMapping';
 
 const countryCodeToNameMap: Record<string, string> = {
   POR: 'Portugal',
@@ -93,7 +93,6 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedFixtureId, setSelectedFixtureId] = useState<string>('');
-  const [mappingInfo, setMappingInfo] = useState<{ loaded: boolean; count: number } | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -102,7 +101,6 @@ function App() {
       try {
         // Carregar o mapeamento de equipas antes de processar os jogos
         await loadTeamMapping();
-        setMappingInfo(getMappingStats());
 
         // O script 'predev' garante que este ficheiro está atualizado antes do servidor arrancar.
         // Adicionamos cache-busting para garantir que o browser não serve uma versão antiga.
@@ -168,11 +166,13 @@ function App() {
     return Array.from(countries).sort((a, b) => (countryCodeToNameMap[a] || a).localeCompare(countryCodeToNameMap[b] || b));
   }, [fixtures, selectedDate]);
 
-  // Filtrar jogos pela data e país selecionados
+  // Filtrar jogos pela data selecionada (país opcional)
   const availableGames = useMemo(() => {
-    if (!selectedCountry) return [];
-    // Usa a mesma lógica de fallback para garantir que a filtragem funciona
-    return fixtures.filter(f => f.date === selectedDate && f.country === selectedCountry);
+    if (!selectedDate) return [];
+    const gamesForDate = fixtures.filter(f => f.date === selectedDate);
+    return selectedCountry
+      ? gamesForDate.filter(f => f.country === selectedCountry)
+      : gamesForDate;
   }, [fixtures, selectedDate, selectedCountry]);
 
   const selectedFixture = useMemo(() => 
@@ -181,12 +181,12 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 font-sans text-gray-900">
-      <header className="text-center mb-8">
+      <header className="text-center mb-4">
         <h1 className="text-4xl font-bold font-rajdhani text-[#60A5FA]">
-          Analisador de Futebol
+          Observatório Prob & Stats
         </h1>
         <p className="text-gray-500">
-          Selecione uma data, país e jogo para ver a análise de probabilidades.
+          Probabilidades • Estatística • xG • Elo
         </p>
       </header>
 
@@ -195,9 +195,9 @@ function App() {
         {error && <div className={`p-4 rounded-md my-4 ${error.startsWith('Nota:') ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>{error}</div>}
         
         {!loading && (
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* --- BARRA DE FILTROS --- */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 p-4 bg-white rounded-lg shadow-md max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3 max-w-4xl mx-auto">
               {/* Filtro de Data */}
               <select 
                 onChange={(e) => {
@@ -217,7 +217,7 @@ function App() {
                 ))}
               </select>
 
-              {/* Filtro de País */}
+              {/* Filtro de País (opcional) */}
               <select 
                 onChange={(e) => {
                   setSelectedCountry(e.target.value);
@@ -227,7 +227,7 @@ function App() {
                 disabled={!selectedDate || availableCountries.length === 0} 
                 className="w-full p-2 border rounded-md appearance-none bg-white bg-no-repeat pr-10 disabled:opacity-50 disabled:bg-gray-100 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22M6 8l4 4 4-4%22/%3E%3C/svg%3E')] bg-[position:right_0.5rem_center] bg-[length:1.5em_1.5em]"
               >
-                <option value="">2. Selecione o País</option>
+                <option value="">2. Selecione o País (opcional)</option>
                 {availableCountries.map(countryCode => (
                   <option key={countryCode} value={countryCode}>
                     {countryCodeToFlagMap[countryCode] ? `${countryCodeToFlagMap[countryCode]} ` : ''}{countryCodeToNameMap[countryCode] || countryCode}
@@ -236,7 +236,7 @@ function App() {
               </select>
 
               {/* Filtro de Jogo */}
-              <select onChange={e => setSelectedFixtureId(e.target.value)} value={selectedFixtureId} disabled={!selectedCountry} className="w-full p-2 border rounded-md appearance-none bg-white bg-no-repeat pr-10 disabled:opacity-50 disabled:bg-gray-100 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22M6 8l4 4 4-4%22/%3E%3C/svg%3E')] bg-[position:right_0.5rem_center] bg-[length:1.5em_1.5em]">
+              <select onChange={e => setSelectedFixtureId(e.target.value)} value={selectedFixtureId} disabled={!selectedDate || availableGames.length === 0} className="w-full p-2 border rounded-md appearance-none bg-white bg-no-repeat pr-10 disabled:opacity-50 disabled:bg-gray-100 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22%23000000%22 fill=%22none%22 viewBox=%220 0 20 20%22%3E%3Cpath stroke=%22%236b7280%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%221.5%22 d=%22M6 8l4 4 4-4%22/%3E%3C/svg%3E')] bg-[position:right_0.5rem_center] bg-[length:1.5em_1.5em]">
                 <option value="">3. Selecione o Jogo</option>
                 {availableGames.map(game => (
                   <option key={game.id} value={game.id}>
@@ -246,23 +246,12 @@ function App() {
               </select>
             </div>
 
-            {selectedFixture ? (
-              <FixtureDetails fixture={selectedFixture} />
-            ) : (
-              <div className="text-center p-10 bg-gray-100 rounded-lg max-w-4xl mx-auto">
-                <p className="text-gray-600">A análise do jogo aparecerá aqui.</p>
-              </div>
-            )}
+            <div className="border-t border-gray-200 w-full" />
+
+            {selectedFixture && <FixtureDetails fixture={selectedFixture} />}
           </div>
         )}
 
-        {!loading && (
-          <footer className="mt-12 py-6 text-center text-gray-400 text-sm border-t border-gray-200">
-            <p>
-              Dados: {fixtures.length} jogos | Mapeamento: {mappingInfo?.loaded ? `✅ Ativo (${mappingInfo.count} equipas)` : '⚠️ Inativo (Nomes originais)'}
-            </p>
-          </footer>
-        )}
       </main>
     </div>
   );
