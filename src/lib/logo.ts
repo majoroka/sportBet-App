@@ -52,6 +52,7 @@ const TEAM_ALIASES: Record<string, string> = {
   "union-berlin": "bundesliga (ger)/union-berlin",
   "eintracht-frankfurt": "bundesliga (ger)/eintracht-frankfurt",
   "atletico": "atletico-madrid",
+  "nacional": "primeira liga (por)/cd-nacional",
 };
 
 export const getTeamLogoFilename = (name: string): string => {
