@@ -99,6 +99,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - **Logo não aparece**: confirma nome/pasta em `public/logos`, corre `node scripts/generate-logo-manifest.js` e volta a abrir a UI.
 - **Sem FORMA/destaque na classificação**: acrescenta alias no `teams_mapping_package_clean.json` (football-data/clubelo) e garante que a liga existe em `src/config/leagues.ts` com aliases/código correto.
 - **Logs “Caminho não encontrado”**: verifica se a competição está em `src/config/leagues.ts` com `standings_url` ou `aliases` que coincidam com o nome do fixture.
+- **Tooltip de FORMA**: a dica do rato mostra agora o resultado e o lado (H/A) do jogo; se vês “H/A” trocado, verifica o parsing em `src/calculators/standings.ts`.
 
 ## 📈 Pipeline e Deploy
 
