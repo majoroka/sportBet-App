@@ -571,7 +571,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <div className="flex items-center justify-end gap-2">
               {/* Forma da equipa da casa (Esquerda do nome) */}
               {homeStanding && (
-                <div className="flex gap-1 mr-2">
+                <div className="hidden sm:flex gap-1 mr-2">
                   {homeStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
@@ -634,7 +634,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <h2 className="text-2xl font-bold text-gray-800">{awayTeam}</h2>
               {/* Forma da equipa de fora (Direita do nome) */}
               {awayStanding && (
-                <div className="flex gap-1 ml-2">
+                <div className="hidden sm:flex gap-1 ml-2">
                   {awayStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
@@ -800,7 +800,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {teamStatsHome && teamStatsAway && (
           <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit lg:col-span-6">
             <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">EQUIPAS</div>
-            <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[680px]">
+            <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[360px] sm:min-w-[680px]">
               {/* Row: main header (removed label) */}
               <div className="col-span-3 py-1"></div>
               <div className="col-span-1"></div>
