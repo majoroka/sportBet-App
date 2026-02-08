@@ -460,6 +460,29 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     return false;
   };
 
+  // xG estimado a partir da distribuição de resultados (truncado a 6 golos)
+  const [xgHome, xgAway] = React.useMemo(() => {
+    const cs = fixture.probabilities?.correctScore || {};
+    let sum = 0;
+    let eh = 0;
+    let ea = 0;
+    Object.entries(cs).forEach(([k, p]) => {
+      const [xs, ys] = k.split('-');
+      const x = Number(xs);
+      const y = Number(ys);
+      if (Number.isNaN(x) || Number.isNaN(y)) return;
+      if (x > 6 || y > 6) return; // truncagem a 6 golos
+      sum += p;
+      eh += p * x;
+      ea += p * y;
+    });
+    if (sum > 0 && sum !== 1) {
+      eh /= sum;
+      ea /= sum;
+    }
+    return [eh, ea];
+  }, [fixture.probabilities]);
+
   const findStanding = (teamName: string) => {
     return (
       standingsOverall.find((s) => namesMatch(s.team, teamName)) ||
@@ -649,9 +672,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           <div className="bg-gray-50 p-3 rounded-lg">
             <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
             <div className="grid grid-cols-3 gap-2">
-              <OddBox label="Casa" value={probabilities.homeWin} />
+              <OddBox label={homeTeam} value={probabilities.homeWin} />
               <OddBox label="Empate" value={probabilities.draw} />
-              <OddBox label="Fora" value={probabilities.awayWin} />
+              <OddBox label={awayTeam} value={probabilities.awayWin} />
             </div>
             <div className="mt-4 h-32">
               <Bar data={chartData} options={chartOptions} />
@@ -784,14 +807,28 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="col-span-3 py-1"></div>
 
               {/* Row: logos/names (top) */}
-              <div className="col-span-3 flex items-center justify-center gap-2 py-2">
-                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-7 h-7 object-contain" />
-                <span className="font-semibold">{homeTeam}</span>
+              <div className="col-span-3 flex items-center justify-center gap-3 py-2">
+                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-10 h-10 object-contain" />
+                <span className="font-bold text-lg flex items-center gap-2">
+                  {homeTeam}
+                  {xgHome > 0 ? (
+                    <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
+                      xG {xgHome.toFixed(2)}
+                    </span>
+                  ) : null}
+                </span>
               </div>
               <div className="text-center text-xs text-gray-500 py-2">vs</div>
-              <div className="col-span-3 flex items-center justify-center gap-2 py-2">
-                <span className="font-semibold">{awayTeam}</span>
-                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-7 h-7 object-contain" />
+              <div className="col-span-3 flex items-center justify-center gap-3 py-2">
+                <span className="font-bold text-lg flex items-center gap-2">
+                  {xgAway > 0 ? (
+                    <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
+                      xG {xgAway.toFixed(2)}
+                    </span>
+                  ) : null}
+                  {awayTeam}
+                </span>
+                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-10 h-10 object-contain" />
               </div>
 
               {/* Row: subheader labels under logos */}
@@ -878,10 +915,10 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <div className="flex justify-between"><span>Mais de 1,5</span><span className="font-semibold">{((leagueStats.over15 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
                     <div className="flex justify-between"><span>Mais de 2,5</span><span className="font-semibold">{((leagueStats.over25 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
                     <div className="flex justify-between"><span>Mais de 3,5</span><span className="font-semibold">{((leagueStats.over35 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Ambas equipas marcam</span><span className="font-semibold">{((leagueStats.btts / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
                     <div className="flex justify-between"><span>Golos /jogo</span><span className="font-semibold">{(leagueStats.goalsTotal / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
                     <div className="flex justify-between"><span>Golos /jogo casa</span><span className="font-semibold">{(leagueStats.goalsHome / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
                     <div className="flex justify-between"><span>Golos /jogo fora</span><span className="font-semibold">{(leagueStats.goalsAway / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span>Ambas equipas marcam</span><span className="font-semibold">{((leagueStats.btts / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
                   </div>
                 </>
               );
