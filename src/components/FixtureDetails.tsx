@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Fixture, StandingRow } from '../domain/types';
-import { calculateStandings, StandingMode } from '../calculators/standings';
+import { calculateStandings, computeLeagueStats, computeTeamStats, StandingMode } from '../calculators/standings';
 import { Heatmap } from './Heatmap';
 import { LEAGUE_CONFIG } from '../config/leagues';
 import {
@@ -15,6 +15,7 @@ import {
 import { getTeamLogoFilename } from '../lib/logo';
 import { resolveTeamId } from '../lib/teamMapping';
 import { Bar } from 'react-chartjs-2';
+import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 
 ChartJS.register(
   CategoryScale,
@@ -154,6 +155,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [standingsAway, setStandingsAway] = useState<StandingRow[]>([]);
   const [standingsLast10, setStandingsLast10] = useState<StandingRow[]>([]);
   const [standingsTab, setStandingsTab] = useState<StandingMode>('overall');
+  const [leagueStats, setLeagueStats] = useState<LeagueStats | null>(null);
+  const [teamStatsHome, setTeamStatsHome] = useState<TeamStats | null>(null);
+  const [teamStatsAway, setTeamStatsAway] = useState<TeamStats | null>(null);
   const [loadingStandings, setLoadingStandings] = useState(false);
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
@@ -335,17 +339,26 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           const dataHome = calculateStandings(text, 'home', 5);
           const dataAway = calculateStandings(text, 'away', 5);
           const dataLast10 = calculateStandings(text, 'overall', 10);
+          const stats = computeLeagueStats(text);
+          const tsHome = computeTeamStats(text, fixture.homeTeam);
+          const tsAway = computeTeamStats(text, fixture.awayTeam);
           console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${dataOverall.length}`);
           setStandingsOverall(dataOverall);
           setStandingsHome(dataHome);
           setStandingsAway(dataAway);
           setStandingsLast10(dataLast10);
+          setLeagueStats(stats);
+          setTeamStatsHome(tsHome);
+          setTeamStatsAway(tsAway);
         } else {
           console.warn(`❌ [Debug] Falha ao carregar ficheiro CSV: ${localUrl}`);
           setStandingsOverall([]);
           setStandingsHome([]);
           setStandingsAway([]);
           setStandingsLast10([]);
+          setLeagueStats(null);
+          setTeamStatsHome(null);
+          setTeamStatsAway(null);
         }
       } catch (error) {
         console.error("Erro ao carregar classificação:", error);
@@ -758,9 +771,125 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         <div className="flex-1 border-t border-gray-200" />
       </div>
 
-      {/* Classificação */}
-      <div className="space-y-4">
-        <div className="bg-gray-50 p-3 rounded-lg h-full flex flex-col">
+      {/* Estatística */}
+      <div className="space-y-4 flex flex-col lg:flex-row gap-4">
+        {/* Comparativo equipas */}
+        {teamStatsHome && teamStatsAway && (
+          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full lg:w-[720px] shadow-sm overflow-x-auto">
+            <div className="text-sm font-semibold text-gray-900 mb-1"> </div>
+            <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[680px]">
+              {/* Row: main header (removed label) */}
+              <div className="col-span-3 py-1"></div>
+              <div className="col-span-1"></div>
+              <div className="col-span-3 py-1"></div>
+
+              {/* Row: subheader labels */}
+              {['Casa','Fora','Global'].map((label,i)=>(
+                <div key={`lh-${i}`} className="text-center text-[11px] uppercase text-gray-500 py-1">{label}</div>
+              ))}
+              <div className=""></div>
+              {['Global','Fora','Casa'].map((label,i)=>(
+                <div key={`rh-${i}`} className="text-center text-[11px] uppercase text-gray-500 py-1">{label}</div>
+              ))}
+
+              {/* Row: logos/names */}
+              <div className="col-span-3 flex items-center justify-center gap-2 py-1">
+                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-6 h-6 object-contain" />
+                <span className="font-semibold">{homeTeam}</span>
+              </div>
+              <div className="text-center text-xs text-gray-500 py-1">vs</div>
+              <div className="col-span-3 flex items-center justify-center gap-2 py-1">
+                <span className="font-semibold">{awayTeam}</span>
+                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-6 h-6 object-contain" />
+              </div>
+
+              {/* Rows: stats */}
+              {[
+                {
+                  label: 'Média golos marcados',
+                  accessor: (ts: TeamSideStats) => ts.played ? (ts.goalsFor / ts.played).toFixed(2) : '-',
+                },
+                {
+                  label: 'Média golos sofridos',
+                  accessor: (ts: TeamSideStats) => ts.played ? (ts.goalsAgainst / ts.played).toFixed(2) : '-',
+                },
+                {
+                  label: 'Média golos marcados + sofridos',
+                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.goalsFor + ts.goalsAgainst) / ts.played).toFixed(2) : '-',
+                },
+                {
+                  label: '% Jogos sem sofrer',
+                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.cleanSheets / ts.played) * 100).toFixed(1) + '%' : '-',
+                },
+                {
+                  label: '% Jogos sem marcar',
+                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.noGoals / ts.played) * 100).toFixed(1) + '%' : '-',
+                },
+                {
+                  label: '% Jogos +2,5',
+                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.over25 / ts.played) * 100).toFixed(1) + '%' : '-',
+                },
+                {
+                  label: '% Jogos -2,5',
+                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.under25 / ts.played) * 100).toFixed(1) + '%' : '-',
+                },
+              ].map((row, idx) => (
+                <React.Fragment key={row.label}>
+                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsHome.home)}</div>
+                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsHome.away)}</div>
+                  <div className={`text-center py-1 font-semibold ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsHome.overall)}</div>
+                  <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.label}</div>
+                  <div className={`text-center py-1 font-semibold ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsAway.overall)}</div>
+                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsAway.away)}</div>
+                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsAway.home)}</div>
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* KPI Liga */}
+        {leagueStats && leagueStats.matchesTotal > 0 && (
+          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full lg:w-56 shadow-sm">
+            {(() => {
+              const playedDisplay = Math.min(leagueStats.matchesPlayed, leagueStats.matchesTotal);
+              const pct = Math.min(100, (playedDisplay / leagueStats.matchesTotal) * 100);
+              return (
+                <>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-lg font-bold text-blue-700">
+                      {Math.round(pct)}%
+                    </span>
+                    <span className="text-xs text-gray-700">
+                      <span className="font-semibold">{playedDisplay}</span> / {leagueStats.matchesTotal} Jogos
+                    </span>
+                  </div>
+                  <div className="mt-2 relative h-3.5 rounded-full border border-blue-400 overflow-hidden bg-white">
+                    <div
+                      className="absolute inset-y-0 left-0 bg-blue-500"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <div className="mt-3 flex flex-col gap-1.5 text-sm text-gray-700">
+                    <div className="flex justify-between"><span>Vitórias equipa Casa</span><span className="font-semibold">{((leagueStats.homeWins / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Empates</span><span className="font-semibold">{((leagueStats.draws / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Vitórias equipa Fora</span><span className="font-semibold">{((leagueStats.awayWins / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Mais de 1,5</span><span className="font-semibold">{((leagueStats.over15 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Mais de 2,5</span><span className="font-semibold">{((leagueStats.over25 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Mais de 3,5</span><span className="font-semibold">{((leagueStats.over35 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                    <div className="flex justify-between"><span>Golos /jogo</span><span className="font-semibold">{(leagueStats.goalsTotal / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span>Golos /jogo casa</span><span className="font-semibold">{(leagueStats.goalsHome / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span>Golos /jogo fora</span><span className="font-semibold">{(leagueStats.goalsAway / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
+                    <div className="flex justify-between"><span>Ambas equipas marcam</span><span className="font-semibold">{((leagueStats.btts / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        )}
+
+        {/* Classificação */}
+        <div className="bg-gray-50 p-3 rounded-lg h-full flex flex-col flex-1 min-w-[320px]">
           <div className="flex items-center justify-between gap-4 mb-3">
             <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
             <div className="grid grid-cols-4 min-w-[320px] rounded-md border border-gray-300 overflow-hidden ml-auto">

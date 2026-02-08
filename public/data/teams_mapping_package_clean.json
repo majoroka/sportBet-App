@@ -5515,28 +5515,6 @@
         "path": "/logos/Bundesliga (AUT)/Grazer-ak.png"
       }
     },
-    "team_df8101b9e6cf": {
-      "id": "team_df8101b9e6cf",
-      "display": {
-        "pt": "Bayern Munich"
-      },
-      "country": "DE",
-      "league": "Bundesliga",
-      "names": {
-        "football-data": "Bayern Munich",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Bayern Munich"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bayern munich"
-        ]
-      }
-    },
     "team_23836d4de597": {
       "id": "team_23836d4de597",
       "display": {
@@ -5928,33 +5906,6 @@
         ]
       }
     },
-    "team_df7520dbd4d6": {
-      "id": "team_df7520dbd4d6",
-      "display": {
-        "pt": "FC Koln"
-      },
-      "country": "DE",
-      "league": "Bundesliga",
-      "names": {
-        "football-data": "FC Koln",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FC Koln"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "koln"
-        ]
-      },
-      "logo": {
-        "key": "Koln",
-        "file": "Koln.png",
-        "path": "/logos/Bundesliga/Koln.png"
-      }
-    },
     "team_b328188d6885": {
       "id": "team_b328188d6885",
       "display": {
@@ -6008,33 +5959,6 @@
         "norm": [
           "mainz"
         ]
-      }
-    },
-    "team_b96c2e21c70c": {
-      "id": "team_b96c2e21c70c",
-      "display": {
-        "pt": "Fortuna Dusseldorf"
-      },
-      "country": "DE",
-      "league": "Bundesliga2",
-      "names": {
-        "football-data": "Fortuna Dusseldorf",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Fortuna Dusseldorf"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "fortuna dusseldorf"
-        ]
-      },
-      "logo": {
-        "key": "fortuna-dusseldorf",
-        "file": "Fortuna-dusseldorf.png",
-        "path": "/logos/Bundesliga2/Fortuna-dusseldorf.png"
       }
     },
     "team_0b94dff18d99": {
@@ -9275,16 +9199,20 @@
       "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Bayern Munich",
-        "clubelo": null
+        "clubelo": "Bayern"
       },
       "aliases": {
         "football-data": [
           "Bayern Munich"
+        ],
+        "clubelo": [
+          "Bayern"
         ]
       },
       "keys": {
         "norm": [
-          "bayern munich"
+          "bayern munich",
+          "bayern"
         ]
       },
       "logo": {
@@ -9702,33 +9630,6 @@
         "key": "hamburger-sv",
         "file": "Hamburger-sv.png",
         "path": "/logos/Bundesliga/Hamburger-sv.png"
-      }
-    },
-    "team_a2e68ceec6be": {
-      "id": "team_a2e68ceec6be",
-      "display": {
-        "pt": "FC Koln"
-      },
-      "country": "GER",
-      "league": "Bundesliga (GER)",
-      "names": {
-        "football-data": "FC Koln",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FC Koln"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "koln"
-        ]
-      },
-      "logo": {
-        "key": "koln",
-        "file": "Koln.png",
-        "path": "/logos/Bundesliga/Koln.png"
       }
     },
     "team_3b8b0dd3bb66": {
@@ -38089,28 +37990,6 @@
         ]
       }
     },
-    "team_7b05924cd1ea": {
-      "id": "team_7b05924cd1ea",
-      "display": {
-        "pt": "Duesseldorf"
-      },
-      "country": "GER",
-      "league": "Bundesliga2 (GER)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Duesseldorf"
-      },
-      "aliases": {
-        "clubelo": [
-          "Duesseldorf"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "duesseldorf"
-        ]
-      }
-    },
     "team_ae0e78de53ea": {
       "id": "team_ae0e78de53ea",
       "display": {
@@ -38552,28 +38431,6 @@
         "key": "Botev-plovdiv",
         "file": "Botev-plovdiv.png",
         "path": "/logos/Parva Liga (BUL)/Botev-plovdiv.png"
-      }
-    },
-    "team_3129ccf79757": {
-      "id": "team_3129ccf79757",
-      "display": {
-        "pt": "Bayern"
-      },
-      "country": "GER",
-      "league": "Bundesliga (GER)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Bayern"
-      },
-      "aliases": {
-        "clubelo": [
-          "Bayern"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bayern"
-        ]
       }
     },
     "team_49dcd67da73d": {
@@ -40445,7 +40302,7 @@
     "clubelo:st pauli": "team_ae0c37d2181d",
     "football-data:hamburg": "team_7b505cae89b1",
     "clubelo:hamburg": "team_7b505cae89b1",
-    "football-data:koln": "team_a2e68ceec6be",
+    "football-data:koln": "team_a0fafa93c2b6",
     "football-data:rb leipzig": "team_3b8b0dd3bb66",
     "clubelo:rb leipzig": "team_3b8b0dd3bb66",
     "football-data:mainz": "team_45a90efbbcc0",
@@ -41236,7 +41093,7 @@
     "clubelo:slavia praha": "team_f5b9d1202233",
     "clubelo:gornik": "team_4866c293b867",
     "clubelo:craiova": "team_7b437831b745",
-    "clubelo:duesseldorf": "team_7b05924cd1ea",
+    "clubelo:duesseldorf": "team_5319f5fc3028",
     "clubelo:bohemians praha": "team_ae0e78de53ea",
     "clubelo:radomlje": "team_1c5b90288764",
     "clubelo:kazincbarcika": "team_5e57a7fe439b",
@@ -41255,7 +41112,7 @@
     "clubelo:muenster": "team_32756b8b26ba",
     "clubelo:bilbao": "team_a8b49e5e8223",
     "clubelo:botev plovdiv": "team_e12b0ba3d6ce",
-    "clubelo:bayern": "team_3129ccf79757",
+    "clubelo:bayern": "team_ec571442870a",
     "clubelo:metaloglobus": "team_49dcd67da73d",
     "clubelo:arda": "team_bf29d13d04d8",
     "clubelo:pogon": "team_e2b3ec7f4e7d",

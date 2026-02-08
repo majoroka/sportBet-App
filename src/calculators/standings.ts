@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
-import { FormMatch, StandingRow } from '../domain/types';
-import { resolveTeamId, getDisplayNamePt } from '../lib/teamMapping';
+import { FormMatch, StandingRow, LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
+import { resolveTeamId, resolveTeamIdLoose, getDisplayNamePt, getDisplayNameEn } from '../lib/teamMapping';
 
 interface MatchRow {
   HomeTeam?: string;
@@ -156,4 +156,238 @@ export const calculateStandings = (csvText: string, mode: StandingMode = 'overal
       return b.goalsFor - a.goalsFor;
     })
     .map((t, index) => ({ ...t, rank: index + 1 }));
+};
+
+export const computeLeagueStats = (csvText: string): LeagueStats => {
+  const { data } = Papa.parse(csvText, {
+    header: true,
+    skipEmptyLines: true,
+  });
+
+  let matchesPlayed = 0;
+  let homeWins = 0;
+  let draws = 0;
+  let awayWins = 0;
+  let over15 = 0;
+  let over25 = 0;
+  let over35 = 0;
+  let goalsTotal = 0;
+  let goalsHome = 0;
+  let goalsAway = 0;
+  let btts = 0;
+
+  // Assume total teórico de jogos: n equipas * (n-1) * 1 (cada par uma vez) / 2 *2? simplificado: usaremos 18 equipas => 34 jornadas => (teamsCount * (teamsCount-1))
+  // Para simplicidade, vamos derivar do máximo de jogos vistos: matchesPlayed / coverage → estimar total quando tivermos count de equipas
+
+  const teamsSet = new Set<string>();
+
+  (data as any[]).forEach((row) => {
+    const match = row as any;
+    // Restringe à época atual (mesma lógica do calculateStandings)
+    if (match.Season) {
+      const season = match.Season.toString().trim();
+      if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;
+    }
+    const homeTeamName = match.HomeTeam || match.Home;
+    const awayTeamName = match.AwayTeam || match.Away;
+    const fthg = match.FTHG ?? match.HG;
+    const ftag = match.FTAG ?? match.AG;
+    if (!homeTeamName || !awayTeamName || fthg === undefined || ftag === undefined) return;
+
+    const hg = Number(fthg);
+    const ag = Number(ftag);
+    if (Number.isNaN(hg) || Number.isNaN(ag)) return;
+
+    teamsSet.add(homeTeamName);
+    teamsSet.add(awayTeamName);
+
+    matchesPlayed += 1;
+    goalsHome += hg;
+    goalsAway += ag;
+    goalsTotal += hg + ag;
+
+    if (hg > ag) homeWins += 1; else if (hg === ag) draws += 1; else awayWins += 1;
+
+    const totalGoals = hg + ag;
+    if (totalGoals > 1.5) over15 += 1;
+    if (totalGoals > 2.5) over25 += 1;
+    if (totalGoals > 3.5) over35 += 1;
+    if (hg > 0 && ag > 0) btts += 1;
+  });
+
+  const teamsCount = teamsSet.size || 1;
+  // Se liga é round-robin dupla: total = teamsCount * (teamsCount -1) (cada equipa joga duas vezes vs outra)
+  const theoreticalTotal = teamsCount * (teamsCount - 1);
+  const matchesTotal = Math.max(theoreticalTotal, matchesPlayed || theoreticalTotal);
+
+  return {
+    matchesPlayed,
+    matchesTotal,
+    homeWins,
+    draws,
+    awayWins,
+    over15,
+    over25,
+    over35,
+    goalsTotal,
+    goalsHome,
+    goalsAway,
+    btts,
+  };
+};
+
+const initSide = (): TeamSideStats => ({
+  played: 0,
+  goalsFor: 0,
+  goalsAgainst: 0,
+  cleanSheets: 0,
+  noGoals: 0,
+  over25: 0,
+  under25: 0,
+});
+
+export const computeTeamStats = (csvText: string, teamName: string): TeamStats => {
+  const { data } = Papa.parse(csvText, {
+    header: true,
+    skipEmptyLines: true,
+  });
+
+  const home = initSide();
+  const away = initSide();
+
+  const targetId =
+    resolveTeamId('football-data', teamName) ||
+    resolveTeamId('clubelo', teamName) ||
+    resolveTeamIdLoose(teamName) ||
+    null;
+
+  const normalize = (s: string) =>
+    s
+      ?.normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]/gi, '')
+      .toLowerCase() || '';
+
+  const tokenize = (s: string): string[] => {
+    const base = s
+      ?.normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+    if (!base) return [];
+    const tokens = base.split(' ');
+    // Heurística: se token termina em 'o' (ex: Hamburgo), adiciona versão sem o
+    const augmented: string[] = [];
+    for (const t of tokens) {
+      augmented.push(t);
+      if (t.length > 4 && t.endsWith('o')) augmented.push(t.slice(0, -1));
+    }
+    return Array.from(new Set(augmented));
+  };
+
+  const tokenMatch = (a: string[], b: string[]): boolean => {
+    if (!a.length || !b.length) return false;
+    const setA = new Set(a);
+    const overlap = b.filter((t) => setA.has(t)).length;
+    const minLen = Math.min(a.length, b.length);
+    return overlap >= Math.max(1, Math.ceil(minLen * 0.8));
+  };
+
+  const targetNorm = normalize(teamName || '');
+  const targetIdNorm = targetId ? normalize(getDisplayNamePt(targetId) || getDisplayNameEn(targetId) || '') : '';
+
+  if (!targetId && !targetNorm) {
+    return { home, away, overall: initSide() };
+  }
+
+  (data as any[]).forEach((row) => {
+    const match = row as any;
+    if (match.Season) {
+      const season = match.Season.toString().trim();
+      if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;
+    }
+    const homeTeamName = match.HomeTeam || match.Home;
+    const awayTeamName = match.AwayTeam || match.Away;
+    const fthg = match.FTHG ?? match.HG;
+    const ftag = match.FTAG ?? match.AG;
+    if (!homeTeamName || !awayTeamName || fthg === undefined || ftag === undefined) return;
+
+    const homeId =
+      resolveTeamId('football-data', homeTeamName) ||
+      resolveTeamId('clubelo', homeTeamName) ||
+      resolveTeamIdLoose(homeTeamName) ||
+      null;
+    const awayId =
+      resolveTeamId('football-data', awayTeamName) ||
+      resolveTeamId('clubelo', awayTeamName) ||
+      resolveTeamIdLoose(awayTeamName) ||
+      null;
+
+    const homeNorm = normalize(homeTeamName);
+    const awayNorm = normalize(awayTeamName);
+    const homeDisplayNorm = homeId ? normalize(getDisplayNamePt(homeId) || getDisplayNameEn(homeId) || '') : '';
+    const awayDisplayNorm = awayId ? normalize(getDisplayNamePt(awayId) || getDisplayNameEn(awayId) || '') : '';
+
+    const targetTokens = tokenize(teamName);
+    const targetIdTokens = targetId ? tokenize(getDisplayNamePt(targetId) || getDisplayNameEn(targetId) || '') : [];
+    const homeTokens = tokenize(homeTeamName);
+    const awayTokens = tokenize(awayTeamName);
+    const homeDisplayTokens = homeId ? tokenize(getDisplayNamePt(homeId) || getDisplayNameEn(homeId) || '') : [];
+    const awayDisplayTokens = awayId ? tokenize(getDisplayNamePt(awayId) || getDisplayNameEn(awayId) || '') : [];
+
+    const isHome = targetId && homeId
+      ? (targetId === homeId ||
+         homeNorm === targetNorm ||
+         homeNorm === targetIdNorm ||
+         homeDisplayNorm === targetNorm ||
+         tokenMatch(targetTokens, homeTokens) ||
+         tokenMatch(targetTokens, homeDisplayTokens) ||
+         tokenMatch(targetIdTokens, homeTokens) ||
+         tokenMatch(targetIdTokens, homeDisplayTokens))
+      : (homeNorm === targetNorm ||
+         (targetIdNorm && homeNorm === targetIdNorm) ||
+         tokenMatch(targetTokens, homeTokens) ||
+         tokenMatch(targetTokens, homeDisplayTokens));
+
+    const isAway = targetId && awayId
+      ? (targetId === awayId ||
+         awayNorm === targetNorm ||
+         awayNorm === targetIdNorm ||
+         awayDisplayNorm === targetNorm ||
+         tokenMatch(targetTokens, awayTokens) ||
+         tokenMatch(targetTokens, awayDisplayTokens) ||
+         tokenMatch(targetIdTokens, awayTokens) ||
+         tokenMatch(targetIdTokens, awayDisplayTokens))
+      : (awayNorm === targetNorm ||
+         (targetIdNorm && awayNorm === targetIdNorm) ||
+         tokenMatch(targetTokens, awayTokens) ||
+         tokenMatch(targetTokens, awayDisplayTokens));
+    if (!isHome && !isAway) return;
+
+    const hg = Number(fthg);
+    const ag = Number(ftag);
+    if (Number.isNaN(hg) || Number.isNaN(ag)) return;
+
+    const side = isHome ? home : away;
+    side.played += 1;
+    side.goalsFor += isHome ? hg : ag;
+    side.goalsAgainst += isHome ? ag : hg;
+    if ((isHome ? ag : hg) === 0) side.cleanSheets += 1;
+    if ((isHome ? hg : ag) === 0) side.noGoals += 1;
+    const totalGoals = hg + ag;
+    if (totalGoals > 2.5) side.over25 += 1; else side.under25 += 1;
+  });
+
+  const overall: TeamSideStats = {
+    played: home.played + away.played,
+    goalsFor: home.goalsFor + away.goalsFor,
+    goalsAgainst: home.goalsAgainst + away.goalsAgainst,
+    cleanSheets: home.cleanSheets + away.cleanSheets,
+    noGoals: home.noGoals + away.noGoals,
+    over25: home.over25 + away.over25,
+    under25: home.under25 + away.under25,
+  };
+
+  return { home, away, overall };
 };

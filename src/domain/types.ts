@@ -40,6 +40,52 @@ export interface StandingRow {
   form: FormMatch[]; // Array de jogos (do mais antigo para o mais recente)
 }
 
+export interface LeagueStats {
+  matchesPlayed: number;
+  matchesTotal: number;
+  homeWins: number;
+  draws: number;
+  awayWins: number;
+  over15: number;
+  over25: number;
+  over35: number;
+  goalsTotal: number;
+  goalsHome: number;
+  goalsAway: number;
+  btts: number;
+}
+
+export interface TeamSideStats {
+  played: number;
+  goalsFor: number;
+  goalsAgainst: number;
+  cleanSheets: number;
+  noGoals: number; // jogos sem marcar
+  over25: number;
+  under25: number;
+}
+
+export interface TeamStats {
+  home: TeamSideStats;
+  away: TeamSideStats;
+  overall: TeamSideStats;
+}
+
+export interface LeagueStats {
+  matchesPlayed: number;
+  matchesTotal: number;
+  homeWins: number;
+  draws: number;
+  awayWins: number;
+  over15: number;
+  over25: number;
+  over35: number;
+  goalsTotal: number;
+  goalsHome: number;
+  goalsAway: number;
+  btts: number;
+}
+
 /**
  * Representa as probabilidades calculadas pelo nosso modelo.
  */

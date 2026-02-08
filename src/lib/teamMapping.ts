@@ -3,7 +3,7 @@ export type Source = "clubelo" | "football-data";
 
 interface Team {
   id: string;
-  display: { pt: string };
+  display: { pt: string; en?: string };
   country: string;
   league: string;
   names: Record<string, string | null>;
@@ -100,8 +100,33 @@ export function resolveTeamId(source: Source, teamName: string): string | null {
   return mappingData.alias_index[key] ?? null;
 }
 
+// Fallback mais permissivo: percorre todas as entradas e procura uma normalização igual
+export function resolveTeamIdLoose(teamName: string): string | null {
+  if (!mappingData) return null;
+  const norm = normalizeTeamName(teamName);
+  for (const [id, team] of Object.entries(mappingData.teams)) {
+    const candidates: string[] = [];
+    if (team.display?.pt) candidates.push(team.display.pt);
+    if (team.display?.en) candidates.push(team.display.en);
+    for (const v of Object.values(team.names || {})) {
+      if (v) candidates.push(v);
+    }
+    for (const arr of Object.values(team.aliases || {})) {
+      if (Array.isArray(arr)) candidates.push(...arr);
+    }
+    for (const candidate of candidates) {
+      if (normalizeTeamName(candidate) === norm) return id;
+    }
+  }
+  return null;
+}
+
 export function getDisplayNamePt(teamId: string): string | null {
   return mappingData?.teams[teamId]?.display?.pt ?? null;
+}
+
+export function getDisplayNameEn(teamId: string): string | null {
+  return mappingData?.teams[teamId]?.display?.en ?? null;
 }
 
 export function getTeamLeague(teamId: string): string | null {
