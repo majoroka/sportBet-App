@@ -772,10 +772,10 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       </div>
 
       {/* Estatística */}
-      <div className="space-y-4 flex flex-col lg:flex-row gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         {/* Comparativo equipas */}
         {teamStatsHome && teamStatsAway && (
-          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full lg:w-[720px] shadow-sm overflow-x-auto">
+          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit lg:col-span-6">
             <div className="text-sm font-semibold text-gray-900 mb-1"> </div>
             <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[680px]">
               {/* Row: main header (removed label) */}
@@ -850,7 +850,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
         {/* KPI Liga */}
         {leagueStats && leagueStats.matchesTotal > 0 && (
-          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full lg:w-56 shadow-sm">
+          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm h-fit lg:col-span-2">
             {(() => {
               const playedDisplay = Math.min(leagueStats.matchesPlayed, leagueStats.matchesTotal);
               const pct = Math.min(100, (playedDisplay / leagueStats.matchesTotal) * 100);
@@ -889,7 +889,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         )}
 
         {/* Classificação */}
-        <div className="bg-gray-50 p-3 rounded-lg h-full flex flex-col flex-1 min-w-[320px]">
+        <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 lg:col-span-4">
           <div className="flex items-center justify-between gap-4 mb-3">
             <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
             <div className="grid grid-cols-4 min-w-[320px] rounded-md border border-gray-300 overflow-hidden ml-auto">
