@@ -959,7 +959,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   <tbody className="text-gray-600">
                     {currentStandings.map((row, index) => {
                       const matches = (teamName: string, teamId: string | null) => {
-                        if (teamId && row.teamId) return row.teamId === teamId;
+                        if (teamId && row.teamId) {
+                          if (row.teamId === teamId) return true;
+                          // Se os IDs diferem (ex.: clubelo vs football-data), faz fallback por nome normalizado
+                          return namesMatch(row.team, teamName);
+                        }
                         if (teamId && !row.teamId) return namesMatch(row.team, teamName);
                         if (!teamId && row.teamId) return namesMatch(row.team, teamName);
                         return namesMatch(row.team, teamName);
