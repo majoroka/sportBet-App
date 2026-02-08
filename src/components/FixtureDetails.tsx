@@ -776,32 +776,32 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {/* Comparativo equipas */}
         {teamStatsHome && teamStatsAway && (
           <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit lg:col-span-6">
-            <div className="text-sm font-semibold text-gray-900 mb-1"> </div>
+            <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">EQUIPAS</div>
             <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[680px]">
               {/* Row: main header (removed label) */}
               <div className="col-span-3 py-1"></div>
               <div className="col-span-1"></div>
               <div className="col-span-3 py-1"></div>
 
-              {/* Row: subheader labels */}
+              {/* Row: logos/names (top) */}
+              <div className="col-span-3 flex items-center justify-center gap-2 py-2">
+                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-7 h-7 object-contain" />
+                <span className="font-semibold">{homeTeam}</span>
+              </div>
+              <div className="text-center text-xs text-gray-500 py-2">vs</div>
+              <div className="col-span-3 flex items-center justify-center gap-2 py-2">
+                <span className="font-semibold">{awayTeam}</span>
+                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-7 h-7 object-contain" />
+              </div>
+
+              {/* Row: subheader labels under logos */}
               {['Casa','Fora','Global'].map((label,i)=>(
-                <div key={`lh-${i}`} className="text-center text-[11px] uppercase text-gray-500 py-1">{label}</div>
+                <div key={`lh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
               ))}
               <div className=""></div>
               {['Global','Fora','Casa'].map((label,i)=>(
-                <div key={`rh-${i}`} className="text-center text-[11px] uppercase text-gray-500 py-1">{label}</div>
+                <div key={`rh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
               ))}
-
-              {/* Row: logos/names */}
-              <div className="col-span-3 flex items-center justify-center gap-2 py-1">
-                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-6 h-6 object-contain" />
-                <span className="font-semibold">{homeTeam}</span>
-              </div>
-              <div className="text-center text-xs text-gray-500 py-1">vs</div>
-              <div className="col-span-3 flex items-center justify-center gap-2 py-1">
-                <span className="font-semibold">{awayTeam}</span>
-                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-6 h-6 object-contain" />
-              </div>
 
               {/* Rows: stats */}
               {[
@@ -851,6 +851,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {/* KPI Liga */}
         {leagueStats && leagueStats.matchesTotal > 0 && (
           <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm h-fit lg:col-span-2">
+            <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">LIGA</div>
             {(() => {
               const playedDisplay = Math.min(leagueStats.matchesPlayed, leagueStats.matchesTotal);
               const pct = Math.min(100, (playedDisplay / leagueStats.matchesTotal) * 100);
