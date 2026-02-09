@@ -20,6 +20,8 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] **Heatmap de Resultados:** Substituir a lista de "Correct Score" por uma grelha visual colorida (Heatmap).
 - [x] **Gráficos:** Implementar Chart.js para visualizar probabilidades (1X2).
 - [x] **Classificação:** Tabela de classificação com forma recente e cálculo automático via CSV.
+- [x] **Classificação - Formas avançadas:** Tabs +2,5 e +1,5 (últimos 10) com grelha de cores alinhada ao tema.
+- [x] **Card Equipas:** Logos centrados e pill de xG (derivado do correct score truncado a 6 golos).
 - [x] **Logótipos:** Exibição de emblemas das equipas com fallback.
 - [x] **Normalização Avançada:** Aliases cruzados fixtures/standings + sinónimos (ex.: Farul/Viitorul, Saint‑Étienne/St Etienne) e deteção de liga por equipas.
 - [ ] **Favoritos:** Permitir guardar jogos numa "Watchlist" (usando `localStorage`).

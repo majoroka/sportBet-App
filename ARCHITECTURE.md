@@ -15,6 +15,9 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 2. **Adapter:** Normaliza os dados brutos para o modelo de domínio `Fixture`.
 3. **Calculators:** Aplica modelos matemáticos (Poisson) aos dados normalizados (`xG` -> `Probabilities`).
 4. **UI Components:** Renderiza os dados processados para o utilizador.
+   - Tabs de classificação: Global / Casa / Fora / +2,5 (Últimos 10) / +1,5 (Últimos 10) com grelha de forma colorida.
+   - Card “Equipas”: xG por equipa calculado a partir da matriz de correct score (truncada a 6 golos), logos centrados e pill de xG.
+   - Paleta coerente azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
 
 ## 📂 Estrutura de Pastas (`src/`)
 
@@ -22,7 +25,7 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 - **`calculators/`**: Lógica pura de negócio.
   - `poisson.ts`: Implementação matemática da distribuição de Poisson.
   - `marketsFromProbabilities.ts`: Derivação de odds de mercado (1X2, O/U, etc.) a partir da matriz de resultados.
-  - `standings.ts`: Processamento de CSV de resultados para gerar tabela de classificação.
+  - `standings.ts`: Processamento de CSV de resultados para gerar tabela de classificação e formas (últimos 10, limiares 2.5 e 1.5).
 - **`adapters/`**: Camada de transformação.
   - `csvAdapter.ts`: Converte CSV bruto para objetos `Fixture`.
 - **`components/`**: Componentes React de UI.
@@ -52,8 +55,8 @@ O núcleo da aplicação baseia-se na **Distribuição de Poisson**.
 
 - **GitHub Pages:** Alojamento estático dos assets (HTML/JS/CSS).
 - **GitHub Actions (Data Pipeline):**
-  - Workflow diário (`fetch-clubelo-data.yml`) que executa scripts Node.js.
-  - Scripts (`scripts/fetch-*.js`) descarregam dados de fontes externas (ClubElo, Football-Data).
+  - Workflow diário (`fetch-clubelo-data.yml`) às **05:00 UTC** que executa scripts Node.js.
+  - Scripts (`scripts/fetch-*.js`) descarregam dados de fontes externas (ClubElo, Football-Data). (Extensível para snapshots de Elo por data, conforme necessidade.)
   - Os dados são processados e guardados na pasta `public/data`, servindo como uma "cache estática" para o frontend.
 - **Cloudflare Workers:** (Opcional/Híbrido)
   - Função: Proxy para APIs de odds externas.

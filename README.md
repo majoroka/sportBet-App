@@ -13,12 +13,13 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Handicap e Margem de Vitória
   - Resultado Exato (Correct Score)
 - **Interface de Análise:**
-  - Dashboard de página única com filtros para **Data, País e Jogo**.
+  - Dashboard de página única com filtros para **Data, País e Jogo** (datas exibidas como `DD/MMM/AA (ddd)`).
   - Visualização imediata de probabilidades, gráficos (Chart.js) e estatísticas ao selecionar um jogo.
-  - Tabela de Classificação com forma recente (para ligas suportadas).
-  - Logótipos dos clubes (com fallback visual).
-- **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono).
-- **Dados Atualizados:** Pipeline automatizada (GitHub Actions) que atualiza diariamente os dados de jogos (ClubElo) e classificações (Football-Data).
+  - Tabela de Classificação com tabs: Global, Casa, Fora, **+2,5 (Últimos 10)** e **+1,5 (Últimos 10)**, com grelha de últimos jogos colorida.
+  - Card “Equipas” com xG por clube (derivado da matriz de correct score, truncada a 6 golos), logos centrados e pill de xG.
+  - Logótipos dos clubes (com fallback visual) e design responsivo (forma oculta em mobile para não quebrar layout).
+- **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono). Paleta principal coerente: azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
+- **Dados Atualizados:** Pipeline automatizada (GitHub Actions) que atualiza diariamente, às **05:00 UTC**, os dados de jogos (ClubElo) e classificações (Football-Data).
 
 ## 🛠️ Stack Tecnológica
 

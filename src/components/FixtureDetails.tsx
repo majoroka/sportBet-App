@@ -596,7 +596,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <img
                   src={getTeamLogoUrl(fixture.competition, homeTeam)}
                   alt={homeTeam}
-                  className="w-10 h-10 object-contain"
+                  className="w-14 h-14 object-contain"
                   onError={() => {
                     const attempt = getTeamLogoFilename(homeTeam);
                     console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
@@ -619,7 +619,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <img
                   src={getTeamLogoUrl(fixture.competition, awayTeam)}
                   alt={awayTeam}
-                  className="w-10 h-10 object-contain"
+                  className="w-14 h-14 object-contain"
                   onError={() => {
                     const attempt = getTeamLogoFilename(awayTeam);
                     console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
@@ -708,13 +708,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <td className="py-2 font-medium">{line}</td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-green-700">{probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}</span>
+                        <span className="font-bold font-mono text-lg text-[#60A5FA]">{probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}</span>
                         <span className="text-xs text-gray-400 w-10">{(probs.over * 100).toFixed(0)}%</span>
                       </div>
                     </td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-red-700">{probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}</span>
+                        <span className="font-bold font-mono text-lg text-[#F472B6]">{probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}</span>
                         <span className="text-xs text-gray-400 w-10">{(probs.under * 100).toFixed(0)}%</span>
                       </div>
                     </td>
@@ -730,11 +730,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Sim</span>
-                  <span className="font-bold font-mono text-xl text-indigo-700">{(1 / probabilities.bttsYes).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-[#60A5FA]">{(1 / probabilities.bttsYes).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Não</span>
-                  <span className="font-bold font-mono text-xl text-gray-600">{(1 / probabilities.bttsNo).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-[#F472B6]">{(1 / probabilities.bttsNo).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -743,11 +743,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Casa</span>
-                  <span className="font-bold font-mono text-xl text-blue-700">{(1 / probabilities.cleanSheet.home).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-[#60A5FA]">{(1 / probabilities.cleanSheet.home).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Fora</span>
-                  <span className="font-bold font-mono text-xl text-red-700">{(1 / probabilities.cleanSheet.away).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-[#F472B6]">{(1 / probabilities.cleanSheet.away).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -1025,13 +1025,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                               const isLast = idxForm === arr.length - 1;
                               const ringClass = isLast
                                 ? over
-                                  ? 'ring-[1.5px] ring-offset-1 ring-green-500'
-                                  : 'ring-[1.5px] ring-offset-1 ring-red-500'
+                                  ? 'ring-[1.5px] ring-offset-1 ring-[#60A5FA]'
+                                  : 'ring-[1.5px] ring-offset-1 ring-[#F472B6]'
                                 : '';
                               return (
                                 <div
                                   key={idxForm}
-                                  className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-green-500 text-white' : 'bg-red-500 text-white'} ${ringClass}`}
+                                  className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-[#60A5FA] text-white' : 'bg-[#F472B6] text-white'} ${ringClass}`}
                                   title={match.opponent ? `${match.opponent} ${match.score}` : 'Sem dados'}
                                 >
                                   {over ? '+' : '-'}
