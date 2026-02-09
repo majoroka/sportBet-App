@@ -197,6 +197,7 @@ const isDetailedStatsLeague = (competition?: string, country?: string) => {
   const countryNorm = normalizeKey(country || '');
   const countryKeys = new Set([
     'eng', 'esp', 'ger', 'fra', 'ita', 'por', 'ned', 'tur', 'bel', 'gre', 'sco', 'isr', 'pol', 'sui', 'swz',
+    'den', 'dnk',
   ]);
   if (countryNorm && countryKeys.has(countryNorm)) return true;
   // fallback: detect known country codes embedded
@@ -235,6 +236,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [teamStatsAway, setTeamStatsAway] = useState<TeamStats | null>(null);
   const [loadingStandings, setLoadingStandings] = useState(false);
   const [bookmakerOdds, setBookmakerOdds] = useState<MarketOdds | null>(null);
+  const [openStatsSections, setOpenStatsSections] = useState<Record<string, boolean>>({});
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
   const [leagueLogoError, setLeagueLogoError] = useState(false);
@@ -956,7 +958,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <td className="py-2 font-medium">{line}</td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-[#60A5FA]">{probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}</span>
+                        <span className="font-bold font-mono text-lg text-gray-900">{probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}</span>
                         <span className="text-xs text-gray-400 w-10">{(probs.over * 100).toFixed(0)}%</span>
                       </div>
                       {line === '2.5' && bookmakerOdds?.over25 && (
@@ -965,7 +967,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     </td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-[#F472B6]">{probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}</span>
+                        <span className="font-bold font-mono text-lg text-gray-900">{probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}</span>
                         <span className="text-xs text-gray-400 w-10">{(probs.under * 100).toFixed(0)}%</span>
                       </div>
                       {line === '2.5' && bookmakerOdds?.under25 && (
@@ -984,11 +986,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Sim</span>
-                  <span className="font-bold font-mono text-xl text-[#60A5FA]">{(1 / probabilities.bttsYes).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.bttsYes).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Não</span>
-                  <span className="font-bold font-mono text-xl text-[#F472B6]">{(1 / probabilities.bttsNo).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.bttsNo).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -997,11 +999,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Casa</span>
-                  <span className="font-bold font-mono text-xl text-[#60A5FA]">{(1 / probabilities.cleanSheet.home).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.cleanSheet.home).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Fora</span>
-                  <span className="font-bold font-mono text-xl text-[#F472B6]">{(1 / probabilities.cleanSheet.away).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.cleanSheet.away).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -1050,10 +1052,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       {/* Estatística */}
       {(() => {
         const hasTeamStats = !!(teamStatsHome && teamStatsAway);
-        const hasLeagueStats = !!(leagueStats && leagueStats.matchesTotal > 0);
         const hasStandings = currentStandings.length > 0;
-        const teamSpan = hasLeagueStats ? 'lg:col-span-6' : 'lg:col-span-8';
-        const leagueSpan = 'lg:col-span-2';
+        const teamSpan = 'lg:col-span-8';
         const tableSpan = 'lg:col-span-4';
         return (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
@@ -1164,48 +1164,57 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 let stripeIdx = 0;
                 let hasAny = false;
 
-                sections.forEach((section, sIdx) => {
-                  // process rows with data
-                  const sectionRows = section.rows
-                    .map((row) => {
-                      const values = [
-                        row.value(teamStatsHome.home),
-                        row.value(teamStatsHome.away),
-                        row.value(teamStatsHome.overall),
-                        row.value(teamStatsAway.overall),
-                        row.value(teamStatsAway.away),
-                        row.value(teamStatsAway.home),
-                      ];
-                      const hasData = values.some((v) => v !== null && Math.abs(v) > 1e-6);
-                      if (!hasData) return null;
-                      const stripe = stripeIdx % 2 === 0 ? 'bg-gray-50/70' : '';
-                      stripeIdx += 1;
-                      return (
-                        <React.Fragment key={`${section.title}-${row.label}`}>
-                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.home))}</div>
-                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.away))}</div>
-                          <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsHome.overall))}</div>
-                          <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${stripe}`}>{row.label}</div>
-                          <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsAway.overall))}</div>
-                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.away))}</div>
-                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.home))}</div>
-                        </React.Fragment>
-                      );
-                    })
-                    .filter(Boolean);
+                const rowHasData = (row: { value: (ts: TeamSideStats) => number | null }) => {
+                  const values = [
+                    row.value(teamStatsHome.home),
+                    row.value(teamStatsHome.away),
+                    row.value(teamStatsHome.overall),
+                    row.value(teamStatsAway.overall),
+                    row.value(teamStatsAway.away),
+                    row.value(teamStatsAway.home),
+                  ];
+                  return values.some((v) => v !== null && Math.abs(v) > 1e-6);
+                };
 
-                  if (sectionRows.length > 0) {
-                    hasAny = true;
-                    rendered.push(
-                      <div
-                        key={`sep-${sIdx}`}
-                        className="col-span-7 bg-[#f2f2f2] text-black font-semibold text-sm py-1 px-2 border-b border-gray-300"
+                sections.forEach((section, sIdx) => {
+                  const rowsWithData = section.rows.filter(rowHasData);
+                  if (rowsWithData.length === 0) return;
+                  hasAny = true;
+                  const sectionKey = section.title;
+                  const isOpen = !!openStatsSections[sectionKey];
+                  rendered.push(
+                    <div
+                      key={`sep-${sIdx}`}
+                      className="col-span-7 bg-white text-black font-semibold text-sm border-b border-gray-300"
+                    >
+                      <button
+                        type="button"
+                        className="w-full flex items-center justify-between py-1 px-2"
+                        onClick={() =>
+                          setOpenStatsSections((prev) => ({ ...prev, [sectionKey]: !prev[sectionKey] }))
+                        }
                       >
-                        {section.title}
-                      </div>
+                        <span>{section.title}</span>
+                        <span className="text-xs text-gray-600">{isOpen ? '—' : '+'}</span>
+                      </button>
+                    </div>
+                  );
+                  if (!isOpen) return;
+                  rowsWithData.forEach((row) => {
+                    const stripe = stripeIdx % 2 === 0 ? 'bg-gray-50/70' : '';
+                    stripeIdx += 1;
+                    rendered.push(
+                      <React.Fragment key={`${section.title}-${row.label}`}>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.home))}</div>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.away))}</div>
+                        <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsHome.overall))}</div>
+                        <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${stripe}`}>{row.label}</div>
+                        <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsAway.overall))}</div>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.away))}</div>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.home))}</div>
+                      </React.Fragment>
                     );
-                    rendered.push(...sectionRows);
-                  }
+                  });
                 });
 
                 if (!hasAny) {
@@ -1230,49 +1239,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           </div>
         )}
 
-            {/* KPI Liga */}
-            {hasLeagueStats && (
-              <div className={`bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm h-fit ${leagueSpan}`}>
-            <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">LIGA</div>
-            {(() => {
-              const playedDisplay = Math.min(leagueStats.matchesPlayed, leagueStats.matchesTotal);
-              const pct = Math.min(100, (playedDisplay / leagueStats.matchesTotal) * 100);
-              return (
-                <>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-lg font-bold text-blue-700">
-                      {Math.round(pct)}%
-                    </span>
-                    <span className="text-xs text-gray-700">
-                      <span className="font-semibold">{playedDisplay}</span> / {leagueStats.matchesTotal} Jogos
-                    </span>
-                  </div>
-                  <div className="mt-2 relative h-3.5 rounded-full border border-blue-400 overflow-hidden bg-white">
-                    <div
-                      className="absolute inset-y-0 left-0 bg-blue-500"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                  <div className="mt-3 flex flex-col gap-1.5 text-sm text-gray-700">
-                    <div className="flex justify-between"><span>Vitórias equipa Casa</span><span className="font-semibold">{((leagueStats.homeWins / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Empates</span><span className="font-semibold">{((leagueStats.draws / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Vitórias equipa Fora</span><span className="font-semibold">{((leagueStats.awayWins / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Mais de 1,5</span><span className="font-semibold">{((leagueStats.over15 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Mais de 2,5</span><span className="font-semibold">{((leagueStats.over25 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Mais de 3,5</span><span className="font-semibold">{((leagueStats.over35 / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Ambas equipas marcam</span><span className="font-semibold">{((leagueStats.btts / leagueStats.matchesPlayed) * 100 || 0).toFixed(1)}%</span></div>
-                    <div className="flex justify-between"><span>Golos /jogo</span><span className="font-semibold">{(leagueStats.goalsTotal / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span>Golos /jogo casa</span><span className="font-semibold">{(leagueStats.goalsHome / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
-                    <div className="flex justify-between"><span>Golos /jogo fora</span><span className="font-semibold">{(leagueStats.goalsAway / leagueStats.matchesPlayed || 0).toFixed(2)}</span></div>
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-        )}
-
-            {/* Classificação */}
-            <div className={`bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 ${tableSpan}`}>
+        {/* Classificação */}
+        <div className={`bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 ${tableSpan}`}>
           <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
             <div className="grid grid-cols-5 min-w-[320px] sm:min-w-[380px] rounded-md border border-gray-300 overflow-hidden">
