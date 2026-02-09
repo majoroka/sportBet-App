@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Fixture, StandingRow } from '../domain/types';
+import Papa from 'papaparse';
+import { Fixture, StandingRow, MarketOdds } from '../domain/types';
 import { calculateStandings, computeLeagueStats, computeTeamStats, StandingMode } from '../calculators/standings';
 import { Heatmap } from './Heatmap';
 import { LEAGUE_CONFIG } from '../config/leagues';
@@ -31,7 +32,12 @@ interface Props {
 }
 
 // Componente auxiliar para mostrar Odd e Probabilidade de forma compacta
-const OddBox: React.FC<{ label: string; value: number; highlight?: boolean }> = ({ label, value, highlight }) => (
+const OddBox: React.FC<{ label: string; value: number; highlight?: boolean; secondaryValue?: number | null }> = ({
+  label,
+  value,
+  highlight,
+  secondaryValue,
+}) => (
   <div className={`flex flex-col p-3 rounded border ${highlight ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100'}`}>
     <span className="text-sm text-gray-500 uppercase tracking-wider mb-1">{label}</span>
     <div className="flex items-baseline justify-between">
@@ -42,6 +48,11 @@ const OddBox: React.FC<{ label: string; value: number; highlight?: boolean }> = 
         {(value * 100).toFixed(0)}%
       </span>
     </div>
+    {secondaryValue !== undefined && (
+      <div className="mt-1 text-[11px] text-gray-500 font-mono">
+        B365 {secondaryValue && secondaryValue > 0 ? secondaryValue.toFixed(2) : '-'}
+      </div>
+    )}
   </div>
 );
 
@@ -223,6 +234,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [teamStatsHome, setTeamStatsHome] = useState<TeamStats | null>(null);
   const [teamStatsAway, setTeamStatsAway] = useState<TeamStats | null>(null);
   const [loadingStandings, setLoadingStandings] = useState(false);
+  const [bookmakerOdds, setBookmakerOdds] = useState<MarketOdds | null>(null);
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
   const [leagueLogoError, setLeagueLogoError] = useState(false);
@@ -368,6 +380,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         setStandingsHome([]);
         setStandingsAway([]);
         setStandingsLast10([]);
+        setBookmakerOdds(null);
         return;
       }
 
@@ -406,6 +419,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           const stats = computeLeagueStats(text);
           const tsHome = computeTeamStats(text, fixture.homeTeam);
           const tsAway = computeTeamStats(text, fixture.awayTeam);
+          const b365 = extractB365Odds(text, fixture.homeTeam, fixture.awayTeam, fixture.date);
+          if (
+            (namesMatch(fixture.homeTeam, 'Porto') && namesMatch(fixture.awayTeam, 'Sporting CP')) ||
+            (namesMatch(fixture.homeTeam, 'Sporting CP') && namesMatch(fixture.awayTeam, 'Porto'))
+          ) {
+            console.log('🧪 [B365 Debug] computed odds:', b365);
+          }
           console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${dataOverall.length}`);
           setStandingsOverall(dataOverall);
           setStandingsHome(dataHome);
@@ -414,6 +434,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setLeagueStats(stats);
           setTeamStatsHome(tsHome);
           setTeamStatsAway(tsAway);
+          setBookmakerOdds(b365);
         } else {
           console.warn(`❌ [Debug] Falha ao carregar ficheiro CSV: ${localUrl}`);
           setStandingsOverall([]);
@@ -423,6 +444,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setLeagueStats(null);
           setTeamStatsHome(null);
           setTeamStatsAway(null);
+          setBookmakerOdds(null);
         }
       } catch (error) {
         console.error("Erro ao carregar classificação:", error);
@@ -522,6 +544,168 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     if (TEAM_SYNONYMS[bKey]?.includes(aKey)) return true;
 
     return false;
+  };
+
+  const normalizeCsvDate = (value: string) => {
+    if (!value) return '';
+    const trimmed = value.trim();
+    const m = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
+    if (m) {
+      const dd = m[1].padStart(2, '0');
+      const mm = m[2].padStart(2, '0');
+      const yy = m[3].length === 2 ? `20${m[3]}` : m[3];
+      return `${yy}-${mm}-${dd}`;
+    }
+    if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) return trimmed.slice(0, 10);
+    return '';
+  };
+
+  const parseDateMs = (value: string) => {
+    const key = normalizeCsvDate(value);
+    if (!key) return null;
+    const [y, m, d] = key.split('-').map((v) => Number(v));
+    if (!y || !m || !d) return null;
+    return Date.UTC(y, m - 1, d);
+  };
+
+  const extractB365Odds = (csvText: string, home: string, away: string, dateStr: string): MarketOdds | null => {
+    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+    const data = parsed.data as any[];
+    const fields = new Set((parsed.meta?.fields || []) as string[]);
+    const hasAvg1x2 = fields.has('AvgH') && fields.has('AvgD') && fields.has('AvgA');
+    const hasB3651x2 = fields.has('B365H') && fields.has('B365D') && fields.has('B365A');
+    const hasMaxClose1x2 = fields.has('MaxCH') && fields.has('MaxCD') && fields.has('MaxCA');
+    const debugFixture =
+      (namesMatch(home, 'Porto') && namesMatch(away, 'Sporting CP')) ||
+      (namesMatch(home, 'Sporting CP') && namesMatch(away, 'Porto'));
+    const targetHomeId =
+      resolveTeamId('clubelo', home) ||
+      resolveTeamId('football-data', home) ||
+      null;
+    const targetAwayId =
+      resolveTeamId('clubelo', away) ||
+      resolveTeamId('football-data', away) ||
+      null;
+    const targetDate = parseDateMs(dateStr);
+
+    const rows = (data as any[]).filter((row) => {
+      const rowHome = row.HomeTeam || row.Home;
+      const rowAway = row.AwayTeam || row.Away;
+      if (!rowHome || !rowAway) return false;
+      const rowHomeId =
+        resolveTeamId('football-data', rowHome) ||
+        resolveTeamId('clubelo', rowHome) ||
+        null;
+      const rowAwayId =
+        resolveTeamId('football-data', rowAway) ||
+        resolveTeamId('clubelo', rowAway) ||
+        null;
+      if (targetHomeId && targetAwayId && rowHomeId && rowAwayId) {
+        return targetHomeId === rowHomeId && targetAwayId === rowAwayId;
+      }
+      return namesMatch(rowHome, home) && namesMatch(rowAway, away);
+    });
+
+    if (debugFixture) {
+      console.log('🧪 [B365 Debug] fixture:', { home, away, dateStr });
+      console.log('🧪 [B365 Debug] columns:', {
+        hasAvg1x2,
+        hasB3651x2,
+        hasMaxClose1x2,
+        hasB365OU: fields.has('B365C>2.5') || fields.has('B365>2.5'),
+        hasMaxCOU: fields.has('MaxC>2.5') || fields.has('MaxC<2.5'),
+      });
+      console.log('🧪 [B365 Debug] ids:', {
+        targetHomeId,
+        targetAwayId,
+      });
+      console.log('🧪 [B365 Debug] matched rows:', rows.length);
+      if (rows.length > 0) {
+        const sample = rows[0];
+        console.log('🧪 [B365 Debug] sample row:', {
+          Date: sample.Date,
+          HomeTeam: sample.HomeTeam || sample.Home,
+          AwayTeam: sample.AwayTeam || sample.Away,
+          AvgH: sample.AvgH,
+          AvgD: sample.AvgD,
+          AvgA: sample.AvgA,
+          B365H: sample.B365H,
+          B365D: sample.B365D,
+          B365A: sample.B365A,
+          MaxCH: sample.MaxCH,
+          MaxCD: sample.MaxCD,
+          MaxCA: sample.MaxCA,
+          B365COver25: sample['B365C>2.5'],
+          B365Over25: sample['B365>2.5'],
+          MaxCOver25: sample['MaxC>2.5'],
+          B365CUnder25: sample['B365C<2.5'],
+          B365Under25: sample['B365<2.5'],
+          MaxCUnder25: sample['MaxC<2.5'],
+        });
+      }
+    }
+
+    if (rows.length === 0) return null;
+
+    const pickRow = (() => {
+      if (targetDate === null) return rows[0];
+      let best = rows[0];
+      let bestDiff = Number.POSITIVE_INFINITY;
+      rows.forEach((row) => {
+        const rowDate = parseDateMs(row.Date || row.date || '');
+        if (rowDate === null) return;
+        const diff = Math.abs(rowDate - targetDate);
+        if (diff < bestDiff) {
+          bestDiff = diff;
+          best = row;
+        }
+      });
+      return best;
+    })();
+
+    const pick = (primary: string, fallback?: string) => {
+      const raw = fallback ? (pickRow[primary] ?? pickRow[fallback]) : pickRow[primary];
+      const num = Number(raw);
+      return Number.isFinite(num) && num > 0 ? num : null;
+    };
+
+    const pickPrefer = (primary: string, fallback?: string) => pick(primary, fallback);
+
+    const odds: MarketOdds = {
+      provider: 'B365',
+      home: hasAvg1x2
+        ? (pick('AvgH') ?? 0)
+        : hasB3651x2
+          ? (pick('B365H') ?? 0)
+          : hasMaxClose1x2
+            ? (pick('MaxCH') ?? 0)
+            : 0,
+      draw: hasAvg1x2
+        ? (pick('AvgD') ?? 0)
+        : hasB3651x2
+          ? (pick('B365D') ?? 0)
+          : hasMaxClose1x2
+            ? (pick('MaxCD') ?? 0)
+            : 0,
+      away: hasAvg1x2
+        ? (pick('AvgA') ?? 0)
+        : hasB3651x2
+          ? (pick('B365A') ?? 0)
+          : hasMaxClose1x2
+            ? (pick('MaxCA') ?? 0)
+            : 0,
+      over25: pickPrefer('B365C>2.5', 'B365>2.5') ?? pick('MaxC>2.5') ?? undefined,
+      under25: pickPrefer('B365C<2.5', 'B365<2.5') ?? pick('MaxC<2.5') ?? undefined,
+    };
+
+    const hasAny =
+      (odds.home && odds.home > 0) ||
+      (odds.draw && odds.draw > 0) ||
+      (odds.away && odds.away > 0) ||
+      (odds.over25 && odds.over25 > 0) ||
+      (odds.under25 && odds.under25 > 0);
+
+    return hasAny ? odds : null;
   };
 
   // xG estimado a partir da distribuição de resultados (truncado a 6 golos)
@@ -735,9 +919,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           <div className="bg-gray-50 p-3 rounded-lg">
             <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
             <div className="grid grid-cols-3 gap-2">
-              <OddBox label={homeTeam} value={probabilities.homeWin} />
-              <OddBox label="Empate" value={probabilities.draw} />
-              <OddBox label={awayTeam} value={probabilities.awayWin} />
+              <OddBox label={homeTeam} value={probabilities.homeWin} secondaryValue={bookmakerOdds?.home ?? null} />
+              <OddBox label="Empate" value={probabilities.draw} secondaryValue={bookmakerOdds?.draw ?? null} />
+              <OddBox label={awayTeam} value={probabilities.awayWin} secondaryValue={bookmakerOdds?.away ?? null} />
             </div>
             <div className="mt-4 h-32">
               <Bar data={chartData} options={chartOptions} />
@@ -775,12 +959,18 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         <span className="font-bold font-mono text-lg text-[#60A5FA]">{probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}</span>
                         <span className="text-xs text-gray-400 w-10">{(probs.over * 100).toFixed(0)}%</span>
                       </div>
+                      {line === '2.5' && bookmakerOdds?.over25 && (
+                        <div className="text-[11px] text-gray-500 mt-1 font-mono">B365 {bookmakerOdds.over25.toFixed(2)}</div>
+                      )}
                     </td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <span className="font-bold font-mono text-lg text-[#F472B6]">{probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}</span>
                         <span className="text-xs text-gray-400 w-10">{(probs.under * 100).toFixed(0)}%</span>
                       </div>
+                      {line === '2.5' && bookmakerOdds?.under25 && (
+                        <div className="text-[11px] text-gray-500 mt-1 font-mono">B365 {bookmakerOdds.under25.toFixed(2)}</div>
+                      )}
                     </td>
                   </tr>
                 ))}
