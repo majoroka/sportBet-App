@@ -94,6 +94,17 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [selectedFixtureId, setSelectedFixtureId] = useState<string>('');
 
+  const formatDateOption = (dateStr: string) => {
+    const d = new Date(dateStr);
+    if (Number.isNaN(d.getTime())) return dateStr;
+    const day = d.toLocaleString('pt-PT', { day: '2-digit' });
+    let month = d.toLocaleString('pt-PT', { month: 'short' }).replace('.', '');
+    month = month.charAt(0).toUpperCase() + month.slice(1);
+    const year = d.toLocaleString('pt-PT', { year: '2-digit' });
+    const weekday = d.toLocaleString('pt-PT', { weekday: 'short' }).replace('.', '');
+    return `${day}/${month}/${year} (${weekday})`;
+  };
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -213,7 +224,7 @@ function App() {
                   {availableDates.length > 0 ? '1. Selecione a Data' : 'Sem datas disponíveis'}
                 </option>
                 {availableDates.map(date => (
-                  <option key={date} value={date}>{new Date(date).toLocaleDateString('pt-PT', { year: 'numeric', month: 'long', day: 'numeric' })}</option>
+                  <option key={date} value={date}>{formatDateOption(date)}</option>
                 ))}
               </select>
 

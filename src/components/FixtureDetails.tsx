@@ -807,28 +807,27 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="col-span-3 py-1"></div>
 
               {/* Row: logos/names (top) */}
-              <div className="col-span-3 flex items-center justify-center gap-3 py-2">
-                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-10 h-10 object-contain" />
-                <span className="font-bold text-lg flex items-center gap-2">
-                  {homeTeam}
-                  {xgHome > 0 ? (
-                    <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
-                      xG {xgHome.toFixed(2)}
-                    </span>
-                  ) : null}
-                </span>
+              {/* Linha única: nome+ xG (casa) | logos vs logos | xG + nome (fora) */}
+              <div className="col-span-3 flex items-center justify-end gap-3 py-2 pr-2">
+                <span className="font-bold text-lg">{homeTeam}</span>
+                {xgHome > 0 ? (
+                  <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
+                    xG {xgHome.toFixed(2)}
+                  </span>
+                ) : null}
               </div>
-              <div className="text-center text-xs text-gray-500 py-2">vs</div>
-              <div className="col-span-3 flex items-center justify-center gap-3 py-2">
-                <span className="font-bold text-lg flex items-center gap-2">
-                  {xgAway > 0 ? (
-                    <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
-                      xG {xgAway.toFixed(2)}
-                    </span>
-                  ) : null}
-                  {awayTeam}
-                </span>
-                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-10 h-10 object-contain" />
+              <div className="flex items-center justify-center gap-3 py-2">
+                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-12 h-12 object-contain" />
+                <span className="text-xs text-gray-500">vs</span>
+                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-12 h-12 object-contain" />
+              </div>
+              <div className="col-span-3 flex items-center justify-start gap-3 py-2 pl-2">
+                {xgAway > 0 ? (
+                  <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
+                    xG {xgAway.toFixed(2)}
+                  </span>
+                ) : null}
+                <span className="font-bold text-lg">{awayTeam}</span>
               </div>
 
               {/* Row: subheader labels under logos */}
