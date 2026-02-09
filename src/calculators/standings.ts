@@ -238,12 +238,27 @@ export const computeLeagueStats = (csvText: string): LeagueStats => {
 
 const initSide = (): TeamSideStats => ({
   played: 0,
+  points: 0,
   goalsFor: 0,
   goalsAgainst: 0,
   cleanSheets: 0,
   noGoals: 0,
   over25: 0,
   under25: 0,
+  over15For: 0,
+  over25For: 0,
+  htGoalsFor: 0,
+  htGoalsAgainst: 0,
+  htGoalMatches: 0,
+  shotsFor: 0,
+  shotsAgainst: 0,
+  sotFor: 0,
+  sotAgainst: 0,
+  cornersFor: 0,
+  cornersAgainst: 0,
+  yellow: 0,
+  red: 0,
+  fouls: 0,
 });
 
 export const computeTeamStats = (csvText: string, teamName: string): TeamStats => {
@@ -311,6 +326,20 @@ export const computeTeamStats = (csvText: string, teamName: string): TeamStats =
     const awayTeamName = match.AwayTeam || match.Away;
     const fthg = match.FTHG ?? match.HG;
     const ftag = match.FTAG ?? match.AG;
+    const hthg = match.HTHG ?? match.HTFHG ?? match.HTHG;
+    const htag = match.HTAG ?? match.HTFAG ?? match.HTAG;
+    const hs = match.HS;
+    const asShots = match.AS;
+    const hst = match.HST;
+    const ast = match.AST;
+    const hc = match.HC;
+    const ac = match.AC;
+    const hy = match.HY;
+    const ay = match.AY;
+    const hr = match.HR;
+    const ar = match.AR;
+    const hf = match.HF;
+    const af = match.AF;
     if (!homeTeamName || !awayTeamName || fthg === undefined || ftag === undefined) return;
 
     const homeId =
@@ -371,22 +400,78 @@ export const computeTeamStats = (csvText: string, teamName: string): TeamStats =
 
     const side = isHome ? home : away;
     side.played += 1;
-    side.goalsFor += isHome ? hg : ag;
-    side.goalsAgainst += isHome ? ag : hg;
-    if ((isHome ? ag : hg) === 0) side.cleanSheets += 1;
-    if ((isHome ? hg : ag) === 0) side.noGoals += 1;
+    const gf = isHome ? hg : ag;
+    const ga = isHome ? ag : hg;
+    side.goalsFor += gf;
+    side.goalsAgainst += ga;
+    if (ga === 0) side.cleanSheets += 1;
+    if (gf === 0) side.noGoals += 1;
     const totalGoals = hg + ag;
     if (totalGoals > 2.5) side.over25 += 1; else side.under25 += 1;
+    if (gf >= 2) side.over15For += 1;
+    if (gf >= 3) side.over25For += 1;
+    // Pontos
+    if (hg > ag) {
+      if (isHome) side.points += 3;
+    } else if (hg < ag) {
+      if (!isHome) side.points += 3;
+    } else {
+      side.points += 1;
+    }
+    // Intervalo
+    const htGF = isHome ? Number(hthg ?? 0) : Number(htag ?? 0);
+    const htGA = isHome ? Number(htag ?? 0) : Number(hthg ?? 0);
+    side.htGoalsFor += Number.isFinite(htGF) ? htGF : 0;
+    side.htGoalsAgainst += Number.isFinite(htGA) ? htGA : 0;
+    const htSum = (Number.isFinite(htGF) ? htGF : 0) + (Number.isFinite(htGA) ? htGA : 0);
+    if (htSum > 0) side.htGoalMatches += 1;
+    // Remates
+    const sFor = isHome ? Number(hs ?? 0) : Number(asShots ?? 0);
+    const sAg = isHome ? Number(asShots ?? 0) : Number(hs ?? 0);
+    const stFor = isHome ? Number(hst ?? 0) : Number(ast ?? 0);
+    const stAg = isHome ? Number(ast ?? 0) : Number(hst ?? 0);
+    side.shotsFor += Number.isFinite(sFor) ? sFor : 0;
+    side.shotsAgainst += Number.isFinite(sAg) ? sAg : 0;
+    side.sotFor += Number.isFinite(stFor) ? stFor : 0;
+    side.sotAgainst += Number.isFinite(stAg) ? stAg : 0;
+    // Cantos
+    const cFor = isHome ? Number(hc ?? 0) : Number(ac ?? 0);
+    const cAg = isHome ? Number(ac ?? 0) : Number(hc ?? 0);
+    side.cornersFor += Number.isFinite(cFor) ? cFor : 0;
+    side.cornersAgainst += Number.isFinite(cAg) ? cAg : 0;
+    // Cartões
+    const yFor = isHome ? Number(hy ?? 0) : Number(ay ?? 0);
+    const rFor = isHome ? Number(hr ?? 0) : Number(ar ?? 0);
+    side.yellow += Number.isFinite(yFor) ? yFor : 0;
+    side.red += Number.isFinite(rFor) ? rFor : 0;
+    // Faltas
+    const fFor = isHome ? Number(hf ?? 0) : Number(af ?? 0);
+    side.fouls += Number.isFinite(fFor) ? fFor : 0;
   });
 
   const overall: TeamSideStats = {
     played: home.played + away.played,
+    points: home.points + away.points,
     goalsFor: home.goalsFor + away.goalsFor,
     goalsAgainst: home.goalsAgainst + away.goalsAgainst,
     cleanSheets: home.cleanSheets + away.cleanSheets,
     noGoals: home.noGoals + away.noGoals,
     over25: home.over25 + away.over25,
     under25: home.under25 + away.under25,
+    over15For: home.over15For + away.over15For,
+    over25For: home.over25For + away.over25For,
+    htGoalsFor: home.htGoalsFor + away.htGoalsFor,
+    htGoalsAgainst: home.htGoalsAgainst + away.htGoalsAgainst,
+    htGoalMatches: home.htGoalMatches + away.htGoalMatches,
+    shotsFor: home.shotsFor + away.shotsFor,
+    shotsAgainst: home.shotsAgainst + away.shotsAgainst,
+    sotFor: home.sotFor + away.sotFor,
+    sotAgainst: home.sotAgainst + away.sotAgainst,
+    cornersFor: home.cornersFor + away.cornersFor,
+    cornersAgainst: home.cornersAgainst + away.cornersAgainst,
+    yellow: home.yellow + away.yellow,
+    red: home.red + away.red,
+    fouls: home.fouls + away.fouls,
   };
 
   return { home, away, overall };

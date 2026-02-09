@@ -1275,50 +1275,6 @@
         ]
       }
     },
-    "team_149d9d8d1b8e": {
-      "id": "team_149d9d8d1b8e",
-      "display": {
-        "pt": "SK Rapid"
-      },
-      "country": "AUT",
-      "league": "AUT",
-      "names": {
-        "football-data": "SK Rapid",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "SK Rapid"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "rapid"
-        ]
-      }
-    },
-    "team_43e4f72e68f2": {
-      "id": "team_43e4f72e68f2",
-      "display": {
-        "pt": "Wolfsberger AC"
-      },
-      "country": "AUT",
-      "league": "AUT",
-      "names": {
-        "football-data": "Wolfsberger AC",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Wolfsberger AC"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "wolfsberger"
-        ]
-      }
-    },
     "team_ce3d53ce16d7": {
       "id": "team_ce3d53ce16d7",
       "display": {
@@ -1724,33 +1680,6 @@
         "norm": [
           "wacker innsbruck"
         ]
-      }
-    },
-    "team_5c4d01225cc9": {
-      "id": "team_5c4d01225cc9",
-      "display": {
-        "pt": "Grazer AK"
-      },
-      "country": "AUT",
-      "league": "AUT",
-      "names": {
-        "football-data": "Grazer AK",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Grazer AK"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "grazer ak"
-        ]
-      },
-      "logo": {
-        "key": "Grazer-ak",
-        "file": "Grazer-ak.png",
-        "path": "/logos/Bundesliga (AUT)/Grazer-ak.png"
       }
     },
     "team_6358c020638e": {
@@ -5051,20 +4980,26 @@
       "display": {
         "pt": "SK Rapid"
       },
-      "country": "AT",
-      "league": "Bundesliga (AUT)",
+      "country": "AUT",
+      "league": "Bundesliga",
       "names": {
         "football-data": "SK Rapid",
-        "clubelo": null
+        "clubelo": "Rapid Wien"
       },
       "aliases": {
         "football-data": [
           "SK Rapid"
+        ],
+        "clubelo": [
+          "Rapid Wien",
+          "Rapid Vienna"
         ]
       },
       "keys": {
         "norm": [
-          "rapid"
+          "rapid",
+          "rapid wien",
+          "rapid vienna"
         ]
       }
     },
@@ -5081,12 +5016,20 @@
       },
       "aliases": {
         "football-data": [
+          "Wolfsberger AC",
+          "Wolfsberg",
+          "Wolfsberger"
+        ],
+        "clubelo": [
+          "Wolfsberg",
+          "Wolfsberger",
           "Wolfsberger AC"
         ]
       },
       "keys": {
         "norm": [
-          "wolfsberger"
+          "wolfsberger",
+          "wolfsberg"
         ]
       }
     },
@@ -5517,40 +5460,26 @@
       },
       "aliases": {
         "football-data": [
-          "Grazer AK"
+          "Grazer AK",
+          "GAK",
+          "Grazer Athletic Klub"
+        ],
+        "clubelo": [
+          "GAK",
+          "Grazer AK",
+          "Grazer Athletic Klub"
         ]
       },
       "keys": {
         "norm": [
-          "grazer ak"
+          "grazer ak",
+          "gak"
         ]
       },
       "logo": {
         "key": "Grazer-ak",
         "file": "Grazer-ak.png",
         "path": "/logos/Bundesliga (AUT)/Grazer-ak.png"
-      }
-    },
-    "team_df8101b9e6cf": {
-      "id": "team_df8101b9e6cf",
-      "display": {
-        "pt": "Bayern Munich"
-      },
-      "country": "DE",
-      "league": "Bundesliga",
-      "names": {
-        "football-data": "Bayern Munich",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Bayern Munich"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bayern munich"
-        ]
       }
     },
     "team_23836d4de597": {
@@ -5944,33 +5873,6 @@
         ]
       }
     },
-    "team_df7520dbd4d6": {
-      "id": "team_df7520dbd4d6",
-      "display": {
-        "pt": "FC Koln"
-      },
-      "country": "DE",
-      "league": "Bundesliga",
-      "names": {
-        "football-data": "FC Koln",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FC Koln"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "koln"
-        ]
-      },
-      "logo": {
-        "key": "Koln",
-        "file": "Koln.png",
-        "path": "/logos/Bundesliga/Koln.png"
-      }
-    },
     "team_b328188d6885": {
       "id": "team_b328188d6885",
       "display": {
@@ -6024,33 +5926,6 @@
         "norm": [
           "mainz"
         ]
-      }
-    },
-    "team_b96c2e21c70c": {
-      "id": "team_b96c2e21c70c",
-      "display": {
-        "pt": "Fortuna Dusseldorf"
-      },
-      "country": "DE",
-      "league": "Bundesliga2",
-      "names": {
-        "football-data": "Fortuna Dusseldorf",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Fortuna Dusseldorf"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "fortuna dusseldorf"
-        ]
-      },
-      "logo": {
-        "key": "fortuna-dusseldorf",
-        "file": "Fortuna-dusseldorf.png",
-        "path": "/logos/Bundesliga2/Fortuna-dusseldorf.png"
       }
     },
     "team_0b94dff18d99": {
@@ -7982,15 +7857,18 @@
       },
       "aliases": {
         "football-data": [
-          "Swansea"
+          "Swansea",
+          "Swansea City"
         ],
         "clubelo": [
-          "Swansea"
+          "Swansea",
+          "Swansea City"
         ]
       },
       "keys": {
         "norm": [
-          "swansea"
+          "swansea",
+          "swansea city"
         ]
       },
       "logo": {
@@ -9291,16 +9169,20 @@
       "league": "Bundesliga (GER)",
       "names": {
         "football-data": "Bayern Munich",
-        "clubelo": null
+        "clubelo": "Bayern"
       },
       "aliases": {
         "football-data": [
           "Bayern Munich"
+        ],
+        "clubelo": [
+          "Bayern"
         ]
       },
       "keys": {
         "norm": [
-          "bayern munich"
+          "bayern munich",
+          "bayern"
         ]
       },
       "logo": {
@@ -9718,33 +9600,6 @@
         "key": "hamburger-sv",
         "file": "Hamburger-sv.png",
         "path": "/logos/Bundesliga/Hamburger-sv.png"
-      }
-    },
-    "team_a2e68ceec6be": {
-      "id": "team_a2e68ceec6be",
-      "display": {
-        "pt": "FC Koln"
-      },
-      "country": "GER",
-      "league": "Bundesliga (GER)",
-      "names": {
-        "football-data": "FC Koln",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FC Koln"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "koln"
-        ]
-      },
-      "logo": {
-        "key": "koln",
-        "file": "Koln.png",
-        "path": "/logos/Bundesliga/Koln.png"
       }
     },
     "team_3b8b0dd3bb66": {
@@ -10344,33 +10199,6 @@
         ]
       }
     },
-    "team_1aa60bef5daf": {
-      "id": "team_1aa60bef5daf",
-      "display": {
-        "pt": "FC Copenhagen"
-      },
-      "country": "DNK",
-      "league": "DNK",
-      "names": {
-        "football-data": "FC Copenhagen",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FC Copenhagen"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "copenhagen"
-        ]
-      },
-      "logo": {
-        "key": "Fc-copenhagen",
-        "file": "Fc-copenhagen.png",
-        "path": "/logos/Danish Superliga/Fc-copenhagen.png"
-      }
-    },
     "team_b6b810d2fa47": {
       "id": "team_b6b810d2fa47",
       "display": {
@@ -10846,33 +10674,6 @@
         "norm": [
           "odense"
         ]
-      }
-    },
-    "team_f45c008a18de": {
-      "id": "team_f45c008a18de",
-      "display": {
-        "pt": "FC Copenhagen"
-      },
-      "country": "DK",
-      "league": "Danish Superliga",
-      "names": {
-        "football-data": "FC Copenhagen",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FC Copenhagen"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "copenhagen"
-        ]
-      },
-      "logo": {
-        "key": "Fc-copenhagen",
-        "file": "Fc-copenhagen.png",
-        "path": "/logos/Danish Superliga/Fc-copenhagen.png"
       }
     },
     "team_72ebe9905aa4": {
@@ -11912,33 +11713,6 @@
         "path": "/logos/Premier League/Sunderland.png"
       }
     },
-    "team_99d2416635de": {
-      "id": "team_99d2416635de",
-      "display": {
-        "pt": "Middlesbrough"
-      },
-      "country": "ENG",
-      "league": "Championship (ENG)",
-      "names": {
-        "football-data": "Middlesbrough",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Middlesbrough"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "middlesbrough"
-        ]
-      },
-      "logo": {
-        "key": "Middlesbrough",
-        "file": "Middlesbrough.png",
-        "path": "/logos/Championship/Middlesbrough.png"
-      }
-    },
     "team_8b0633a083e6": {
       "id": "team_8b0633a083e6",
       "display": {
@@ -12299,31 +12073,6 @@
         ]
       }
     },
-    "team_f2bac31646f3": {
-      "id": "team_f2bac31646f3",
-      "display": {
-        "pt": "Swansea"
-      },
-      "country": "ENG",
-      "league": "Championship (ENG)",
-      "names": {
-        "football-data": "Swansea",
-        "clubelo": "Swansea"
-      },
-      "aliases": {
-        "football-data": [
-          "Swansea"
-        ],
-        "clubelo": [
-          "Swansea"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "swansea"
-        ]
-      }
-    },
     "team_43fd5525911b": {
       "id": "team_43fd5525911b",
       "display": {
@@ -12372,33 +12121,6 @@
         "norm": [
           "sheffield weds"
         ]
-      }
-    },
-    "team_b8bf0e3f0981": {
-      "id": "team_b8bf0e3f0981",
-      "display": {
-        "pt": "Sheffield United"
-      },
-      "country": "ENG",
-      "league": "Championship (ENG)",
-      "names": {
-        "football-data": "Sheffield United",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Sheffield United"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "sheffield united"
-        ]
-      },
-      "logo": {
-        "key": "Sheffield-united",
-        "file": "Sheffield-united.png",
-        "path": "/logos/Championship/Sheffield-united.png"
       }
     },
     "team_341f1853c900": {
@@ -12624,16 +12346,22 @@
       "league": "Ekstraklasa",
       "names": {
         "football-data": "GKS Katowice",
-        "clubelo": null
+        "clubelo": "Katowice"
       },
       "aliases": {
         "football-data": [
+          "GKS Katowice",
+          "Katowice"
+        ],
+        "clubelo": [
+          "Katowice",
           "GKS Katowice"
         ]
       },
       "keys": {
         "norm": [
-          "gks katowice"
+          "gks katowice",
+          "katowice"
         ]
       },
       "logo": {
@@ -12850,16 +12578,28 @@
       "league": "Ekstraklasa",
       "names": {
         "football-data": "Widzew Lodz",
-        "clubelo": null
+        "clubelo": "Widzew"
       },
       "aliases": {
         "football-data": [
-          "Widzew Lodz"
+          "Widzew Lodz",
+          "Widzew Łódź",
+          "Widzew",
+          "RTS Widzew"
+        ],
+        "clubelo": [
+          "Widzew",
+          "Widzew Lodz",
+          "Widzew Łódź",
+          "RTS Widzew"
         ]
       },
       "keys": {
         "norm": [
-          "widzew lodz"
+          "widzew lodz",
+          "widzew",
+          "widzew łódź",
+          "rts widzew"
         ]
       },
       "logo": {
@@ -12877,16 +12617,25 @@
       "league": "Ekstraklasa",
       "names": {
         "football-data": "Radomiak Radom",
-        "clubelo": null
+        "clubelo": "Radomiak"
       },
       "aliases": {
         "football-data": [
-          "Radomiak Radom"
+          "Radomiak Radom",
+          "Radomiak",
+          "RKS Radomiak"
+        ],
+        "clubelo": [
+          "Radomiak",
+          "Radomiak Radom",
+          "RKS Radomiak"
         ]
       },
       "keys": {
         "norm": [
-          "radomiak radom"
+          "radomiak radom",
+          "radomiak",
+          "rks radomiak"
         ]
       },
       "logo": {
@@ -13394,16 +13143,28 @@
       "league": "Ekstraklasa",
       "names": {
         "football-data": "Pogon Szczecin",
-        "clubelo": null
+        "clubelo": "Pogon"
       },
       "aliases": {
         "football-data": [
-          "Pogon Szczecin"
+          "Pogon Szczecin",
+          "Pogon",
+          "Pogoń Szczecin",
+          "Pogon Szczeciński"
+        ],
+        "clubelo": [
+          "Pogon",
+          "Pogon Szczecin",
+          "Pogoń Szczecin",
+          "Pogon Szczeciński"
         ]
       },
       "keys": {
         "norm": [
-          "pogon szczecin"
+          "pogon szczecin",
+          "pogon",
+          "pogon szczecinski",
+          "pogon szczeciński"
         ]
       },
       "logo": {
@@ -13428,13 +13189,15 @@
           "Termalica B-B.",
           "Bruk-Bet Termalica Nieciecza",
           "Nieciecza",
-          "Termalica"
+          "Termalica",
+          "Bruk Bet Nieciecza"
         ],
         "clubelo": [
           "Termalica",
           "Nieciecza",
           "Bruk-Bet Termalica Nieciecza",
-          "Termalica B-B."
+          "Termalica B-B.",
+          "Bruk Bet Nieciecza"
         ]
       },
       "keys": {
@@ -13442,7 +13205,8 @@
           "termalica b b",
           "nieciecza",
           "bruk bet termalica nieciecza",
-          "termalica"
+          "termalica",
+          "bruk bet nieciecza"
         ]
       },
       "logo": {
@@ -14327,33 +14091,6 @@
         ]
       }
     },
-    "team_764365a0065f": {
-      "id": "team_764365a0065f",
-      "display": {
-        "pt": "AZ Alkmaar"
-      },
-      "country": "NL",
-      "league": "Eredivise",
-      "names": {
-        "football-data": "AZ Alkmaar",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "AZ Alkmaar"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "az alkmaar"
-        ]
-      },
-      "logo": {
-        "key": "az-alkmaar",
-        "file": "Az-alkmaar.png",
-        "path": "/logos/Eredivise/Az-alkmaar.png"
-      }
-    },
     "team_b02b3af8967a": {
       "id": "team_b02b3af8967a",
       "display": {
@@ -14629,33 +14366,6 @@
         "norm": [
           "groningen"
         ]
-      }
-    },
-    "team_f7bd49b73355": {
-      "id": "team_f7bd49b73355",
-      "display": {
-        "pt": "PSV Eindhoven"
-      },
-      "country": "NL",
-      "league": "Eredivise",
-      "names": {
-        "football-data": "PSV Eindhoven",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "PSV Eindhoven"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "psv eindhoven"
-        ]
-      },
-      "logo": {
-        "key": "psv",
-        "file": "Psv.png",
-        "path": "/logos/Eredivise/Psv.png"
       }
     },
     "team_0c1ffef34e67": {
@@ -20631,50 +20341,6 @@
         ]
       }
     },
-    "team_9bef2c630012": {
-      "id": "team_9bef2c630012",
-      "display": {
-        "pt": "Ath Bilbao"
-      },
-      "country": "ES",
-      "league": "La Liga",
-      "names": {
-        "football-data": "Ath Bilbao",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Ath Bilbao"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "ath bilbao"
-        ]
-      }
-    },
-    "team_637260596bc9": {
-      "id": "team_637260596bc9",
-      "display": {
-        "pt": "Espanol"
-      },
-      "country": "ES",
-      "league": "La Liga",
-      "names": {
-        "football-data": "Espanol",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Espanol"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "espanol"
-        ]
-      }
-    },
     "team_7886a54f4c28": {
       "id": "team_7886a54f4c28",
       "display": {
@@ -20932,28 +20598,6 @@
         "path": "/logos/La Liga/Getafe.png"
       }
     },
-    "team_9b085f798961": {
-      "id": "team_9b085f798961",
-      "display": {
-        "pt": "Ath Madrid"
-      },
-      "country": "ES",
-      "league": "La Liga",
-      "names": {
-        "football-data": "Ath Madrid",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Ath Madrid"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "ath madrid"
-        ]
-      }
-    },
     "team_866381e8135a": {
       "id": "team_866381e8135a",
       "display": {
@@ -20982,28 +20626,6 @@
         "key": "Huesca",
         "file": "Huesca.png",
         "path": "/logos/La Liga2/Huesca.png"
-      }
-    },
-    "team_13935f36b591": {
-      "id": "team_13935f36b591",
-      "display": {
-        "pt": "Sp Gijon"
-      },
-      "country": "ES",
-      "league": "La Liga2",
-      "names": {
-        "football-data": "Sp Gijon",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Sp Gijon"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "sp gijon"
-        ]
       }
     },
     "team_d24afa9b5384": {
@@ -21209,33 +20831,6 @@
         "key": "Almeria",
         "file": "Almeria.png",
         "path": "/logos/La Liga2/Almeria.png"
-      }
-    },
-    "team_8334afd0376f": {
-      "id": "team_8334afd0376f",
-      "display": {
-        "pt": "Cultural Leonesa"
-      },
-      "country": "ES",
-      "league": "La Liga2",
-      "names": {
-        "football-data": "Cultural Leonesa",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Cultural Leonesa"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "cultural leonesa"
-        ]
-      },
-      "logo": {
-        "key": "Cultural-leonesa",
-        "file": "Cultural-leonesa.png",
-        "path": "/logos/La Liga2/Cultural-leonesa.png"
       }
     },
     "team_b8be3fb0515b": {
@@ -21521,28 +21116,6 @@
         "key": "Las-palmas",
         "file": "Las-palmas.png",
         "path": "/logos/La Liga2/Las-palmas.png"
-      }
-    },
-    "team_5114b5c978a3": {
-      "id": "team_5114b5c978a3",
-      "display": {
-        "pt": "La Coruna"
-      },
-      "country": "ES",
-      "league": "La Liga2",
-      "names": {
-        "football-data": "La Coruna",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "La Coruna"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "la coruna"
-        ]
       }
     },
     "team_c01bf5073f7a": {
@@ -23362,16 +22935,25 @@
       "league": "Eredivise (NLD)",
       "names": {
         "football-data": "AZ Alkmaar",
-        "clubelo": null
+        "clubelo": "Alkmaar"
       },
       "aliases": {
         "football-data": [
-          "AZ Alkmaar"
+          "AZ Alkmaar",
+          "AZ",
+          "Alkmaar"
+        ],
+        "clubelo": [
+          "Alkmaar",
+          "AZ Alkmaar",
+          "AZ"
         ]
       },
       "keys": {
         "norm": [
-          "az alkmaar"
+          "az alkmaar",
+          "alkmaar",
+          "az"
         ]
       },
       "logo": {
@@ -23666,17 +23248,28 @@
       "league": "Eredivise (NLD)",
       "names": {
         "football-data": "PSV Eindhoven",
-        "clubelo": null
+        "clubelo": "PSV"
       },
       "aliases": {
         "football-data": [
+          "PSV Eindhoven",
+          "PSV"
+        ],
+        "clubelo": [
+          "PSV",
           "PSV Eindhoven"
         ]
       },
       "keys": {
         "norm": [
-          "psv eindhoven"
+          "psv eindhoven",
+          "psv"
         ]
+      },
+      "logo": {
+        "key": "Psv",
+        "file": "Psv.png",
+        "path": "/logos/Eredivise (NLD)/Psv.png"
       }
     },
     "team_3e943f1b71bc": {
@@ -24803,7 +24396,7 @@
     "team_368547a8fb17": {
       "id": "team_368547a8fb17",
       "display": {
-        "pt": "Sporting"
+        "pt": "Sporting CP"
       },
       "country": "POR",
       "league": "Primeira Liga (POR)",
@@ -24816,13 +24409,17 @@
           "Sporting CP",
           "Sporting",
           "Sp Lisbon",
-          "Sporting Lisbon"
+          "Sporting Lisbon",
+          "Sporting Clube de Portugal",
+          "Sporting Lisbon CP"
         ],
         "clubelo": [
           "Sporting CP",
           "Sporting",
           "Sporting Lisbon",
-          "Sp Lisbon"
+          "Sp Lisbon",
+          "Sporting Clube de Portugal",
+          "Sporting Lisbon CP"
         ]
       },
       "keys": {
@@ -24830,7 +24427,9 @@
           "sporting",
           "sporting cp",
           "sporting lisbon",
-          "sp lisbon"
+          "sp lisbon",
+          "sporting clube de portugal",
+          "sporting lisbon cp"
         ]
       },
       "logo": {
@@ -24992,16 +24591,28 @@
       "league": "Primeira Liga (POR)",
       "names": {
         "football-data": "Sp Braga",
-        "clubelo": null
+        "clubelo": "Braga"
       },
       "aliases": {
         "football-data": [
-          "Sp Braga"
+          "Sp Braga",
+          "Braga",
+          "Sporting Braga",
+          "SC Braga"
+        ],
+        "clubelo": [
+          "Braga",
+          "Sp Braga",
+          "Sporting Braga",
+          "SC Braga"
         ]
       },
       "keys": {
         "norm": [
-          "sp braga"
+          "sp braga",
+          "braga",
+          "sporting braga",
+          "sc braga"
         ]
       },
       "logo": {
@@ -25051,28 +24662,6 @@
       "keys": {
         "norm": [
           "sandecja nowy s"
-        ]
-      }
-    },
-    "team_3494c2b62e92": {
-      "id": "team_3494c2b62e92",
-      "display": {
-        "pt": "GKS Katowice"
-      },
-      "country": "POL",
-      "league": "POL",
-      "names": {
-        "football-data": "GKS Katowice",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "GKS Katowice"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "gks katowice"
         ]
       }
     },
@@ -25252,50 +24841,6 @@
       "keys": {
         "norm": [
           "legnica"
-        ]
-      }
-    },
-    "team_3d2ed01016d6": {
-      "id": "team_3d2ed01016d6",
-      "display": {
-        "pt": "Widzew Lodz"
-      },
-      "country": "POL",
-      "league": "POL",
-      "names": {
-        "football-data": "Widzew Lodz",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Widzew Lodz"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "widzew lodz"
-        ]
-      }
-    },
-    "team_38dbf17c12d8": {
-      "id": "team_38dbf17c12d8",
-      "display": {
-        "pt": "Radomiak Radom"
-      },
-      "country": "POL",
-      "league": "POL",
-      "names": {
-        "football-data": "Radomiak Radom",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Radomiak Radom"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "radomiak radom"
         ]
       }
     },
@@ -25742,50 +25287,6 @@
         "key": "cracovia",
         "file": "cracovia.png",
         "path": "/logos/Ekstraklasa/cracovia.png"
-      }
-    },
-    "team_dbecdaa469da": {
-      "id": "team_dbecdaa469da",
-      "display": {
-        "pt": "Pogon Szczecin"
-      },
-      "country": "POL",
-      "league": "POL",
-      "names": {
-        "football-data": "Pogon Szczecin",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Pogon Szczecin"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "pogon szczecin"
-        ]
-      }
-    },
-    "team_8479e0784545": {
-      "id": "team_8479e0784545",
-      "display": {
-        "pt": "Termalica B-B."
-      },
-      "country": "POL",
-      "league": "POL",
-      "names": {
-        "football-data": "Termalica B-B.",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Termalica B-B."
-        ]
-      },
-      "keys": {
-        "norm": [
-          "termalica b b"
-        ]
       }
     },
     "team_f4b2d63a51f0": {
@@ -26416,7 +25917,7 @@
     "team_c86895699221": {
       "id": "team_c86895699221",
       "display": {
-        "pt": "Dundee"
+        "pt": "Dundee FC"
       },
       "country": "GB-SCT",
       "league": "Premier League (SCO)",
@@ -26426,15 +25927,18 @@
       },
       "aliases": {
         "football-data": [
-          "Dundee"
+          "Dundee",
+          "Dundee FC"
         ],
         "clubelo": [
-          "Dundee"
+          "Dundee",
+          "Dundee FC"
         ]
       },
       "keys": {
         "norm": [
-          "dundee"
+          "dundee",
+          "dundee fc"
         ]
       },
       "logo": {
@@ -26486,15 +25990,18 @@
       },
       "aliases": {
         "football-data": [
-          "Dundee United"
+          "Dundee United",
+          "Dundee Utd"
         ],
         "clubelo": [
-          "Dundee United"
+          "Dundee United",
+          "Dundee Utd"
         ]
       },
       "keys": {
         "norm": [
-          "dundee united"
+          "dundee united",
+          "dundee utd"
         ]
       },
       "logo": {
@@ -27624,28 +27131,6 @@
         "path": "/logos/Primeira Liga/Gil-vicente.png"
       }
     },
-    "team_c08988ab66da": {
-      "id": "team_c08988ab66da",
-      "display": {
-        "pt": "Sp Lisbon"
-      },
-      "country": "PT",
-      "league": "Primeira Liga",
-      "names": {
-        "football-data": "Sp Lisbon",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Sp Lisbon"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "sp lisbon"
-        ]
-      }
-    },
     "team_84b3c1c679f9": {
       "id": "team_84b3c1c679f9",
       "display": {
@@ -27778,28 +27263,6 @@
         "key": "Porto",
         "file": "Porto.png",
         "path": "/logos/Primeira Liga/Porto.png"
-      }
-    },
-    "team_5c8f251195a6": {
-      "id": "team_5c8f251195a6",
-      "display": {
-        "pt": "Sp Braga"
-      },
-      "country": "PT",
-      "league": "Primeira Liga",
-      "names": {
-        "football-data": "Sp Braga",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Sp Braga"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "sp braga"
-        ]
       }
     },
     "team_2e52f3a92928": {
@@ -29169,32 +28632,10 @@
         ]
       }
     },
-    "team_b7632de0e1f6": {
-      "id": "team_b7632de0e1f6",
-      "display": {
-        "pt": "FCSB"
-      },
-      "country": "ROU",
-      "league": "ROU",
-      "names": {
-        "football-data": "FCSB",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FCSB"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "fcsb"
-        ]
-      }
-    },
     "team_a2ca1d07d122": {
       "id": "team_a2ca1d07d122",
       "display": {
-        "pt": "Din. Bucuresti"
+        "pt": "Dinamo Bucuresti"
       },
       "country": "ROU",
       "league": "Superliga (ROM)",
@@ -29206,19 +28647,24 @@
         "football-data": [
           "Din. Bucuresti",
           "Dinamo Bucuresti",
-          "Dinamo Bucarest"
+          "Dinamo Bucarest",
+          "Dinamo Bucharest"
         ],
         "clubelo": [
           "Dinamo Bucuresti",
           "Din. Bucuresti",
-          "Dinamo"
+          "Dinamo",
+          "Dinamo Bucarest",
+          "Dinamo Bucharest"
         ]
       },
       "keys": {
         "norm": [
           "din bucuresti",
           "dinamo bucuresti",
-          "dinamo"
+          "dinamo",
+          "dinamo bucharest",
+          "dinamo bucarest"
         ]
       },
       "logo": {
@@ -29497,33 +28943,6 @@
         ]
       }
     },
-    "team_e4d60bef63b0": {
-      "id": "team_e4d60bef63b0",
-      "display": {
-        "pt": "Otelul"
-      },
-      "country": "ROU",
-      "league": "ROU",
-      "names": {
-        "football-data": "Otelul",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Otelul"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "otelul"
-        ]
-      },
-      "logo": {
-        "key": "otelul-galati",
-        "file": "otelul-galati.png",
-        "path": "/logos/Superliga (ROM)/otelul-galati.png"
-      }
-    },
     "team_b589f734786a": {
       "id": "team_b589f734786a",
       "display": {
@@ -29637,33 +29056,6 @@
         "norm": [
           "gloria buzau"
         ]
-      }
-    },
-    "team_ad24e5016969": {
-      "id": "team_ad24e5016969",
-      "display": {
-        "pt": "Metaloglobus Bucharest"
-      },
-      "country": "ROU",
-      "league": "ROU",
-      "names": {
-        "football-data": "Metaloglobus Bucharest",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Metaloglobus Bucharest"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "metaloglobus bucharest"
-        ]
-      },
-      "logo": {
-        "key": "metaloglobus-bucharest",
-        "file": "metaloglobus-bucharest.png",
-        "path": "/logos/Superliga (ROM)/metaloglobus-bucharest.png"
       }
     },
     "team_fb1a041c81e6": {
@@ -29914,31 +29306,6 @@
         ]
       }
     },
-    "team_f7b8321a96b7": {
-      "id": "team_f7b8321a96b7",
-      "display": {
-        "pt": "Dundee"
-      },
-      "country": "SCO",
-      "league": "SCO",
-      "names": {
-        "football-data": "Dundee",
-        "clubelo": "Dundee"
-      },
-      "aliases": {
-        "football-data": [
-          "Dundee"
-        ],
-        "clubelo": [
-          "Dundee"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "dundee"
-        ]
-      }
-    },
     "team_3d6495557ee1": {
       "id": "team_3d6495557ee1",
       "display": {
@@ -29961,31 +29328,6 @@
       "keys": {
         "norm": [
           "rangers"
-        ]
-      }
-    },
-    "team_f440c198c6b5": {
-      "id": "team_f440c198c6b5",
-      "display": {
-        "pt": "Dundee United"
-      },
-      "country": "SCO",
-      "league": "SCO",
-      "names": {
-        "football-data": "Dundee United",
-        "clubelo": "Dundee United"
-      },
-      "aliases": {
-        "football-data": [
-          "Dundee United"
-        ],
-        "clubelo": [
-          "Dundee United"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "dundee united"
         ]
       }
     },
@@ -30407,16 +29749,29 @@
       "league": "La Liga (ESP)",
       "names": {
         "football-data": "Ath Bilbao",
-        "clubelo": null
+        "clubelo": "Bilbao"
       },
       "aliases": {
         "football-data": [
-          "Ath Bilbao"
+          "Ath Bilbao",
+          "Athletic Bilbao",
+          "Bilbao",
+          "Athletic Club"
+        ],
+        "clubelo": [
+          "Bilbao",
+          "Athletic Bilbao",
+          "Ath Bilbao",
+          "Athletic Club"
         ]
       },
       "keys": {
         "norm": [
-          "ath bilbao"
+          "ath bilbao",
+          "bilbao",
+          "athletic bilbao",
+          "athletic club",
+          "athleticclub"
         ]
       },
       "logo": {
@@ -30439,17 +29794,20 @@
       "aliases": {
         "football-data": [
           "Espanol",
-          "Espanyol"
+          "Espanyol",
+          "RCD Espanyol"
         ],
         "clubelo": [
           "Espanol",
-          "Espanyol"
+          "Espanyol",
+          "RCD Espanyol"
         ]
       },
       "keys": {
         "norm": [
           "espanol",
-          "espanyol"
+          "espanyol",
+          "rcd espanyol"
         ]
       },
       "logo": {
@@ -30725,33 +30083,6 @@
         "path": "/logos/La Liga/Getafe.png"
       }
     },
-    "team_02a39c7b5f0d": {
-      "id": "team_02a39c7b5f0d",
-      "display": {
-        "pt": "Ath Madrid"
-      },
-      "country": "ESP",
-      "league": "La Liga (ESP)",
-      "names": {
-        "football-data": "Ath Madrid",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Ath Madrid"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "ath madrid"
-        ]
-      },
-      "logo": {
-        "key": "atletico-madrid",
-        "file": "Atletico-madrid.png",
-        "path": "/logos/La Liga/Atletico-madrid.png"
-      }
-    },
     "team_704d07d5ac89": {
       "id": "team_704d07d5ac89",
       "display": {
@@ -30791,16 +30122,33 @@
       "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Sp Gijon",
-        "clubelo": null
+        "clubelo": "Gijon"
       },
       "aliases": {
         "football-data": [
-          "Sp Gijon"
+          "Sp Gijon",
+          "Sporting Gijon",
+          "Gijon",
+          "Real Sporting",
+          "Sporting de Gijon",
+          "Sporting de Gijón"
+        ],
+        "clubelo": [
+          "Gijon",
+          "Sp Gijon",
+          "Sporting Gijon",
+          "Real Sporting",
+          "Sporting de Gijon",
+          "Sporting de Gijón"
         ]
       },
       "keys": {
         "norm": [
-          "sp gijon"
+          "sp gijon",
+          "gijon",
+          "sporting gijon",
+          "sporting de gijon",
+          "real sporting"
         ]
       },
       "logo": {
@@ -31023,16 +30371,25 @@
       "league": "La Liga2 (ESP)",
       "names": {
         "football-data": "Cultural Leonesa",
-        "clubelo": null
+        "clubelo": "Leonesa"
       },
       "aliases": {
         "football-data": [
-          "Cultural Leonesa"
+          "Cultural Leonesa",
+          "Leonesa",
+          "Cultural y Deportiva Leonesa"
+        ],
+        "clubelo": [
+          "Leonesa",
+          "Cultural Leonesa",
+          "Cultural y Deportiva Leonesa"
         ]
       },
       "keys": {
         "norm": [
-          "cultural leonesa"
+          "cultural leonesa",
+          "leonesa",
+          "cultural y deportiva leonesa"
         ]
       },
       "logo": {
@@ -31328,33 +30685,6 @@
         "key": "Las-palmas",
         "file": "Las-palmas.png",
         "path": "/logos/La Liga2/Las-palmas.png"
-      }
-    },
-    "team_96aa14ba3547": {
-      "id": "team_96aa14ba3547",
-      "display": {
-        "pt": "La Coruna"
-      },
-      "country": "ESP",
-      "league": "La Liga2 (ESP)",
-      "names": {
-        "football-data": "La Coruna",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "La Coruna"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "la coruna"
-        ]
-      },
-      "logo": {
-        "key": "deportivo-la-coruna",
-        "file": "Deportivo-la-coruna.png",
-        "path": "/logos/La Liga2/Deportivo-la-coruna.png"
       }
     },
     "team_5c0d7580a175": {
@@ -32219,28 +31549,6 @@
         ]
       }
     },
-    "team_eac353ccf28c": {
-      "id": "team_eac353ccf28c",
-      "display": {
-        "pt": "Zurich"
-      },
-      "country": "SWZ",
-      "league": "SWZ",
-      "names": {
-        "football-data": "Zurich",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Zurich"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "zurich"
-        ]
-      }
-    },
     "team_d538b0aa751d": {
       "id": "team_d538b0aa751d",
       "display": {
@@ -32529,28 +31837,6 @@
         "key": "cadiz",
         "file": "Cadiz.png",
         "path": "/logos/La Liga2/Cadiz.png"
-      }
-    },
-    "team_a93ae8b5095b": {
-      "id": "team_a93ae8b5095b",
-      "display": {
-        "pt": "St. Gallen"
-      },
-      "country": "SWZ",
-      "league": "SWZ",
-      "names": {
-        "football-data": "St. Gallen",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "St. Gallen"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "st gallen"
-        ]
       }
     },
     "team_3843ffa4ea04": {
@@ -34056,16 +33342,27 @@
       "league": "Super Lig",
       "names": {
         "football-data": "Goztep",
-        "clubelo": null
+        "clubelo": "Goeztepe"
       },
       "aliases": {
         "football-data": [
+          "Goztep",
+          "Goeztepe",
+          "Goztepe",
+          "Göztepe"
+        ],
+        "clubelo": [
+          "Goeztepe",
+          "Goztepe",
+          "Göztepe",
           "Goztep"
         ]
       },
       "keys": {
         "norm": [
-          "goztep"
+          "goztep",
+          "goeztepe",
+          "goztepe"
         ]
       },
       "logo": {
@@ -34200,16 +33497,42 @@
       "league": "Super Lig",
       "names": {
         "football-data": "Buyuksehyr",
-        "clubelo": null
+        "clubelo": "Bueyueksehir"
       },
       "aliases": {
         "football-data": [
-          "Buyuksehyr"
+          "Buyuksehyr",
+          "Bueyueksehir",
+          "Buyuksehir",
+          "Büyüksehir",
+          "Istanbul Basaksehir",
+          "Basaksehir",
+          "Başakşehir",
+          "Istanbul BB",
+          "Istanbul B.B."
+        ],
+        "clubelo": [
+          "Bueyueksehir",
+          "Buyuksehyr",
+          "Buyuksehir",
+          "Büyüksehir",
+          "Istanbul Basaksehir",
+          "Basaksehir",
+          "Başakşehir",
+          "Istanbul BB",
+          "Istanbul B.B."
         ]
       },
       "keys": {
         "norm": [
-          "buyuksehyr"
+          "buyuksehyr",
+          "bueyueksehir",
+          "buyuksehir",
+          "basaksehir",
+          "istanbul basaksehir",
+          "istanbul bb",
+          "istanbul b b",
+          "basaksehir fk"
         ]
       },
       "logo": {
@@ -34911,55 +34234,6 @@
         ]
       }
     },
-    "team_ba2a4980e2c0": {
-      "id": "team_ba2a4980e2c0",
-      "display": {
-        "pt": "FCSB"
-      },
-      "country": "ROU",
-      "league": "Superliga (ROM)",
-      "names": {
-        "football-data": "FCSB",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "FCSB"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "fcsb"
-        ]
-      },
-      "logo": {
-        "key": "steaua",
-        "file": "steaua.png",
-        "path": "/logos/Superliga (ROM)/steaua.png"
-      }
-    },
-    "team_e45e325ca506": {
-      "id": "team_e45e325ca506",
-      "display": {
-        "pt": "Din. Bucuresti"
-      },
-      "country": "RO",
-      "league": "Superliga (ROM)",
-      "names": {
-        "football-data": "Din. Bucuresti",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Din. Bucuresti"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "din bucuresti"
-        ]
-      }
-    },
     "team_d5181d14eac7": {
       "id": "team_d5181d14eac7",
       "display": {
@@ -35212,28 +34486,6 @@
         ]
       }
     },
-    "team_b4f76b39a8e9": {
-      "id": "team_b4f76b39a8e9",
-      "display": {
-        "pt": "Otelul"
-      },
-      "country": "RO",
-      "league": "Superliga (ROM)",
-      "names": {
-        "football-data": "Otelul",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Otelul"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "otelul"
-        ]
-      }
-    },
     "team_76434721d2b5": {
       "id": "team_76434721d2b5",
       "display": {
@@ -35358,16 +34610,26 @@
       "league": "Superliga (ROM)",
       "names": {
         "football-data": "Metaloglobus Bucharest",
-        "clubelo": null
+        "clubelo": "Metaloglobus"
       },
       "aliases": {
         "football-data": [
-          "Metaloglobus Bucharest"
+          "Metaloglobus Bucharest",
+          "Metaloglobus",
+          "FC Metaloglobus"
+        ],
+        "clubelo": [
+          "Metaloglobus",
+          "Metaloglobus Bucharest",
+          "FC Metaloglobus"
         ]
       },
       "keys": {
         "norm": [
-          "metaloglobus bucharest"
+          "metaloglobus bucharest",
+          "metaloglobus",
+          "fcmetaloglobus",
+          "fc metaloglobus"
         ]
       },
       "logo": {
@@ -36174,28 +35436,6 @@
         ]
       }
     },
-    "team_9a36072d4075": {
-      "id": "team_9a36072d4075",
-      "display": {
-        "pt": "Zurich"
-      },
-      "country": "CH",
-      "league": "Swiss Super League",
-      "names": {
-        "football-data": "Zurich",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Zurich"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "zurich"
-        ]
-      }
-    },
     "team_641650ad792e": {
       "id": "team_641650ad792e",
       "display": {
@@ -36490,16 +35730,28 @@
       "league": "Swiss Super League",
       "names": {
         "football-data": "St. Gallen",
-        "clubelo": null
+        "clubelo": "StGallen"
       },
       "aliases": {
         "football-data": [
-          "St. Gallen"
+          "St. Gallen",
+          "StGallen",
+          "FC St Gallen",
+          "FC St. Gallen"
+        ],
+        "clubelo": [
+          "StGallen",
+          "St. Gallen",
+          "FC St Gallen",
+          "FC St. Gallen"
         ]
       },
       "keys": {
         "norm": [
-          "st gallen"
+          "st gallen",
+          "stgallen",
+          "fc st gallen",
+          "fc st. gallen"
         ]
       }
     },
@@ -36550,28 +35802,6 @@
       "keys": {
         "norm": [
           "servette"
-        ]
-      }
-    },
-    "team_d85b4681ccfa": {
-      "id": "team_d85b4681ccfa",
-      "display": {
-        "pt": "Goztep"
-      },
-      "country": "TUR",
-      "league": "Super Lig (TUR)",
-      "names": {
-        "football-data": "Goztep",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Goztep"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "goztep"
         ]
       }
     },
@@ -36690,28 +35920,6 @@
         "key": "Eyupspor",
         "file": "Eyupspor.png",
         "path": "/logos/Super Lig/Eyupspor.png"
-      }
-    },
-    "team_be9ce184c3d6": {
-      "id": "team_be9ce184c3d6",
-      "display": {
-        "pt": "Buyuksehyr"
-      },
-      "country": "TUR",
-      "league": "Super Lig (TUR)",
-      "names": {
-        "football-data": "Buyuksehyr",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Buyuksehyr"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "buyuksehyr"
-        ]
       }
     },
     "team_61904a89b293": {
@@ -37590,50 +36798,35 @@
       "country": "ROU",
       "league": "Superliga (ROM)",
       "names": {
-        "football-data": null,
+        "football-data": "Otelul",
         "clubelo": "Otelul Galati"
       },
       "aliases": {
         "clubelo": [
-          "Otelul Galati"
+          "Otelul Galati",
+          "Otelul",
+          "Oțelul Galați",
+          "Otelul Galati (Galati)"
+        ],
+        "football-data": [
+          "Otelul",
+          "Otelul Galati",
+          "Oțelul Galați",
+          "Otelul Galati (Galati)"
         ]
       },
       "keys": {
         "norm": [
-          "otelul galati"
+          "otelul galati",
+          "otelul",
+          "otelul galati galati",
+          "otelul galati (galati)"
         ]
       },
       "logo": {
         "key": "otelul-galati",
         "file": "otelul-galati.png",
         "path": "/logos/Superliga (ROM)/otelul-galati.png"
-      }
-    },
-    "team_d52de3e5ba72": {
-      "id": "team_d52de3e5ba72",
-      "display": {
-        "pt": "Nieciecza"
-      },
-      "country": "POL",
-      "league": "Ekstraklasa (POL)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Nieciecza"
-      },
-      "aliases": {
-        "clubelo": [
-          "Nieciecza"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "nieciecza"
-        ]
-      },
-      "logo": {
-        "key": "nieciecza",
-        "file": "nieciecza.png",
-        "path": "/logos/Ekstraklasa (POL)/nieciecza.png"
       }
     },
     "team_7456af81ecf7": {
@@ -37840,28 +37033,6 @@
       "keys": {
         "norm": [
           "lautern"
-        ]
-      }
-    },
-    "team_0d1961676ac2": {
-      "id": "team_0d1961676ac2",
-      "display": {
-        "pt": "Braga"
-      },
-      "country": "POR",
-      "league": "Primeira Liga (POR)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Braga"
-      },
-      "aliases": {
-        "clubelo": [
-          "Braga"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "braga"
         ]
       }
     },
@@ -38102,28 +37273,6 @@
       "keys": {
         "norm": [
           "craiova"
-        ]
-      }
-    },
-    "team_7b05924cd1ea": {
-      "id": "team_7b05924cd1ea",
-      "display": {
-        "pt": "Duesseldorf"
-      },
-      "country": "GER",
-      "league": "Bundesliga2 (GER)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Duesseldorf"
-      },
-      "aliases": {
-        "clubelo": [
-          "Duesseldorf"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "duesseldorf"
         ]
       }
     },
@@ -38439,7 +37588,8 @@
       "aliases": {
         "clubelo": [
           "Zuerich",
-          "Zurich"
+          "Zurich",
+          "FC Zurich"
         ],
         "football-data": [
           "Zurich",
@@ -38521,28 +37671,6 @@
         ]
       }
     },
-    "team_a8b49e5e8223": {
-      "id": "team_a8b49e5e8223",
-      "display": {
-        "pt": "Bilbao"
-      },
-      "country": "ESP",
-      "league": "La Liga (ESP)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Bilbao"
-      },
-      "aliases": {
-        "clubelo": [
-          "Bilbao"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bilbao"
-        ]
-      }
-    },
     "team_e12b0ba3d6ce": {
       "id": "team_e12b0ba3d6ce",
       "display": {
@@ -38568,50 +37696,6 @@
         "key": "Botev-plovdiv",
         "file": "Botev-plovdiv.png",
         "path": "/logos/Parva Liga (BUL)/Botev-plovdiv.png"
-      }
-    },
-    "team_3129ccf79757": {
-      "id": "team_3129ccf79757",
-      "display": {
-        "pt": "Bayern"
-      },
-      "country": "GER",
-      "league": "Bundesliga (GER)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Bayern"
-      },
-      "aliases": {
-        "clubelo": [
-          "Bayern"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bayern"
-        ]
-      }
-    },
-    "team_49dcd67da73d": {
-      "id": "team_49dcd67da73d",
-      "display": {
-        "pt": "Metaloglobus"
-      },
-      "country": "ROU",
-      "league": "Superliga (ROM)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Metaloglobus"
-      },
-      "aliases": {
-        "clubelo": [
-          "Metaloglobus"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "metaloglobus"
-        ]
       }
     },
     "team_bf29d13d04d8": {
@@ -38641,55 +37725,6 @@
         "path": "/logos/Parva Liga (BUL)/Arda.png"
       }
     },
-    "team_e2b3ec7f4e7d": {
-      "id": "team_e2b3ec7f4e7d",
-      "display": {
-        "pt": "Pogon"
-      },
-      "country": "POL",
-      "league": "Ekstraklasa (POL)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Pogon"
-      },
-      "aliases": {
-        "clubelo": [
-          "Pogon"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "pogon"
-        ]
-      }
-    },
-    "team_d32db4dbd68f": {
-      "id": "team_d32db4dbd68f",
-      "display": {
-        "pt": "PSV"
-      },
-      "country": "NLD",
-      "league": "Eredivise (NLD)",
-      "names": {
-        "football-data": null,
-        "clubelo": "PSV"
-      },
-      "aliases": {
-        "clubelo": [
-          "PSV"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "psv"
-        ]
-      },
-      "logo": {
-        "key": "Psv",
-        "file": "Psv.png",
-        "path": "/logos/Eredivise (NLD)/Psv.png"
-      }
-    },
     "team_34ad1138ba59": {
       "id": "team_34ad1138ba59",
       "display": {
@@ -38709,28 +37744,6 @@
       "keys": {
         "norm": [
           "olimpija ljubljana"
-        ]
-      }
-    },
-    "team_4470c9cfc1a9": {
-      "id": "team_4470c9cfc1a9",
-      "display": {
-        "pt": "Katowice"
-      },
-      "country": "POL",
-      "league": "Ekstraklasa (POL)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Katowice"
-      },
-      "aliases": {
-        "clubelo": [
-          "Katowice"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "katowice"
         ]
       }
     },
@@ -38854,39 +37867,6 @@
         "path": "/logos/Parva Liga (BUL)/Levski.png"
       }
     },
-    "team_102790751671": {
-      "id": "team_102790751671",
-      "display": {
-        "pt": "Goeztepe"
-      },
-      "country": "TUR",
-      "league": "Super Lig (TUR)",
-      "names": {
-        "football-data": "Goztep",
-        "clubelo": "Goeztepe"
-      },
-      "aliases": {
-        "football-data": [
-          "Goztep",
-          "Goeztepe",
-          "Goztepe",
-          "Göztepe"
-        ],
-        "clubelo": [
-          "Goeztepe",
-          "Goztepe",
-          "Göztepe",
-          "Goztep"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "goeztepe",
-          "goztepe",
-          "goztep"
-        ]
-      }
-    },
     "team_e985f6446066": {
       "id": "team_e985f6446066",
       "display": {
@@ -38912,28 +37892,6 @@
         "key": "Zulte-waregem",
         "file": "Zulte-waregem.png",
         "path": "/logos/Jupiler Ligue (BEL)/Zulte-waregem.png"
-      }
-    },
-    "team_3caacbe4a746": {
-      "id": "team_3caacbe4a746",
-      "display": {
-        "pt": "Leonesa"
-      },
-      "country": "ESP",
-      "league": "La Liga2 (ESP)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Leonesa"
-      },
-      "aliases": {
-        "clubelo": [
-          "Leonesa"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "leonesa"
-        ]
       }
     },
     "team_acae9c6d2ab1": {
@@ -38977,28 +37935,6 @@
       "keys": {
         "norm": [
           "lech"
-        ]
-      }
-    },
-    "team_cb89e5794895": {
-      "id": "team_cb89e5794895",
-      "display": {
-        "pt": "Gijon"
-      },
-      "country": "ESP",
-      "league": "La Liga2 (ESP)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Gijon"
-      },
-      "aliases": {
-        "clubelo": [
-          "Gijon"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "gijon"
         ]
       }
     },
@@ -39100,33 +38036,6 @@
         "path": "/logos/Ekstraklasa (POL)/lechia.png"
       }
     },
-    "team_b005eaf38b35": {
-      "id": "team_b005eaf38b35",
-      "display": {
-        "pt": "Alkmaar"
-      },
-      "country": "NLD",
-      "league": "UNK",
-      "names": {
-        "football-data": null,
-        "clubelo": "Alkmaar"
-      },
-      "aliases": {
-        "clubelo": [
-          "Alkmaar"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "alkmaar"
-        ]
-      },
-      "logo": {
-        "key": "malaga",
-        "file": "Malaga.png",
-        "path": "/logos/La Liga2/Malaga.png"
-      }
-    },
     "team_26ec6addaf67": {
       "id": "team_26ec6addaf67",
       "display": {
@@ -39219,45 +38128,6 @@
         ]
       }
     },
-    "team_7402aaf8a928": {
-      "id": "team_7402aaf8a928",
-      "display": {
-        "pt": "Bueyueksehir"
-      },
-      "country": "TUR",
-      "league": "Super Lig (TUR)",
-      "names": {
-        "football-data": "Bueyueksehir",
-        "clubelo": "Bueyueksehir"
-      },
-      "aliases": {
-        "football-data": [
-          "Bueyueksehir",
-          "Buyuksehyr",
-          "Buyuksehir",
-          "Büyüksehir",
-          "Istanbul Basaksehir",
-          "Basaksehir"
-        ],
-        "clubelo": [
-          "Bueyueksehir",
-          "Buyuksehyr",
-          "Buyuksehir",
-          "Büyüksehir",
-          "Istanbul Basaksehir",
-          "Basaksehir"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bueyueksehir",
-          "buyuksehyr",
-          "buyuksehir",
-          "basaksehir",
-          "istanbul basaksehir"
-        ]
-      }
-    },
     "team_504a374dca0e": {
       "id": "team_504a374dca0e",
       "display": {
@@ -39345,12 +38215,20 @@
         "football-data": [
           "La Coruna",
           "Deportivo La Coruna",
-          "Depor"
+          "Depor",
+          "Deportivo La Coruña",
+          "RC Deportivo",
+          "Deportivo",
+          "La Coruña"
         ],
         "clubelo": [
           "Depor",
           "Deportivo",
-          "La Coruna"
+          "La Coruna",
+          "Deportivo La Coruna",
+          "Deportivo La Coruña",
+          "RC Deportivo",
+          "La Coruña"
         ]
       },
       "keys": {
@@ -39358,7 +38236,8 @@
           "depor",
           "la coruna",
           "deportivo la coruna",
-          "deportivo"
+          "deportivo",
+          "rc deportivo"
         ]
       },
       "logo": {
@@ -39414,50 +38293,6 @@
         "key": "Aluminij",
         "file": "Aluminij.png",
         "path": "/logos/Prva Liga Telemach (SVN)/Aluminij.png"
-      }
-    },
-    "team_0cca76655566": {
-      "id": "team_0cca76655566",
-      "display": {
-        "pt": "Widzew"
-      },
-      "country": "POL",
-      "league": "Ekstraklasa (POL)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Widzew"
-      },
-      "aliases": {
-        "clubelo": [
-          "Widzew"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "widzew"
-        ]
-      }
-    },
-    "team_f17cc738c26f": {
-      "id": "team_f17cc738c26f",
-      "display": {
-        "pt": "StGallen"
-      },
-      "country": "SUI",
-      "league": "Swiss Super League (SUI)",
-      "names": {
-        "football-data": null,
-        "clubelo": "StGallen"
-      },
-      "aliases": {
-        "clubelo": [
-          "StGallen"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "stgallen"
-        ]
       }
     },
     "team_0cc556f2307f": {
@@ -39556,17 +38391,31 @@
       "aliases": {
         "football-data": [
           "FCSB",
-          "Steaua"
+          "Steaua",
+          "Steaua Bucareste",
+          "Steaua Bucuresti",
+          "Steaua București",
+          "FC Steaua",
+          "FC Steaua Bucuresti"
         ],
         "clubelo": [
           "Steaua",
-          "FCSB"
+          "FCSB",
+          "Steaua Bucareste",
+          "Steaua Bucuresti",
+          "Steaua București",
+          "FC Steaua",
+          "FC Steaua Bucuresti"
         ]
       },
       "keys": {
         "norm": [
           "steaua",
-          "fcsb"
+          "fcsb",
+          "steaua bucuresti",
+          "steaua bucurești",
+          "fc steaua",
+          "fc steaua bucuresti"
         ]
       },
       "logo": {
@@ -39689,21 +38538,34 @@
           "FC Kobenhavn",
           "FC Copenhagen",
           "Copenhagen",
-          "FC Kobenhavn (Copenhaga)"
+          "FC Kobenhavn (Copenhaga)",
+          "Kobenhavn",
+          "FC København",
+          "København"
         ],
         "football-data": [
           "FC Copenhagen",
           "FC Kobenhavn",
           "Kobenhavn",
-          "Copenhagen"
+          "Copenhagen",
+          "FC København",
+          "København"
         ]
       },
       "keys": {
         "norm": [
           "kobenhavn",
           "copenhagen",
-          "fc copenhagen"
+          "fc copenhagen",
+          "kopenhagen",
+          "kobenhaven",
+          "københavn"
         ]
+      },
+      "logo": {
+        "key": "Fc-copenhagen",
+        "file": "Fc-copenhagen.png",
+        "path": "/logos/Danish Superliga/Fc-copenhagen.png"
       }
     },
     "team_d752e5b9c789": {
@@ -39794,14 +38656,20 @@
           "Atletico",
           "Atletico Madrid",
           "At. Madrid",
-          "Atl Madrid"
+          "Atl Madrid",
+          "Atlético Madrid",
+          "Atletico de Madrid",
+          "Atletico Madrid CF"
         ],
         "clubelo": [
           "Atletico",
           "Atletico Madrid",
           "At. Madrid",
           "Atl Madrid",
-          "Ath Madrid"
+          "Ath Madrid",
+          "Atlético Madrid",
+          "Atletico de Madrid",
+          "Atletico Madrid CF"
         ]
       },
       "keys": {
@@ -39809,7 +38677,10 @@
           "atletico",
           "atletico madrid",
           "ath madrid",
-          "atl madrid"
+          "atl madrid",
+          "at madrid",
+          "atletico de madrid",
+          "atletico madrid cf"
         ]
       },
       "logo": {
@@ -39950,33 +38821,6 @@
         ]
       }
     },
-    "team_8c1e2363f141": {
-      "id": "team_8c1e2363f141",
-      "display": {
-        "pt": "Dinamo Bucuresti"
-      },
-      "country": "ROU",
-      "league": "Superliga (ROM)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Dinamo Bucuresti"
-      },
-      "aliases": {
-        "clubelo": [
-          "Dinamo Bucuresti"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "dinamo bucuresti"
-        ]
-      },
-      "logo": {
-        "key": "dinamo-bucuresti",
-        "file": "dinamo-bucuresti.png",
-        "path": "/logos/Superliga (ROM)/dinamo-bucuresti.png"
-      }
-    },
     "team_f4689630c362": {
       "id": "team_f4689630c362",
       "display": {
@@ -39999,28 +38843,6 @@
         ]
       }
     },
-    "team_ddc1442c2ca9": {
-      "id": "team_ddc1442c2ca9",
-      "display": {
-        "pt": "Radomiak"
-      },
-      "country": "POL",
-      "league": "Ekstraklasa (POL)",
-      "names": {
-        "football-data": null,
-        "clubelo": "Radomiak"
-      },
-      "aliases": {
-        "clubelo": [
-          "Radomiak"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "radomiak"
-        ]
-      }
-    },
     "team_74beb5dc52eb": {
       "id": "team_74beb5dc52eb",
       "display": {
@@ -40039,26 +38861,6 @@
         "key": "csikszereda-m-ciuc",
         "file": "csikszereda-m-ciuc.png",
         "path": "/logos/Superliga (ROM)/csikszereda-m-ciuc.png"
-      }
-    },
-    "team_34a59d6dbbc6": {
-      "id": "team_34a59d6dbbc6",
-      "display": {
-        "pt": "FC Metaloglobus"
-      },
-      "country": "ROU",
-      "league": "Superliga (ROM)",
-      "names": {},
-      "aliases": {},
-      "keys": {
-        "norm": [
-          "fcmetaloglobus"
-        ]
-      },
-      "logo": {
-        "key": "metaloglobus-bucharest",
-        "file": "metaloglobus-bucharest.png",
-        "path": "/logos/Superliga (ROM)/metaloglobus-bucharest.png"
       }
     },
     "team_dd58bb58a13b": {
@@ -40309,6 +39111,8 @@
     "football-data:velez sarsfield": "team_3167301189d2",
     "football-data:admira": "team_a4b009673f7e",
     "football-data:rapid": "team_d1dbb0b518ac",
+    "clubelo:rapid wien": "team_d1dbb0b518ac",
+    "clubelo:rapid vienna": "team_d1dbb0b518ac",
     "football-data:wolfsberger": "team_68d4f632fd5d",
     "football-data:sturm graz": "team_e950d6646665",
     "clubelo:sturm graz": "team_e950d6646665",
@@ -40459,7 +39263,7 @@
     "clubelo:st pauli": "team_ae0c37d2181d",
     "football-data:hamburg": "team_7b505cae89b1",
     "clubelo:hamburg": "team_7b505cae89b1",
-    "football-data:koln": "team_a2e68ceec6be",
+    "football-data:koln": "team_a0fafa93c2b6",
     "football-data:rb leipzig": "team_3b8b0dd3bb66",
     "clubelo:rb leipzig": "team_3b8b0dd3bb66",
     "football-data:mainz": "team_45a90efbbcc0",
@@ -40536,7 +39340,7 @@
     "football-data:chengdu rongcheng": "team_97fff19a478a",
     "football-data:wuhan three towns": "team_720155c98e8f",
     "football-data:tianjin tianhai": "team_59fdee58e563",
-    "football-data:middlesbrough": "team_99d2416635de",
+    "football-data:middlesbrough": "team_5fa8a90fd079",
     "football-data:bristol city": "team_8b0633a083e6",
     "clubelo:bristol city": "team_75a6e7d29b65",
     "football-data:ipswich": "team_bfb1ec6dae74",
@@ -40563,13 +39367,13 @@
     "clubelo:hull": "team_682a8d8588fd",
     "football-data:oxford": "team_c738ec1c8126",
     "clubelo:oxford": "team_c738ec1c8126",
-    "football-data:swansea": "team_f2bac31646f3",
-    "clubelo:swansea": "team_3cafff2ef6c1",
+    "football-data:swansea": "team_e95b9357ae0a",
+    "clubelo:swansea": "team_e95b9357ae0a",
     "football-data:norwich": "team_43fd5525911b",
     "clubelo:norwich": "team_70f2f1d00a3c",
     "football-data:sheffield weds": "team_209583bac852",
     "clubelo:sheffield weds": "team_209583bac852",
-    "football-data:sheffield united": "team_b8bf0e3f0981",
+    "football-data:sheffield united": "team_365f92d4935b",
     "football-data:qpr": "team_341f1853c900",
     "clubelo:qpr": "team_c06d000e45d9",
     "football-data:wrexham": "team_2bb77380ed43",
@@ -40584,7 +39388,7 @@
     "clubelo:blackburn": "team_45d8c1ac602a",
     "football-data:odense": "team_3d9703f0a6b5",
     "clubelo:odense": "team_3d9703f0a6b5",
-    "football-data:copenhagen": "team_f45c008a18de",
+    "football-data:copenhagen": "team_0c5842d91a92",
     "football-data:hvidovre": "team_72ebe9905aa4",
     "football-data:sonderjyske": "team_d23d2084beca",
     "clubelo:sonderjyske": "team_d23d2084beca",
@@ -40653,7 +39457,7 @@
     "clubelo:sunderland": "team_6a1682382cea",
     "football-data:podbeskidzie": "team_f3c1345e0ffc",
     "football-data:sandecja nowy s": "team_401692af6677",
-    "football-data:gks katowice": "team_3494c2b62e92",
+    "football-data:gks katowice": "team_b74d165591bd",
     "football-data:warta poznan": "team_b0c759e1c072",
     "football-data:arka gdynia": "team_e49b034e49e8",
     "football-data:legia": "team_67fa7c290668",
@@ -40663,8 +39467,8 @@
     "football-data:piast gliwice": "team_961d3720b3d6",
     "football-data:lech poznan": "team_2759fce86678",
     "football-data:legnica": "team_531e9f392ebf",
-    "football-data:widzew lodz": "team_3d2ed01016d6",
-    "football-data:radomiak radom": "team_38dbf17c12d8",
+    "football-data:widzew lodz": "team_0ba46a071f1f",
+    "football-data:radomiak radom": "team_231ac796864f",
     "football-data:ruch": "team_e8659ba71978",
     "football-data:leczna": "team_55f64d0a8235",
     "football-data:gornik zabrze": "team_c8897d0e7bf1",
@@ -40688,8 +39492,8 @@
     "football-data:lks lodz": "team_79e3fa553d78",
     "football-data:cracovia": "team_c394a029c672",
     "clubelo:cracovia": "team_c394a029c672",
-    "football-data:pogon szczecin": "team_dbecdaa469da",
-    "football-data:termalica b b": "team_8479e0784545",
+    "football-data:pogon szczecin": "team_2116a9ecdbc7",
+    "football-data:termalica b b": "team_42621234d74c",
     "football-data:wisla plock": "team_f4b2d63a51f0",
     "football-data:sandnes": "team_cf703d1659d7",
     "football-data:kristiansund": "team_49e6c28aca3f",
@@ -41011,7 +39815,7 @@
     "football-data:vallecano": "team_79a35e0a09f0",
     "football-data:getafe": "team_96712db97a9c",
     "clubelo:getafe": "team_96712db97a9c",
-    "football-data:ath madrid": "team_02a39c7b5f0d",
+    "football-data:ath madrid": "team_c435cd0431c9",
     "football-data:huesca": "team_704d07d5ac89",
     "clubelo:huesca": "team_704d07d5ac89",
     "football-data:sp gijon": "team_9d4704dace8e",
@@ -41048,7 +39852,7 @@
     "clubelo:andorra": "team_6f8b2f332799",
     "football-data:las palmas": "team_5cab7d925c16",
     "clubelo:las palmas": "team_5cab7d925c16",
-    "football-data:la coruna": "team_96aa14ba3547",
+    "football-data:la coruna": "team_a748637a7e92",
     "football-data:leganes": "team_5c0d7580a175",
     "clubelo:leganes": "team_5c0d7580a175",
     "football-data:puebla": "team_5f1c7a48a74d",
@@ -41096,7 +39900,7 @@
     "clubelo:arouca": "team_b94a9f25c1f7",
     "football-data:gil vicente": "team_60b0af595b63",
     "clubelo:gil vicente": "team_60b0af595b63",
-    "football-data:sp lisbon": "team_c08988ab66da",
+    "football-data:sp lisbon": "team_368547a8fb17",
     "football-data:alverca": "team_84b3c1c679f9",
     "clubelo:alverca": "team_84b3c1c679f9",
     "football-data:avs": "team_924d724f0df2",
@@ -41105,16 +39909,16 @@
     "football-data:nacional": "team_557454b1859e",
     "clubelo:nacional": "team_557454b1859e",
     "football-data:porto": "team_d5d42c832d8e",
-    "football-data:sp braga": "team_5c8f251195a6",
+    "football-data:sp braga": "team_99044edef723",
     "football-data:livingston": "team_24158b404947",
     "clubelo:livingston": "team_24158b404947",
     "football-data:hearts": "team_546c36b17712",
-    "football-data:dundee": "team_f7b8321a96b7",
-    "clubelo:dundee": "team_f7b8321a96b7",
+    "football-data:dundee": "team_c86895699221",
+    "clubelo:dundee": "team_c86895699221",
     "football-data:rangers": "team_3d6495557ee1",
     "clubelo:rangers": "team_3d6495557ee1",
-    "football-data:dundee united": "team_f440c198c6b5",
-    "clubelo:dundee united": "team_f440c198c6b5",
+    "football-data:dundee united": "team_8f60697dbf3e",
+    "clubelo:dundee united": "team_8f60697dbf3e",
     "football-data:hibernian": "team_23d688228771",
     "clubelo:hibernian": "team_23d688228771",
     "football-data:falkirk": "team_9dd56356b373",
@@ -41144,8 +39948,8 @@
     "football-data:rapid bucuresti": "team_b88e0c13e003",
     "clubelo:rapid bucuresti": "team_b88e0c13e003",
     "football-data:concordia": "team_503a8df63a3e",
-    "football-data:fcsb": "team_ba2a4980e2c0",
-    "football-data:din bucuresti": "team_e45e325ca506",
+    "football-data:fcsb": "team_4dfc4fe3e1a7",
+    "football-data:din bucuresti": "team_a2ca1d07d122",
     "football-data:targu mures": "team_d5181d14eac7",
     "football-data:petrolul": "team_ee2738756eaf",
     "football-data:pandurii": "team_a8ff31c26d4c",
@@ -41158,7 +39962,7 @@
     "football-data:uta arad": "team_979c9c03dff8",
     "clubelo:uta arad": "team_979c9c03dff8",
     "football-data:brasov": "team_b4597fae8d7d",
-    "football-data:otelul": "team_b4f76b39a8e9",
+    "football-data:otelul": "team_6e169960ef3f",
     "football-data:hermannstadt": "team_76434721d2b5",
     "football-data:poli iasi": "team_9c8c885193fd",
     "football-data:viitorul constanta": "team_bda0e25b1e3b",
@@ -41177,7 +39981,7 @@
     "football-data:schaffhausen": "team_a8ea839036de",
     "football-data:young boys": "team_51dc91a3e827",
     "clubelo:young boys": "team_51dc91a3e827",
-    "football-data:zurich": "team_9a36072d4075",
+    "football-data:zurich": "team_527b1b38b630",
     "football-data:yverdon": "team_641650ad792e",
     "football-data:lugano": "team_4b281c74afb6",
     "clubelo:lugano": "team_4b281c74afb6",
@@ -41202,7 +40006,7 @@
     "clubelo:basel": "team_59b869077b5c",
     "football-data:servette": "team_3a1a4024777f",
     "clubelo:servette": "team_3a1a4024777f",
-    "football-data:goztep": "team_d85b4681ccfa",
+    "football-data:goztep": "team_008dea94626c",
     "football-data:rizespor": "team_a6b8105318ac",
     "clubelo:rizespor": "team_a6b8105318ac",
     "football-data:antalyaspor": "team_321f4aba70bf",
@@ -41210,7 +40014,7 @@
     "football-data:kasimpasa": "team_c393ff34fdbd",
     "football-data:eyupspor": "team_c1c995259cf8",
     "clubelo:eyupspor": "team_c1c995259cf8",
-    "football-data:buyuksehyr": "team_be9ce184c3d6",
+    "football-data:buyuksehyr": "team_1924ffc6502d",
     "football-data:alanyaspor": "team_61904a89b293",
     "clubelo:alanyaspor": "team_61904a89b293",
     "football-data:gaziantep": "team_3051b13f1ca1",
@@ -41230,7 +40034,7 @@
     "football-data:besiktas": "team_6b0e305bd249",
     "clubelo:besiktas": "team_6b0e305bd249",
     "clubelo:otelul galati": "team_6e169960ef3f",
-    "clubelo:nieciecza": "team_d52de3e5ba72",
+    "clubelo:nieciecza": "team_42621234d74c",
     "clubelo:septemvri sofia": "team_7456af81ecf7",
     "clubelo:koeln": "team_a0fafa93c2b6",
     "clubelo:spartak varna": "team_556cab841b31",
@@ -41239,7 +40043,7 @@
     "clubelo:werder": "team_d142fd0e1cf0",
     "clubelo:hnk gorica": "team_f82a75ea88bd",
     "clubelo:lautern": "team_d0365387cd54",
-    "clubelo:braga": "team_0d1961676ac2",
+    "clubelo:braga": "team_99044edef723",
     "clubelo:hradec kralove": "team_f4664add7f69",
     "clubelo:dukla": "team_3f1dc054d65a",
     "clubelo:slavia sofia": "team_5b71f61c5d16",
@@ -41250,7 +40054,7 @@
     "clubelo:slavia praha": "team_f5b9d1202233",
     "clubelo:gornik": "team_4866c293b867",
     "clubelo:craiova": "team_7b437831b745",
-    "clubelo:duesseldorf": "team_7b05924cd1ea",
+    "clubelo:duesseldorf": "team_5319f5fc3028",
     "clubelo:bohemians praha": "team_ae0e78de53ea",
     "clubelo:radomlje": "team_1c5b90288764",
     "clubelo:kazincbarcika": "team_5e57a7fe439b",
@@ -41267,43 +40071,43 @@
     "clubelo:beroe stara zagora": "team_0b82c7cf6224",
     "clubelo:csikszereda": "team_6409feb8ab9c",
     "clubelo:muenster": "team_32756b8b26ba",
-    "clubelo:bilbao": "team_a8b49e5e8223",
+    "clubelo:bilbao": "team_513fc3a8d70e",
     "clubelo:botev plovdiv": "team_e12b0ba3d6ce",
-    "clubelo:bayern": "team_3129ccf79757",
-    "clubelo:metaloglobus": "team_49dcd67da73d",
+    "clubelo:bayern": "team_ec571442870a",
+    "clubelo:metaloglobus": "team_4f102f76b722",
     "clubelo:arda": "team_bf29d13d04d8",
-    "clubelo:pogon": "team_e2b3ec7f4e7d",
-    "clubelo:psv": "team_d32db4dbd68f",
+    "clubelo:pogon": "team_2116a9ecdbc7",
+    "clubelo:psv": "team_72644e19ab50",
     "clubelo:olimpija ljubljana": "team_34ad1138ba59",
-    "clubelo:katowice": "team_4470c9cfc1a9",
+    "clubelo:katowice": "team_b74d165591bd",
     "clubelo:cska sofia": "team_73921fe69518",
     "clubelo:lubin": "team_ff7c6798a227",
     "clubelo:karvina": "team_8424d1c7175b",
     "clubelo:petrolul ploiesti": "team_8589b6be1cec",
     "clubelo:levski": "team_d0923b8e1a12",
-    "clubelo:goeztepe": "team_102790751671",
+    "clubelo:goeztepe": "team_008dea94626c",
     "clubelo:zulte waregem": "team_d22eb78fc390",
-    "clubelo:leonesa": "team_3caacbe4a746",
+    "clubelo:leonesa": "team_d867aedc19c9",
     "clubelo:fatih karaguemruek": "team_acae9c6d2ab1",
     "clubelo:lech": "team_bdf4228be97e",
-    "clubelo:gijon": "team_cb89e5794895",
+    "clubelo:gijon": "team_9d4704dace8e",
     "clubelo:razgrad": "team_41536cb9a9b1",
     "clubelo:arka": "team_8036fbccf601",
     "clubelo:cherno more": "team_b5c6dc27c68c",
     "clubelo:lechia": "team_25751e9bdd53",
-    "clubelo:alkmaar": "team_b005eaf38b35",
+    "clubelo:alkmaar": "team_ae0a850230f9",
     "clubelo:rayo vallecano": "team_26ec6addaf67",
     "clubelo:viitorul": "team_fdd5d559b4c3",
     "clubelo:montana 1921": "team_f192b510f44d",
-    "clubelo:bueyueksehir": "team_7402aaf8a928",
+    "clubelo:bueyueksehir": "team_1924ffc6502d",
     "clubelo:breda": "team_504a374dca0e",
     "clubelo:hajduk": "team_44047bf20884",
     "clubelo:pardubice": "team_f9e513458c68",
     "clubelo:depor": "team_a748637a7e92",
     "clubelo:korona": "team_78642712d7c5",
     "clubelo:aluminij": "team_9e1ae953682c",
-    "clubelo:widzew": "team_0cca76655566",
-    "clubelo:stgallen": "team_f17cc738c26f",
+    "clubelo:widzew": "team_0ba46a071f1f",
+    "clubelo:stgallen": "team_fd0e3be16017",
     "clubelo:slaven belupo": "team_0cc556f2307f",
     "clubelo:slovan liberec": "team_41b01bec5148",
     "clubelo:saint etienne": "team_6fedaa818e4b",
@@ -41323,9 +40127,9 @@
     "clubelo:mlada boleslav": "team_e9ea6c10a78b",
     "clubelo:gladbach": "team_ac7c23436f77",
     "clubelo:slovacko": "team_88536505da41",
-    "clubelo:dinamo bucuresti": "team_8c1e2363f141",
+    "clubelo:dinamo bucuresti": "team_a2ca1d07d122",
     "clubelo:cska 1948 sofia": "team_f4689630c362",
-    "clubelo:radomiak": "team_ddc1442c2ca9",
+    "clubelo:radomiak": "team_231ac796864f",
     "football-data:eintracht frankfurt": "team_e976c854aa37",
     "clubelo:eintracht frankfurt": "team_e976c854aa37",
     "clubelo:ein frankfurt": "team_e976c854aa37",
@@ -41392,7 +40196,165 @@
     "clubelo:nottingham forest": "team_c425d2a61a2b",
     "football-data:breda": "team_504a374dca0e",
     "clubelo:nac breda": "team_504a374dca0e",
-    "clubelo:nfc volos": "team_b337f8e2b381"
+    "clubelo:nfc volos": "team_b337f8e2b381",
+    "football-data:gak": "team_66ae4bd834a8",
+    "clubelo:gak": "team_66ae4bd834a8",
+    "football-data:wolfsberg": "team_68d4f632fd5d",
+    "clubelo:wolfsberg": "team_68d4f632fd5d",
+    "clubelo:wolfsberger": "team_68d4f632fd5d",
+    "football-data:fc copenhagen": "team_0c5842d91a92",
+    "football-data:fc kobenhavn": "team_0c5842d91a92",
+    "football-data:kobenhavn": "team_0c5842d91a92",
+    "football-data:fc k benhavn": "team_0c5842d91a92",
+    "clubelo:fc k benhavn": "team_0c5842d91a92",
+    "football-data:k benhavn": "team_0c5842d91a92",
+    "clubelo:k benhavn": "team_0c5842d91a92",
+    "clubelo:ath bilbao": "team_513fc3a8d70e",
+    "football-data:bilbao": "team_513fc3a8d70e",
+    "football-data:athletic bilbao": "team_513fc3a8d70e",
+    "clubelo:athletic bilbao": "team_513fc3a8d70e",
+    "football-data:athletic club": "team_513fc3a8d70e",
+    "clubelo:athletic club": "team_513fc3a8d70e",
+    "football-data:atletico": "team_c435cd0431c9",
+    "football-data:atletico madrid": "team_c435cd0431c9",
+    "clubelo:atletico madrid": "team_c435cd0431c9",
+    "clubelo:ath madrid": "team_c435cd0431c9",
+    "football-data:atl madrid": "team_c435cd0431c9",
+    "clubelo:atl madrid": "team_c435cd0431c9",
+    "football-data:at madrid": "team_c435cd0431c9",
+    "clubelo:at madrid": "team_c435cd0431c9",
+    "football-data:atletico de madrid": "team_c435cd0431c9",
+    "clubelo:atletico de madrid": "team_c435cd0431c9",
+    "football-data:atletico madrid cf": "team_c435cd0431c9",
+    "clubelo:atletico madrid cf": "team_c435cd0431c9",
+    "football-data:depor": "team_a748637a7e92",
+    "football-data:deportivo": "team_a748637a7e92",
+    "clubelo:deportivo": "team_a748637a7e92",
+    "football-data:deportivo la coruna": "team_a748637a7e92",
+    "clubelo:deportivo la coruna": "team_a748637a7e92",
+    "football-data:rc deportivo": "team_a748637a7e92",
+    "clubelo:rc deportivo": "team_a748637a7e92",
+    "clubelo:la coruna": "team_a748637a7e92",
+    "football-data:deportivo de la coruna": "team_a748637a7e92",
+    "clubelo:deportivo de la coruna": "team_a748637a7e92",
+    "clubelo:sp gijon": "team_9d4704dace8e",
+    "football-data:sporting gijon": "team_9d4704dace8e",
+    "clubelo:sporting gijon": "team_9d4704dace8e",
+    "football-data:gijon": "team_9d4704dace8e",
+    "football-data:real sporting": "team_9d4704dace8e",
+    "clubelo:real sporting": "team_9d4704dace8e",
+    "football-data:sporting de gijon": "team_9d4704dace8e",
+    "clubelo:sporting de gijon": "team_9d4704dace8e",
+    "clubelo:cultural leonesa": "team_d867aedc19c9",
+    "football-data:leonesa": "team_d867aedc19c9",
+    "football-data:cultural y deportiva leonesa": "team_d867aedc19c9",
+    "clubelo:cultural y deportiva leonesa": "team_d867aedc19c9",
+    "football-data:swansea city": "team_e95b9357ae0a",
+    "clubelo:swansea city": "team_e95b9357ae0a",
+    "football-data:psv": "team_72644e19ab50",
+    "clubelo:psv eindhoven": "team_72644e19ab50",
+    "clubelo:az alkmaar": "team_ae0a850230f9",
+    "football-data:az": "team_ae0a850230f9",
+    "clubelo:az": "team_ae0a850230f9",
+    "football-data:alkmaar": "team_ae0a850230f9",
+    "clubelo:pogon szczecin": "team_2116a9ecdbc7",
+    "football-data:pogon": "team_2116a9ecdbc7",
+    "football-data:pogon szczecinski": "team_2116a9ecdbc7",
+    "clubelo:pogon szczecinski": "team_2116a9ecdbc7",
+    "clubelo:termalica b b": "team_42621234d74c",
+    "football-data:bruk bet termalica nieciecza": "team_42621234d74c",
+    "clubelo:bruk bet termalica nieciecza": "team_42621234d74c",
+    "football-data:nieciecza": "team_42621234d74c",
+    "football-data:termalica": "team_42621234d74c",
+    "clubelo:termalica": "team_42621234d74c",
+    "football-data:bruk bet nieciecza": "team_42621234d74c",
+    "clubelo:bruk bet nieciecza": "team_42621234d74c",
+    "clubelo:gks katowice": "team_b74d165591bd",
+    "football-data:katowice": "team_b74d165591bd",
+    "clubelo:widzew lodz": "team_0ba46a071f1f",
+    "football-data:widzew odz": "team_0ba46a071f1f",
+    "clubelo:widzew odz": "team_0ba46a071f1f",
+    "football-data:widzew": "team_0ba46a071f1f",
+    "football-data:rts widzew": "team_0ba46a071f1f",
+    "clubelo:rts widzew": "team_0ba46a071f1f",
+    "clubelo:radomiak radom": "team_231ac796864f",
+    "football-data:radomiak": "team_231ac796864f",
+    "football-data:rks radomiak": "team_231ac796864f",
+    "clubelo:rks radomiak": "team_231ac796864f",
+    "clubelo:sp braga": "team_99044edef723",
+    "football-data:braga": "team_99044edef723",
+    "football-data:sporting braga": "team_99044edef723",
+    "clubelo:sporting braga": "team_99044edef723",
+    "football-data:sc braga": "team_99044edef723",
+    "clubelo:sc braga": "team_99044edef723",
+    "football-data:otelul galati": "team_6e169960ef3f",
+    "clubelo:otelul": "team_6e169960ef3f",
+    "football-data:otelul galati galati": "team_6e169960ef3f",
+    "clubelo:otelul galati galati": "team_6e169960ef3f",
+    "clubelo:fcsb": "team_4dfc4fe3e1a7",
+    "football-data:steaua": "team_4dfc4fe3e1a7",
+    "football-data:steaua bucareste": "team_4dfc4fe3e1a7",
+    "clubelo:steaua bucareste": "team_4dfc4fe3e1a7",
+    "football-data:steaua bucuresti": "team_4dfc4fe3e1a7",
+    "clubelo:steaua bucuresti": "team_4dfc4fe3e1a7",
+    "football-data:fc steaua": "team_4dfc4fe3e1a7",
+    "clubelo:fc steaua": "team_4dfc4fe3e1a7",
+    "football-data:fc steaua bucuresti": "team_4dfc4fe3e1a7",
+    "clubelo:fc steaua bucuresti": "team_4dfc4fe3e1a7",
+    "clubelo:metaloglobus bucharest": "team_4f102f76b722",
+    "football-data:metaloglobus": "team_4f102f76b722",
+    "football-data:fc metaloglobus": "team_4f102f76b722",
+    "clubelo:fc metaloglobus": "team_4f102f76b722",
+    "clubelo:st gallen": "team_fd0e3be16017",
+    "football-data:stgallen": "team_fd0e3be16017",
+    "football-data:fc st gallen": "team_fd0e3be16017",
+    "clubelo:fc st gallen": "team_fd0e3be16017",
+    "clubelo:zurich": "team_527b1b38b630",
+    "football-data:zuerich": "team_527b1b38b630",
+    "football-data:fc zurich": "team_527b1b38b630",
+    "clubelo:fc zurich": "team_527b1b38b630",
+    "clubelo:goztep": "team_008dea94626c",
+    "football-data:goztepe": "team_008dea94626c",
+    "clubelo:goztepe": "team_008dea94626c",
+    "football-data:goeztepe": "team_008dea94626c",
+    "football-data:bueyueksehir": "team_1924ffc6502d",
+    "clubelo:buyuksehyr": "team_1924ffc6502d",
+    "football-data:buyuksehir": "team_1924ffc6502d",
+    "clubelo:buyuksehir": "team_1924ffc6502d",
+    "football-data:istanbul basaksehir": "team_1924ffc6502d",
+    "clubelo:istanbul basaksehir": "team_1924ffc6502d",
+    "football-data:basaksehir": "team_1924ffc6502d",
+    "clubelo:basaksehir": "team_1924ffc6502d",
+    "football-data:istanbul bb": "team_1924ffc6502d",
+    "clubelo:istanbul bb": "team_1924ffc6502d",
+    "football-data:istanbul b b": "team_1924ffc6502d",
+    "clubelo:istanbul b b": "team_1924ffc6502d",
+    "football-data:espanyol": "team_1b1439823e04",
+    "clubelo:espanyol": "team_1b1439823e04",
+    "clubelo:espanol": "team_1b1439823e04",
+    "football-data:rcd espanyol": "team_1b1439823e04",
+    "clubelo:rcd espanyol": "team_1b1439823e04",
+    "football-data:sporting cp": "team_368547a8fb17",
+    "clubelo:sporting cp": "team_368547a8fb17",
+    "football-data:sporting": "team_368547a8fb17",
+    "clubelo:sporting": "team_368547a8fb17",
+    "clubelo:sp lisbon": "team_368547a8fb17",
+    "football-data:sporting lisbon": "team_368547a8fb17",
+    "clubelo:sporting lisbon": "team_368547a8fb17",
+    "football-data:sporting clube de portugal": "team_368547a8fb17",
+    "clubelo:sporting clube de portugal": "team_368547a8fb17",
+    "football-data:sporting lisbon cp": "team_368547a8fb17",
+    "clubelo:sporting lisbon cp": "team_368547a8fb17",
+    "football-data:dinamo bucuresti": "team_a2ca1d07d122",
+    "clubelo:din bucuresti": "team_a2ca1d07d122",
+    "football-data:dinamo bucarest": "team_a2ca1d07d122",
+    "clubelo:dinamo bucarest": "team_a2ca1d07d122",
+    "football-data:dinamo bucharest": "team_a2ca1d07d122",
+    "clubelo:dinamo bucharest": "team_a2ca1d07d122",
+    "football-data:dundee utd": "team_8f60697dbf3e",
+    "clubelo:dundee utd": "team_8f60697dbf3e",
+    "football-data:dundee fc": "team_c86895699221",
+    "clubelo:dundee fc": "team_c86895699221"
   },
   "needs_review": [
     {

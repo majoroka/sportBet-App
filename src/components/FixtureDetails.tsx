@@ -141,6 +141,70 @@ const getLeagueLogoUrl = (leagueName: string, countryCode: string) => {
   return null;
 };
 
+const DETAILED_STATS_KEYS = new Set<string>([
+  // ENG
+  'premierleague',
+  'championship',
+  // ESP
+  'laliga',
+  'segundadivision',
+  // GER
+  'bundesliga',
+  'bundesliga2',
+  '2bundesliga',
+  // FRA
+  'ligue1',
+  'ligue2',
+  // ITA
+  'seriea',
+  'serieb',
+  // POR
+  'primeiraliga',
+  // NED
+  'eredivisie',
+  // POL
+  'ekstraklasa',
+  // TUR
+  'superlig',
+  'superliga',
+  // BEL
+  'jupiler',
+  // GRE
+  'superleague1',
+  // SCO
+  'premiership',
+  // SUI
+  'swisssuperleague',
+]);
+
+const normalizeLeagueName = (s: string) =>
+  normalizeKey(s.replace(/\(.*?\)/g, '').replace(/liga nos/gi, 'primeira liga'));
+
+const isDetailedStatsLeague = (competition?: string, country?: string) => {
+  const compNorm = normalizeLeagueName(competition || '');
+  const combo = normalizeKey(`${country || ''}-${competition || ''}`);
+  const countryNorm = normalizeKey(country || '');
+  const countryKeys = new Set([
+    'eng', 'esp', 'ger', 'fra', 'ita', 'por', 'ned', 'tur', 'bel', 'gre', 'sco', 'isr', 'pol', 'sui', 'swz',
+  ]);
+  if (countryNorm && countryKeys.has(countryNorm)) return true;
+  // fallback: detect known country codes embedded
+  if (combo.match(/(isr|israel|ligatah|ligat|sui|swz|swiss)/)) return true;
+  return Array.from(DETAILED_STATS_KEYS).some((k) => compNorm.includes(k) || combo.includes(k));
+};
+
+const safeDivide = (a?: number, b?: number): number | null => {
+  const num = Number(a);
+  const den = Number(b);
+  if (!Number.isFinite(num) || !Number.isFinite(den) || den <= 0) return null;
+  return num / den;
+};
+
+const formatNumber2 = (v: number | null) => (v === null ? '—' : v.toFixed(2));
+const formatPercent0 = (v: number | null) => (v === null ? '—' : `${(v * 100).toFixed(0)}%`);
+const formatDiff2 = (v: number | null) =>
+  v === null ? '—' : `${v >= 0 ? '+' : ''}${v.toFixed(2)}`;
+
 // Helper para obter a cor e texto da forma
 const getFormAttributes = (result: string) => {
   if (result === 'W') return { color: 'bg-green-500', label: 'Vitória' };
@@ -794,10 +858,18 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       </div>
 
       {/* Estatística */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-        {/* Comparativo equipas */}
-        {teamStatsHome && teamStatsAway && (
-          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit lg:col-span-6">
+      {(() => {
+        const hasTeamStats = !!(teamStatsHome && teamStatsAway);
+        const hasLeagueStats = !!(leagueStats && leagueStats.matchesTotal > 0);
+        const hasStandings = currentStandings.length > 0;
+        const teamSpan = hasLeagueStats ? 'lg:col-span-6' : 'lg:col-span-8';
+        const leagueSpan = 'lg:col-span-2';
+        const tableSpan = 'lg:col-span-4';
+        return (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            {/* Comparativo equipas */}
+            {hasTeamStats ? (
+              <div className={`bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit ${teamSpan}`}>
             <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">EQUIPAS</div>
             <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[360px] sm:min-w-[680px]">
               {/* Row: main header (removed label) */}
@@ -839,53 +911,187 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               ))}
 
               {/* Rows: stats */}
-              {[
-                {
-                  label: 'Média golos marcados',
-                  accessor: (ts: TeamSideStats) => ts.played ? (ts.goalsFor / ts.played).toFixed(2) : '-',
-                },
-                {
-                  label: 'Média golos sofridos',
-                  accessor: (ts: TeamSideStats) => ts.played ? (ts.goalsAgainst / ts.played).toFixed(2) : '-',
-                },
-                {
-                  label: 'Média golos marcados + sofridos',
-                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.goalsFor + ts.goalsAgainst) / ts.played).toFixed(2) : '-',
-                },
-                {
-                  label: '% Jogos sem sofrer',
-                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.cleanSheets / ts.played) * 100).toFixed(1) + '%' : '-',
-                },
-                {
-                  label: '% Jogos sem marcar',
-                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.noGoals / ts.played) * 100).toFixed(1) + '%' : '-',
-                },
-                {
-                  label: '% Jogos +2,5',
-                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.over25 / ts.played) * 100).toFixed(1) + '%' : '-',
-                },
-                {
-                  label: '% Jogos -2,5',
-                  accessor: (ts: TeamSideStats) => ts.played ? ((ts.under25 / ts.played) * 100).toFixed(1) + '%' : '-',
-                },
-              ].map((row, idx) => (
-                <React.Fragment key={row.label}>
-                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsHome.home)}</div>
-                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsHome.away)}</div>
-                  <div className={`text-center py-1 font-semibold ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsHome.overall)}</div>
-                  <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.label}</div>
-                  <div className={`text-center py-1 font-semibold ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsAway.overall)}</div>
-                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsAway.away)}</div>
-                  <div className={`text-center py-1 ${idx % 2 === 0 ? 'bg-gray-50/70' : ''}`}>{row.accessor(teamStatsAway.home)}</div>
-                </React.Fragment>
-              ))}
+              {isDetailedStatsLeague(fixture.competition, fixture.country) ? (() => {
+                const rows = [
+                  {
+                    label: 'Pontos por jogo (PPG)',
+                    value: (ts: TeamSideStats) => safeDivide(ts.points, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Golos marcados por jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Golos sofridos por jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.goalsAgainst, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Golos marcados + sofridos',
+                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor + ts.goalsAgainst, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Diferença de golos / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor - ts.goalsAgainst, ts.played),
+                    fmt: formatDiff2,
+                  },
+                  {
+                    label: '% jogos a marcar',
+                    value: (ts: TeamSideStats) => safeDivide(ts.played - ts.noGoals, ts.played),
+                    fmt: formatPercent0,
+                  },
+                  {
+                    label: '% jogos sem sofrer',
+                    value: (ts: TeamSideStats) => safeDivide(ts.cleanSheets, ts.played),
+                    fmt: formatPercent0,
+                  },
+                  {
+                    label: '% jogos com 2,5+ golos marcados',
+                    value: (ts: TeamSideStats) => safeDivide(ts.over25For, ts.played),
+                    fmt: formatPercent0,
+                  },
+                  {
+                    label: '% jogos com 1,5+ golos marcados',
+                    value: (ts: TeamSideStats) => safeDivide(ts.over15For, ts.played),
+                    fmt: formatPercent0,
+                  },
+                  {
+                    label: 'Golos 1ª parte marcados/sofridos',
+                    value: (ts: TeamSideStats) => safeDivide(ts.htGoalsFor + ts.htGoalsAgainst, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: '% golo na 1ª parte',
+                    value: (ts: TeamSideStats) => safeDivide(ts.htGoalMatches, ts.played),
+                    fmt: formatPercent0,
+                  },
+                  {
+                    label: 'Remates por jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.shotsFor, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Remates enquadrados / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.sotFor, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Remates sofridos / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.shotsAgainst, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Enquadrados sofridos / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.sotAgainst, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'SOT% (enquadrados/remates)',
+                    value: (ts: TeamSideStats) => safeDivide(ts.sotFor, ts.shotsFor),
+                    fmt: formatPercent0,
+                  },
+                  {
+                    label: 'Conversão (golos/remates)',
+                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.shotsFor),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Conversão SOT (golos/enquadrados)',
+                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.sotFor),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Cantos a favor / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.cornersFor, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Cantos contra / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.cornersAgainst, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Diferença de cantos / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.cornersFor - ts.cornersAgainst, ts.played),
+                    fmt: formatDiff2,
+                  },
+                  {
+                    label: 'Cartões amarelos / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.yellow, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Vermelhos / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.red, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Faltas / jogo',
+                    value: (ts: TeamSideStats) => safeDivide(ts.fouls, ts.played),
+                    fmt: formatNumber2,
+                  },
+                  {
+                    label: 'Cartões por falta',
+                    value: (ts: TeamSideStats) => safeDivide(ts.yellow + 2 * ts.red, ts.fouls),
+                    fmt: formatNumber2,
+                  },
+                ];
+
+                const rendered = rows
+                  .map((row, idx) => {
+                    const values = [
+                      row.value(teamStatsHome.home),
+                      row.value(teamStatsHome.away),
+                      row.value(teamStatsHome.overall),
+                      row.value(teamStatsAway.overall),
+                      row.value(teamStatsAway.away),
+                      row.value(teamStatsAway.home),
+                    ];
+                    const hasData = values.some((v) => v !== null && Math.abs(v) > 1e-6);
+                    if (!hasData) return null;
+                    const stripe = idx % 2 === 0 ? 'bg-gray-50/70' : '';
+                    return (
+                      <React.Fragment key={row.label}>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.home))}</div>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.away))}</div>
+                        <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsHome.overall))}</div>
+                        <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${stripe}`}>{row.label}</div>
+                        <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsAway.overall))}</div>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.away))}</div>
+                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.home))}</div>
+                      </React.Fragment>
+                    );
+                  })
+                  .filter(Boolean);
+
+                if (rendered.length === 0) {
+                  return (
+                    <div className="col-span-7 text-center py-10 text-gray-500">
+                      Informação não disponível
+                    </div>
+                  );
+                }
+
+                return rendered;
+              })() : (
+                <div className="col-span-7 text-center py-10 text-gray-500">
+                  Informação não disponível
+                </div>
+              )}
             </div>
+          </div>
+        ) : (
+          <div className={`bg-white border border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500 ${teamSpan}`}>
+            Informação de equipas não disponível para esta liga.
           </div>
         )}
 
-        {/* KPI Liga */}
-        {leagueStats && leagueStats.matchesTotal > 0 && (
-          <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm h-fit lg:col-span-2">
+            {/* KPI Liga */}
+            {hasLeagueStats && (
+              <div className={`bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm h-fit ${leagueSpan}`}>
             <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">LIGA</div>
             {(() => {
               const playedDisplay = Math.min(leagueStats.matchesPlayed, leagueStats.matchesTotal);
@@ -924,8 +1130,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           </div>
         )}
 
-        {/* Classificação */}
-          <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 lg:col-span-4">
+            {/* Classificação */}
+            <div className={`bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 ${tableSpan}`}>
           <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
             <div className="grid grid-cols-5 min-w-[320px] sm:min-w-[380px] rounded-md border border-gray-300 overflow-hidden">
@@ -964,9 +1170,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             </div>
           </div>
 
-          {loadingStandings ? (
-            <div className="text-center py-10 text-gray-500">A carregar...</div>
-          ) : currentStandings.length > 0 ? (
+              {loadingStandings ? (
+                <div className="text-center py-10 text-gray-500">A carregar...</div>
+              ) : hasStandings ? (
             <div className="flex-grow flex flex-col justify-between">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -1075,8 +1281,47 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               Classificação indisponível para esta competição.
             </div>
           )}
-        </div>
-      </div>
+          {leagueStats && leagueStats.matchesPlayed > 0 ? (
+            <div className="mt-3 bg-white/70 rounded-lg px-3 py-2 shadow-sm border border-gray-200">
+              {(() => {
+                const mp = leagueStats.matchesPlayed || 0;
+                const pct = (v: number) => (mp > 0 ? `${((v / mp) * 100).toFixed(1)}%` : '—');
+                const avg = (v: number) => (mp > 0 ? (v / mp).toFixed(1) : '—');
+                const items = [
+                  { key: 'Vc', label: 'Vc', value: pct(leagueStats.homeWins), tip: 'Vitórias em casa' },
+                  { key: 'E', label: 'E', value: pct(leagueStats.draws), tip: 'Empates' },
+                  { key: 'Vf', label: 'Vf', value: pct(leagueStats.awayWins), tip: 'Vitórias fora' },
+                  { key: 'o15', label: '+1,5', value: pct(leagueStats.over15), tip: 'Jogos com mais de 1 golo' },
+                  { key: 'o25', label: '+2,5', value: pct(leagueStats.over25), tip: 'Jogos com mais de 2 golos' },
+                  { key: 'bts', label: 'BTS', value: pct(leagueStats.btts), tip: 'Ambas marcam' },
+                  { key: 'gj', label: 'Gj', value: avg(leagueStats.goalsTotal), tip: 'Golos por jogo' },
+                  { key: 'gjc', label: 'GjC', value: avg(leagueStats.goalsHome), tip: 'Golos por jogo casa' },
+                  { key: 'gjf', label: 'GjF', value: avg(leagueStats.goalsAway), tip: 'Golos por jogo fora' },
+                ];
+                return (
+                  <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[12px] leading-tight text-gray-800 w-full justify-between">
+                    {items.map((item) => (
+                      <React.Fragment key={item.key}>
+                        <span className="relative group cursor-help">
+                          <span className="font-semibold">{item.label}</span>&nbsp;
+                          <span>{item.value}</span>
+                          <span className="invisible group-hover:visible absolute z-30 top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-[11px] px-2 py-1 rounded shadow-lg">
+                            {item.tip}
+                          </span>
+                        </span>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                );
+              })()}
+            </div>
+          ) : (
+            <div className="text-center py-6 text-gray-500">Informação não disponível para esta liga.</div>
+          )}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 };
