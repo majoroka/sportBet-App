@@ -536,14 +536,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     },
   };
 
-  const currentStandings =
-    standingsTab === 'home'
-      ? standingsHome
-      : standingsTab === 'away'
-        ? standingsAway
-        : standingsTab === 'overall'
-          ? standingsOverall
-          : standingsLast10;
+        const currentStandings = (() => {
+          if (standingsTab === 'home') return standingsHome;
+          if (standingsTab === 'away') return standingsAway;
+          if (standingsTab === 'overall') return standingsOverall;
+          // Para modos de últimos 10 jogos (2.5 e 1.5) reutilizamos a mesma lista
+          return standingsLast10;
+        })();
 
   const leagueLogoUrl = getLeagueLogoUrl(displayLeagueName, fixture.country);
 
@@ -926,15 +925,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         )}
 
         {/* Classificação */}
-        <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 lg:col-span-4">
-          <div className="flex items-center justify-between gap-4 mb-3">
+          <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 lg:col-span-4">
+          <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
-            <div className="grid grid-cols-4 min-w-[320px] rounded-md border border-gray-300 overflow-hidden ml-auto">
+            <div className="grid grid-cols-5 min-w-[320px] sm:min-w-[380px] rounded-md border border-gray-300 overflow-hidden">
               {[
                 { key: 'overall' as StandingMode, label: 'Global' },
                 { key: 'home' as StandingMode, label: 'Casa' },
                 { key: 'away' as StandingMode, label: 'Fora' },
                 { key: 'last10' as StandingMode, label: '+2,5\n(Últimos 10)' },
+                { key: 'last10_over15' as StandingMode, label: '+1,5\n(Últimos 10)' },
               ].map((tab, idx) => {
                 const active = standingsTab === tab.key;
                 return (
@@ -942,7 +942,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     key={tab.key}
                     onClick={() => setStandingsTab(tab.key)}
                     className={[
-                      'relative flex items-center justify-center text-xs font-semibold py-2 px-3 transition-colors duration-150 text-center whitespace-pre leading-tight',
+                      'relative flex items-center justify-center text-[11px] font-semibold py-2 px-2 transition-colors duration-150 text-center whitespace-pre leading-tight',
                       active
                         ? 'bg-[#f2f2f2] text-black after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
                         : 'bg-white text-black hover:bg-gray-100',
@@ -971,7 +971,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    {standingsTab === 'last10' ? (
+                    {standingsTab === 'last10' || standingsTab === 'last10_over15' ? (
                       <tr className="text-gray-500 border-b">
                         <th className="pb-1 text-center w-6">#</th>
                         <th className="pb-1 text-left">Equipa</th>
@@ -1011,13 +1011,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         matches(awayTeam, awayTeamId);
                       const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
-                      const showLast10 = standingsTab === 'last10' && row.form?.length;
+                      const isLast10Mode = standingsTab === 'last10' || standingsTab === 'last10_over15';
+                      const formArray = row.form ?? [];
+                      const showLast10 = isLast10Mode;
+                      const threshold = standingsTab === 'last10_over15' ? 1.5 : 2.5;
                       const last10Cells = showLast10 ? (
                         <td className="py-1">
                           <div className="flex gap-1">
-                            {row.form.slice(-10).map((match, idxForm, arr) => {
-                              const [hg, ag] = match.score.split('-').map(Number);
-                              const over = (hg ?? 0) + (ag ?? 0) > 2.5;
+                            {(formArray.length ? formArray : Array(10).fill({ score: '0-0' })).slice(-10).map((match, idxForm, arr) => {
+                              const [hg, ag] = (match.score || '0-0').split('-').map((v: string) => Number(v));
+                              const total = (Number.isFinite(hg) ? hg : 0) + (Number.isFinite(ag) ? ag : 0);
+                              const over = total > threshold;
                               const isLast = idxForm === arr.length - 1;
                               const ringClass = isLast
                                 ? over
@@ -1028,7 +1032,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                                 <div
                                   key={idxForm}
                                   className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-green-500 text-white' : 'bg-red-500 text-white'} ${ringClass}`}
-                                  title={`${match.opponent} ${match.score}`}
+                                  title={match.opponent ? `${match.opponent} ${match.score}` : 'Sem dados'}
                                 >
                                   {over ? '+' : '-'}
                                 </div>
@@ -1042,7 +1046,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         <tr key={row.team} className={`border-b border-gray-100 hover:bg-gray-100 ${rowClass}`}>
                           <td className="py-1 text-center">{row.rank}</td>
                           <td className="py-1 font-medium truncate max-w-[100px]" title={row.team}>{row.team}</td>
-                          {standingsTab === 'last10' ? (
+                          {isLast10Mode ? (
                             <>
                               {last10Cells}
                               <td className="text-center font-bold text-gray-900">{row.points}</td>

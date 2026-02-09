@@ -17,7 +17,7 @@ interface MatchRow {
   Season?: string;
 }
 
-export type StandingMode = 'overall' | 'home' | 'away' | 'last10';
+export type StandingMode = 'overall' | 'home' | 'away' | 'last10' | 'last10_over15';
 
 export const calculateStandings = (csvText: string, mode: StandingMode = 'overall', maxForm: number = 5): StandingRow[] => {
   const { data } = Papa.parse(csvText, {
