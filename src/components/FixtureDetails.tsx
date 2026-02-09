@@ -912,162 +912,113 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
               {/* Rows: stats */}
               {isDetailedStatsLeague(fixture.competition, fixture.country) ? (() => {
-                const rows = [
+                const sections = [
                   {
-                    label: 'Pontos por jogo (PPG)',
-                    value: (ts: TeamSideStats) => safeDivide(ts.points, ts.played),
-                    fmt: formatNumber2,
+                    title: 'Resultados e produção ofensiva/defensiva',
+                    rows: [
+                      { label: 'Pontos por jogo (PPG)', value: (ts: TeamSideStats) => safeDivide(ts.points, ts.played), fmt: formatNumber2 },
+                      { label: 'Golos marcados por jogo', value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.played), fmt: formatNumber2 },
+                      { label: 'Golos sofridos por jogo', value: (ts: TeamSideStats) => safeDivide(ts.goalsAgainst, ts.played), fmt: formatNumber2 },
+                      { label: 'Golos marcados + sofridos', value: (ts: TeamSideStats) => safeDivide(ts.goalsFor + ts.goalsAgainst, ts.played), fmt: formatNumber2 },
+                      { label: 'Diferença de golos / jogo', value: (ts: TeamSideStats) => safeDivide(ts.goalsFor - ts.goalsAgainst, ts.played), fmt: formatDiff2 },
+                    ],
                   },
                   {
-                    label: 'Golos marcados por jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.played),
-                    fmt: formatNumber2,
+                    title: 'Consistência e thresholds de golos',
+                    rows: [
+                      { label: '% jogos a marcar', value: (ts: TeamSideStats) => safeDivide(ts.played - ts.noGoals, ts.played), fmt: formatPercent0 },
+                      { label: '% jogos sem sofrer', value: (ts: TeamSideStats) => safeDivide(ts.cleanSheets, ts.played), fmt: formatPercent0 },
+                      { label: '% jogos com 2,5+ golos marcados', value: (ts: TeamSideStats) => safeDivide(ts.over25For, ts.played), fmt: formatPercent0 },
+                      { label: '% jogos com 1,5+ golos marcados', value: (ts: TeamSideStats) => safeDivide(ts.over15For, ts.played), fmt: formatPercent0 },
+                    ],
                   },
                   {
-                    label: 'Golos sofridos por jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.goalsAgainst, ts.played),
-                    fmt: formatNumber2,
+                    title: 'Ritmo e 1ª parte',
+                    rows: [
+                      { label: 'Golos 1ª parte marcados/sofridos', value: (ts: TeamSideStats) => safeDivide(ts.htGoalsFor + ts.htGoalsAgainst, ts.played), fmt: formatNumber2 },
+                      { label: '% golo na 1ª parte', value: (ts: TeamSideStats) => safeDivide(ts.htGoalMatches, ts.played), fmt: formatPercent0 },
+                    ],
                   },
                   {
-                    label: 'Golos marcados + sofridos',
-                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor + ts.goalsAgainst, ts.played),
-                    fmt: formatNumber2,
+                    title: 'Remates (criação e concessão)',
+                    rows: [
+                      { label: 'Remates por jogo', value: (ts: TeamSideStats) => safeDivide(ts.shotsFor, ts.played), fmt: formatNumber2 },
+                      { label: 'Remates enquadrados / jogo', value: (ts: TeamSideStats) => safeDivide(ts.sotFor, ts.played), fmt: formatNumber2 },
+                      { label: 'Remates sofridos / jogo', value: (ts: TeamSideStats) => safeDivide(ts.shotsAgainst, ts.played), fmt: formatNumber2 },
+                      { label: 'Enquadrados sofridos / jogo', value: (ts: TeamSideStats) => safeDivide(ts.sotAgainst, ts.played), fmt: formatNumber2 },
+                      { label: 'SOT% (enquadrados/remates)', value: (ts: TeamSideStats) => safeDivide(ts.sotFor, ts.shotsFor), fmt: formatPercent0 },
+                      { label: 'Conversão (golos/remates)', value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.shotsFor), fmt: formatNumber2 },
+                      { label: 'Conversão SOT (golos/enquadrados)', value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.sotFor), fmt: formatNumber2 },
+                    ],
                   },
                   {
-                    label: 'Diferença de golos / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor - ts.goalsAgainst, ts.played),
-                    fmt: formatDiff2,
+                    title: 'Cantos (pressão territorial)',
+                    rows: [
+                      { label: 'Cantos a favor / jogo', value: (ts: TeamSideStats) => safeDivide(ts.cornersFor, ts.played), fmt: formatNumber2 },
+                      { label: 'Cantos contra / jogo', value: (ts: TeamSideStats) => safeDivide(ts.cornersAgainst, ts.played), fmt: formatNumber2 },
+                      { label: 'Diferença de cantos / jogo', value: (ts: TeamSideStats) => safeDivide(ts.cornersFor - ts.cornersAgainst, ts.played), fmt: formatDiff2 },
+                    ],
                   },
                   {
-                    label: '% jogos a marcar',
-                    value: (ts: TeamSideStats) => safeDivide(ts.played - ts.noGoals, ts.played),
-                    fmt: formatPercent0,
-                  },
-                  {
-                    label: '% jogos sem sofrer',
-                    value: (ts: TeamSideStats) => safeDivide(ts.cleanSheets, ts.played),
-                    fmt: formatPercent0,
-                  },
-                  {
-                    label: '% jogos com 2,5+ golos marcados',
-                    value: (ts: TeamSideStats) => safeDivide(ts.over25For, ts.played),
-                    fmt: formatPercent0,
-                  },
-                  {
-                    label: '% jogos com 1,5+ golos marcados',
-                    value: (ts: TeamSideStats) => safeDivide(ts.over15For, ts.played),
-                    fmt: formatPercent0,
-                  },
-                  {
-                    label: 'Golos 1ª parte marcados/sofridos',
-                    value: (ts: TeamSideStats) => safeDivide(ts.htGoalsFor + ts.htGoalsAgainst, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: '% golo na 1ª parte',
-                    value: (ts: TeamSideStats) => safeDivide(ts.htGoalMatches, ts.played),
-                    fmt: formatPercent0,
-                  },
-                  {
-                    label: 'Remates por jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.shotsFor, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Remates enquadrados / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.sotFor, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Remates sofridos / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.shotsAgainst, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Enquadrados sofridos / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.sotAgainst, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'SOT% (enquadrados/remates)',
-                    value: (ts: TeamSideStats) => safeDivide(ts.sotFor, ts.shotsFor),
-                    fmt: formatPercent0,
-                  },
-                  {
-                    label: 'Conversão (golos/remates)',
-                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.shotsFor),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Conversão SOT (golos/enquadrados)',
-                    value: (ts: TeamSideStats) => safeDivide(ts.goalsFor, ts.sotFor),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Cantos a favor / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.cornersFor, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Cantos contra / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.cornersAgainst, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Diferença de cantos / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.cornersFor - ts.cornersAgainst, ts.played),
-                    fmt: formatDiff2,
-                  },
-                  {
-                    label: 'Cartões amarelos / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.yellow, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Vermelhos / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.red, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Faltas / jogo',
-                    value: (ts: TeamSideStats) => safeDivide(ts.fouls, ts.played),
-                    fmt: formatNumber2,
-                  },
-                  {
-                    label: 'Cartões por falta',
-                    value: (ts: TeamSideStats) => safeDivide(ts.yellow + 2 * ts.red, ts.fouls),
-                    fmt: formatNumber2,
+                    title: 'Disciplina (agressividade/risco)',
+                    rows: [
+                      { label: 'Cartões amarelos / jogo', value: (ts: TeamSideStats) => safeDivide(ts.yellow, ts.played), fmt: formatNumber2 },
+                      { label: 'Vermelhos / jogo', value: (ts: TeamSideStats) => safeDivide(ts.red, ts.played), fmt: formatNumber2 },
+                      { label: 'Faltas / jogo', value: (ts: TeamSideStats) => safeDivide(ts.fouls, ts.played), fmt: formatNumber2 },
+                      { label: 'Cartões por falta', value: (ts: TeamSideStats) => safeDivide(ts.yellow + 2 * ts.red, ts.fouls), fmt: formatNumber2 },
+                    ],
                   },
                 ];
 
-                const rendered = rows
-                  .map((row, idx) => {
-                    const values = [
-                      row.value(teamStatsHome.home),
-                      row.value(teamStatsHome.away),
-                      row.value(teamStatsHome.overall),
-                      row.value(teamStatsAway.overall),
-                      row.value(teamStatsAway.away),
-                      row.value(teamStatsAway.home),
-                    ];
-                    const hasData = values.some((v) => v !== null && Math.abs(v) > 1e-6);
-                    if (!hasData) return null;
-                    const stripe = idx % 2 === 0 ? 'bg-gray-50/70' : '';
-                    return (
-                      <React.Fragment key={row.label}>
-                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.home))}</div>
-                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.away))}</div>
-                        <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsHome.overall))}</div>
-                        <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${stripe}`}>{row.label}</div>
-                        <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsAway.overall))}</div>
-                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.away))}</div>
-                        <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.home))}</div>
-                      </React.Fragment>
-                    );
-                  })
-                  .filter(Boolean);
+                const rendered: React.ReactNode[] = [];
+                let stripeIdx = 0;
+                let hasAny = false;
 
-                if (rendered.length === 0) {
+                sections.forEach((section, sIdx) => {
+                  // process rows with data
+                  const sectionRows = section.rows
+                    .map((row) => {
+                      const values = [
+                        row.value(teamStatsHome.home),
+                        row.value(teamStatsHome.away),
+                        row.value(teamStatsHome.overall),
+                        row.value(teamStatsAway.overall),
+                        row.value(teamStatsAway.away),
+                        row.value(teamStatsAway.home),
+                      ];
+                      const hasData = values.some((v) => v !== null && Math.abs(v) > 1e-6);
+                      if (!hasData) return null;
+                      const stripe = stripeIdx % 2 === 0 ? 'bg-gray-50/70' : '';
+                      stripeIdx += 1;
+                      return (
+                        <React.Fragment key={`${section.title}-${row.label}`}>
+                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.home))}</div>
+                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.away))}</div>
+                          <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsHome.overall))}</div>
+                          <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${stripe}`}>{row.label}</div>
+                          <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsAway.overall))}</div>
+                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.away))}</div>
+                          <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.home))}</div>
+                        </React.Fragment>
+                      );
+                    })
+                    .filter(Boolean);
+
+                  if (sectionRows.length > 0) {
+                    hasAny = true;
+                    rendered.push(
+                      <div
+                        key={`sep-${sIdx}`}
+                        className="col-span-7 bg-[#f2f2f2] text-black font-semibold text-sm py-1 px-2 border-b border-gray-300"
+                      >
+                        {section.title}
+                      </div>
+                    );
+                    rendered.push(...sectionRows);
+                  }
+                });
+
+                if (!hasAny) {
                   return (
                     <div className="col-span-7 text-center py-10 text-gray-500">
                       Informação não disponível

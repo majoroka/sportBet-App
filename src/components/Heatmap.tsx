@@ -6,11 +6,14 @@ interface Props {
 }
 
 // Helper para obter a cor com base na probabilidade
-const getColorForProbability = (prob: number, maxProb: number) => {
+const getColorForProbability = (prob: number, maxProb: number, isTop: boolean) => {
   if (prob === 0) return 'bg-gray-50 text-gray-300';
   const intensity = Math.min(prob / maxProb, 1);
   
-  // Mais provável -> Azul (Harmonizado com #60A5FA)
+  // Apenas o resultado mais provável fica mais escuro
+  if (isTop) return 'bg-blue-500 text-white';
+
+  // Mais provável (restante escala) -> Azul harmonizado
   if (intensity > 0.75) return 'bg-blue-400 text-white';
   if (intensity > 0.50) return 'bg-blue-200 text-gray-800';
   
@@ -40,8 +43,13 @@ export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
           {scores.map(awayScore => {
             const scoreKey = `${homeScore}-${awayScore}`;
             const prob = data[scoreKey] || 0;
+            const isTop = maxProb > 0 && prob === maxProb;
             return (
-              <div key={scoreKey} className={`p-1 rounded text-center text-[10px] font-mono ${getColorForProbability(prob, maxProb)}`} title={`Resultado: ${homeScore}-${awayScore}, Prob: ${(prob * 100).toFixed(1)}%`}>
+              <div
+                key={scoreKey}
+                className={`p-1 rounded text-center text-[10px] font-mono ${getColorForProbability(prob, maxProb, isTop)}`}
+                title={`Resultado: ${homeScore}-${awayScore}, Prob: ${(prob * 100).toFixed(1)}%`}
+              >
                 {(prob * 100).toFixed(1)}%
               </div>
             );
