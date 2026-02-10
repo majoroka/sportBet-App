@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Papa from 'papaparse';
-import { Fixture, StandingRow, MarketOdds } from '../domain/types';
+import { Fixture, StandingRow } from '../domain/types';
 import { calculateStandings, computeLeagueStats, computeTeamStats, StandingMode } from '../calculators/standings';
 import { Heatmap } from './Heatmap';
 import { LEAGUE_CONFIG } from '../config/leagues';
@@ -20,9 +20,21 @@ import { Bar } from 'react-chartjs-2';
 import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 import { ScoringHub } from './scoring/ScoringHub';
 import {
+  BTTS_YES_MARKET_KEY,
+  OVER_25_MATCH_MARKET_KEY,
+  TEAM_OVER_05_HT_MARKET_KEY,
   TEAM_OVER_15_MARKET_KEY,
+  BttsYesInputs,
+  Over25MatchInputs,
+  TeamOver05HTInputs,
   TeamOver15Inputs,
+  computeBttsYesScore,
+  computeOver25MatchScore,
+  computeTeamOver05HTScore,
   computeTeamOver15Score,
+  createEmptyBttsYesScore,
+  createEmptyOver25MatchScore,
+  createEmptyTeamOver05HTScore,
   createEmptyTeamOver15Score,
 } from '../scoring';
 
@@ -40,11 +52,10 @@ interface Props {
 }
 
 // Componente auxiliar para mostrar Odd e Probabilidade de forma compacta
-const OddBox: React.FC<{ label: string; value: number | null; highlight?: boolean; secondaryValue?: number | null }> = ({
+const OddBox: React.FC<{ label: string; value: number | null; highlight?: boolean }> = ({
   label,
   value,
   highlight,
-  secondaryValue,
 }) => (
   <div className={`flex flex-col p-3 rounded border ${highlight ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100'}`}>
     <span className="text-sm text-gray-500 uppercase tracking-wider mb-1">{label}</span>
@@ -54,19 +65,6 @@ const OddBox: React.FC<{ label: string; value: number | null; highlight?: boolea
         <span className="text-sm text-gray-400 font-mono"> ({(value * 100).toFixed(1)}%)</span>
       )}
     </div>
-    {secondaryValue !== undefined && (
-      <div className="mt-1 text-[11px] font-mono">
-        <span className="text-gray-500">B365 </span>
-        {secondaryValue && secondaryValue > 0 ? (
-          <>
-            <span className="text-gray-900">{secondaryValue.toFixed(2)}</span>
-            <span className="text-gray-400"> ({(100 / secondaryValue).toFixed(1)}%)</span>
-          </>
-        ) : (
-          <span className="text-gray-400">-</span>
-        )}
-      </div>
-    )}
   </div>
 );
 
@@ -259,6 +257,7 @@ const formatDiff2 = (v: number | null) =>
 const safeNumber = (value?: number | null, fallback = 0) =>
   Number.isFinite(value as number) ? Number(value) : fallback;
 const toPercentValue = (value: number | null) => (value === null ? 0 : value * 100);
+const toPercentNullable = (value: number | null) => (value === null ? null : value * 100);
 
 type TeamStatRow = {
   label: string;
@@ -347,7 +346,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [teamStatsHome, setTeamStatsHome] = useState<TeamStats | null>(null);
   const [teamStatsAway, setTeamStatsAway] = useState<TeamStats | null>(null);
   const [loadingStandings, setLoadingStandings] = useState(false);
-  const [bookmakerOdds, setBookmakerOdds] = useState<MarketOdds | null>(null);
   const [openStatsSections, setOpenStatsSections] = useState<Record<string, boolean>>({});
   const [eloRankingRows, setEloRankingRows] = useState<
     Array<{ club: string; rank: number | null; elo: number | null; points: number | null; id: string | null }>
@@ -497,7 +495,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         setStandingsHome([]);
         setStandingsAway([]);
         setStandingsLast10([]);
-        setBookmakerOdds(null);
         return;
       }
 
@@ -536,13 +533,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           const stats = computeLeagueStats(text);
           const tsHome = computeTeamStats(text, fixture.homeTeam);
           const tsAway = computeTeamStats(text, fixture.awayTeam);
-          const b365 = extractB365Odds(text, fixture.homeTeam, fixture.awayTeam, fixture.date);
-          if (
-            (namesMatch(fixture.homeTeam, 'Porto') && namesMatch(fixture.awayTeam, 'Sporting CP')) ||
-            (namesMatch(fixture.homeTeam, 'Sporting CP') && namesMatch(fixture.awayTeam, 'Porto'))
-          ) {
-            console.log('🧪 [B365 Debug] computed odds:', b365);
-          }
           console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${dataOverall.length}`);
           setStandingsOverall(dataOverall);
           setStandingsHome(dataHome);
@@ -551,7 +541,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setLeagueStats(stats);
           setTeamStatsHome(tsHome);
           setTeamStatsAway(tsAway);
-          setBookmakerOdds(b365);
         } else {
           console.warn(`❌ [Debug] Falha ao carregar ficheiro CSV: ${res.url || finalUrl}`);
           setStandingsOverall([]);
@@ -561,7 +550,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setLeagueStats(null);
           setTeamStatsHome(null);
           setTeamStatsAway(null);
-          setBookmakerOdds(null);
         }
       } catch (error) {
         console.error("Erro ao carregar classificação:", error);
@@ -716,168 +704,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       if (byId) return byId;
     }
     return eloRankingRows.find((row) => row.club && namesMatch(row.club, teamName)) || null;
-  };
-
-  const normalizeCsvDate = (value: string) => {
-    if (!value) return '';
-    const trimmed = value.trim();
-    const m = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/);
-    if (m) {
-      const dd = m[1].padStart(2, '0');
-      const mm = m[2].padStart(2, '0');
-      const yy = m[3].length === 2 ? `20${m[3]}` : m[3];
-      return `${yy}-${mm}-${dd}`;
-    }
-    if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) return trimmed.slice(0, 10);
-    return '';
-  };
-
-  const parseDateMs = (value: string) => {
-    const key = normalizeCsvDate(value);
-    if (!key) return null;
-    const [y, m, d] = key.split('-').map((v) => Number(v));
-    if (!y || !m || !d) return null;
-    return Date.UTC(y, m - 1, d);
-  };
-
-  const extractB365Odds = (csvText: string, home: string, away: string, dateStr: string): MarketOdds | null => {
-    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-    const data = parsed.data as any[];
-    const fields = new Set((parsed.meta?.fields || []) as string[]);
-    const hasAvg1x2 = fields.has('AvgH') && fields.has('AvgD') && fields.has('AvgA');
-    const hasB3651x2 = fields.has('B365H') && fields.has('B365D') && fields.has('B365A');
-    const hasMaxClose1x2 = fields.has('MaxCH') && fields.has('MaxCD') && fields.has('MaxCA');
-    const debugFixture =
-      (namesMatch(home, 'Porto') && namesMatch(away, 'Sporting CP')) ||
-      (namesMatch(home, 'Sporting CP') && namesMatch(away, 'Porto'));
-    const targetHomeId =
-      resolveTeamId('clubelo', home) ||
-      resolveTeamId('football-data', home) ||
-      null;
-    const targetAwayId =
-      resolveTeamId('clubelo', away) ||
-      resolveTeamId('football-data', away) ||
-      null;
-    const targetDate = parseDateMs(dateStr);
-
-    const rows = (data as any[]).filter((row) => {
-      const rowHome = row.HomeTeam || row.Home;
-      const rowAway = row.AwayTeam || row.Away;
-      if (!rowHome || !rowAway) return false;
-      const rowHomeId =
-        resolveTeamId('football-data', rowHome) ||
-        resolveTeamId('clubelo', rowHome) ||
-        null;
-      const rowAwayId =
-        resolveTeamId('football-data', rowAway) ||
-        resolveTeamId('clubelo', rowAway) ||
-        null;
-      if (targetHomeId && targetAwayId && rowHomeId && rowAwayId) {
-        return targetHomeId === rowHomeId && targetAwayId === rowAwayId;
-      }
-      return namesMatch(rowHome, home) && namesMatch(rowAway, away);
-    });
-
-    if (debugFixture) {
-      console.log('🧪 [B365 Debug] fixture:', { home, away, dateStr });
-      console.log('🧪 [B365 Debug] columns:', {
-        hasAvg1x2,
-        hasB3651x2,
-        hasMaxClose1x2,
-        hasB365OU: fields.has('B365C>2.5') || fields.has('B365>2.5'),
-        hasMaxCOU: fields.has('MaxC>2.5') || fields.has('MaxC<2.5'),
-      });
-      console.log('🧪 [B365 Debug] ids:', {
-        targetHomeId,
-        targetAwayId,
-      });
-      console.log('🧪 [B365 Debug] matched rows:', rows.length);
-      if (rows.length > 0) {
-        const sample = rows[0];
-        console.log('🧪 [B365 Debug] sample row:', {
-          Date: sample.Date,
-          HomeTeam: sample.HomeTeam || sample.Home,
-          AwayTeam: sample.AwayTeam || sample.Away,
-          AvgH: sample.AvgH,
-          AvgD: sample.AvgD,
-          AvgA: sample.AvgA,
-          B365H: sample.B365H,
-          B365D: sample.B365D,
-          B365A: sample.B365A,
-          MaxCH: sample.MaxCH,
-          MaxCD: sample.MaxCD,
-          MaxCA: sample.MaxCA,
-          B365COver25: sample['B365C>2.5'],
-          B365Over25: sample['B365>2.5'],
-          MaxCOver25: sample['MaxC>2.5'],
-          B365CUnder25: sample['B365C<2.5'],
-          B365Under25: sample['B365<2.5'],
-          MaxCUnder25: sample['MaxC<2.5'],
-        });
-      }
-    }
-
-    if (rows.length === 0) return null;
-
-    const pickRow = (() => {
-      if (targetDate === null) return rows[0];
-      let best = rows[0];
-      let bestDiff = Number.POSITIVE_INFINITY;
-      rows.forEach((row) => {
-        const rowDate = parseDateMs(row.Date || row.date || '');
-        if (rowDate === null) return;
-        const diff = Math.abs(rowDate - targetDate);
-        if (diff < bestDiff) {
-          bestDiff = diff;
-          best = row;
-        }
-      });
-      return best;
-    })();
-
-    const pick = (primary: string, fallback?: string) => {
-      const raw = fallback ? (pickRow[primary] ?? pickRow[fallback]) : pickRow[primary];
-      const num = Number(raw);
-      return Number.isFinite(num) && num > 0 ? num : null;
-    };
-
-    const pickPrefer = (primary: string, fallback?: string) => pick(primary, fallback);
-
-    const odds: MarketOdds = {
-      provider: 'B365',
-      home: hasAvg1x2
-        ? (pick('AvgH') ?? 0)
-        : hasB3651x2
-          ? (pick('B365H') ?? 0)
-          : hasMaxClose1x2
-            ? (pick('MaxCH') ?? 0)
-            : 0,
-      draw: hasAvg1x2
-        ? (pick('AvgD') ?? 0)
-        : hasB3651x2
-          ? (pick('B365D') ?? 0)
-          : hasMaxClose1x2
-            ? (pick('MaxCD') ?? 0)
-            : 0,
-      away: hasAvg1x2
-        ? (pick('AvgA') ?? 0)
-        : hasB3651x2
-          ? (pick('B365A') ?? 0)
-          : hasMaxClose1x2
-            ? (pick('MaxCA') ?? 0)
-            : 0,
-      over25: pickPrefer('B365C>2.5', 'B365>2.5') ?? pick('MaxC>2.5') ?? undefined,
-      under25: pickPrefer('B365C<2.5', 'B365<2.5') ?? pick('MaxC<2.5') ?? undefined,
-    };
-
-    const hasAny =
-      (odds.home && odds.home > 0) ||
-      (odds.draw && odds.draw > 0) ||
-      (odds.away && odds.away > 0) ||
-      (odds.over25 && odds.over25 > 0) ||
-      (odds.under25 && odds.under25 > 0);
-
-    return hasAny ? odds : null;
   };
 
   // xG estimado a partir da distribuição de resultados (truncado a 6 golos)
@@ -1107,12 +933,130 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     };
   };
 
+  const mapToTeamOver05HTInputs = (side: 'home' | 'away'): TeamOver05HTInputs => {
+    const teamSide = side === 'home' ? teamStatsHome?.home : teamStatsAway?.away;
+    const oppSide = side === 'home' ? teamStatsAway?.away : teamStatsHome?.home;
+    const played = teamSide?.played ?? 0;
+    const oppPlayed = oppSide?.played ?? 0;
+
+    const teamFirstHalfGoalsPerGame = safeDivide(teamSide?.htGoalsFor, played);
+    const teamPctFirstHalfGoal =
+      teamFirstHalfGoalsPerGame === null ? null : Math.min(100, teamFirstHalfGoalsPerGame * 100);
+
+    const probOver25 =
+      probabilities.overUnder?.['2.5']?.over ??
+      (ouLine !== undefined ? probabilities.overUnder?.[String(ouLine)]?.over : undefined);
+
+    const probTeamOver05 =
+      side === 'home'
+        ? probabilities.teamOver?.home?.['0.5']
+        : probabilities.teamOver?.away?.['0.5'];
+
+    return {
+      teamPctFirstHalfGoal,
+      teamFirstHalfGoalsPerGame,
+      oppFirstHalfGoalsConcededPerGame: safeDivide(oppSide?.htGoalsAgainst, oppPlayed),
+      oppPctConcedeFirstHalfGoal: null,
+      teamSotPerGame: safeDivide(teamSide?.sotFor, played),
+      teamCornersForPerGame: safeDivide(teamSide?.cornersFor, played),
+      teamCornerDiffPerGame: safeDivide(
+        (teamSide?.cornersFor ?? 0) - (teamSide?.cornersAgainst ?? 0),
+        played
+      ),
+      eloDelta: side === 'home'
+        ? (homeElo?.elo ?? 0) - (awayElo?.elo ?? 0)
+        : (awayElo?.elo ?? 0) - (homeElo?.elo ?? 0),
+      teamProbOver05FT: Number.isFinite(probTeamOver05 as number) ? Number(probTeamOver05) * 100 : null,
+      probOver25: Number.isFinite(probOver25 as number) ? Number(probOver25) * 100 : null,
+      ouLine: ouLine ?? null,
+    };
+  };
+
+  const mapToBttsYesInputs = (): BttsYesInputs => {
+    const homeSide = teamStatsHome?.home;
+    const awaySide = teamStatsAway?.away;
+    const homePlayed = homeSide?.played ?? 0;
+    const awayPlayed = awaySide?.played ?? 0;
+
+    const homeEloValue = Number.isFinite(homeElo?.elo as number) ? Number(homeElo?.elo) : null;
+    const awayEloValue = Number.isFinite(awayElo?.elo as number) ? Number(awayElo?.elo) : null;
+
+    const probOver25 =
+      probabilities.overUnder?.['2.5']?.over ??
+      (ouLine !== undefined ? probabilities.overUnder?.[String(ouLine)]?.over : undefined);
+
+    return {
+      probBtts: Number.isFinite(probabilities.bttsYes) ? probabilities.bttsYes * 100 : null,
+      probOver25: Number.isFinite(probOver25 as number) ? Number(probOver25) * 100 : null,
+      homePctScored: toPercentNullable(safeDivide(homePlayed - (homeSide?.noGoals ?? 0), homePlayed)),
+      awayPctScored: toPercentNullable(safeDivide(awayPlayed - (awaySide?.noGoals ?? 0), awayPlayed)),
+      homeGfPerGame: safeDivide(homeSide?.goalsFor, homePlayed),
+      awayGfPerGame: safeDivide(awaySide?.goalsFor, awayPlayed),
+      homeGaPerGame: safeDivide(homeSide?.goalsAgainst, homePlayed),
+      awayGaPerGame: safeDivide(awaySide?.goalsAgainst, awayPlayed),
+      homeCleanSheetPct: toPercentNullable(safeDivide(homeSide?.cleanSheets, homePlayed)),
+      awayCleanSheetPct: toPercentNullable(safeDivide(awaySide?.cleanSheets, awayPlayed)),
+      homeSotPerGame: safeDivide(homeSide?.sotFor, homePlayed),
+      awaySotPerGame: safeDivide(awaySide?.sotFor, awayPlayed),
+      homeSotAgainstPerGame: safeDivide(homeSide?.sotAgainst, homePlayed),
+      awaySotAgainstPerGame: safeDivide(awaySide?.sotAgainst, awayPlayed),
+      eloAbsDelta:
+        homeEloValue !== null && awayEloValue !== null ? Math.abs(homeEloValue - awayEloValue) : null,
+    };
+  };
+
+  const mapToOver25MatchInputs = (): Over25MatchInputs => {
+    const homeSide = teamStatsHome?.home;
+    const awaySide = teamStatsAway?.away;
+    const homePlayed = homeSide?.played ?? 0;
+    const awayPlayed = awaySide?.played ?? 0;
+
+    const probOver25 =
+      probabilities.overUnder?.['2.5']?.over ??
+      (ouLine !== undefined ? probabilities.overUnder?.[String(ouLine)]?.over : undefined);
+
+    return {
+      probOver25: Number.isFinite(probOver25 as number) ? Number(probOver25) * 100 : null,
+      homeGfPerGame: safeDivide(homeSide?.goalsFor, homePlayed),
+      awayGfPerGame: safeDivide(awaySide?.goalsFor, awayPlayed),
+      homeGaPerGame: safeDivide(homeSide?.goalsAgainst, homePlayed),
+      awayGaPerGame: safeDivide(awaySide?.goalsAgainst, awayPlayed),
+      homePctScored: toPercentNullable(safeDivide(homePlayed - (homeSide?.noGoals ?? 0), homePlayed)),
+      awayPctScored: toPercentNullable(safeDivide(awayPlayed - (awaySide?.noGoals ?? 0), awayPlayed)),
+      homePct15Scored: toPercentNullable(safeDivide(homeSide?.over15For, homePlayed)),
+      awayPct15Scored: toPercentNullable(safeDivide(awaySide?.over15For, awayPlayed)),
+      homeSotPerGame: safeDivide(homeSide?.sotFor, homePlayed),
+      awaySotPerGame: safeDivide(awaySide?.sotFor, awayPlayed),
+      homeSotAgainstPerGame: safeDivide(homeSide?.sotAgainst, homePlayed),
+      awaySotAgainstPerGame: safeDivide(awaySide?.sotAgainst, awayPlayed),
+      homeFirstHalfGoalPct: toPercentNullable(safeDivide(homeSide?.htGoalMatches, homePlayed)),
+      awayFirstHalfGoalPct: toPercentNullable(safeDivide(awaySide?.htGoalMatches, awayPlayed)),
+      homeHtGfPerGame: safeDivide(homeSide?.htGoalsFor, homePlayed),
+      homeHtGaPerGame: safeDivide(homeSide?.htGoalsAgainst, homePlayed),
+      awayHtGfPerGame: safeDivide(awaySide?.htGoalsFor, awayPlayed),
+      awayHtGaPerGame: safeDivide(awaySide?.htGoalsAgainst, awayPlayed),
+      ouLine: ouLine ?? null,
+    };
+  };
+
   const scoringHome = hasScoringStats
     ? computeTeamOver15Score(mapToTeamOver15Inputs('home'))
     : createEmptyTeamOver15Score(scoringPlaceholderReason);
   const scoringAway = hasScoringStats
     ? computeTeamOver15Score(mapToTeamOver15Inputs('away'))
     : createEmptyTeamOver15Score(scoringPlaceholderReason);
+  const scoringHomeHT = hasScoringStats
+    ? computeTeamOver05HTScore(mapToTeamOver05HTInputs('home'))
+    : createEmptyTeamOver05HTScore(scoringPlaceholderReason);
+  const scoringAwayHT = hasScoringStats
+    ? computeTeamOver05HTScore(mapToTeamOver05HTInputs('away'))
+    : createEmptyTeamOver05HTScore(scoringPlaceholderReason);
+  const scoringBtts = hasScoringStats
+    ? computeBttsYesScore(mapToBttsYesInputs())
+    : createEmptyBttsYesScore(scoringPlaceholderReason);
+  const scoringOver25Match = hasScoringStats
+    ? computeOver25MatchScore(mapToOver25MatchInputs())
+    : createEmptyOver25MatchScore(scoringPlaceholderReason);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
@@ -1239,8 +1183,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       </div>
 
       <ScoringHub
-        home={scoringHome}
-        away={scoringAway}
+        teamScores={{
+          [TEAM_OVER_15_MARKET_KEY]: { home: scoringHome, away: scoringAway },
+          [TEAM_OVER_05_HT_MARKET_KEY]: { home: scoringHomeHT, away: scoringAwayHT },
+        }}
+        matchScores={{
+          [BTTS_YES_MARKET_KEY]: scoringBtts,
+          [OVER_25_MATCH_MARKET_KEY]: scoringOver25Match,
+        }}
         homeTeam={homeTeam}
         awayTeam={awayTeam}
         marketKey={TEAM_OVER_15_MARKET_KEY}
@@ -1259,9 +1209,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           <div className="bg-gray-50 p-3 rounded-lg">
             <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
             <div className="grid grid-cols-3 gap-2">
-              <OddBox label={homeTeam} value={probabilities.homeWin} secondaryValue={bookmakerOdds?.home ?? null} />
-              <OddBox label="Empate" value={probabilities.draw} secondaryValue={bookmakerOdds?.draw ?? null} />
-              <OddBox label={awayTeam} value={probabilities.awayWin} secondaryValue={bookmakerOdds?.away ?? null} />
+              <OddBox label={homeTeam} value={probabilities.homeWin} />
+              <OddBox label="Empate" value={probabilities.draw} />
+              <OddBox label={awayTeam} value={probabilities.awayWin} />
             </div>
             <div className="mt-4 h-32">
               <Bar data={chartData} options={chartOptions} />
@@ -1303,13 +1253,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           )}
                         </span>
                       </div>
-                      {line === '2.5' && bookmakerOdds?.over25 && (
-                        <div className="text-[11px] mt-1 font-mono">
-                          <span className="text-gray-500">B365 </span>
-                          <span className="text-gray-900">{bookmakerOdds.over25.toFixed(2)}</span>
-                          <span className="text-gray-400"> ({(100 / bookmakerOdds.over25).toFixed(1)}%)</span>
-                        </div>
-                      )}
                     </td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -1320,13 +1263,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           )}
                         </span>
                       </div>
-                      {line === '2.5' && bookmakerOdds?.under25 && (
-                        <div className="text-[11px] mt-1 font-mono">
-                          <span className="text-gray-500">B365 </span>
-                          <span className="text-gray-900">{bookmakerOdds.under25.toFixed(2)}</span>
-                          <span className="text-gray-400"> ({(100 / bookmakerOdds.under25).toFixed(1)}%)</span>
-                        </div>
-                      )}
                     </td>
                   </tr>
                 ))}

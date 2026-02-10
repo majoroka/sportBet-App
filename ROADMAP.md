@@ -36,7 +36,6 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 
 - [ ] **Integração API:** Ligar o Cloudflare Worker a uma API real de Odds (ex: The Odds API ou API-Football).
 - [ ] **Comparador de Odds:** Mostrar odds reais das casas ao lado das probabilidades do modelo.
-  - (Parcial) Odds do CSV no 1X2 e O/U 2.5 quando disponíveis.
 - [ ] **Destaque de Valor:** Melhorar o algoritmo de deteção de "Value Bets" (Kelly Criterion).
 
 ## 🔮 Longo Prazo (Fase 4 - Avançado)

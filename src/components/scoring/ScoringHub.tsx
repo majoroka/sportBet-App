@@ -1,22 +1,29 @@
-import React, { useMemo, useState } from 'react';
-import { SCORING_MARKETS, ScoringMarketKey, ScoringResult } from '../../scoring';
+import React, { useEffect, useMemo, useState } from 'react';
+import { SCORING_MARKETS, ScoringMarketKey, ScoringMarketMode, ScoringResult } from '../../scoring';
 import { ScoreCard } from './ScoreCard';
 
+type TeamScorePair = { home: ScoringResult; away: ScoringResult };
+
 type Props = {
-  home: ScoringResult;
-  away: ScoringResult;
+  teamScores: Partial<Record<ScoringMarketKey, TeamScorePair>>;
+  matchScores?: Partial<Record<ScoringMarketKey, ScoringResult>>;
   homeTeam: string;
   awayTeam: string;
   marketKey: ScoringMarketKey;
 };
 
-export const ScoringHub: React.FC<Props> = ({ home, away, homeTeam, awayTeam, marketKey }) => {
+export const ScoringHub: React.FC<Props> = ({ teamScores, matchScores, homeTeam, awayTeam, marketKey }) => {
   const marketOptions = useMemo(
-    () => Object.values(SCORING_MARKETS) as Array<{ key: ScoringMarketKey; label: string }>,
+    () =>
+      Object.values(SCORING_MARKETS) as Array<{ key: ScoringMarketKey; label: string; mode: ScoringMarketMode }>,
     []
   );
   const [selectedMarket, setSelectedMarket] = useState<ScoringMarketKey>(marketKey);
+  useEffect(() => setSelectedMarket(marketKey), [marketKey]);
   const activeMarket = SCORING_MARKETS[selectedMarket] ?? SCORING_MARKETS[marketKey];
+  const fallbackTeamScore = teamScores[marketKey] ?? Object.values(teamScores)[0];
+  const fallbackMatchScore = matchScores?.[marketKey] ?? (matchScores ? Object.values(matchScores)[0] : undefined);
+  const emptyScore: ScoringResult = { total: 0, groups: [], penaltiesApplied: 0, topReasons: ['Sem dados suficientes'] };
 
   return (
     <div className="mb-5">
@@ -28,7 +35,7 @@ export const ScoringHub: React.FC<Props> = ({ home, away, homeTeam, awayTeam, ma
       <div className="flex flex-wrap gap-2 mb-4">
         {marketOptions.map((market) => {
           const isActive = market.key === selectedMarket;
-          const isEnabled = market.key === marketKey;
+          const isEnabled = true;
           return (
             <button
               key={market.key}
@@ -46,16 +53,29 @@ export const ScoringHub: React.FC<Props> = ({ home, away, homeTeam, awayTeam, ma
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <ScoreCard title={`Casa · ${homeTeam}`} accentClass="bg-[#60A5FA]" score={home} />
-        <ScoreCard title={`Fora · ${awayTeam}`} accentClass="bg-[#F472B6]" score={away} />
-      </div>
-
-      {activeMarket?.label && activeMarket.key !== marketKey && (
-        <div className="text-xs text-gray-400 mt-2">
-          Mercado indisponível nesta versão.
+      {activeMarket.mode === 'match' ? (
+        <div className="grid grid-cols-1 gap-4">
+          <ScoreCard
+            title="JOGO"
+            accentClass="bg-gray-900"
+            score={matchScores?.[selectedMarket] ?? fallbackMatchScore ?? fallbackTeamScore?.home ?? emptyScore}
+          />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <ScoreCard
+            title={`Casa · ${homeTeam}`}
+            accentClass="bg-[#60A5FA]"
+            score={(teamScores[selectedMarket] ?? fallbackTeamScore)?.home ?? fallbackTeamScore?.home ?? emptyScore}
+          />
+          <ScoreCard
+            title={`Fora · ${awayTeam}`}
+            accentClass="bg-[#F472B6]"
+            score={(teamScores[selectedMarket] ?? fallbackTeamScore)?.away ?? fallbackTeamScore?.away ?? emptyScore}
+          />
         </div>
       )}
+
     </div>
   );
 };

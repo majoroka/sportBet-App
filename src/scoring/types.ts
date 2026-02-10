@@ -43,3 +43,58 @@ export type TeamOver15Inputs = {
   eloDelta?: number;
   ouLine?: number;
 };
+
+export type BttsYesInputs = {
+  probBtts: number | null;
+  probOver25: number | null;
+  homePctScored: number | null;
+  awayPctScored: number | null;
+  homeGfPerGame: number | null;
+  awayGfPerGame: number | null;
+  homeGaPerGame: number | null;
+  awayGaPerGame: number | null;
+  homeCleanSheetPct: number | null;
+  awayCleanSheetPct: number | null;
+  homeSotPerGame: number | null;
+  awaySotPerGame: number | null;
+  homeSotAgainstPerGame: number | null;
+  awaySotAgainstPerGame: number | null;
+  eloAbsDelta: number | null;
+};
+
+export type TeamOver05HTInputs = {
+  teamPctFirstHalfGoal: number | null;
+  teamFirstHalfGoalsPerGame: number | null;
+  oppFirstHalfGoalsConcededPerGame: number | null;
+  oppPctConcedeFirstHalfGoal: number | null;
+  teamSotPerGame: number | null;
+  teamCornersForPerGame: number | null;
+  teamCornerDiffPerGame: number | null;
+  eloDelta: number | null;
+  teamProbOver05FT: number | null;
+  probOver25: number | null;
+  ouLine: number | null;
+};
+
+export type Over25MatchInputs = {
+  probOver25: number | null;
+  homeGfPerGame: number | null;
+  awayGfPerGame: number | null;
+  homeGaPerGame: number | null;
+  awayGaPerGame: number | null;
+  homePctScored: number | null;
+  awayPctScored: number | null;
+  homePct15Scored: number | null;
+  awayPct15Scored: number | null;
+  homeSotPerGame: number | null;
+  awaySotPerGame: number | null;
+  homeSotAgainstPerGame: number | null;
+  awaySotAgainstPerGame: number | null;
+  homeFirstHalfGoalPct: number | null;
+  awayFirstHalfGoalPct: number | null;
+  homeHtGfPerGame: number | null;
+  homeHtGaPerGame: number | null;
+  awayHtGfPerGame: number | null;
+  awayHtGaPerGame: number | null;
+  ouLine: number | null;
+};

@@ -1,18 +1,4 @@
 /**
- * Representa as odds de um mercado específico, oferecidas por uma casa de apostas.
- */
-export interface MarketOdds {
-  provider: string;
-  home: number;
-  draw: number;
-  away: number;
-  over25?: number;
-  under25?: number;
-  bttsYes?: number;
-  bttsNo?: number;
-}
-
-/**
  * Representa um jogo individual no histórico de forma de uma equipa.
  */
 export interface FormMatch {
@@ -150,8 +136,6 @@ export interface Fixture {
   awayXG: number;
   // Dados calculados
   probabilities: Probabilities;
-  // Dados de fontes externas
-  bookmakerOdds?: MarketOdds[];
   // Classificação (opcional)
   standings?: StandingRow[];
 }

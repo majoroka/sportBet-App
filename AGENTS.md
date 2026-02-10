@@ -24,7 +24,6 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Secção de Estatística com tabela comparativa por equipa e accordions por categoria (resultados, consistência, remates, cantos, disciplina).
   - Card “Equipas” com xG por clube (derivado da matriz de correct score, truncada a 6 golos), logos centrados e pill de xG.
   - Pills de ELO no cabeçalho do jogo (ranking via `public/data/ranking_elo.csv`).
-  - Odds do CSV exibidas como secundárias em 1X2 e O/U 2.5 quando disponíveis.
   - Logótipos dos clubes (com fallback visual) e design responsivo (forma oculta em mobile para não quebrar layout).
 
 - **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono). Paleta principal coerente: azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
