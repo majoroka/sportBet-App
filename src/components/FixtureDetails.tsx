@@ -18,6 +18,13 @@ import { resolveTeamId } from '../lib/teamMapping';
 import { fetchWithCacheBust } from '../utils/fetchWithCacheBust';
 import { Bar } from 'react-chartjs-2';
 import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
+import { ScoringHub } from './scoring/ScoringHub';
+import {
+  TEAM_OVER_15_MARKET_KEY,
+  TeamOver15Inputs,
+  computeTeamOver15Score,
+  createEmptyTeamOver15Score,
+} from '../scoring';
 
 ChartJS.register(
   CategoryScale,
@@ -41,7 +48,7 @@ const OddBox: React.FC<{ label: string; value: number | null; highlight?: boolea
 }) => (
   <div className={`flex flex-col p-3 rounded border ${highlight ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100'}`}>
     <span className="text-sm text-gray-500 uppercase tracking-wider mb-1">{label}</span>
-    <div className="font-bold font-mono text-2xl text-gray-900">
+    <div className="font-bold font-mono text-xl text-gray-900">
       {value && value > 0 ? (1 / value).toFixed(2) : '-'}
       {value && value > 0 && (
         <span className="text-sm text-gray-400 font-mono"> ({(value * 100).toFixed(1)}%)</span>
@@ -240,6 +247,9 @@ const formatNumber2 = (v: number | null) => (v === null ? '—' : v.toFixed(2));
 const formatPercent0 = (v: number | null) => (v === null ? '—' : `${(v * 100).toFixed(0)}%`);
 const formatDiff2 = (v: number | null) =>
   v === null ? '—' : `${v >= 0 ? '+' : ''}${v.toFixed(2)}`;
+const safeNumber = (value?: number | null, fallback = 0) =>
+  Number.isFinite(value as number) ? Number(value) : fallback;
+const toPercentValue = (value: number | null) => (value === null ? 0 : value * 100);
 
 type TeamStatRow = {
   label: string;
@@ -1039,6 +1049,61 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   }, [detailedStatsEnabled, openStatsSections, teamStatsAway, teamStatsHome]);
 
   const leagueLogoUrl = getLeagueLogoUrl(displayLeagueName, fixture.country);
+  const scoringPlaceholderReason = loadingStandings ? 'A carregar...' : 'Sem dados suficientes';
+  const hasScoringStats = !!(teamStatsHome && teamStatsAway);
+
+  const inferOuLine = () => {
+    const lines = Object.keys(probabilities?.overUnder || {});
+    const numericLines = lines.map((line) => Number(line)).filter((line) => Number.isFinite(line));
+    if (numericLines.length === 0) return undefined;
+    if (numericLines.includes(2.5)) return 2.5;
+    return numericLines.sort((a, b) => {
+      const diff = Math.abs(a - 2.5) - Math.abs(b - 2.5);
+      if (diff !== 0) return diff;
+      return a - b;
+    })[0];
+  };
+
+  const ouLine = inferOuLine();
+
+  const mapToTeamOver15Inputs = (side: 'home' | 'away'): TeamOver15Inputs => {
+    const teamSide = side === 'home' ? teamStatsHome?.home : teamStatsAway?.away;
+    const oppSide = side === 'home' ? teamStatsAway?.away : teamStatsHome?.home;
+    const probSource = side === 'home' ? probabilities.teamOver.home : probabilities.teamOver.away;
+    const played = teamSide?.played ?? 0;
+    const oppPlayed = oppSide?.played ?? 0;
+    const cardsPerGame = safeNumber(safeDivide((teamSide?.yellow ?? 0) + 2 * (teamSide?.red ?? 0), played));
+
+    return {
+      probTeam15: safeNumber(probSource?.['1.5']) * 100,
+      probTeam25: safeNumber(probSource?.['2.5']) * 100,
+      gfPerGame: safeNumber(safeDivide(teamSide?.goalsFor, played)),
+      pctScored: toPercentValue(safeDivide(played - (teamSide?.noGoals ?? 0), played)),
+      pct15Scored: toPercentValue(safeDivide(teamSide?.over15For, played)),
+      shotsPerGame: safeNumber(safeDivide(teamSide?.shotsFor, played)),
+      sotPerGame: safeNumber(safeDivide(teamSide?.sotFor, played)),
+      sotConversion: safeNumber(safeDivide(teamSide?.goalsFor, teamSide?.sotFor)),
+      firstHalfGoalPct: toPercentValue(safeDivide(teamSide?.htGoalMatches, played)),
+      cornerDiff: safeNumber(
+        safeDivide((teamSide?.cornersFor ?? 0) - (teamSide?.cornersAgainst ?? 0), played)
+      ),
+      disciplineFlag: cardsPerGame >= 2.8,
+      oppGaPerGame: safeNumber(safeDivide(oppSide?.goalsAgainst, oppPlayed)),
+      oppCleanSheetPct: toPercentValue(safeDivide(oppSide?.cleanSheets, oppPlayed)),
+      oppSotAgainstPerGame: safeNumber(safeDivide(oppSide?.sotAgainst, oppPlayed)),
+      eloDelta: side === 'home'
+        ? (homeElo?.elo ?? 0) - (awayElo?.elo ?? 0)
+        : (awayElo?.elo ?? 0) - (homeElo?.elo ?? 0),
+      ouLine,
+    };
+  };
+
+  const scoringHome = hasScoringStats
+    ? computeTeamOver15Score(mapToTeamOver15Inputs('home'))
+    : createEmptyTeamOver15Score(scoringPlaceholderReason);
+  const scoringAway = hasScoringStats
+    ? computeTeamOver15Score(mapToTeamOver15Inputs('away'))
+    : createEmptyTeamOver15Score(scoringPlaceholderReason);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
@@ -1162,6 +1227,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         </div>
       </div>
 
+      <ScoringHub
+        home={scoringHome}
+        away={scoringAway}
+        homeTeam={homeTeam}
+        awayTeam={awayTeam}
+        marketKey={TEAM_OVER_15_MARKET_KEY}
+      />
+
       {/* Separador Probabilidades */}
       <div className="flex items-center gap-2 mb-2">
         <span className="text-xs font-semibold text-gray-500 tracking-[0.1em]">PROBABILIDADES</span>
@@ -1212,7 +1285,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <td className="py-2 font-medium">{line}</td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-gray-900">
+                        <span className="font-bold font-mono text-xl text-gray-900">
                           {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
                           {probs.over > 0 && (
                             <span className="text-xs text-gray-400"> ({(probs.over * 100).toFixed(1)}%)</span>
@@ -1229,7 +1302,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     </td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-gray-900">
+                        <span className="font-bold font-mono text-xl text-gray-900">
                           {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
                           {probs.under > 0 && (
                             <span className="text-xs text-gray-400"> ({(probs.under * 100).toFixed(1)}%)</span>
@@ -1307,7 +1380,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 {['0.5', '1.5', '2.5'].map(line => (
                   <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
                     <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">
+                    <span className="font-bold font-mono text-xl text-gray-800">
                       {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
                       {probabilities.teamOver.home[line] > 0 && (
                         <span className="text-xs text-gray-400 font-mono"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
@@ -1321,7 +1394,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 {['0.5', '1.5', '2.5'].map(line => (
                   <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
                     <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">
+                    <span className="font-bold font-mono text-xl text-gray-800">
                       {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
                       {probabilities.teamOver.away[line] > 0 && (
                         <span className="text-xs text-gray-400 font-mono"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
