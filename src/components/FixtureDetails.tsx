@@ -40,19 +40,42 @@ const OddBox: React.FC<{ label: string; value: number; highlight?: boolean; seco
 }) => (
   <div className={`flex flex-col p-3 rounded border ${highlight ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-100'}`}>
     <span className="text-sm text-gray-500 uppercase tracking-wider mb-1">{label}</span>
-    <div className="flex items-baseline justify-between">
-      <span className="font-bold font-mono text-2xl text-gray-900">
-        {value > 0 ? (1 / value).toFixed(2) : '-'}
-      </span>
-      <span className="text-sm text-gray-400 font-mono">
-        {(value * 100).toFixed(0)}%
-      </span>
+    <div className="font-bold font-mono text-2xl text-gray-900">
+      {value > 0 ? (1 / value).toFixed(2) : '-'}
+      {value > 0 && (
+        <span className="text-sm text-gray-400 font-mono"> ({(value * 100).toFixed(1)}%)</span>
+      )}
     </div>
     {secondaryValue !== undefined && (
-      <div className="mt-1 text-[11px] text-gray-500 font-mono">
-        B365 {secondaryValue && secondaryValue > 0 ? secondaryValue.toFixed(2) : '-'}
+      <div className="mt-1 text-[11px] font-mono">
+        <span className="text-gray-500">B365 </span>
+        {secondaryValue && secondaryValue > 0 ? (
+          <>
+            <span className="text-gray-900">{secondaryValue.toFixed(2)}</span>
+            <span className="text-gray-400"> ({(100 / secondaryValue).toFixed(1)}%)</span>
+          </>
+        ) : (
+          <span className="text-gray-400">-</span>
+        )}
       </div>
     )}
+  </div>
+);
+
+const formatEloValue = (value?: number | null) => {
+  if (!value || !Number.isFinite(value)) return '—';
+  const rounded = Math.round(value);
+  return String(rounded).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+};
+
+const EloPill: React.FC<{ elo?: number | null; rank?: number | null }> = ({ elo, rank }) => (
+  <div className="flex items-center rounded-xl border border-gray-300 bg-white text-xs sm:text-sm font-normal text-black px-2.5 py-1.5 sm:px-3 sm:py-2 gap-2">
+    <div>
+      ELO: <span className="font-bold">{formatEloValue(elo)}</span>
+    </div>
+    <div>
+      #{rank && rank > 0 ? rank : '—'}
+    </div>
   </div>
 );
 
@@ -237,6 +260,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [loadingStandings, setLoadingStandings] = useState(false);
   const [bookmakerOdds, setBookmakerOdds] = useState<MarketOdds | null>(null);
   const [openStatsSections, setOpenStatsSections] = useState<Record<string, boolean>>({});
+  const [eloRankingRows, setEloRankingRows] = useState<
+    Array<{ club: string; rank: number | null; elo: number | null; points: number | null; id: string | null }>
+  >([]);
   const [homeLogoError, setHomeLogoError] = useState(false);
   const [awayLogoError, setAwayLogoError] = useState(false);
   const [leagueLogoError, setLeagueLogoError] = useState(false);
@@ -465,6 +491,48 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     setLeagueLogoError(false);
   }, [fixture]);
 
+  useEffect(() => {
+    const fetchRanking = async () => {
+      try {
+        const base = import.meta.env.BASE_URL === './' ? '' : import.meta.env.BASE_URL;
+        const url = `${base}data/ranking_elo.csv?t=${Date.now()}`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const text = await res.text();
+        if (text.trim().startsWith('<')) return;
+        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true, delimiter: ';' });
+        const rows = (parsed.data as any[]).map((row) => {
+          const club =
+            row.Club ??
+            row['\ufeffClub'] ??
+            row['﻿Club'] ??
+            '';
+          const rankRaw = row.Rank ?? row['\ufeffRank'] ?? row['﻿Rank'];
+          const eloRaw = row.Elo ?? row['\ufeffElo'] ?? row['﻿Elo'];
+          const pointsRaw = row.Points ?? row.Pts ?? row['\ufeffPoints'] ?? row['\ufeffPts'];
+          const rank = Number(rankRaw);
+          const elo = Number(eloRaw);
+          const points = Number(pointsRaw);
+          const id =
+            resolveTeamId('clubelo', club) ||
+            resolveTeamId('football-data', club) ||
+            null;
+          return {
+            club: String(club || '').trim(),
+            rank: Number.isFinite(rank) ? rank : null,
+            elo: Number.isFinite(elo) ? elo : null,
+            points: Number.isFinite(points) ? points : null,
+            id,
+          };
+        });
+        setEloRankingRows(rows);
+      } catch {
+        // ignore
+      }
+    };
+    fetchRanking();
+  }, []);
+
   // Helper para comparar nomes de equipa com normalização e alias aproximado
   const normalize = (s: string) =>
     s
@@ -546,6 +614,19 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     if (TEAM_SYNONYMS[bKey]?.includes(aKey)) return true;
 
     return false;
+  };
+
+  const findEloEntry = (teamName: string) => {
+    if (!teamName || eloRankingRows.length === 0) return null;
+    const targetId =
+      resolveTeamId('clubelo', teamName) ||
+      resolveTeamId('football-data', teamName) ||
+      null;
+    if (targetId) {
+      const byId = eloRankingRows.find((row) => row.id === targetId);
+      if (byId) return byId;
+    }
+    return eloRankingRows.find((row) => row.club && namesMatch(row.club, teamName)) || null;
   };
 
   const normalizeCsvDate = (value: string) => {
@@ -751,6 +832,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     null;
   const homeStanding = findStanding(homeTeam);
   const awayStanding = findStanding(awayTeam);
+  const homeElo = findEloEntry(homeTeam);
+  const awayElo = findEloEntry(awayTeam);
 
   const chartData = {
     labels: [homeTeam, 'Empate', awayTeam],
@@ -814,13 +897,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           <span className="text-lg font-semibold text-gray-800">{displayLeagueName}</span>
         </div>
 
-        <div className="text-center w-full max-w-3xl">
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-1">
+        <div className="text-center w-full">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mb-1">
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
-            <div className="flex items-center justify-end gap-2">
+            <div className="flex items-center justify-end gap-2 flex-nowrap min-w-0">
+              <div className="hidden sm:flex shrink-0">
+                <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} />
+              </div>
               {/* Forma da equipa da casa (Esquerda do nome) */}
               {homeStanding && (
-                <div className="hidden sm:flex gap-1 mr-2">
+                <div className="hidden sm:flex gap-1 mr-2 shrink-0">
                   {homeStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
@@ -839,14 +925,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })}
                 </div>
               )}
-              <h2 className="text-2xl font-bold text-gray-800">{homeTeam}</h2>
+              <h2 className="text-2xl font-bold text-gray-800 truncate max-w-[140px] sm:max-w-[180px] lg:max-w-[240px]">
+                {homeTeam}
+              </h2>
               {homeLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
               ) : (
                 <img
                   src={getTeamLogoUrl(fixture.competition, homeTeam)}
                   alt={homeTeam}
-                  className="w-14 h-14 object-contain"
+                  className="w-14 h-14 object-contain shrink-0"
                   onError={() => {
                     const attempt = getTeamLogoFilename(homeTeam);
                     console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
@@ -862,14 +950,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <span className="text-gray-400 text-lg font-normal">vs</span>
 
             {/* Fora: Logo + Nome (Logo à esquerda do nome) */}
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start gap-2 flex-nowrap min-w-0">
               {awayLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
               ) : (
                 <img
                   src={getTeamLogoUrl(fixture.competition, awayTeam)}
                   alt={awayTeam}
-                  className="w-14 h-14 object-contain"
+                  className="w-14 h-14 object-contain shrink-0"
                   onError={() => {
                     const attempt = getTeamLogoFilename(awayTeam);
                     console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
@@ -880,10 +968,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   }}
                 />
               )}
-              <h2 className="text-2xl font-bold text-gray-800">{awayTeam}</h2>
+              <h2 className="text-2xl font-bold text-gray-800 truncate max-w-[140px] sm:max-w-[180px] lg:max-w-[240px]">
+                {awayTeam}
+              </h2>
               {/* Forma da equipa de fora (Direita do nome) */}
               {awayStanding && (
-                <div className="hidden sm:flex gap-1 ml-2">
+                <div className="hidden sm:flex gap-1 ml-2 shrink-0">
                   {awayStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
@@ -902,6 +992,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })}
                 </div>
               )}
+              <div className="hidden sm:flex shrink-0">
+                <EloPill elo={awayElo?.elo ?? null} rank={awayElo?.rank ?? null} />
+              </div>
             </div>
           </div>
           <p className="text-sm text-gray-500 text-center">{new Date(fixture.date).toLocaleDateString()}</p>
@@ -958,20 +1051,36 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <td className="py-2 font-medium">{line}</td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-gray-900">{probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}</span>
-                        <span className="text-xs text-gray-400 w-10">{(probs.over * 100).toFixed(0)}%</span>
+                        <span className="font-bold font-mono text-lg text-gray-900">
+                          {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
+                          {probs.over > 0 && (
+                            <span className="text-xs text-gray-400"> ({(probs.over * 100).toFixed(1)}%)</span>
+                          )}
+                        </span>
                       </div>
                       {line === '2.5' && bookmakerOdds?.over25 && (
-                        <div className="text-[11px] text-gray-500 mt-1 font-mono">B365 {bookmakerOdds.over25.toFixed(2)}</div>
+                        <div className="text-[11px] mt-1 font-mono">
+                          <span className="text-gray-500">B365 </span>
+                          <span className="text-gray-900">{bookmakerOdds.over25.toFixed(2)}</span>
+                          <span className="text-gray-400"> ({(100 / bookmakerOdds.over25).toFixed(1)}%)</span>
+                        </div>
                       )}
                     </td>
                     <td className="py-2 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-lg text-gray-900">{probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}</span>
-                        <span className="text-xs text-gray-400 w-10">{(probs.under * 100).toFixed(0)}%</span>
+                        <span className="font-bold font-mono text-lg text-gray-900">
+                          {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
+                          {probs.under > 0 && (
+                            <span className="text-xs text-gray-400"> ({(probs.under * 100).toFixed(1)}%)</span>
+                          )}
+                        </span>
                       </div>
                       {line === '2.5' && bookmakerOdds?.under25 && (
-                        <div className="text-[11px] text-gray-500 mt-1 font-mono">B365 {bookmakerOdds.under25.toFixed(2)}</div>
+                        <div className="text-[11px] mt-1 font-mono">
+                          <span className="text-gray-500">B365 </span>
+                          <span className="text-gray-900">{bookmakerOdds.under25.toFixed(2)}</span>
+                          <span className="text-gray-400"> ({(100 / bookmakerOdds.under25).toFixed(1)}%)</span>
+                        </div>
                       )}
                     </td>
                   </tr>
@@ -986,11 +1095,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Sim</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.bttsYes).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">
+                    {(1 / probabilities.bttsYes).toFixed(2)}
+                    <span className="text-xs text-gray-400 font-mono"> ({(probabilities.bttsYes * 100).toFixed(1)}%)</span>
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Não</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.bttsNo).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">
+                    {(1 / probabilities.bttsNo).toFixed(2)}
+                    <span className="text-xs text-gray-400 font-mono"> ({(probabilities.bttsNo * 100).toFixed(1)}%)</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -999,11 +1114,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Casa</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.cleanSheet.home).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">
+                    {(1 / probabilities.cleanSheet.home).toFixed(2)}
+                    <span className="text-xs text-gray-400 font-mono"> ({(probabilities.cleanSheet.home * 100).toFixed(1)}%)</span>
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Fora</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">{(1 / probabilities.cleanSheet.away).toFixed(2)}</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">
+                    {(1 / probabilities.cleanSheet.away).toFixed(2)}
+                    <span className="text-xs text-gray-400 font-mono"> ({(probabilities.cleanSheet.away * 100).toFixed(1)}%)</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -1025,7 +1146,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 {['0.5', '1.5', '2.5'].map(line => (
                   <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
                     <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}</span>
+                    <span className="font-bold font-mono text-lg text-gray-800">
+                      {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
+                      {probabilities.teamOver.home[line] > 0 && (
+                        <span className="text-xs text-gray-400 font-mono"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
+                      )}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -1034,7 +1160,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 {['0.5', '1.5', '2.5'].map(line => (
                   <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
                     <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-lg text-gray-800">{probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}</span>
+                    <span className="font-bold font-mono text-lg text-gray-800">
+                      {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
+                      {probabilities.teamOver.away[line] > 0 && (
+                        <span className="text-xs text-gray-400 font-mono"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
+                      )}
+                    </span>
                   </div>
                 ))}
               </div>
