@@ -14,7 +14,7 @@ export interface Env {
 }
 
 export default {
-	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+	async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
 
 		// Responde a pedidos OPTIONS para CORS preflight
@@ -25,7 +25,7 @@ export default {
 		// Roteamento simples
 		if (url.pathname.startsWith('/api/')) {
 			switch (url.pathname) {
-				case '/api/odds':
+				case '/api/odds': {
 					// Exemplo: buscar odds de uma API externa usando a chave secreta
 					// const oddsUrl = `https://api.the-odds-api.com/v4/sports/soccer_epl/odds/?apiKey=${env.ODDS_API_KEY}`;
 					// const response = await fetch(oddsUrl);
@@ -34,13 +34,15 @@ export default {
 					// Dados mock para demonstração
 					const mockData = { message: "Dados de odds viriam daqui" };
 					return new Response(JSON.stringify(mockData), { headers: { ...corsHeaders(env), 'Content-Type': 'application/json' } });
-				
-				case '/api/proxy':
+				}
+
+				case '/api/proxy': {
 					// Proxy simples para contornar CORS ao buscar CSVs
 					const targetUrl = url.searchParams.get('url');
 					if (!targetUrl) return new Response('Missing URL param', { status: 400, headers: corsHeaders(env) });
 					const response = await fetch(targetUrl);
 					return new Response(response.body, { headers: { ...corsHeaders(env), 'Content-Type': 'text/csv' } });
+				}
 			}
 		}
 

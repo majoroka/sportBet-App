@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     browser: true,
+    node: true,
     es2020: true,
   },
   parser: '@typescript-eslint/parser',
@@ -16,7 +17,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:react-refresh/recommended',
     'prettier',
   ],
   settings: {

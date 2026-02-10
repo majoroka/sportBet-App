@@ -190,7 +190,7 @@ const parseClubEloProbabilities = (row: any, homeXG?: number, awayXG?: number): 
 
   const hasGD = row['GD=0'] !== undefined;
   if (hasGD) {
-    let gdDraw = row['GD=0'];
+    const gdDraw = row['GD=0'];
     let gdHome = 0;
     let gdAway = 0;
     
