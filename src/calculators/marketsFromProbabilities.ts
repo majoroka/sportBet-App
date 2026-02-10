@@ -1,6 +1,8 @@
 import { Probabilities } from '../domain/types';
 import { generateScoreMatrix, generateGoalDifferenceDistribution, calculatePoisson } from './poisson';
 
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
 export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities => {
   // 1. CÁLCULOS BASEADOS EM GD (Goal Difference) - Cobertura Total
   // Usamos limite 5 conforme solicitado (k=-5...5)
@@ -27,8 +29,9 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
   const dc12 = homeWin + awayWin;
 
   // Draw No Bet (Probabilidade Condicional)
-  const dnbHome = homeWin / (1 - draw);
-  const dnbAway = awayWin / (1 - draw);
+  const dnbDenominator = 1 - draw;
+  const dnbHome = dnbDenominator < 1e-9 ? null : homeWin / dnbDenominator;
+  const dnbAway = dnbDenominator < 1e-9 ? null : awayWin / dnbDenominator;
 
   // Margem de Vitória
   const winMarginHome1 = getGD(1);
@@ -50,14 +53,17 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
 
   // 2. CÁLCULOS BASEADOS EM R (Result Matrix) - Truncado em 6 golos
   // Matriz exata para h+a <= 6
-  const matrix = generateScoreMatrix(homeXG, awayXG, 6);
+  const matrixRaw = generateScoreMatrix(homeXG, awayXG, 6);
   
   // Calcular probabilidade da cauda (7+ golos)
   let sumMatrixProb = 0;
-  Object.values(matrix).forEach(p => sumMatrixProb += p);
+  Object.values(matrixRaw).forEach(p => sumMatrixProb += p);
   // Se a soma for > 1 por erro de arredondamento, limitamos.
   // Mas normalmente será < 1. O resto é p7+
   const prob7Plus = Math.max(0, 1 - sumMatrixProb);
+  const matrix = sumMatrixProb > 0
+    ? Object.fromEntries(Object.entries(matrixRaw).map(([score, prob]) => [score, prob / sumMatrixProb]))
+    : matrixRaw;
 
   // Inicializar acumuladores
   let bttsYes = 0;
@@ -78,15 +84,12 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
   let cleanSheetHome = 0; // Fora = 0
   let cleanSheetAway = 0; // Casa = 0
 
-  for (const [score, prob] of Object.entries(matrix)) {
+  for (const [score, prob] of Object.entries(matrixRaw)) {
     const [h, a] = score.split('-').map(Number);
     const total = h + a;
 
     // Ignorar se total > 6 (não deve acontecer com generateScoreMatrix(..., 6) mas por segurança)
     if (total > 6) continue;
-
-    // BTTS
-    if (h > 0 && a > 0) bttsYes += prob;
 
     // Over/Under
     lines.forEach(line => {
@@ -96,9 +99,7 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
       // Over é calculado como 1 - Under no final para incluir a cauda corretamente
     });
 
-    // Clean Sheets
-    if (a === 0) cleanSheetHome += prob;
-    if (h === 0) cleanSheetAway += prob;
+    // Clean Sheets calculado após o loop (Poisson direto)
   }
 
   // Ajustes finais com a cauda (p7+)
@@ -121,10 +122,25 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
 
   const teamOver = { home: teamOverHome, away: teamOverAway };
 
-  // BTTS: A fórmula diz soma(h>=1, a>=1, h+a<=6) + t. t está em [0, p7+].
-  // Assumimos limite inferior (LB) para ser conservador, ou ignoramos t como sugerido para u_i/v_j?
-  // A tabela diz "t é desconhecido". Vamos apresentar o valor LB (Lower Bound) que é o calculado.
-  // Para BTTS No = 1 - BTTS Yes.
+  // BTTS e Clean Sheet via Poisson direto (inclui cauda)
+  const pHome0 = calculatePoisson(homeXG, 0);
+  const pAway0 = calculatePoisson(awayXG, 0);
+  bttsYes = clamp01(1 - pHome0 - pAway0 + pHome0 * pAway0);
+  cleanSheetHome = clamp01(pAway0);
+  cleanSheetAway = clamp01(pHome0);
+
+  const homeGoals: Record<string, number> = {};
+  const awayGoals: Record<string, number> = {};
+  let sumHomeGoals = 0;
+  let sumAwayGoals = 0;
+  for (let i = 0; i <= 6; i++) {
+    homeGoals[i.toString()] = teamGoals.home[i];
+    awayGoals[i.toString()] = teamGoals.away[i];
+    sumHomeGoals += teamGoals.home[i];
+    sumAwayGoals += teamGoals.away[i];
+  }
+  homeGoals['7+'] = clamp01(1 - sumHomeGoals);
+  awayGoals['7+'] = clamp01(1 - sumAwayGoals);
 
   return {
     homeWin, draw, awayWin,
@@ -144,6 +160,8 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
     bttsNo: 1 - bttsYes,
     overUnder,
     teamGoals,
+    homeGoals,
+    awayGoals,
     teamOver,
     cleanSheet: { home: cleanSheetHome, away: cleanSheetAway },
     correctScore: matrix,

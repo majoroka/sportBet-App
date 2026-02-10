@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Fixture } from '../domain/types';
 import { parseCsvFixtures } from '../adapters/csvAdapter';
 import { loadTeamMapping } from '../lib/teamMapping';
+import { fetchWithCacheBust } from '../utils/fetchWithCacheBust';
 
 export const useFixtures = () => {
   const [fixtures, setFixtures] = useState<Fixture[]>([]);
@@ -20,12 +21,17 @@ export const useFixtures = () => {
       try {
         await loadTeamMapping();
 
-        const localUrl = `${import.meta.env.BASE_URL}data/clubelo_latest.csv?t=${Date.now()}`;
-        console.log(`🔄 [App] A carregar dados de: ${localUrl}`);
-        const response = await fetch(localUrl);
+        const baseUrl = `${import.meta.env.BASE_URL}data/clubelo_latest.csv`;
+        const { response, primaryUrl, finalUrl, didRetry } = await fetchWithCacheBust(baseUrl);
+        console.log(`🔄 [App] A carregar dados de: ${primaryUrl}`);
+        if (didRetry) {
+          console.warn(`⚠️ [App] Retry cache-bust: ${finalUrl}`);
+        }
+
         if (!response.ok) {
           throw new Error(`Erro ${response.status} ao carregar clubelo_latest.csv.`);
         }
+
         const csvText = await response.text();
         console.log('✅ [App] Dados carregados com sucesso.');
 
@@ -45,10 +51,20 @@ export const useFixtures = () => {
 
         console.log('🔄 [App] A tentar carregar dados de fallback: data/fixtures_fallback.csv');
         try {
-          const fallbackResponse = await fetch(`${import.meta.env.BASE_URL}data/fixtures_fallback.csv`);
+          const fallbackBase = `${import.meta.env.BASE_URL}data/fixtures_fallback.csv`;
+          const {
+            response: fallbackResponse,
+            finalUrl: fallbackFinal,
+            didRetry: fallbackDidRetry,
+          } = await fetchWithCacheBust(fallbackBase);
+          if (fallbackDidRetry) {
+            console.warn(`⚠️ [App] Retry cache-bust: ${fallbackFinal}`);
+          }
+
           if (!fallbackResponse.ok) {
             throw new Error(`HTTP error! status: ${fallbackResponse.status}`);
           }
+
           const fallbackCsvText = await fallbackResponse.text();
           const parsedFixtures = parseCsvFixtures(fallbackCsvText);
           if (isMounted) {

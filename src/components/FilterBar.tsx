@@ -12,9 +12,18 @@ type FilterBarProps = {
   onFixtureChange: (fixtureId: string) => void;
 };
 
+const parseLocalDate = (dateStr: string) => {
+  const [yearStr, monthStr, dayStr] = dateStr.split('-');
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  const day = Number(dayStr);
+  if (!year || !month || !day) return null;
+  return new Date(year, month - 1, day);
+};
+
 const formatDateOption = (dateStr: string) => {
-  const d = new Date(dateStr);
-  if (Number.isNaN(d.getTime())) return dateStr;
+  const d = parseLocalDate(dateStr);
+  if (!d || Number.isNaN(d.getTime())) return dateStr;
   const day = d.toLocaleString('pt-PT', { day: '2-digit' });
   let month = d.toLocaleString('pt-PT', { month: 'short' }).replace('.', '');
   month = month.charAt(0).toUpperCase() + month.slice(1);
@@ -34,7 +43,7 @@ export const FilterBar = ({
 }: FilterBarProps) => {
   const availableDates = useMemo(() => {
     const dates = new Set(fixtures.map(f => f.date).filter(Boolean));
-    return [...dates].sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    return [...dates].sort((a, b) => a.localeCompare(b));
   }, [fixtures]);
 
   const availableCountries = useMemo(() => {

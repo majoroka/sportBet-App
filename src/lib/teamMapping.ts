@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+import { fetchWithCacheBust } from '../utils/fetchWithCacheBust';
 export type Source = "clubelo" | "football-data";
 
 interface Team {
@@ -36,32 +37,35 @@ export async function loadTeamMapping(): Promise<void> {
     ? import.meta.env.BASE_URL 
     : `${import.meta.env.BASE_URL}/`;
     
-  const jsonPath = `${baseUrl}data/teams_mapping_package_clean.json`;
+  const basePath = `${baseUrl}data/teams_mapping_package_clean.json`;
 
-  loadPromise = fetch(jsonPath)
-    .then(async (res) => {
-      if (!res.ok) throw new Error(`Failed to load team mapping: ${res.statusText}`);
-      const text = await res.text();
-      // Proteção: Se o ficheiro estiver vazio, retorna um objeto vazio em vez de falhar o parse
-      if (!text || !text.trim()) {
-        console.warn("Aviso: O ficheiro de mapeamento de equipas está vazio.");
-        return { teams: {}, alias_index: {}, meta: {}, needs_review: [] } as unknown as MappingData;
-      }
-      // Proteção: Se o conteúdo começar por '<', é HTML (provavelmente 404 ou index.html)
-      if (text.trim().startsWith('<')) {
-        console.warn(`Aviso: O ficheiro de mapeamento não foi encontrado (retornou HTML): ${jsonPath}`);
-        return { teams: {}, alias_index: {}, meta: {}, needs_review: [] } as unknown as MappingData;
-      }
-      return JSON.parse(text);
-    })
-    .then((data: MappingData) => {
-      mappingData = data;
-    })
-    .catch((err) => {
-      console.warn("Aviso: Falha ao carregar mapeamento de equipas (a continuar sem ele).", err);
-      loadPromise = null; // Permite tentar novamente em caso de erro
-      // Não lançamos o erro (throw) para não bloquear o carregamento principal da app em App.tsx
-    });
+  loadPromise = (async () => {
+    const { response: res, finalUrl } = await fetchWithCacheBust(basePath);
+
+    if (!res.ok) {
+      throw new Error(`Failed to load team mapping: ${res.statusText}`);
+    }
+
+    const text = await res.text();
+    // Proteção: Se o ficheiro estiver vazio, retorna um objeto vazio em vez de falhar o parse
+    if (!text || !text.trim()) {
+      console.warn("Aviso: O ficheiro de mapeamento de equipas está vazio.");
+      mappingData = { teams: {}, alias_index: {}, meta: {}, needs_review: [] } as unknown as MappingData;
+      return;
+    }
+    // Proteção: Se o conteúdo começar por '<', é HTML (provavelmente 404 ou index.html)
+    if (text.trim().startsWith('<')) {
+      console.warn(`Aviso: O ficheiro de mapeamento não foi encontrado (retornou HTML): ${res.url || finalUrl}`);
+      mappingData = { teams: {}, alias_index: {}, meta: {}, needs_review: [] } as unknown as MappingData;
+      return;
+    }
+
+    mappingData = JSON.parse(text);
+  })().catch((err) => {
+    console.warn("Aviso: Falha ao carregar mapeamento de equipas (a continuar sem ele).", err);
+    loadPromise = null; // Permite tentar novamente em caso de erro
+    // Não lançamos o erro (throw) para não bloquear o carregamento principal da app em App.tsx
+  });
 
   return loadPromise;
 }

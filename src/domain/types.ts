@@ -100,8 +100,8 @@ export interface Probabilities {
     drawAway: number;
   };
   drawNoBet: {
-    home: number;
-    away: number;
+    home: number | null;
+    away: number | null;
   };
   winningMargin: {
     home1: number; // Casa vence por exatamente 1
@@ -121,6 +121,8 @@ export interface Probabilities {
     home: Record<number, number>; // Probabilidade exata de golos (0, 1, 2...)
     away: Record<number, number>;
   };
+  homeGoals?: Record<string, number>; // "0".."6", "7+"
+  awayGoals?: Record<string, number>; // "0".."6", "7+"
   teamOver: {
     home: Record<string, number>; // "0.5", "1.5", "2.5"
     away: Record<string, number>;

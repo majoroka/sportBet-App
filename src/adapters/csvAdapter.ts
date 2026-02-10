@@ -1,6 +1,7 @@
 import Papa from 'papaparse';
 import { Fixture, Probabilities } from '../domain/types';
 import { calculateMarkets } from '../calculators/marketsFromProbabilities';
+import { calculatePoisson } from '../calculators/poisson';
 import { resolveTeamId, getTeamLeague, getDisplayNamePt } from '../lib/teamMapping';
 
 export const parseCsvFixtures = (csvText: string): Fixture[] => {
@@ -45,7 +46,7 @@ export const parseCsvFixtures = (csvText: string): Fixture[] => {
 
     // Verifica se é o formato ClubElo (tem colunas de probabilidade R:0-0, etc.)
     if (row['R:0-0'] !== undefined) {
-      probabilities = parseClubEloProbabilities(row);
+      probabilities = parseClubEloProbabilities(row, homeXG, awayXG);
     } else {
       // Fallback: Calcula a partir de xG (para o ficheiro de fallback antigo)
       probabilities = calculateMarkets(homeXG, awayXG);
@@ -65,8 +66,10 @@ export const parseCsvFixtures = (csvText: string): Fixture[] => {
   }).filter((f): f is Fixture => f !== null);
 };
 
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const parseClubEloProbabilities = (row: any): Probabilities => {
+const parseClubEloProbabilities = (row: any, homeXG?: number, awayXG?: number): Probabilities => {
   let totalMatrixSum = 0;
   const correctScore: Record<string, number> = {};
   
@@ -149,10 +152,13 @@ const parseClubEloProbabilities = (row: any): Probabilities => {
     }
   });
 
-  // 2. Fator de Normalização (para garantir que a soma das probabilidades é 100%)
+  // 2. Guardar cauda antes de normalizar (truncagem da matriz)
+  const tailMass = Math.max(0, 1 - totalMatrixSum);
+
+  // 3. Fator de Normalização (para garantir que a soma das probabilidades é 100%)
   const F = totalMatrixSum > 0 ? 1 / totalMatrixSum : 1;
 
-  // 3. Aplicar Normalização a todos os mercados derivados da matriz
+  // 4. Aplicar Normalização a todos os mercados derivados da matriz
   Object.keys(correctScore).forEach(k => correctScore[k] *= F);
   
   Object.keys(overUnder).forEach(k => {
@@ -177,7 +183,7 @@ const parseClubEloProbabilities = (row: any): Probabilities => {
   matDraw *= F;
   matAwayWin *= F;
 
-  // 4. Determinar 1X2 Final (Preferência por GD se disponível, senão Matriz Normalizada)
+  // 5. Determinar 1X2 Final (Preferência por GD se disponível, senão Matriz Normalizada)
   let homeWin = matHomeWin;
   let draw = matDraw;
   let awayWin = matAwayWin;
@@ -200,6 +206,46 @@ const parseClubEloProbabilities = (row: any): Probabilities => {
     awayWin = gdAway;
   }
 
+  const hasXGColumns =
+    row.Home_xG !== undefined ||
+    row.homeXG !== undefined ||
+    row.Away_xG !== undefined ||
+    row.awayXG !== undefined;
+  const canUsePoisson =
+    hasXGColumns &&
+    Number.isFinite(homeXG) &&
+    Number.isFinite(awayXG) &&
+    ((homeXG as number) > 0 || (awayXG as number) > 0);
+  let homeGoals: Record<string, number> | undefined;
+  let awayGoals: Record<string, number> | undefined;
+
+  if (canUsePoisson) {
+    const pHome0 = calculatePoisson(homeXG as number, 0);
+    const pAway0 = calculatePoisson(awayXG as number, 0);
+    bttsYes = clamp01(1 - pHome0 - pAway0 + pHome0 * pAway0);
+    cleanSheetHome = clamp01(pAway0);
+    cleanSheetAway = clamp01(pHome0);
+
+    homeGoals = {};
+    awayGoals = {};
+    let sumHomeGoals = 0;
+    let sumAwayGoals = 0;
+    for (let i = 0; i <= 6; i++) {
+      const ph = calculatePoisson(homeXG as number, i);
+      const pa = calculatePoisson(awayXG as number, i);
+      homeGoals[i.toString()] = ph;
+      awayGoals[i.toString()] = pa;
+      sumHomeGoals += ph;
+      sumAwayGoals += pa;
+    }
+    homeGoals['7+'] = clamp01(1 - sumHomeGoals);
+    awayGoals['7+'] = clamp01(1 - sumAwayGoals);
+  }
+
+  const dnbDenominator = 1 - draw;
+  const dnbHome = dnbDenominator < 1e-9 ? null : homeWin / dnbDenominator;
+  const dnbAway = dnbDenominator < 1e-9 ? null : awayWin / dnbDenominator;
+
   return {
     homeWin, draw, awayWin,
     correctScore,
@@ -207,7 +253,7 @@ const parseClubEloProbabilities = (row: any): Probabilities => {
     overUnder,
     cleanSheet: { home: cleanSheetHome, away: cleanSheetAway },
     doubleChance: { homeDraw: homeWin + draw, homeAway: homeWin + awayWin, drawAway: draw + awayWin },
-    drawNoBet: { home: homeWin / (1 - draw) || 0, away: awayWin / (1 - draw) || 0 },
+    drawNoBet: { home: dnbHome, away: dnbAway },
     winningMargin: { 
       home1: homeWinBy1, 
       home2Plus: homeWinBy2Plus, 
@@ -218,8 +264,10 @@ const parseClubEloProbabilities = (row: any): Probabilities => {
       homeMinus1: homeWinBy2Plus, // Casa vence por 2+
       awayPlus1: awayWin + draw   // Fora vence ou empata (X2)
     },
-    teamGoals, 
+    teamGoals,
+    homeGoals,
+    awayGoals,
     teamOver, 
-    otherScore: 0
+    otherScore: tailMass
   };
 };
