@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "predev": "node scripts/fetch-clubelo.js",
+    "predev": "node scripts/data/fetch-clubelo.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
@@ -13,8 +13,8 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "update-data": "node scripts/fetch-clubelo.js --force",
-    "predeploy": "npm run update-data && node scripts/generate-logo-manifest.js && npm run build",
+    "update-data": "node scripts/data/fetch-clubelo.js --force",
+    "predeploy": "npm run update-data && node scripts/logos/generate-logo-manifest.js && npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {

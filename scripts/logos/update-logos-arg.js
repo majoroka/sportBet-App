@@ -1,7 +1,7 @@
 /**
  * Atualiza manualmente logos de equipas argentinas que já têm ficheiro em
  * public/logos/Liga Profissional (ARG) mas não estavam mapeados no JSON.
- * Executa uma vez: node scripts/update-logos-arg.js
+ * Executa uma vez: node scripts/logos/update-logos-arg.js
  */
 
 import fs from 'fs';
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const MAPPING_FILE = path.join(__dirname, '../public/data/teams_mapping_package_clean.json');
+const MAPPING_FILE = path.join(__dirname, '../../public/data/teams_mapping_package_clean.json');
 const FOLDER = 'Liga Profissional (ARG)';
 const basePath = `/logos/${FOLDER}`;
 

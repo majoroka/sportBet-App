@@ -38,7 +38,7 @@ jobs:
         run: npm install
 
       - name: Generate Logo Manifest
-        run: node scripts/generate-logo-manifest.js
+        run: node scripts/logos/generate-logo-manifest.js
 
       - name: Build
         run: npm run build

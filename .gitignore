@@ -1,7 +1,7 @@
 node_modules/
 dist/
 .DS_Store
-scripts/last-fetch.json
+scripts/data/last-fetch.json
 logs/
 cache/
 .cache/

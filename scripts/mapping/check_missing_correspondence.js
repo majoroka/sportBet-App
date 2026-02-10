@@ -5,8 +5,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CLUBELO_FILE = path.join(__dirname, '../teams_clubelo.txt');
-const FD_FILE = path.join(__dirname, '../teams_footballdata.txt');
+const CLUBELO_FILE = path.join(__dirname, '../../teams_clubelo.txt');
+const FD_FILE = path.join(__dirname, '../../teams_footballdata.txt');
 
 // Cópia simplificada do mapper para este script
 const ALIASES = {

@@ -69,7 +69,7 @@ export const useFixtures = () => {
           const parsedFixtures = parseCsvFixtures(fallbackCsvText);
           if (isMounted) {
             setFixtures(parsedFixtures);
-            setError('Nota: A visualizar dados de demonstração (CSV). Execute "node scripts/fetch-clubelo.js" para atualizar.');
+            setError('Nota: A visualizar dados de demonstração (CSV). Execute "node scripts/data/fetch-clubelo.js" para atualizar.');
           }
         } catch (csvError) {
           const finalError = `Falha total ao carregar dados: ${(csvError as Error).message}.`;

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CLUBELO_LOCAL_PATH = path.join(__dirname, '../public/data/clubelo_latest.csv');
+const CLUBELO_LOCAL_PATH = path.join(__dirname, '../../public/data/clubelo_latest.csv');
 const REMOTE_DATA_URL = 'http://api.clubelo.com/Fixtures';
 const LAST_FETCH_TIMESTAMP_FILE = path.join(__dirname, 'last-fetch.json');
 const UPDATE_INTERVAL_MS = 2 * 60 * 60 * 1000; // 2 horas

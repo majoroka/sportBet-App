@@ -14,9 +14,14 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Resultado Exato (Correct Score)
 - **Interface de Análise:**
   - Dashboard de página única com filtros para **Data, País e Jogo** (datas exibidas como `DD/MMM/AA (ddd)`).
+  - Filtros persistentes (URL + localStorage) para manter seleção entre refreshes.
   - Visualização imediata de probabilidades, gráficos (Chart.js) e estatísticas ao selecionar um jogo.
   - Tabela de Classificação com tabs: Global, Casa, Fora, **+2,5 (Últimos 10)** e **+1,5 (Últimos 10)**, com grelha de últimos jogos colorida.
+  - Linha compacta de métricas da liga por baixo da classificação, com tooltips.
+  - Secção de Estatística com tabela comparativa por equipa e accordions por categoria (resultados, consistência, remates, cantos, disciplina).
   - Card “Equipas” com xG por clube (derivado da matriz de correct score, truncada a 6 golos), logos centrados e pill de xG.
+  - Pills de ELO no cabeçalho do jogo (ranking via `public/data/ranking_elo.csv`).
+  - Odds do CSV exibidas como secundárias em 1X2 e O/U 2.5 quando disponíveis.
   - Logótipos dos clubes (com fallback visual) e design responsivo (forma oculta em mobile para não quebrar layout).
 - **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono). Paleta principal coerente: azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
 - **Dados Atualizados:** Pipeline automatizada (GitHub Actions) que atualiza diariamente, às **05:00 UTC**, os dados de jogos (ClubElo) e classificações (Football-Data).
@@ -51,7 +56,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 
     ```bash
     npm run update-data              # Atualiza fixtures (ClubElo) + standings (Football-Data)
-    node scripts/generate-logo-manifest.js   # Reindexa logos em public/logos
+    node scripts/logos/generate-logo-manifest.js   # Reindexa logos em public/logos
     ```
 
     - Os ficheiros ficam em `public/data/clubelo_latest.csv` e `public/data/standings/*.csv` usando **códigos canónicos** (ex.: `E0.csv`, `P1.csv`, `SC0.csv`).
@@ -82,22 +87,26 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - Base principal: `public/data/teams_mapping_package_clean.json`
   - Contém IDs, nomes canónicos, aliases (football-data / clubelo), país, liga e caminho do logo.
   - Pastas de logos devem incluir o código do país entre parêntesis. Ex.: `public/logos/Bundesliga (GER)/Bayern-munchen.png`.
-- Manifesto de logos: `src/lib/logoManifest.json` (gerado por `scripts/generate-logo-manifest.js`).
+- Manifesto de logos: `src/lib/logoManifest.json` (gerado por `scripts/logos/generate-logo-manifest.js`).
   - Se adicionares/removeres logos ou pastas, corre o script para reindexar.
 - Resolver aliases automaticamente (fixtures → mapping):
-  - `scripts/map-fixtures.ts` cria relatórios `mapped_teams_from_fixtures.json` e `unmapped_teams_from_fixtures.json`.
+  - `scripts/mapping/map-fixtures.ts` cria relatórios `mapped_teams_from_fixtures.json` e `unmapped_teams_from_fixtures.json`.
   - Usa a mesma normalização do runtime (lowercase, sem acentos, tokens) e cai para aliases/IDs.
+- Ranking ELO: `public/data/ranking_elo.csv` (usado no pill do cabeçalho).
 
 ## 🔧 Scripts úteis
 
 - `npm run update-data` — força refresh de fixtures + standings.
-- `node scripts/generate-logo-manifest.js` — reindexa todos os logos em `public/logos`.
-- `node scripts/map-fixtures.ts` — lista equipas dos fixtures e diz quais casam com o mapping/aliases.
+- `node scripts/logos/generate-logo-manifest.js` — reindexa todos os logos em `public/logos`.
+- `node scripts/mapping/map-fixtures.ts` — lista equipas dos fixtures e diz quais casam com o mapping/aliases.
+- Ver mais em `scripts/README.md`.
 - `npm run build` — valida o projeto (TypeScript + Vite).
+- `npm run lint` — lint (ESLint).
+- `npm run format` — format (Prettier).
 
 ## 🩹 Troubleshooting rápido
 
-- **Logo não aparece**: confirma nome/pasta em `public/logos`, corre `node scripts/generate-logo-manifest.js` e volta a abrir a UI.
+- **Logo não aparece**: confirma nome/pasta em `public/logos`, corre `node scripts/logos/generate-logo-manifest.js` e volta a abrir a UI.
 - **Sem FORMA/destaque na classificação**: acrescenta alias no `teams_mapping_package_clean.json` (football-data/clubelo) e garante que a liga existe em `src/config/leagues.ts` com aliases/código correto.
 - **Logs “Caminho não encontrado”**: verifica se a competição está em `src/config/leagues.ts` com `standings_url` ou `aliases` que coincidam com o nome do fixture.
 - **Tooltip de FORMA**: a dica do rato mostra agora o resultado e o lado (H/A) do jogo; se vês “H/A” trocado, verifica o parsing em `src/calculators/standings.ts`.

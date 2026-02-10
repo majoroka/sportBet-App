@@ -1,6 +1,6 @@
 /**
  * Aplica aliases de ClubElo em massa a equipas existentes no mapping.
- * Uso: node scripts/apply-batch-aliases.js
+ * Uso: node scripts/mapping/apply-batch-aliases.js
  */
 import fs from 'fs';
 import path from 'path';

@@ -11,6 +11,7 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 1. **Input:** CSVs estáticos alojados no repositório (`public/data/`).
    - `clubelo_latest.csv`: Dados de jogos e xG (atualizado diariamente).
    - `standings/*.csv`: Tabelas de classificação por liga (códigos E0, P1, D1, etc.).
+   - `ranking_elo.csv`: Ranking ELO por clube (para pills no cabeçalho).
    - `teams_mapping_package_clean.json`: Base de dados de normalização de nomes de equipas e mapeamento de ligas/logos.
 2. **Adapter:** Normaliza os dados brutos para o modelo de domínio `Fixture`.
 3. **Calculators:** Aplica modelos matemáticos (Poisson) aos dados normalizados (`xG` -> `Probabilities`).
@@ -31,15 +32,27 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 - **`components/`**: Componentes React de UI.
   - `FixtureCard.tsx`: Resumo do jogo.
   - `FixtureDetails.tsx`: Vista detalhada.
+  - `FilterBar.tsx`: Filtros (data/país/jogo).
+  - `AppHeader.tsx`: Cabeçalho e identidade visual.
+- **`hooks/`**:
+  - `useFixtures.ts`: Carregamento de dados (fetch, fallback, parse, filtros).
 - **`lib/`**: Bibliotecas utilitárias.
   - `teamMapping.ts`: Sistema de normalização de nomes e resolução de IDs de equipas/ligas.
   - `logo.ts`: Resolve nomes de equipas para ficheiros de logo usando `src/lib/logoManifest.json`.
+- **`utils/`**:
+  - `fetchWithCacheBust.ts`: Helper de fetch com cache normal em prod e cache-busting em dev.
 - **`config/`**:
   - `leagues.ts`: Configuração canónica de ligas (divisão, nome de exibição, aliases e `standings_url`).
+  - `countries.ts`: Mapa de códigos de país para nome e bandeira.
 - **`scripts/`** (Node):
-  - `fetch-clubelo.js`: Atualiza `public/data/clubelo_latest.csv`.
-  - `generate-logo-manifest.js`: Indexa `public/logos` em `src/lib/logoManifest.json`.
-  - `map-fixtures.ts`: Gera relatórios de equipas mapeadas/não mapeadas entre fixtures e o JSON.
+  - `scripts/data/`: fetch e atualização de dados.
+    - `fetch-clubelo.js`: Atualiza `public/data/clubelo_latest.csv`.
+    - `fetch-standings.js`: Atualiza `public/data/standings/*.csv`.
+  - `scripts/logos/`: gestão de logos.
+    - `generate-logo-manifest.js`: Indexa `public/logos` em `src/lib/logoManifest.json`.
+    - `fill-logos.js`: Preenche paths no mapping.
+  - `scripts/mapping/`: normalização e relatórios.
+    - `map-fixtures.ts`: Gera relatórios de equipas mapeadas/não mapeadas entre fixtures e o JSON.
 - **`services/`**: (Planeado) Gestão de fetch e caching.
 
 ## 🧮 Modelo Matemático
@@ -50,13 +63,14 @@ O núcleo da aplicação baseia-se na **Distribuição de Poisson**.
 - **Processo:**
   1. Gera-se uma matriz de probabilidades de resultados exatos (ex: 0-0, 1-0, 0-1...) até 9 golos.
   2. Somam-se as probabilidades da matriz para derivar mercados secundários (ex: somar todas as células onde Casa > Fora para obter a probabilidade de Vitória da Casa).
+  3. A cauda de probabilidades (7+ golos) é mantida separada para consistência em UI e métricas.
 
 ## ☁️ Infraestrutura
 
 - **GitHub Pages:** Alojamento estático dos assets (HTML/JS/CSS).
 - **GitHub Actions (Data Pipeline):**
   - Workflow diário (`fetch-clubelo-data.yml`) às **05:00 UTC** que executa scripts Node.js.
-  - Scripts (`scripts/fetch-*.js`) descarregam dados de fontes externas (ClubElo, Football-Data). (Extensível para snapshots de Elo por data, conforme necessidade.)
+- Scripts (`scripts/data/fetch-*.js`) descarregam dados de fontes externas (ClubElo, Football-Data). (Extensível para snapshots de Elo por data, conforme necessidade.)
   - Os dados são processados e guardados na pasta `public/data`, servindo como uma "cache estática" para o frontend.
 - **Cloudflare Workers:** (Opcional/Híbrido)
   - Função: Proxy para APIs de odds externas.

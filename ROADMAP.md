@@ -22,8 +22,13 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] **Classificação:** Tabela de classificação com forma recente e cálculo automático via CSV.
 - [x] **Classificação - Formas avançadas:** Tabs +2,5 e +1,5 (últimos 10) com grelha de cores alinhada ao tema.
 - [x] **Card Equipas:** Logos centrados e pill de xG (derivado do correct score truncado a 6 golos).
+- [x] **Pills de ELO:** ELO + ranking no cabeçalho (ranking_elo.csv).
+- [x] **Estatísticas por equipa:** Tabela comparativa com accordions por categoria e limpeza de linhas sem dados.
+- [x] **Métricas da liga (linha compacta):** Resumo por baixo da classificação com tooltips.
 - [x] **Logótipos:** Exibição de emblemas das equipas com fallback.
 - [x] **Normalização Avançada:** Aliases cruzados fixtures/standings + sinónimos (ex.: Farul/Viitorul, Saint‑Étienne/St Etienne) e deteção de liga por equipas.
+- [x] **Persistência de filtros:** URL + localStorage (data/país/jogo).
+- [x] **Lint/Format:** ESLint + Prettier + workflow de CI.
 - [ ] **Favoritos:** Permitir guardar jogos numa "Watchlist" (usando `localStorage`).
 - [ ] **Dark Mode:** Implementar alternância de tema claro/escuro.
 
@@ -31,6 +36,7 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 
 - [ ] **Integração API:** Ligar o Cloudflare Worker a uma API real de Odds (ex: The Odds API ou API-Football).
 - [ ] **Comparador de Odds:** Mostrar odds reais das casas ao lado das probabilidades do modelo.
+  - (Parcial) Odds do CSV no 1X2 e O/U 2.5 quando disponíveis.
 - [ ] **Destaque de Valor:** Melhorar o algoritmo de deteção de "Value Bets" (Kelly Criterion).
 
 ## 🔮 Longo Prazo (Fase 4 - Avançado)

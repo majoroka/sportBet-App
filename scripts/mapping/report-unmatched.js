@@ -2,7 +2,7 @@
  * Gera um relatório de equipas em fixtures (clubelo_latest.csv) que não têm match
  * no teams_mapping_package_clean.json. Ajuda a adicionar aliases em massa.
  *
- * Uso: node scripts/report-unmatched.js
+ * Uso: node scripts/mapping/report-unmatched.js
  */
 import fs from 'fs';
 import path from 'path';

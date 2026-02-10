@@ -6,10 +6,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Caminhos baseados na arquitetura do projeto
-const CLUBELO_PATH = path.join(__dirname, '../public/data/clubelo_latest.csv');
-const STANDINGS_DIR = path.join(__dirname, '../public/data/standings');
-const OUTPUT_CLUBELO = path.join(__dirname, '../teams_clubelo.txt');
-const OUTPUT_FOOTBALLDATA = path.join(__dirname, '../teams_footballdata.txt');
+const CLUBELO_PATH = path.join(__dirname, '../../public/data/clubelo_latest.csv');
+const STANDINGS_DIR = path.join(__dirname, '../../public/data/standings');
+const OUTPUT_CLUBELO = path.join(__dirname, '../../teams_clubelo.txt');
+const OUTPUT_FOOTBALLDATA = path.join(__dirname, '../../teams_footballdata.txt');
 
 /**
  * Função simples para ler CSV e extrair valores únicos de colunas específicas.

@@ -13,8 +13,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOGOS_DIR = path.join(__dirname, '../public/logos');
-const MAPPING_FILE = path.join(__dirname, '../public/data/teams_mapping_package_clean.json');
+const LOGOS_DIR = path.join(__dirname, '../../public/logos');
+const MAPPING_FILE = path.join(__dirname, '../../public/data/teams_mapping_package_clean.json');
 
 // Mapeamento de códigos/abreviações de liga -> nome da pasta de logos
 const LEAGUE_FOLDER_MAP = {

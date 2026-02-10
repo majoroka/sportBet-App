@@ -1,7 +1,7 @@
 /**
  * Mapeia equipas da Allsvenskan (SWE) apenas para as que já têm logo na pasta.
- * Uso: node scripts/fix-swe-current.js
- * Depois: node scripts/fill-logos.js (opcional) e regenerar manifesto se quiser.
+ * Uso: node scripts/mapping/fix-swe-current.js
+ * Depois: node scripts/logos/fill-logos.js (opcional) e regenerar manifesto se quiser.
  */
 import fs from 'fs';
 import path from 'path';
@@ -11,7 +11,7 @@ import crypto from 'crypto';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const MAPPING_FILE = path.join(__dirname, '../public/data/teams_mapping_package_clean.json');
+const MAPPING_FILE = path.join(__dirname, '../../public/data/teams_mapping_package_clean.json');
 const LOGO_FOLDER = 'Allsvenskan (SWE)';
 
 // Apenas equipas com logo disponível na pasta

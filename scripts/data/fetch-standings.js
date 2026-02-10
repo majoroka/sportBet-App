@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Pasta de destino: public/data/standings
-const OUT_DIR = path.join(__dirname, "..", "public", "data", "standings");
+const OUT_DIR = path.join(__dirname, "..", "..", "public", "data", "standings");
 
 // Mapa de Ligas para URLs externos (football-data.co.uk)
 const leagueUrls = {

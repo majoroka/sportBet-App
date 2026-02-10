@@ -3,7 +3,7 @@
  * sem alterar o ficheiro de mapping. Produz relatórios JSON.
  *
  * Uso (na raíz do projeto):
- *   npx ts-node scripts/map-fixtures.ts
+ *   npx ts-node scripts/mapping/map-fixtures.ts
  *
  * Entradas (paths podem ser ajustados abaixo):
  *   - /mnt/data/clubelo_latest.csv

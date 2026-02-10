@@ -1,4 +1,4 @@
-// scripts/generate-logo-manifest.js
+// scripts/logos/generate-logo-manifest.js
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,9 +7,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const LOGOS_DIR = path.join(__dirname, '../public/logos');
+const LOGOS_DIR = path.join(__dirname, '../../public/logos');
 // O logo.ts lê o manifest de src/lib. Geramos direto lá para evitar duplicados.
-const OUTPUT_FILE = path.join(__dirname, '../src/lib/logoManifest.json');
+const OUTPUT_FILE = path.join(__dirname, '../../src/lib/logoManifest.json');
 
 console.log('🔍 A procurar logos em:', LOGOS_DIR);
 

@@ -2,7 +2,7 @@
  * Força equipas indicadas a pertencer à Serie B (ITA), alinhando country/league
  * e adicionando aliases clubelo.
  *
- * Uso: node scripts/fix-serie-b.js
+ * Uso: node scripts/mapping/fix-serie-b.js
  */
 import fs from 'fs';
 import path from 'path';

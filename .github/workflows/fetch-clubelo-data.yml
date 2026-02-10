@@ -30,10 +30,10 @@ jobs:
           timeout_minutes: 10
           max_attempts: 3
           retry_wait_seconds: 300 # Espera 5 minutos entre tentativas
-          command: node ./scripts/fetch-clubelo.js
+          command: node ./scripts/data/fetch-clubelo.js
 
       - name: Fetch Standings Data
-        run: node ./scripts/fetch-standings.js
+        run: node ./scripts/data/fetch-standings.js
 
       - name: Commit and push if there are changes
         run: |

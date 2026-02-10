@@ -1100,7 +1100,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const attempt = getTeamLogoFilename(homeTeam);
                     console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
                     if (!attempt.includes('/')) {
-                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/generate-logo-manifest.js" para atualizar o índice.`);
+                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/logos/generate-logo-manifest.js" para atualizar o índice.`);
                     }
                     setHomeLogoError(true);
                   }}
@@ -1123,7 +1123,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const attempt = getTeamLogoFilename(awayTeam);
                     console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
                     if (!attempt.includes('/')) {
-                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/generate-logo-manifest.js" para atualizar o índice.`);
+                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/logos/generate-logo-manifest.js" para atualizar o índice.`);
                     }
                     setAwayLogoError(true);
                   }}

@@ -1,9 +1,9 @@
 /**
  * Atualiza as 94 equipas que estavam com league="UNK" para as ligas corretas,
  * conforme tabela fornecida, e tenta preencher o country.
- * Depois de correr, execute `node scripts/fill-logos.js`.
+ * Depois de correr, execute `node scripts/logos/fill-logos.js`.
  *
- * Uso: node scripts/fix-unk-leagues.js
+ * Uso: node scripts/mapping/fix-unk-leagues.js
  */
 
 import fs from 'fs';
@@ -12,7 +12,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const MAPPING_FILE = path.join(__dirname, '../public/data/teams_mapping_package_clean.json');
+const MAPPING_FILE = path.join(__dirname, '../../public/data/teams_mapping_package_clean.json');
 
 // id -> { league, country }
 const FIXES = {

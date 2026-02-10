@@ -3,8 +3,8 @@
  * com country=ROU, liga="Superliga (ROM)" e logo preenchido a partir da
  * pasta public/logos/Superliga (ROM).
  *
- * Uso: node scripts/fix-rom-current.js
- * Depois: node scripts/fill-logos.js (opcional) e gerar manifest se quiser.
+ * Uso: node scripts/mapping/fix-rom-current.js
+ * Depois: node scripts/logos/fill-logos.js (opcional) e gerar manifest se quiser.
  */
 import fs from 'fs';
 import path from 'path';
@@ -14,7 +14,7 @@ import crypto from 'crypto';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const MAPPING_FILE = path.join(__dirname, '../public/data/teams_mapping_package_clean.json');
+const MAPPING_FILE = path.join(__dirname, '../../public/data/teams_mapping_package_clean.json');
 const LOGO_FOLDER = 'Superliga (ROM)';
 
 const TEAMS = [

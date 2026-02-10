@@ -4,7 +4,7 @@
  *   adiciona esse nome como alias clubelo e atualiza o alias_index.
  * - No fim, mostra quantos ficaram por resolver.
  *
- * Uso: node scripts/autofill-fixture-aliases.js
+ * Uso: node scripts/mapping/autofill-fixture-aliases.js
  */
 import fs from 'fs';
 import path from 'path';
@@ -13,8 +13,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const MAPPING_FILE = path.join(__dirname, '../public/data/teams_mapping_package_clean.json');
-const CLUBELO_FILE = path.join(__dirname, '../public/data/clubelo_latest.csv');
+const MAPPING_FILE = path.join(__dirname, '../../public/data/teams_mapping_package_clean.json');
+const CLUBELO_FILE = path.join(__dirname, '../../public/data/clubelo_latest.csv');
 
 const normalize = (s) => {
   if (!s) return '';
