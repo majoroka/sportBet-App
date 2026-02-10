@@ -30,8 +30,24 @@ export const BreakdownAccordion: React.FC<Props> = ({ groups }) => {
         onClick={() => setOpen((prev) => !prev)}
         className="w-full flex items-center justify-between text-sm font-semibold text-gray-600"
       >
-        <span>Ver breakdown</span>
-        <span className="text-xs text-gray-400">{open ? '—' : '+'}</span>
+        <span className="flex items-center gap-2">
+          <span>Ver breakdown</span>
+          <svg
+            className={`h-3.5 w-3.5 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 8l4 4 4-4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+        <span className="text-sm font-semibold text-gray-400">{open ? '−' : '+'}</span>
       </button>
       {open && (
         <div className="mt-3 space-y-3">
