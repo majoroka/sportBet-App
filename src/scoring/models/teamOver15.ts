@@ -1,7 +1,7 @@
 import { ScoringStatus, TeamOver15Inputs } from '../types';
 
 export const TEAM_OVER_15_MARKET_KEY = 'team_over_1_5_goals' as const;
-export const TEAM_OVER_15_LABEL = 'Equipa marcar +1,5 golos';
+export const TEAM_OVER_15_LABEL = 'Over 1,5 (Equipa)';
 
 export type ThresholdRule = {
   at: number;

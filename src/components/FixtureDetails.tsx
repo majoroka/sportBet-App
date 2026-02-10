@@ -21,18 +21,22 @@ import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 import { ScoringHub } from './scoring/ScoringHub';
 import {
   BTTS_YES_MARKET_KEY,
+  OVER_15_MATCH_MARKET_KEY,
   OVER_25_MATCH_MARKET_KEY,
   TEAM_OVER_05_HT_MARKET_KEY,
   TEAM_OVER_15_MARKET_KEY,
   BttsYesInputs,
+  Over15MatchInputs,
   Over25MatchInputs,
   TeamOver05HTInputs,
   TeamOver15Inputs,
   computeBttsYesScore,
+  computeOver15MatchScore,
   computeOver25MatchScore,
   computeTeamOver05HTScore,
   computeTeamOver15Score,
   createEmptyBttsYesScore,
+  createEmptyOver15MatchScore,
   createEmptyOver25MatchScore,
   createEmptyTeamOver05HTScore,
   createEmptyTeamOver15Score,
@@ -1039,6 +1043,48 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     };
   };
 
+  const mapToOver15MatchInputs = (): Over15MatchInputs => {
+    const homeSide = teamStatsHome?.home;
+    const awaySide = teamStatsAway?.away;
+    const homePlayed = homeSide?.played ?? 0;
+    const awayPlayed = awaySide?.played ?? 0;
+
+    const probOver15Direct = probabilities.overUnder?.['1.5']?.over;
+    const probOver15FromScores = (() => {
+      if (!probabilities?.correctScore) return null;
+      let sum = probabilities.otherScore ?? 0;
+      Object.entries(probabilities.correctScore).forEach(([score, prob]) => {
+        const [hg, ag] = score.split('-').map((v) => Number(v));
+        if (!Number.isFinite(hg) || !Number.isFinite(ag)) return;
+        if (hg + ag >= 2) sum += prob;
+      });
+      return Number.isFinite(sum) ? sum : null;
+    })();
+    const probOver15 =
+      probOver15Direct !== undefined ? probOver15Direct : probOver15FromScores;
+
+    return {
+      probOver15: Number.isFinite(probOver15 as number) ? Number(probOver15) * 100 : null,
+      homeGfPerGame: safeDivide(homeSide?.goalsFor, homePlayed),
+      awayGfPerGame: safeDivide(awaySide?.goalsFor, awayPlayed),
+      homeGaPerGame: safeDivide(homeSide?.goalsAgainst, homePlayed),
+      awayGaPerGame: safeDivide(awaySide?.goalsAgainst, awayPlayed),
+      homePctScored: toPercentNullable(safeDivide(homePlayed - (homeSide?.noGoals ?? 0), homePlayed)),
+      awayPctScored: toPercentNullable(safeDivide(awayPlayed - (awaySide?.noGoals ?? 0), awayPlayed)),
+      homeSotPerGame: safeDivide(homeSide?.sotFor, homePlayed),
+      awaySotPerGame: safeDivide(awaySide?.sotFor, awayPlayed),
+      homeSotAgainstPerGame: safeDivide(homeSide?.sotAgainst, homePlayed),
+      awaySotAgainstPerGame: safeDivide(awaySide?.sotAgainst, awayPlayed),
+      homeFirstHalfGoalPct: toPercentNullable(safeDivide(homeSide?.htGoalMatches, homePlayed)),
+      awayFirstHalfGoalPct: toPercentNullable(safeDivide(awaySide?.htGoalMatches, awayPlayed)),
+      homeHtGfPerGame: safeDivide(homeSide?.htGoalsFor, homePlayed),
+      homeHtGaPerGame: safeDivide(homeSide?.htGoalsAgainst, homePlayed),
+      awayHtGfPerGame: safeDivide(awaySide?.htGoalsFor, awayPlayed),
+      awayHtGaPerGame: safeDivide(awaySide?.htGoalsAgainst, awayPlayed),
+      ouLine: ouLine ?? null,
+    };
+  };
+
   const scoringHome = hasScoringStats
     ? computeTeamOver15Score(mapToTeamOver15Inputs('home'))
     : createEmptyTeamOver15Score(scoringPlaceholderReason);
@@ -1057,6 +1103,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const scoringOver25Match = hasScoringStats
     ? computeOver25MatchScore(mapToOver25MatchInputs())
     : createEmptyOver25MatchScore(scoringPlaceholderReason);
+  const scoringOver15Match = hasScoringStats
+    ? computeOver15MatchScore(mapToOver15MatchInputs())
+    : createEmptyOver15MatchScore(scoringPlaceholderReason);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
@@ -1190,6 +1239,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         matchScores={{
           [BTTS_YES_MARKET_KEY]: scoringBtts,
           [OVER_25_MATCH_MARKET_KEY]: scoringOver25Match,
+          [OVER_15_MATCH_MARKET_KEY]: scoringOver15Match,
         }}
         homeTeam={homeTeam}
         awayTeam={awayTeam}

@@ -2,6 +2,7 @@ import { TEAM_OVER_15_LABEL, TEAM_OVER_15_MARKET_KEY } from './models/teamOver15
 import { BTTS_YES_LABEL, BTTS_YES_MARKET_KEY } from './models/bttsYes.config';
 import { TEAM_OVER_05_HT_LABEL, TEAM_OVER_05_HT_MARKET_KEY } from './models/teamOver05HT.config';
 import { OVER_25_MATCH_LABEL, OVER_25_MATCH_MARKET_KEY } from './models/over25Match.config';
+import { OVER_15_MATCH_LABEL, OVER_15_MATCH_MARKET_KEY } from './models/over15Match.config';
 
 export * from './types';
 export { computeTeamOver15Score, createEmptyTeamOver15Score } from './compute/computeTeamOver15Score';
@@ -12,12 +13,15 @@ export { computeTeamOver05HTScore, createEmptyTeamOver05HTScore } from './comput
 export { TEAM_OVER_05_HT_LABEL, TEAM_OVER_05_HT_MARKET_KEY, TEAM_OVER_05_HT_GROUPS } from './models/teamOver05HT.config';
 export { computeOver25MatchScore, createEmptyOver25MatchScore } from './compute/computeOver25MatchScore';
 export { OVER_25_MATCH_LABEL, OVER_25_MATCH_MARKET_KEY, OVER_25_MATCH_GROUPS } from './models/over25Match.config';
+export { computeOver15MatchScore, createEmptyOver15MatchScore } from './compute/computeOver15MatchScore';
+export { OVER_15_MATCH_LABEL, OVER_15_MATCH_MARKET_KEY, OVER_15_MATCH_GROUPS } from './models/over15Match.config';
 
 export type ScoringMarketKey =
   | typeof TEAM_OVER_15_MARKET_KEY
   | typeof TEAM_OVER_05_HT_MARKET_KEY
   | typeof BTTS_YES_MARKET_KEY
-  | typeof OVER_25_MATCH_MARKET_KEY;
+  | typeof OVER_25_MATCH_MARKET_KEY
+  | typeof OVER_15_MATCH_MARKET_KEY;
 export type ScoringMarketMode = 'team' | 'match';
 
 export const SCORING_MARKETS = {
@@ -39,6 +43,11 @@ export const SCORING_MARKETS = {
   [OVER_25_MATCH_MARKET_KEY]: {
     key: OVER_25_MATCH_MARKET_KEY,
     label: OVER_25_MATCH_LABEL,
+    mode: 'match' as const,
+  },
+  [OVER_15_MATCH_MARKET_KEY]: {
+    key: OVER_15_MATCH_MARKET_KEY,
+    label: OVER_15_MATCH_LABEL,
     mode: 'match' as const,
   },
 } as const;
