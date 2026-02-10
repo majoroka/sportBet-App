@@ -87,6 +87,15 @@ const EloPill: React.FC<{ elo?: number | null; rank?: number | null }> = ({ elo,
   </div>
 );
 
+const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
+  if (!value || value <= 0) return null;
+  return (
+    <div className="flex items-center rounded-xl border border-gray-300 bg-white text-xs sm:text-sm font-semibold text-black px-2.5 py-1.5 sm:px-3 sm:py-2">
+      xG {value.toFixed(2)}
+    </div>
+  );
+};
+
 // Helper para construir o caminho do logo
 // Usa a estratégia de Slugs normalizados.
 // Espera ficheiros em: public/logos/<slug>.png
@@ -1127,7 +1136,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mb-1">
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
             <div className="flex items-center justify-end gap-2 flex-nowrap min-w-0">
-              <div className="hidden sm:flex shrink-0">
+              <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-end">
+                <XgPill value={xgHome} />
                 <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} />
               </div>
               {/* Forma da equipa da casa (Esquerda do nome) */}
@@ -1218,8 +1228,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })}
                 </div>
               )}
-              <div className="hidden sm:flex shrink-0">
+              <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-start">
                 <EloPill elo={awayElo?.elo ?? null} rank={awayElo?.rank ?? null} />
+                <XgPill value={xgAway} />
               </div>
             </div>
           </div>
@@ -1436,11 +1447,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               {/* Linha única: nome+ xG (casa) | logos vs logos | xG + nome (fora) */}
               <div className="col-span-3 flex items-center justify-end gap-3 py-2 pr-2">
                 <span className="font-bold text-lg">{homeTeam}</span>
-                {xgHome > 0 ? (
-                  <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
-                    xG {xgHome.toFixed(2)}
-                  </span>
-                ) : null}
               </div>
               <div className="flex items-center justify-center gap-3 py-2">
                 <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-12 h-12 object-contain" />
@@ -1448,11 +1454,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-12 h-12 object-contain" />
               </div>
               <div className="col-span-3 flex items-center justify-start gap-3 py-2 pl-2">
-                {xgAway > 0 ? (
-                  <span className="text-sm font-semibold bg-black text-white px-2 py-1 rounded-md leading-none">
-                    xG {xgAway.toFixed(2)}
-                  </span>
-                ) : null}
                 <span className="font-bold text-lg">{awayTeam}</span>
               </div>
 
