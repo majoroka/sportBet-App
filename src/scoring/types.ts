@@ -76,6 +76,20 @@ export type TeamOver05HTInputs = {
   ouLine: number | null;
 };
 
+export type WinPlusOver15TeamInputs = {
+  probCombo: number | null;
+  probComboEstimated: boolean;
+  probWin: number | null;
+  probOver15Match: number | null;
+  probTeam15: number | null;
+  teamGfPerGame: number | null;
+  teamSotPerGame: number | null;
+  oppGaPerGame: number | null;
+  oppSotAgainstPerGame: number | null;
+  oppCleanSheetPct: number | null;
+  eloDelta: number | null;
+};
+
 export type Over25MatchInputs = {
   probOver25: number | null;
   homeGfPerGame: number | null;

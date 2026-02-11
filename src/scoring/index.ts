@@ -4,6 +4,7 @@ import { TEAM_OVER_05_HT_LABEL, TEAM_OVER_05_HT_MARKET_KEY } from './models/team
 import { OVER_25_MATCH_LABEL, OVER_25_MATCH_MARKET_KEY } from './models/over25Match.config';
 import { OVER_15_MATCH_LABEL, OVER_15_MATCH_MARKET_KEY } from './models/over15Match.config';
 import { OVER_05_HT_MATCH_LABEL, OVER_05_HT_MATCH_MARKET_KEY } from './models/over05HTMatch.config';
+import { WIN_PLUS_OVER_15_TEAM_LABEL, WIN_PLUS_OVER_15_TEAM_MARKET_KEY } from './models/winPlusOver15Team.config';
 
 export * from './types';
 export { computeTeamOver15Score, createEmptyTeamOver15Score } from './compute/computeTeamOver15Score';
@@ -12,6 +13,12 @@ export { computeBttsYesScore, createEmptyBttsYesScore } from './compute/computeB
 export { BTTS_YES_LABEL, BTTS_YES_MARKET_KEY, BTTS_YES_GROUPS } from './models/bttsYes.config';
 export { computeTeamOver05HTScore, createEmptyTeamOver05HTScore } from './compute/computeTeamOver05HTScore';
 export { TEAM_OVER_05_HT_LABEL, TEAM_OVER_05_HT_MARKET_KEY, TEAM_OVER_05_HT_GROUPS } from './models/teamOver05HT.config';
+export { computeWinPlusOver15TeamScore, createEmptyWinPlusOver15TeamScore } from './compute/computeWinPlusOver15TeamScore';
+export {
+  WIN_PLUS_OVER_15_TEAM_LABEL,
+  WIN_PLUS_OVER_15_TEAM_MARKET_KEY,
+  WIN_PLUS_OVER_15_TEAM_GROUPS,
+} from './models/winPlusOver15Team.config';
 export { computeOver25MatchScore, createEmptyOver25MatchScore } from './compute/computeOver25MatchScore';
 export { OVER_25_MATCH_LABEL, OVER_25_MATCH_MARKET_KEY, OVER_25_MATCH_GROUPS } from './models/over25Match.config';
 export { computeOver15MatchScore, createEmptyOver15MatchScore } from './compute/computeOver15MatchScore';
@@ -22,6 +29,7 @@ export { OVER_05_HT_MATCH_LABEL, OVER_05_HT_MATCH_MARKET_KEY, OVER_05_HT_MATCH_G
 export type ScoringMarketKey =
   | typeof TEAM_OVER_15_MARKET_KEY
   | typeof TEAM_OVER_05_HT_MARKET_KEY
+  | typeof WIN_PLUS_OVER_15_TEAM_MARKET_KEY
   | typeof BTTS_YES_MARKET_KEY
   | typeof OVER_25_MATCH_MARKET_KEY
   | typeof OVER_15_MATCH_MARKET_KEY
@@ -37,6 +45,11 @@ export const SCORING_MARKETS = {
   [TEAM_OVER_05_HT_MARKET_KEY]: {
     key: TEAM_OVER_05_HT_MARKET_KEY,
     label: TEAM_OVER_05_HT_LABEL,
+    mode: 'team' as const,
+  },
+  [WIN_PLUS_OVER_15_TEAM_MARKET_KEY]: {
+    key: WIN_PLUS_OVER_15_TEAM_MARKET_KEY,
+    label: WIN_PLUS_OVER_15_TEAM_LABEL,
     mode: 'team' as const,
   },
   [BTTS_YES_MARKET_KEY]: {
