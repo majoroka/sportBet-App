@@ -16,7 +16,7 @@ import {
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 const formatDefaultValue = (value: number) => {
-  if (!Number.isFinite(value)) return '—';
+  if (!Number.isFinite(value)) return 'N/A';
   const abs = Math.abs(value);
   if (abs >= 100) return value.toFixed(0);
   if (abs >= 10) return value.toFixed(1);
@@ -52,7 +52,7 @@ const buildItem = (config: ScoreItemConfig, input: TeamOver15Inputs): ScoringIte
       key: config.key,
       label: config.label,
       value: null,
-      displayValue: '—',
+      displayValue: 'N/A',
       points: 0,
       maxPoints: config.maxPoints,
       status: 'neutral',
@@ -166,7 +166,7 @@ export const createEmptyTeamOver15Score = (reason = 'A carregar...'): ScoringRes
       key: item.key,
       label: item.label,
       value: null,
-      displayValue: '—',
+      displayValue: 'N/A',
       points: 0,
       maxPoints: item.maxPoints,
       status: 'neutral' as ScoringStatus,

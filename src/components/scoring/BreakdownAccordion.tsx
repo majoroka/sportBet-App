@@ -14,7 +14,7 @@ const formatPoints = (points: number, maxPoints: number) => {
   return `${sign}${points}`;
 };
 
-const getValueLabel = (item: ScoringItem) => item.displayValue ?? (item.value === null ? '—' : String(item.value));
+const getValueLabel = (item: ScoringItem) => item.displayValue ?? (item.value === null ? 'N/A' : String(item.value));
 
 type Props = {
   groups: ScoringGroup[];
