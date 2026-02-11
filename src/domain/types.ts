@@ -121,6 +121,14 @@ export interface Probabilities {
   otherScore: number; // Probabilidade agregada de 7+ golos
 }
 
+export interface FixtureOdds {
+  b365?: {
+    home: number | null;
+    draw: number | null;
+    away: number | null;
+  };
+}
+
 /**
  * O nosso modelo de dados principal, que representa um jogo.
  */
@@ -136,6 +144,8 @@ export interface Fixture {
   awayXG: number;
   // Dados calculados
   probabilities: Probabilities;
+  // Odds (opcional)
+  odds?: FixtureOdds;
   // Classificação (opcional)
   standings?: StandingRow[];
 }

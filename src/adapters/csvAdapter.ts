@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { Fixture, Probabilities } from '../domain/types';
+import { Fixture, FixtureOdds, Probabilities } from '../domain/types';
 import { calculateMarkets } from '../calculators/marketsFromProbabilities';
 import { calculatePoisson } from '../calculators/poisson';
 import { resolveTeamId, getTeamLeague, getDisplayNamePt } from '../lib/teamMapping';
@@ -52,7 +52,16 @@ export const parseCsvFixtures = (csvText: string): Fixture[] => {
       probabilities = calculateMarkets(homeXG, awayXG);
     }
 
-    return {
+    const readOdd = (value: unknown) => (Number.isFinite(value as number) ? Number(value) : null);
+    const b365Home = readOdd(row.B365H ?? row.B365CH);
+    const b365Draw = readOdd(row.B365D ?? row.B365CD);
+    const b365Away = readOdd(row.B365A ?? row.B365CA);
+    const odds: FixtureOdds | undefined =
+      b365Home !== null || b365Draw !== null || b365Away !== null
+        ? { b365: { home: b365Home, draw: b365Draw, away: b365Away } }
+        : undefined;
+
+    const fixture: Fixture = {
       id: `${date}-${homeTeam}-${awayTeam}`,
       date,
       country,
@@ -62,7 +71,9 @@ export const parseCsvFixtures = (csvText: string): Fixture[] => {
       homeXG,
       awayXG,
       probabilities,
+      odds,
     };
+    return fixture;
   }).filter((f): f is Fixture => f !== null);
 };
 

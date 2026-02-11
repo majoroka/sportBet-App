@@ -35,13 +35,17 @@ jobs:
       - name: Fetch Standings Data
         run: node ./scripts/data/fetch-standings.js
 
+      - name: Fetch Fixtures Data (football-data.co.uk)
+        run: node ./scripts/data/fetch-football-data-fixtures.js
+
       - name: Commit and push if there are changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add public/data/clubelo_latest.csv
+          git add public/data/fixtures_football-data.csv
           # Adiciona também a pasta de classificações
           git add public/data/standings/
           # Faz commit apenas se existirem alterações para evitar commits vazios
-          git diff --staged --quiet || git commit -m "Update Data (ClubElo + Standings)"
+          git diff --staged --quiet || git commit -m "Update Data (ClubElo + Standings + Fixtures)"
           git push

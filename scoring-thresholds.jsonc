@@ -12,10 +12,133 @@
       "src/scoring/models/over25Match.config.ts",
       "src/scoring/models/over15Match.config.ts",
       "src/scoring/models/over05HTMatch.config.ts",
-      "src/scoring/compute/computeOver25MatchScore.ts"
+      "src/scoring/compute/computeOver25MatchScore.ts",
+      "src/scoring/models/value1x2FairOdds.config.ts"
     ]
   },
   "markets": {
+    // ------------------------------
+    // MULTI OUTCOME MODE
+    // ------------------------------
+    "value_1x2_fair_odds": {
+      "label": "1X2 (Valor/Odds justas)",
+      "tabLabel": "1X2 (Valor/Odds justas)",
+      "mode": "multi_outcome",
+      "outcomes": ["HOME", "DRAW", "AWAY"],
+      "source": "src/scoring/models/value1x2FairOdds.config.ts",
+      "interpretation": null,
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. VALUE edge",
+          "items": [
+            {
+              "key": "edge_pp",
+              "label": "Edge (pp)",
+              "maxPoints": 55,
+              "thresholds": [
+                { "at": 8.0, "points": 55, "status": "good" },
+                { "at": 6.0, "points": 45, "status": "good" },
+                { "at": 4.0, "points": 35, "status": "good" },
+                { "at": 2.0, "points": 25, "status": "warn" },
+                { "at": 1.0, "points": 15, "status": "warn" },
+                { "at": 0.0, "points": 5, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Confiança",
+          "items": [
+            {
+              "key": "p_model",
+              "label": "Prob. modelo",
+              "maxPoints": 25,
+              "thresholds": [
+                { "at": 55, "points": 25, "status": "good" },
+                { "at": 45, "points": 20, "status": "good" },
+                { "at": 35, "points": 15, "status": "warn" },
+                { "at": 25, "points": 10, "status": "warn" },
+                { "at": 15, "points": 5, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Overround",
+          "items": [
+            {
+              "key": "overround",
+              "label": "Overround % (low é melhor)",
+              "maxPoints": 10,
+              "direction": "low",
+              "thresholds": [
+                { "at": 5, "points": 10, "status": "good" },
+                { "at": 7, "points": 8, "status": "good" },
+                { "at": 9, "points": 6, "status": "warn" },
+                { "at": 11, "points": 4, "status": "warn" },
+                { "at": 13, "points": 2, "status": "warn" },
+                { "at": 9999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. EV",
+          "items": [
+            {
+              "key": "ev",
+              "label": "EV",
+              "maxPoints": 10,
+              "thresholds": [
+                { "at": 0.08, "points": 10, "status": "good" },
+                { "at": 0.05, "points": 8, "status": "good" },
+                { "at": 0.03, "points": 6, "status": "warn" },
+                { "at": 0.01, "points": 3, "status": "warn" },
+                { "at": 0.0, "points": 1, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "odds_missing",
+          "label": "Odds indisponíveis",
+          "points": 0,
+          "maxPoints": 0,
+          "condition": "oddBook == null"
+        },
+        {
+          "key": "edge_low_overround_high",
+          "label": "Edge < 1.0pp e overround > 11%",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "edgePP < 1.0 && overround > 11"
+        },
+        {
+          "key": "low_prob_low_odd",
+          "label": "Prob. modelo < 18% e odd < 2.20",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "pModel < 18 && oddBook < 2.2"
+        },
+        {
+          "key": "negative_ev_and_edge",
+          "label": "EV < 0 e edge < 0",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "ev < 0 && edgePP < 0"
+        }
+      ]
+    },
     // ------------------------------
     // TEAM MODE
     // ------------------------------

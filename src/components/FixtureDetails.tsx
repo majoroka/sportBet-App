@@ -26,12 +26,14 @@ import {
   OVER_25_MATCH_MARKET_KEY,
   TEAM_OVER_05_HT_MARKET_KEY,
   TEAM_OVER_15_MARKET_KEY,
+  VALUE_1X2_FAIR_ODDS_MARKET_KEY,
   WIN_PLUS_OVER_15_TEAM_MARKET_KEY,
   BttsYesInputs,
   Over05HTMatchInputs,
   Over15MatchInputs,
   Over25MatchInputs,
   WinPlusOver15TeamInputs,
+  Value1x2Inputs,
   TeamOver05HTInputs,
   TeamOver15Inputs,
   computeBttsYesScore,
@@ -40,6 +42,7 @@ import {
   computeOver25MatchScore,
   computeTeamOver05HTScore,
   computeTeamOver15Score,
+  computeValue1x2Score,
   computeWinPlusOver15TeamScore,
   createEmptyBttsYesScore,
   createEmptyOver05HTMatchScore,
@@ -1246,6 +1249,51 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     };
   };
 
+  const mapToValue1x2Inputs = (): Value1x2Inputs => {
+    const directHome = Number.isFinite(probabilities.homeWin) ? probabilities.homeWin * 100 : null;
+    const directDraw = Number.isFinite(probabilities.draw) ? probabilities.draw * 100 : null;
+    const directAway = Number.isFinite(probabilities.awayWin) ? probabilities.awayWin * 100 : null;
+
+    const hasDirect = directHome !== null && directDraw !== null && directAway !== null;
+
+    const fallbackFromScores = (() => {
+      const scores = probabilities?.correctScore;
+      if (!scores) return null;
+      let home = 0;
+      let draw = 0;
+      let away = 0;
+      let total = 0;
+      Object.entries(scores).forEach(([score, prob]) => {
+        const [hg, ag] = score.split('-').map((v) => Number(v));
+        if (!Number.isFinite(hg) || !Number.isFinite(ag)) return;
+        total += prob;
+        if (hg > ag) home += prob;
+        else if (hg === ag) draw += prob;
+        else away += prob;
+      });
+      if (!Number.isFinite(total) || total <= 0) return null;
+      return {
+        HOME: (home / total) * 100,
+        DRAW: (draw / total) * 100,
+        AWAY: (away / total) * 100,
+      };
+    })();
+
+    const pModel = hasDirect
+      ? { HOME: directHome, DRAW: directDraw, AWAY: directAway }
+      : fallbackFromScores ?? { HOME: null, DRAW: null, AWAY: null };
+
+    const oddsB365 = fixture.odds?.b365;
+    const oddHome = Number.isFinite(oddsB365?.home as number) ? Number(oddsB365?.home) : null;
+    const oddDraw = Number.isFinite(oddsB365?.draw as number) ? Number(oddsB365?.draw) : null;
+    const oddAway = Number.isFinite(oddsB365?.away as number) ? Number(oddsB365?.away) : null;
+
+    return {
+      pModel,
+      oddsBook: { HOME: oddHome, DRAW: oddDraw, AWAY: oddAway },
+    };
+  };
+
   const scoringHome = hasScoringStats
     ? computeTeamOver15Score(mapToTeamOver15Inputs('home'))
     : createEmptyTeamOver15Score(scoringPlaceholderReason);
@@ -1276,6 +1324,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const scoringOver05HTMatch = hasScoringStats
     ? computeOver05HTMatchScore(mapToOver05HTMatchInputs())
     : createEmptyOver05HTMatchScore(scoringPlaceholderReason);
+  const scoringValue1x2 = computeValue1x2Score(mapToValue1x2Inputs());
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
@@ -1413,9 +1462,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           [OVER_15_MATCH_MARKET_KEY]: scoringOver15Match,
           [OVER_05_HT_MATCH_MARKET_KEY]: scoringOver05HTMatch,
         }}
+        valueScores={{
+          [VALUE_1X2_FAIR_ODDS_MARKET_KEY]: scoringValue1x2,
+        }}
         homeTeam={homeTeam}
         awayTeam={awayTeam}
-        marketKey={TEAM_OVER_15_MARKET_KEY}
+        marketKey={VALUE_1X2_FAIR_ODDS_MARKET_KEY}
       />
 
       {/* Separador Probabilidades */}

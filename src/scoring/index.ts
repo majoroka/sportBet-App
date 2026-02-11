@@ -5,6 +5,7 @@ import { OVER_25_MATCH_LABEL, OVER_25_MATCH_MARKET_KEY } from './models/over25Ma
 import { OVER_15_MATCH_LABEL, OVER_15_MATCH_MARKET_KEY } from './models/over15Match.config';
 import { OVER_05_HT_MATCH_LABEL, OVER_05_HT_MATCH_MARKET_KEY } from './models/over05HTMatch.config';
 import { WIN_PLUS_OVER_15_TEAM_LABEL, WIN_PLUS_OVER_15_TEAM_MARKET_KEY } from './models/winPlusOver15Team.config';
+import { VALUE_1X2_FAIR_ODDS_LABEL, VALUE_1X2_FAIR_ODDS_MARKET_KEY } from './models/value1x2FairOdds.config';
 
 export * from './types';
 export { computeTeamOver15Score, createEmptyTeamOver15Score } from './compute/computeTeamOver15Score';
@@ -25,8 +26,15 @@ export { computeOver15MatchScore, createEmptyOver15MatchScore } from './compute/
 export { OVER_15_MATCH_LABEL, OVER_15_MATCH_MARKET_KEY, OVER_15_MATCH_GROUPS } from './models/over15Match.config';
 export { computeOver05HTMatchScore, createEmptyOver05HTMatchScore } from './compute/computeOver05HTMatchScore';
 export { OVER_05_HT_MATCH_LABEL, OVER_05_HT_MATCH_MARKET_KEY, OVER_05_HT_MATCH_GROUPS } from './models/over05HTMatch.config';
+export { computeValue1x2Score, createEmptyValue1x2Score } from './compute/computeValue1x2Score';
+export {
+  VALUE_1X2_FAIR_ODDS_LABEL,
+  VALUE_1X2_FAIR_ODDS_MARKET_KEY,
+  VALUE_1X2_FAIR_ODDS_GROUPS,
+} from './models/value1x2FairOdds.config';
 
 export type ScoringMarketKey =
+  | typeof VALUE_1X2_FAIR_ODDS_MARKET_KEY
   | typeof TEAM_OVER_15_MARKET_KEY
   | typeof TEAM_OVER_05_HT_MARKET_KEY
   | typeof WIN_PLUS_OVER_15_TEAM_MARKET_KEY
@@ -34,9 +42,14 @@ export type ScoringMarketKey =
   | typeof OVER_25_MATCH_MARKET_KEY
   | typeof OVER_15_MATCH_MARKET_KEY
   | typeof OVER_05_HT_MATCH_MARKET_KEY;
-export type ScoringMarketMode = 'team' | 'match';
+export type ScoringMarketMode = 'team' | 'match' | 'multi_outcome';
 
 export const SCORING_MARKETS = {
+  [VALUE_1X2_FAIR_ODDS_MARKET_KEY]: {
+    key: VALUE_1X2_FAIR_ODDS_MARKET_KEY,
+    label: VALUE_1X2_FAIR_ODDS_LABEL,
+    mode: 'multi_outcome' as const,
+  },
   [TEAM_OVER_15_MARKET_KEY]: {
     key: TEAM_OVER_15_MARKET_KEY,
     label: TEAM_OVER_15_LABEL,

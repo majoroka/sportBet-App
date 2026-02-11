@@ -134,6 +134,44 @@ export type Over15MatchInputs = {
   ouLine: number | null;
 };
 
+export type Value1x2Outcome = 'HOME' | 'DRAW' | 'AWAY';
+
+export type Value1x2Inputs = {
+  pModel: Record<Value1x2Outcome, number | null>;
+  oddsBook: Record<Value1x2Outcome, number | null>;
+};
+
+export type Value1x2OutcomeInputs = {
+  edgePP: number | null;
+  pModel: number | null;
+  overround: number | null;
+  ev: number | null;
+  oddBook: number | null;
+};
+
+export type ValueOutcomeMetrics = {
+  outcome: Value1x2Outcome;
+  pModel: number | null;
+  pFair: number | null;
+  oddBook: number | null;
+  oddFair: number | null;
+  edgePP: number | null;
+  ev: number | null;
+  overround: number | null;
+};
+
+export type ValueOutcomeScore = {
+  outcome: Value1x2Outcome;
+  score: ScoringResult;
+  metrics: ValueOutcomeMetrics;
+};
+
+export type Value1x2ScoreResult = {
+  outcomes: Record<Value1x2Outcome, ValueOutcomeScore>;
+  bestPick: { outcome: Value1x2Outcome; score: number; reasons: string[] } | null;
+  overround: number | null;
+};
+
 export type Over05HTMatchInputs = {
   probOver05HT: number | null;
   probOver05HTEstimated: boolean;

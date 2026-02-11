@@ -1,18 +1,34 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { SCORING_MARKETS, ScoringMarketKey, ScoringMarketMode, ScoringResult } from '../../scoring';
+import {
+  createEmptyValue1x2Score,
+  SCORING_MARKETS,
+  ScoringMarketKey,
+  ScoringMarketMode,
+  ScoringResult,
+  Value1x2ScoreResult,
+} from '../../scoring';
 import { ScoreCard } from './ScoreCard';
+import { ValueScoreCard } from './ValueScoreCard';
 
 type TeamScorePair = { home: ScoringResult; away: ScoringResult };
 
 type Props = {
   teamScores: Partial<Record<ScoringMarketKey, TeamScorePair>>;
   matchScores?: Partial<Record<ScoringMarketKey, ScoringResult>>;
+  valueScores?: Partial<Record<ScoringMarketKey, Value1x2ScoreResult>>;
   homeTeam: string;
   awayTeam: string;
   marketKey: ScoringMarketKey;
 };
 
-export const ScoringHub: React.FC<Props> = ({ teamScores, matchScores, homeTeam, awayTeam, marketKey }) => {
+export const ScoringHub: React.FC<Props> = ({
+  teamScores,
+  matchScores,
+  valueScores,
+  homeTeam,
+  awayTeam,
+  marketKey,
+}) => {
   const marketOptions = useMemo(
     () =>
       Object.values(SCORING_MARKETS) as Array<{ key: ScoringMarketKey; label: string; mode: ScoringMarketMode }>,
@@ -23,7 +39,15 @@ export const ScoringHub: React.FC<Props> = ({ teamScores, matchScores, homeTeam,
   const activeMarket = SCORING_MARKETS[selectedMarket] ?? SCORING_MARKETS[marketKey];
   const fallbackTeamScore = teamScores[marketKey] ?? Object.values(teamScores)[0];
   const fallbackMatchScore = matchScores?.[marketKey] ?? (matchScores ? Object.values(matchScores)[0] : undefined);
+  const fallbackValueScore = valueScores?.[marketKey] ?? (valueScores ? Object.values(valueScores)[0] : undefined);
   const emptyScore: ScoringResult = { total: 0, groups: [], penaltiesApplied: 0, topReasons: ['Sem dados suficientes'] };
+  const emptyValueScore = createEmptyValue1x2Score('Sem dados suficientes');
+  const valueScore = valueScores?.[selectedMarket] ?? fallbackValueScore ?? emptyValueScore;
+  const outcomeLabels = {
+    HOME: `Casa · ${homeTeam}`,
+    DRAW: 'Empate',
+    AWAY: `Fora · ${awayTeam}`,
+  };
 
   return (
     <div className="mb-5">
@@ -53,7 +77,32 @@ export const ScoringHub: React.FC<Props> = ({ teamScores, matchScores, homeTeam,
         })}
       </div>
 
-      {activeMarket.mode === 'match' ? (
+      {activeMarket.mode === 'multi_outcome' ? (
+        <div className="space-y-3">
+          {valueScore.bestPick && (
+            <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
+              Best Pick: {outcomeLabels[valueScore.bestPick.outcome]} · Score {valueScore.bestPick.score}/100
+            </div>
+          )}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <ValueScoreCard
+              title={`CASA · ${homeTeam}`}
+              accentClass="bg-[#60A5FA]"
+              outcomeScore={valueScore.outcomes.HOME}
+            />
+            <ValueScoreCard
+              title="EMPATE"
+              accentClass="bg-gray-900"
+              outcomeScore={valueScore.outcomes.DRAW}
+            />
+            <ValueScoreCard
+              title={`FORA · ${awayTeam}`}
+              accentClass="bg-[#F472B6]"
+              outcomeScore={valueScore.outcomes.AWAY}
+            />
+          </div>
+        </div>
+      ) : activeMarket.mode === 'match' ? (
         <div className="grid grid-cols-1 gap-4">
           <ScoreCard
             title="JOGO"
