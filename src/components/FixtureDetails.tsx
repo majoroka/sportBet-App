@@ -21,26 +21,31 @@ import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 import { ScoringHub } from './scoring/ScoringHub';
 import {
   BTTS_YES_MARKET_KEY,
+  OVER_05_HT_MATCH_MARKET_KEY,
   OVER_15_MATCH_MARKET_KEY,
   OVER_25_MATCH_MARKET_KEY,
   TEAM_OVER_05_HT_MARKET_KEY,
   TEAM_OVER_15_MARKET_KEY,
   BttsYesInputs,
+  Over05HTMatchInputs,
   Over15MatchInputs,
   Over25MatchInputs,
   TeamOver05HTInputs,
   TeamOver15Inputs,
   computeBttsYesScore,
+  computeOver05HTMatchScore,
   computeOver15MatchScore,
   computeOver25MatchScore,
   computeTeamOver05HTScore,
   computeTeamOver15Score,
   createEmptyBttsYesScore,
+  createEmptyOver05HTMatchScore,
   createEmptyOver15MatchScore,
   createEmptyOver25MatchScore,
   createEmptyTeamOver05HTScore,
   createEmptyTeamOver15Score,
 } from '../scoring';
+import { HOME_ELO_ADVANTAGE } from '../scoring/constants';
 
 ChartJS.register(
   CategoryScale,
@@ -904,6 +909,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   };
 
   const ouLine = inferOuLine();
+  const homeEloValue = Number.isFinite(homeElo?.elo as number) ? Number(homeElo?.elo) : 0;
+  const awayEloValue = Number.isFinite(awayElo?.elo as number) ? Number(awayElo?.elo) : 0;
+  const homeEloWithAdvantage = homeEloValue + HOME_ELO_ADVANTAGE;
 
   const mapToTeamOver15Inputs = (side: 'home' | 'away'): TeamOver15Inputs => {
     const teamSide = side === 'home' ? teamStatsHome?.home : teamStatsAway?.away;
@@ -931,8 +939,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       oppCleanSheetPct: toPercentValue(safeDivide(oppSide?.cleanSheets, oppPlayed)),
       oppSotAgainstPerGame: safeNumber(safeDivide(oppSide?.sotAgainst, oppPlayed)),
       eloDelta: side === 'home'
-        ? (homeElo?.elo ?? 0) - (awayElo?.elo ?? 0)
-        : (awayElo?.elo ?? 0) - (homeElo?.elo ?? 0),
+        ? homeEloWithAdvantage - awayEloValue
+        : awayEloValue - homeEloWithAdvantage,
       ouLine,
     };
   };
@@ -968,8 +976,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         played
       ),
       eloDelta: side === 'home'
-        ? (homeElo?.elo ?? 0) - (awayElo?.elo ?? 0)
-        : (awayElo?.elo ?? 0) - (homeElo?.elo ?? 0),
+        ? homeEloWithAdvantage - awayEloValue
+        : awayEloValue - homeEloWithAdvantage,
       teamProbOver05FT: Number.isFinite(probTeamOver05 as number) ? Number(probTeamOver05) * 100 : null,
       probOver25: Number.isFinite(probOver25 as number) ? Number(probOver25) * 100 : null,
       ouLine: ouLine ?? null,
@@ -981,9 +989,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     const awaySide = teamStatsAway?.away;
     const homePlayed = homeSide?.played ?? 0;
     const awayPlayed = awaySide?.played ?? 0;
-
-    const homeEloValue = Number.isFinite(homeElo?.elo as number) ? Number(homeElo?.elo) : null;
-    const awayEloValue = Number.isFinite(awayElo?.elo as number) ? Number(awayElo?.elo) : null;
 
     const probOver25 =
       probabilities.overUnder?.['2.5']?.over ??
@@ -1004,8 +1009,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       awaySotPerGame: safeDivide(awaySide?.sotFor, awayPlayed),
       homeSotAgainstPerGame: safeDivide(homeSide?.sotAgainst, homePlayed),
       awaySotAgainstPerGame: safeDivide(awaySide?.sotAgainst, awayPlayed),
-      eloAbsDelta:
-        homeEloValue !== null && awayEloValue !== null ? Math.abs(homeEloValue - awayEloValue) : null,
+      eloAbsDelta: Math.abs(homeEloWithAdvantage - awayEloValue),
     };
   };
 
@@ -1085,6 +1089,82 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     };
   };
 
+  const mapToOver05HTMatchInputs = (): Over05HTMatchInputs => {
+    const homeSide = teamStatsHome?.home;
+    const awaySide = teamStatsAway?.away;
+    const homePlayed = homeSide?.played ?? 0;
+    const awayPlayed = awaySide?.played ?? 0;
+
+    const homeFirstHalfGoalPct = toPercentNullable(safeDivide(homeSide?.htGoalMatches, homePlayed));
+    const awayFirstHalfGoalPct = toPercentNullable(safeDivide(awaySide?.htGoalMatches, awayPlayed));
+    const avgFirstHalfGoalPctValue =
+      homeFirstHalfGoalPct !== null && awayFirstHalfGoalPct !== null
+        ? (homeFirstHalfGoalPct + awayFirstHalfGoalPct) / 2
+        : null;
+
+    const homeHtGfPerGame = safeDivide(homeSide?.htGoalsFor, homePlayed);
+    const homeHtGaPerGame = safeDivide(homeSide?.htGoalsAgainst, homePlayed);
+    const awayHtGfPerGame = safeDivide(awaySide?.htGoalsFor, awayPlayed);
+    const awayHtGaPerGame = safeDivide(awaySide?.htGoalsAgainst, awayPlayed);
+    const htProfile =
+      homeHtGfPerGame !== null &&
+      homeHtGaPerGame !== null &&
+      awayHtGfPerGame !== null &&
+      awayHtGaPerGame !== null
+        ? (homeHtGfPerGame + homeHtGaPerGame + awayHtGfPerGame + awayHtGaPerGame) / 2
+        : null;
+
+    const estimateFromHtProfile =
+      htProfile !== null ? (1 - Math.exp(-htProfile)) * 100 : null;
+
+    const overUnderHT = (probabilities as unknown as { overUnderHT?: Record<string, { over: number } | number> }).overUnderHT;
+    const directOver05HT =
+      typeof overUnderHT?.['0.5'] === 'number'
+        ? (overUnderHT?.['0.5'] as number)
+        : (overUnderHT?.['0.5'] as { over?: number } | undefined)?.over;
+
+    const probOver25 =
+      probabilities.overUnder?.['2.5']?.over ??
+      (ouLine !== undefined ? probabilities.overUnder?.[String(ouLine)]?.over : undefined);
+
+    let probOver05HT: number | null = null;
+    let probOver05HTEstimated = false;
+
+    if (Number.isFinite(directOver05HT as number)) {
+      probOver05HT = Number(directOver05HT) * 100;
+    } else {
+      const estimateCandidates = [avgFirstHalfGoalPctValue, estimateFromHtProfile].filter(
+        (v) => v !== null
+      ) as number[];
+      if (estimateCandidates.length > 0) {
+        probOver05HTEstimated = true;
+        probOver05HT =
+          estimateCandidates.reduce((sum, value) => sum + value, 0) / estimateCandidates.length;
+      }
+    }
+
+    return {
+      probOver05HT: probOver05HT !== null ? Math.min(100, Math.max(0, probOver05HT)) : null,
+      probOver05HTEstimated,
+      probOver25: Number.isFinite(probOver25 as number) ? Number(probOver25) * 100 : null,
+      ouLine: ouLine ?? null,
+      homeFirstHalfGoalPct,
+      awayFirstHalfGoalPct,
+      homeGfPerGame: safeDivide(homeSide?.goalsFor, homePlayed),
+      awayGfPerGame: safeDivide(awaySide?.goalsFor, awayPlayed),
+      homeGaPerGame: safeDivide(homeSide?.goalsAgainst, homePlayed),
+      awayGaPerGame: safeDivide(awaySide?.goalsAgainst, awayPlayed),
+      homeSotPerGame: safeDivide(homeSide?.sotFor, homePlayed),
+      awaySotPerGame: safeDivide(awaySide?.sotFor, awayPlayed),
+      homeCornersForPerGame: safeDivide(homeSide?.cornersFor, homePlayed),
+      awayCornersForPerGame: safeDivide(awaySide?.cornersFor, awayPlayed),
+      homeHtGfPerGame,
+      homeHtGaPerGame,
+      awayHtGfPerGame,
+      awayHtGaPerGame,
+    };
+  };
+
   const scoringHome = hasScoringStats
     ? computeTeamOver15Score(mapToTeamOver15Inputs('home'))
     : createEmptyTeamOver15Score(scoringPlaceholderReason);
@@ -1106,6 +1186,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const scoringOver15Match = hasScoringStats
     ? computeOver15MatchScore(mapToOver15MatchInputs())
     : createEmptyOver15MatchScore(scoringPlaceholderReason);
+  const scoringOver05HTMatch = hasScoringStats
+    ? computeOver05HTMatchScore(mapToOver05HTMatchInputs())
+    : createEmptyOver05HTMatchScore(scoringPlaceholderReason);
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
@@ -1240,6 +1323,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           [BTTS_YES_MARKET_KEY]: scoringBtts,
           [OVER_25_MATCH_MARKET_KEY]: scoringOver25Match,
           [OVER_15_MATCH_MARKET_KEY]: scoringOver15Match,
+          [OVER_05_HT_MATCH_MARKET_KEY]: scoringOver05HTMatch,
         }}
         homeTeam={homeTeam}
         awayTeam={awayTeam}
