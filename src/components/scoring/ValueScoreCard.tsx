@@ -3,16 +3,18 @@ import { ValueOutcomeScore } from '../../scoring';
 import { BreakdownAccordion } from './BreakdownAccordion';
 
 type Props = {
+  id?: string;
   title: string;
   accentClass: string;
   outcomeScore: ValueOutcomeScore;
+  highlightClass?: string;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 const getScoreTint = (score: number) => {
-  if (score >= 75) return 'text-emerald-600';
-  if (score >= 55) return 'text-amber-600';
+  if (score >= 80) return 'text-emerald-600';
+  if (score >= 60) return 'text-amber-600';
   return 'text-red-600';
 };
 
@@ -30,13 +32,19 @@ const formatEv = (value: number | null) => {
   return `${sign}${(value * 100).toFixed(1)}%`;
 };
 
-export const ValueScoreCard: React.FC<Props> = ({ title, accentClass, outcomeScore }) => {
+export const ValueScoreCard: React.FC<Props> = ({ id, title, accentClass, outcomeScore, highlightClass }) => {
   const { score, metrics } = outcomeScore;
   const pct = clamp(Math.round(score.total), 0, 100);
   const reasons = score.topReasons.length ? score.topReasons.slice(0, 3) : ['Sem dados suficientes'];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+    <div
+      id={id}
+      className={[
+        'bg-white border border-gray-200 rounded-lg p-4 shadow-sm transition',
+        highlightClass ?? '',
+      ].join(' ')}
+    >
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</span>
         {score.penaltiesApplied > 0 && (
@@ -53,22 +61,22 @@ export const ValueScoreCard: React.FC<Props> = ({ title, accentClass, outcomeSco
         <div className={`h-full ${accentClass}`} style={{ width: `${pct}%` }} />
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-600">
-        <div className="flex items-center justify-between gap-2">
+      <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-gray-600">
+        <div className="flex items-baseline gap-2">
           <span>Odd book</span>
-          <span className="font-semibold text-gray-800">{formatOdd(metrics.oddBook)}</span>
+          <span className="font-semibold text-gray-800 tabular-nums">{formatOdd(metrics.oddBook)}</span>
         </div>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-baseline gap-2">
           <span>Odd justa</span>
-          <span className="font-semibold text-gray-800">{formatOdd(metrics.oddFair)}</span>
+          <span className="font-semibold text-gray-800 tabular-nums">{formatOdd(metrics.oddFair)}</span>
         </div>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-baseline gap-2">
           <span>Edge</span>
-          <span className="font-semibold text-gray-800">{formatEdge(metrics.edgePP)}</span>
+          <span className="font-semibold text-gray-800 tabular-nums">{formatEdge(metrics.edgePP)}</span>
         </div>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-baseline gap-2">
           <span>EV</span>
-          <span className="font-semibold text-gray-800">{formatEv(metrics.ev)}</span>
+          <span className="font-semibold text-gray-800 tabular-nums">{formatEv(metrics.ev)}</span>
         </div>
       </div>
 

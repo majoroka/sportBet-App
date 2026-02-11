@@ -1,7 +1,7 @@
 import { Over15MatchInputs, ScoringStatus } from '../types';
 
 export const OVER_15_MATCH_MARKET_KEY = 'over_1_5_match' as const;
-export const OVER_15_MATCH_LABEL = 'Over 1.5 (Jogo)';
+export const OVER_15_MATCH_LABEL = '+1.5 (Jogo)';
 
 export type ThresholdRule = {
   at: number;

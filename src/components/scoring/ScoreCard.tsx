@@ -3,25 +3,33 @@ import { ScoringResult } from '../../scoring';
 import { BreakdownAccordion } from './BreakdownAccordion';
 
 type Props = {
+  id?: string;
   title: string;
   accentClass: string;
   score: ScoringResult;
+  highlightClass?: string;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
 const getScoreTint = (score: number) => {
-  if (score >= 75) return 'text-emerald-600';
-  if (score >= 55) return 'text-amber-600';
+  if (score >= 80) return 'text-emerald-600';
+  if (score >= 60) return 'text-amber-600';
   return 'text-red-600';
 };
 
-export const ScoreCard: React.FC<Props> = ({ title, accentClass, score }) => {
+export const ScoreCard: React.FC<Props> = ({ id, title, accentClass, score, highlightClass }) => {
   const pct = clamp(Math.round(score.total), 0, 100);
   const reasons = score.topReasons.length ? score.topReasons.slice(0, 3) : ['Sem dados suficientes'];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+    <div
+      id={id}
+      className={[
+        'bg-white border border-gray-200 rounded-lg p-4 shadow-sm transition',
+        highlightClass ?? '',
+      ].join(' ')}
+    >
       <div className="flex items-center justify-between mb-2">
         <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</span>
         {score.penaltiesApplied > 0 && (

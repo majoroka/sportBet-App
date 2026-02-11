@@ -2,7 +2,7 @@ import { ScoringStatus, TeamOver15Inputs } from '../types';
 import { SENTINEL_LOW } from '../constants';
 
 export const TEAM_OVER_15_MARKET_KEY = 'team_over_1_5_goals' as const;
-export const TEAM_OVER_15_LABEL = 'Over 1,5 (Equipa)';
+export const TEAM_OVER_15_LABEL = '+1,5 (Equipa)';
 
 export type ThresholdRule = {
   at: number;

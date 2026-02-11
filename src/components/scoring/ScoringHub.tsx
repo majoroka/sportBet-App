@@ -7,6 +7,7 @@ import {
   ScoringResult,
   Value1x2ScoreResult,
 } from '../../scoring';
+import { aggregateBestPickGlobal } from '../../scoring/aggregateBestPickGlobal';
 import { ScoreCard } from './ScoreCard';
 import { ValueScoreCard } from './ValueScoreCard';
 
@@ -35,6 +36,8 @@ export const ScoringHub: React.FC<Props> = ({
     []
   );
   const [selectedMarket, setSelectedMarket] = useState<ScoringMarketKey>(marketKey);
+  const [highlightCardId, setHighlightCardId] = useState<string | null>(null);
+  const [highlightVariant, setHighlightVariant] = useState<'success' | 'warning' | 'danger'>('success');
   useEffect(() => setSelectedMarket(marketKey), [marketKey]);
   const activeMarket = SCORING_MARKETS[selectedMarket] ?? SCORING_MARKETS[marketKey];
   const fallbackTeamScore = teamScores[marketKey] ?? Object.values(teamScores)[0];
@@ -43,10 +46,61 @@ export const ScoringHub: React.FC<Props> = ({
   const emptyScore: ScoringResult = { total: 0, groups: [], penaltiesApplied: 0, topReasons: ['Sem dados suficientes'] };
   const emptyValueScore = createEmptyValue1x2Score('Sem dados suficientes');
   const valueScore = valueScores?.[selectedMarket] ?? fallbackValueScore ?? emptyValueScore;
-  const outcomeLabels = {
-    HOME: `Casa · ${homeTeam}`,
-    DRAW: 'Empate',
-    AWAY: `Fora · ${awayTeam}`,
+
+  const bestPickGlobal = useMemo(
+    () =>
+      aggregateBestPickGlobal({
+        teamScores,
+        matchScores,
+        valueScores,
+        markets: SCORING_MARKETS,
+        homeTeam,
+        awayTeam,
+      }),
+    [teamScores, matchScores, valueScores, homeTeam, awayTeam]
+  );
+
+  const getVariant = (score: number) => {
+    if (score >= 80) return 'success';
+    if (score >= 60) return 'warning';
+    return 'danger';
+  };
+
+  const variantStyles = {
+    success: {
+      banner: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
+      highlight: 'ring-2 ring-emerald-400 ring-offset-2 shadow-[0_0_0_6px_rgba(16,185,129,0.25)]',
+    },
+    warning: {
+      banner: 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100',
+      highlight: 'ring-2 ring-amber-400 ring-offset-2 shadow-[0_0_0_6px_rgba(251,191,36,0.28)]',
+    },
+    danger: {
+      banner: 'bg-red-50 text-red-800 border-red-200 hover:bg-red-100',
+      highlight: 'ring-2 ring-red-400 ring-offset-2 shadow-[0_0_0_6px_rgba(248,113,113,0.28)]',
+    },
+  } as const;
+  const bannerVariant = bestPickGlobal ? getVariant(bestPickGlobal.score) : null;
+  const bannerStyles = bannerVariant ? variantStyles[bannerVariant] : null;
+
+  const handleBestPickClick = () => {
+    if (!bestPickGlobal) return;
+    setSelectedMarket(bestPickGlobal.marketKey as ScoringMarketKey);
+    setHighlightVariant(getVariant(bestPickGlobal.score));
+
+    const cardId = bestPickGlobal.ui.cardAnchorId;
+    window.requestAnimationFrame(() => {
+      setTimeout(() => {
+        const el = document.getElementById(cardId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        setHighlightCardId(cardId);
+        setTimeout(() => {
+          setHighlightCardId((prev) => (prev === cardId ? null : prev));
+        }, 1200);
+      }, 60);
+    });
   };
 
   return (
@@ -56,6 +110,19 @@ export const ScoringHub: React.FC<Props> = ({
         <div className="flex-1 border-t border-gray-200" />
       </div>
 
+      {bestPickGlobal && bannerStyles && (
+        <button
+          type="button"
+          onClick={handleBestPickClick}
+          className={[
+            'mb-4 w-full text-left rounded-md border px-3 py-2 text-xs font-semibold transition',
+            bannerStyles.banner,
+          ].join(' ')}
+        >
+          Best Pick: {bestPickGlobal.label} — {bestPickGlobal.tabLabel} — {bestPickGlobal.score}/100
+        </button>
+      )}
+
       <div className="flex flex-wrap gap-2 mb-4">
         {marketOptions.map((market) => {
           const isActive = market.key === selectedMarket;
@@ -63,6 +130,7 @@ export const ScoringHub: React.FC<Props> = ({
           return (
             <button
               key={market.key}
+              id={`tab-${market.key}`}
               type="button"
               onClick={() => isEnabled && setSelectedMarket(market.key)}
               className={[
@@ -79,26 +147,39 @@ export const ScoringHub: React.FC<Props> = ({
 
       {activeMarket.mode === 'multi_outcome' ? (
         <div className="space-y-3">
-          {valueScore.bestPick && (
-            <div className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700">
-              Best Pick: {outcomeLabels[valueScore.bestPick.outcome]} · Score {valueScore.bestPick.score}/100
-            </div>
-          )}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <ValueScoreCard
               title={`CASA · ${homeTeam}`}
               accentClass="bg-[#60A5FA]"
               outcomeScore={valueScore.outcomes.HOME}
+              id={`scorecard-${selectedMarket}-HOME`}
+              highlightClass={
+                highlightCardId === `scorecard-${selectedMarket}-HOME`
+                  ? variantStyles[highlightVariant].highlight
+                  : undefined
+              }
             />
             <ValueScoreCard
               title="EMPATE"
               accentClass="bg-gray-900"
               outcomeScore={valueScore.outcomes.DRAW}
+              id={`scorecard-${selectedMarket}-DRAW`}
+              highlightClass={
+                highlightCardId === `scorecard-${selectedMarket}-DRAW`
+                  ? variantStyles[highlightVariant].highlight
+                  : undefined
+              }
             />
             <ValueScoreCard
               title={`FORA · ${awayTeam}`}
               accentClass="bg-[#F472B6]"
               outcomeScore={valueScore.outcomes.AWAY}
+              id={`scorecard-${selectedMarket}-AWAY`}
+              highlightClass={
+                highlightCardId === `scorecard-${selectedMarket}-AWAY`
+                  ? variantStyles[highlightVariant].highlight
+                  : undefined
+              }
             />
           </div>
         </div>
@@ -108,6 +189,12 @@ export const ScoringHub: React.FC<Props> = ({
             title="JOGO"
             accentClass="bg-gray-900"
             score={matchScores?.[selectedMarket] ?? fallbackMatchScore ?? fallbackTeamScore?.home ?? emptyScore}
+            id={`scorecard-${selectedMarket}-match`}
+            highlightClass={
+              highlightCardId === `scorecard-${selectedMarket}-match`
+                ? variantStyles[highlightVariant].highlight
+                : undefined
+            }
           />
         </div>
       ) : (
@@ -116,11 +203,23 @@ export const ScoringHub: React.FC<Props> = ({
             title={`Casa · ${homeTeam}`}
             accentClass="bg-[#60A5FA]"
             score={(teamScores[selectedMarket] ?? fallbackTeamScore)?.home ?? fallbackTeamScore?.home ?? emptyScore}
+            id={`scorecard-${selectedMarket}-home`}
+            highlightClass={
+              highlightCardId === `scorecard-${selectedMarket}-home`
+                ? variantStyles[highlightVariant].highlight
+                : undefined
+            }
           />
           <ScoreCard
             title={`Fora · ${awayTeam}`}
             accentClass="bg-[#F472B6]"
             score={(teamScores[selectedMarket] ?? fallbackTeamScore)?.away ?? fallbackTeamScore?.away ?? emptyScore}
+            id={`scorecard-${selectedMarket}-away`}
+            highlightClass={
+              highlightCardId === `scorecard-${selectedMarket}-away`
+                ? variantStyles[highlightVariant].highlight
+                : undefined
+            }
           />
         </div>
       )}
