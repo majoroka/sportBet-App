@@ -258,7 +258,7 @@ export const TEAM_OVER_15_GROUPS: ScoreGroupConfig[] = [
     items: [
       {
         key: 'elo_delta',
-        label: 'Delta ELO',
+        label: 'ΔELO (HA=49)',
         maxPoints: 4,
         getValue: (input) => input.eloDelta,
         thresholds: [

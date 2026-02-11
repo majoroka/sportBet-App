@@ -271,7 +271,7 @@ export const BTTS_YES_GROUPS: ScoreGroupConfig[] = [
     items: [
       {
         key: 'elo_abs_delta',
-        label: '|ΔELO|',
+        label: '|ΔELO| (HA=49)',
         maxPoints: 5,
         getValue: (input) => input.eloAbsDelta,
         thresholds: [
