@@ -228,16 +228,16 @@ export const OVER_15_MATCH_GROUPS: ScoreGroupConfig[] = [
 export const OVER_15_MATCH_PENALTIES: PenaltyConfig[] = [
   {
     key: 'prob_over15_low',
-    label: 'Prob. Over 1.5 < 66%',
-    maxPoints: 10,
-    points: -10,
-    when: (input) => input.probOver15 !== null && input.probOver15 < 66,
+    label: 'Prob. Over 1.5 < 62%',
+    maxPoints: 8,
+    points: -8,
+    when: (input) => input.probOver15 !== null && input.probOver15 < 62,
   },
   {
     key: 'game_goals_profile_low',
     label: 'Perfil de golos do jogo < 2.2',
-    maxPoints: 6,
-    points: -6,
+    maxPoints: 4,
+    points: -4,
     when: (input) => {
       if (
         input.homeGfPerGame === null ||
@@ -254,24 +254,24 @@ export const OVER_15_MATCH_PENALTIES: PenaltyConfig[] = [
   },
   {
     key: 'both_gf_low',
-    label: 'Ambos GF/jogo < 1.0',
-    maxPoints: 6,
-    points: -6,
+    label: 'Ambos GF/jogo < 0.9',
+    maxPoints: 4,
+    points: -4,
     when: (input) =>
       input.homeGfPerGame !== null &&
       input.awayGfPerGame !== null &&
-      input.homeGfPerGame < 1.0 &&
-      input.awayGfPerGame < 1.0,
+      input.homeGfPerGame < 0.9 &&
+      input.awayGfPerGame < 0.9,
   },
   {
     key: 'avg_sot_for_low',
-    label: 'SOT médio a favor < 2.8',
-    maxPoints: 6,
-    points: -6,
+    label: 'SOT médio a favor < 2.5',
+    maxPoints: 4,
+    points: -4,
     when: (input) => {
       if (input.homeSotPerGame === null || input.awaySotPerGame === null) return false;
       const avg = (input.homeSotPerGame + input.awaySotPerGame) / 2;
-      return avg < 2.8;
+      return avg < 2.5;
     },
   },
   {

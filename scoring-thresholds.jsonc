@@ -1380,31 +1380,31 @@
       "penalties": [
         {
           "key": "prob_over15_low",
-          "label": "Prob. Over 1.5 < 66%",
-          "points": -10,
-          "maxPoints": 10,
-          "condition": "probOver15 < 66"
+          "label": "Prob. Over 1.5 < 62%",
+          "points": -8,
+          "maxPoints": 8,
+          "condition": "probOver15 < 62"
         },
         {
           "key": "game_goals_profile_low",
           "label": "Perfil de golos do jogo < 2.2",
-          "points": -6,
-          "maxPoints": 6,
+          "points": -4,
+          "maxPoints": 4,
           "condition": "gameGoalsProfile < 2.2"
         },
         {
           "key": "both_gf_low",
-          "label": "Ambos GF/jogo < 1.0",
-          "points": -6,
-          "maxPoints": 6,
-          "condition": "homeGF < 1.0 AND awayGF < 1.0"
+          "label": "Ambos GF/jogo < 0.9",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "homeGF < 0.9 AND awayGF < 0.9"
         },
         {
           "key": "avg_sot_for_low",
-          "label": "SOT médio a favor < 2.8",
-          "points": -6,
-          "maxPoints": 6,
-          "condition": "avgSOTFor < 2.8"
+          "label": "SOT médio a favor < 2.5",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "avgSOTFor < 2.5"
         },
         {
           "key": "low_ou_line",
