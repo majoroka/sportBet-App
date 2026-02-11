@@ -1,0 +1,1275 @@
+// JSONC (JSON with comments). This file summarizes scoring thresholds, penalties, and interpretations.
+// Source of truth: src/scoring/models/*.ts and related compute logic where noted.
+{
+  "meta": {
+    "generatedOn": "2026-02-11",
+    "sentinelLow": -999,
+    "statusRule": "good if points >= 70% of maxPoints; warn if > 0; bad if 0",
+    "sources": [
+      "src/scoring/models/teamOver15.ts",
+      "src/scoring/models/teamOver05HT.config.ts",
+      "src/scoring/models/bttsYes.config.ts",
+      "src/scoring/models/over25Match.config.ts",
+      "src/scoring/models/over15Match.config.ts",
+      "src/scoring/models/over05HTMatch.config.ts",
+      "src/scoring/compute/computeOver25MatchScore.ts"
+    ]
+  },
+  "markets": {
+    // ------------------------------
+    // TEAM MODE
+    // ------------------------------
+    "team_over_1_5_goals": {
+      "label": "Over 1,5 (Equipa)",
+      "mode": "team",
+      "source": "src/scoring/models/teamOver15.ts",
+      // Interpretation not defined in repo for this model.
+      "interpretation": null,
+      "penaltyCap": null,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Mercado",
+          "items": [
+            {
+              "key": "prob_team_15",
+              "label": "Prob. +1,5 (equipa)",
+              "maxPoints": 25,
+              "thresholds": [
+                { "at": 65, "points": 25, "status": "good" },
+                { "at": 60, "points": 22, "status": "good" },
+                { "at": 55, "points": 20, "status": "good" },
+                { "at": 50, "points": 15, "status": "warn" },
+                { "at": 45, "points": 10, "status": "warn" },
+                { "at": 40, "points": 5, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "prob_team_25",
+              "label": "Prob. +2,5 (equipa)",
+              "maxPoints": 8,
+              "thresholds": [
+                { "at": 45, "points": 8, "status": "good" },
+                { "at": 38, "points": 6, "status": "good" },
+                { "at": 30, "points": 4, "status": "warn" },
+                { "at": 22, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Produção & consistência",
+          "items": [
+            {
+              "key": "gf_per_game",
+              "label": "Golos marcados/jogo",
+              "maxPoints": 10,
+              "thresholds": [
+                { "at": 2.0, "points": 10, "status": "good" },
+                { "at": 1.6, "points": 8, "status": "good" },
+                { "at": 1.3, "points": 6, "status": "warn" },
+                { "at": 1.1, "points": 4, "status": "warn" },
+                { "at": 0.9, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "pct_scored",
+              "label": "% jogos a marcar",
+              "maxPoints": 7,
+              "thresholds": [
+                { "at": 90, "points": 7, "status": "good" },
+                { "at": 80, "points": 6, "status": "good" },
+                { "at": 70, "points": 4, "status": "warn" },
+                { "at": 60, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "pct_15_scored",
+              "label": "% jogos 2+ golos",
+              "maxPoints": 8,
+              "thresholds": [
+                { "at": 60, "points": 8, "status": "good" },
+                { "at": 50, "points": 6, "status": "good" },
+                { "at": 40, "points": 4, "status": "warn" },
+                { "at": 30, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Criação & finalização",
+          "items": [
+            {
+              "key": "shots_pg",
+              "label": "Remates/jogo",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 14, "points": 6, "status": "good" },
+                { "at": 12, "points": 4, "status": "warn" },
+                { "at": 10, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "sot_pg",
+              "label": "Remates enquadrados/jogo",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 5.5, "points": 6, "status": "good" },
+                { "at": 4.5, "points": 4, "status": "warn" },
+                { "at": 3.5, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "sot_conversion",
+              "label": "Conversão SOT",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 0.38, "points": 6, "status": "good" },
+                { "at": 0.32, "points": 4, "status": "warn" },
+                { "at": 0.25, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. Ritmo & pressão",
+          "items": [
+            {
+              "key": "first_half_goal_pct",
+              "label": "% golo 1ª parte",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 65, "points": 4, "status": "good" },
+                { "at": 55, "points": 3, "status": "warn" },
+                { "at": 45, "points": 2, "status": "warn" },
+                { "at": 35, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "corner_diff",
+              "label": "Diferença de cantos",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 2, "points": 4, "status": "good" },
+                { "at": 1, "points": 3, "status": "warn" },
+                { "at": 0, "points": 2, "status": "warn" },
+                { "at": -1, "points": 1, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "E",
+          "label": "E. Fragilidade do adversário",
+          "items": [
+            {
+              "key": "opp_ga_pg",
+              "label": "GA adversário/jogo",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 1.7, "points": 4, "status": "good" },
+                { "at": 1.4, "points": 3, "status": "warn" },
+                { "at": 1.2, "points": 2, "status": "warn" },
+                { "at": 1.0, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "opp_clean_sheet",
+              "label": "% clean sheets adversário (low é melhor)",
+              "maxPoints": 3,
+              "direction": "low",
+              "thresholds": [
+                { "at": 25, "points": 3, "status": "good" },
+                { "at": 35, "points": 2, "status": "warn" },
+                { "at": 45, "points": 1, "status": "warn" },
+                { "at": 100, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "opp_sot_against_pg",
+              "label": "SOT sofridos adv./jogo",
+              "maxPoints": 3,
+              "thresholds": [
+                { "at": 5.0, "points": 3, "status": "good" },
+                { "at": 4.2, "points": 2, "status": "warn" },
+                { "at": 3.5, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "F",
+          "label": "F. Contexto",
+          "items": [
+            {
+              "key": "elo_delta",
+              "label": "ΔELO (HA=49)",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 80, "points": 4, "status": "good" },
+                { "at": 40, "points": 3, "status": "warn" },
+                { "at": 10, "points": 2, "status": "warn" },
+                { "at": -10, "points": 1, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "ou_line",
+              "label": "Linha O/U base",
+              "maxPoints": 2,
+              "thresholds": [
+                { "at": 3.0, "points": 2, "status": "good" },
+                { "at": 2.75, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "discipline_flag",
+          "label": "Disciplina (risco de cartões)",
+          "points": -5,
+          "maxPoints": 5,
+          "condition": "disciplineFlag == true"
+        }
+      ]
+    },
+
+    "team_over_0_5_ht": {
+      "label": "+0,5 HT (Equipa)",
+      "mode": "team",
+      "source": "src/scoring/models/teamOver05HT.config.ts",
+      "interpretation": {
+        "ranges": [
+          { "min": 75, "label": "excelente" },
+          { "min": 65, "max": 74, "label": "bom" },
+          { "min": 55, "max": 64, "label": "borderline" },
+          { "max": 54, "label": "evitar" }
+        ]
+      },
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Arranque da equipa",
+          "items": [
+            {
+              "key": "team_pct_first_half_goal",
+              "label": "% jogos com golo na 1ª parte",
+              "maxPoints": 20,
+              "thresholds": [
+                { "at": 70, "points": 20, "status": "good" },
+                { "at": 62, "points": 16, "status": "good" },
+                { "at": 55, "points": 12, "status": "warn" },
+                { "at": 48, "points": 8, "status": "warn" },
+                { "at": 40, "points": 4, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "team_first_half_goals_pg",
+              "label": "Golos 1ª parte/jogo",
+              "maxPoints": 15,
+              "thresholds": [
+                { "at": 0.85, "points": 15, "status": "good" },
+                { "at": 0.7, "points": 12, "status": "good" },
+                { "at": 0.55, "points": 9, "status": "warn" },
+                { "at": 0.4, "points": 5, "status": "warn" },
+                { "at": 0.25, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Fragilidade HT do adversário",
+          "items": [
+            {
+              "key": "opp_first_half_goals_conceded_pg",
+              "label": "Golos sofridos 1ª parte/jogo (adv.)",
+              "maxPoints": 18,
+              "thresholds": [
+                { "at": 0.75, "points": 18, "status": "good" },
+                { "at": 0.6, "points": 14, "status": "good" },
+                { "at": 0.45, "points": 10, "status": "warn" },
+                { "at": 0.3, "points": 6, "status": "warn" },
+                { "at": 0.2, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "opp_pct_concede_first_half_goal",
+              "label": "% jogos com golo sofrido 1ª parte (adv.)",
+              "maxPoints": 12,
+              "thresholds": [
+                { "at": 65, "points": 12, "status": "good" },
+                { "at": 55, "points": 9, "status": "good" },
+                { "at": 45, "points": 6, "status": "warn" },
+                { "at": 35, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Pressão / volume",
+          "items": [
+            {
+              "key": "team_sot_pg",
+              "label": "SOT/jogo (equipa)",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 5.0, "points": 6, "status": "good" },
+                { "at": 4.2, "points": 5, "status": "good" },
+                { "at": 3.5, "points": 3, "status": "warn" },
+                { "at": 2.8, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "team_corners_pg",
+              "label": "Cantos a favor/jogo",
+              "maxPoints": 5,
+              "thresholds": [
+                { "at": 6.5, "points": 5, "status": "good" },
+                { "at": 5.5, "points": 4, "status": "good" },
+                { "at": 4.5, "points": 2, "status": "warn" },
+                { "at": 3.8, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "team_corner_diff_pg",
+              "label": "Diferença de cantos/jogo",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 2.0, "points": 4, "status": "good" },
+                { "at": 1.0, "points": 2, "status": "warn" },
+                { "at": 0.0, "points": 1, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. Contexto",
+          "items": [
+            {
+              "key": "elo_delta",
+              "label": "ΔELO (HA=49)",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 120, "points": 6, "status": "good" },
+                { "at": 80, "points": 5, "status": "good" },
+                { "at": 50, "points": 3, "status": "warn" },
+                { "at": 20, "points": 1, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "team_prob_over05_ft",
+              "label": "Prob. +0,5 FT (equipa)",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 90, "points": 6, "status": "good" },
+                { "at": 85, "points": 5, "status": "good" },
+                { "at": 80, "points": 3, "status": "warn" },
+                { "at": 75, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "over_context",
+              "label": "Contexto Over",
+              "maxPoints": 3,
+              "thresholds": [
+                { "at": 55, "points": 3, "status": "good" },
+                { "at": 48, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "low_team_pct_ht_goal",
+          "label": "Team % golo 1ª parte < 45%",
+          "points": -10,
+          "maxPoints": 10,
+          "condition": "teamPctFirstHalfGoal < 45"
+        },
+        {
+          "key": "low_team_ht_goals_pg",
+          "label": "Golos 1ª parte/jogo < 0.35",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "teamFirstHalfGoalsPerGame < 0.35"
+        },
+        {
+          "key": "low_opp_ht_concede_pg",
+          "label": "Adv. sofre 1ª parte/jogo < 0.25",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "oppFirstHalfGoalsConcededPerGame < 0.25"
+        },
+        {
+          "key": "low_elo_and_sot",
+          "label": "ΔELO < 20 e SOT/jogo < 3.2",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "eloDelta < 20 AND teamSotPerGame < 3.2"
+        },
+        {
+          "key": "low_over_context",
+          "label": "Contexto Over fraco",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "ouLine <= 2.0 OR probOver25 < 40"
+        }
+      ]
+    },
+
+    // ------------------------------
+    // MATCH MODE
+    // ------------------------------
+    "btts_yes": {
+      "label": "BTTS (Sim)",
+      "mode": "match",
+      "source": "src/scoring/models/bttsYes.config.ts",
+      "interpretation": {
+        "ranges": [
+          { "min": 75, "label": "excelente" },
+          { "min": 65, "max": 74, "label": "bom" },
+          { "min": 55, "max": 64, "label": "borderline (precisa de odds)" },
+          { "max": 54, "label": "evitar" }
+        ]
+      },
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Núcleo",
+          "items": [
+            {
+              "key": "prob_btts",
+              "label": "Prob. BTTS (Sim)",
+              "maxPoints": 30,
+              "thresholds": [
+                { "at": 62, "points": 30, "status": "good" },
+                { "at": 58, "points": 26, "status": "good" },
+                { "at": 54, "points": 22, "status": "good" },
+                { "at": 50, "points": 18, "status": "warn" },
+                { "at": 46, "points": 12, "status": "warn" },
+                { "at": 42, "points": 6, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Capacidade de marcar",
+          "items": [
+            {
+              "key": "home_pct_scored",
+              "label": "Casa % jogos a marcar",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 85, "points": 6, "status": "good" },
+                { "at": 75, "points": 4, "status": "warn" },
+                { "at": 65, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "away_pct_scored",
+              "label": "Fora % jogos a marcar",
+              "maxPoints": 6,
+              "thresholds": [
+                { "at": 85, "points": 6, "status": "good" },
+                { "at": 75, "points": 4, "status": "warn" },
+                { "at": 65, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "home_gf_pg",
+              "label": "Casa GF/jogo",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 1.6, "points": 4, "status": "good" },
+                { "at": 1.3, "points": 3, "status": "good" },
+                { "at": 1.0, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "away_gf_pg",
+              "label": "Fora GF/jogo",
+              "maxPoints": 4,
+              "thresholds": [
+                { "at": 1.6, "points": 4, "status": "good" },
+                { "at": 1.3, "points": 3, "status": "good" },
+                { "at": 1.0, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Probabilidade de sofrer",
+          "items": [
+            {
+              "key": "home_clean_sheet",
+              "label": "Casa % clean sheets (low é melhor)",
+              "maxPoints": 5,
+              "direction": "low",
+              "thresholds": [
+                { "at": 20, "points": 5, "status": "good" },
+                { "at": 30, "points": 4, "status": "good" },
+                { "at": 40, "points": 2, "status": "warn" },
+                { "at": 100, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "away_clean_sheet",
+              "label": "Fora % clean sheets (low é melhor)",
+              "maxPoints": 5,
+              "direction": "low",
+              "thresholds": [
+                { "at": 20, "points": 5, "status": "good" },
+                { "at": 30, "points": 4, "status": "good" },
+                { "at": 40, "points": 2, "status": "warn" },
+                { "at": 100, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "home_ga_pg",
+              "label": "Casa GA/jogo",
+              "maxPoints": 5,
+              "thresholds": [
+                { "at": 1.4, "points": 5, "status": "good" },
+                { "at": 1.1, "points": 3, "status": "warn" },
+                { "at": 0.9, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "away_ga_pg",
+              "label": "Fora GA/jogo",
+              "maxPoints": 5,
+              "thresholds": [
+                { "at": 1.4, "points": 5, "status": "good" },
+                { "at": 1.1, "points": 3, "status": "warn" },
+                { "at": 0.9, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. Ritmo / Over context",
+          "items": [
+            {
+              "key": "prob_over25",
+              "label": "Prob. Over 2.5",
+              "maxPoints": 8,
+              "thresholds": [
+                { "at": 58, "points": 8, "status": "good" },
+                { "at": 52, "points": 6, "status": "good" },
+                { "at": 46, "points": 4, "status": "warn" },
+                { "at": 40, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "match_avg_goals",
+              "label": "Média (GF+GA)/jogo",
+              "maxPoints": 7,
+              "notes": "avg = ((homeGF+homeGA)+(awayGF+awayGA))/2",
+              "thresholds": [
+                { "at": 3.0, "points": 7, "status": "good" },
+                { "at": 2.7, "points": 5, "status": "good" },
+                { "at": 2.4, "points": 3, "status": "warn" },
+                { "at": 2.1, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "E",
+          "label": "E. Remates / SOT",
+          "items": [
+            {
+              "key": "home_sot_pg",
+              "label": "Casa SOT/jogo",
+              "maxPoints": 3,
+              "thresholds": [
+                { "at": 4.3, "points": 3, "status": "good" },
+                { "at": 3.5, "points": 2, "status": "warn" },
+                { "at": 2.8, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "away_sot_pg",
+              "label": "Fora SOT/jogo",
+              "maxPoints": 3,
+              "thresholds": [
+                { "at": 4.3, "points": 3, "status": "good" },
+                { "at": 3.5, "points": 2, "status": "warn" },
+                { "at": 2.8, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "avg_sot_against",
+              "label": "Média SOT sofridos/jogo",
+              "maxPoints": 4,
+              "notes": "avgSotAgainst = (homeSotAgainst + awaySotAgainst)/2",
+              "thresholds": [
+                { "at": 4.6, "points": 4, "status": "good" },
+                { "at": 4.0, "points": 3, "status": "good" },
+                { "at": 3.3, "points": 1, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "F",
+          "label": "F. Contexto ELO",
+          "items": [
+            {
+              "key": "elo_abs_delta",
+              "label": "|ΔELO| (HA=49)",
+              "maxPoints": 5,
+              "direction": "low",
+              "thresholds": [
+                { "at": 40, "points": 5, "status": "good" },
+                { "at": 80, "points": 3, "status": "warn" },
+                { "at": 120, "points": 1, "status": "warn" },
+                { "at": 9999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "prob_btts_low",
+          "label": "Prob. BTTS < 46%",
+          "points": -10,
+          "maxPoints": 10,
+          "condition": "probBtts < 46"
+        },
+        {
+          "key": "team_pct_scored_low",
+          "label": "% marcar < 65% (qualquer equipa)",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "homePctScored < 65 OR awayPctScored < 65"
+        },
+        {
+          "key": "clean_sheet_high",
+          "label": "Clean sheets > 45% (qualquer equipa)",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "homeCleanSheetPct > 45 OR awayCleanSheetPct > 45"
+        },
+        {
+          "key": "prob_over25_low",
+          "label": "Prob. Over2.5 < 40%",
+          "points": -5,
+          "maxPoints": 5,
+          "condition": "probOver25 < 40"
+        },
+        {
+          "key": "low_gf_and_sot",
+          "label": "GF/jogo < 1.0 e SOT/jogo < 2.8",
+          "points": -5,
+          "maxPoints": 5,
+          "condition": "(homeGF < 1.0 AND homeSOT < 2.8) OR (awayGF < 1.0 AND awaySOT < 2.8)"
+        }
+      ]
+    },
+
+    "over_2_5_match": {
+      "label": "Over 2.5 (Jogo)",
+      "mode": "match",
+      "source": "src/scoring/models/over25Match.config.ts",
+      "interpretation": {
+        "ranges": [
+          { "min": 75, "label": "excelente" },
+          { "min": 65, "max": 74, "label": "bom" },
+          { "min": 55, "max": 64, "label": "borderline" },
+          { "max": 54, "label": "evitar" }
+        ]
+      },
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Núcleo",
+          "items": [
+            {
+              "key": "prob_over25",
+              "label": "Prob. Over 2.5",
+              "maxPoints": 30,
+              "thresholds": [
+                { "at": 58, "points": 30, "status": "good" },
+                { "at": 54, "points": 26, "status": "good" },
+                { "at": 50, "points": 22, "status": "good" },
+                { "at": 46, "points": 18, "status": "warn" },
+                { "at": 42, "points": 12, "status": "warn" },
+                { "at": 38, "points": 6, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Perfil de golos",
+          "items": [
+            {
+              "key": "game_goals_profile",
+              "label": "Perfil de golos do jogo",
+              "maxPoints": 15,
+              "notes": "gameGoalsProfile = ((homeGF+homeGA)+(awayGF+awayGA))/2",
+              "thresholds": [
+                { "at": 3.2, "points": 15, "status": "good" },
+                { "at": 3.0, "points": 12, "status": "good" },
+                { "at": 2.8, "points": 9, "status": "warn" },
+                { "at": 2.6, "points": 6, "status": "warn" },
+                { "at": 2.4, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "ga_vulnerability",
+              "label": "Vulnerabilidade defensiva (GA/jogo)",
+              "maxPoints": 10,
+              "notes": "Custom logic in computeOver25MatchScore",
+              "logic": [
+                { "when": "homeGA >= 1.2 AND awayGA >= 1.2", "points": 10, "status": "good" },
+                { "when": "homeGA >= 1.0 AND awayGA >= 1.0", "points": 7, "status": "good" },
+                { "when": "homeGA >= 1.2 OR awayGA >= 1.2", "points": 5, "status": "warn" },
+                { "when": "homeGA >= 1.0 OR awayGA >= 1.0", "points": 3, "status": "warn" },
+                { "when": "else", "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Consistência a marcar",
+          "items": [
+            {
+              "key": "avg_pct_scored",
+              "label": "% médio de jogos a marcar",
+              "maxPoints": 9,
+              "notes": "avgPctScored = (homePctScored + awayPctScored)/2",
+              "thresholds": [
+                { "at": 85, "points": 9, "status": "good" },
+                { "at": 78, "points": 7, "status": "good" },
+                { "at": 70, "points": 5, "status": "warn" },
+                { "at": 62, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "max_pct_team15",
+              "label": "Máx. % equipa 2+ golos",
+              "maxPoints": 6,
+              "notes": "maxPctTeam15 = max(homePct15Scored, awayPct15Scored)",
+              "thresholds": [
+                { "at": 55, "points": 6, "status": "good" },
+                { "at": 45, "points": 4, "status": "warn" },
+                { "at": 35, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. Remates / SOT",
+          "items": [
+            {
+              "key": "avg_sot_for",
+              "label": "SOT médio a favor",
+              "maxPoints": 10,
+              "notes": "avgSOTFor = (homeSOT + awaySOT)/2",
+              "thresholds": [
+                { "at": 5.0, "points": 10, "status": "good" },
+                { "at": 4.4, "points": 8, "status": "good" },
+                { "at": 3.8, "points": 6, "status": "warn" },
+                { "at": 3.2, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "avg_sot_against",
+              "label": "SOT médio sofrido",
+              "maxPoints": 10,
+              "notes": "avgSOTAgainst = (homeSOTAgainst + awaySOTAgainst)/2",
+              "thresholds": [
+                { "at": 4.8, "points": 10, "status": "good" },
+                { "at": 4.2, "points": 8, "status": "good" },
+                { "at": 3.6, "points": 6, "status": "warn" },
+                { "at": 3.0, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "E",
+          "label": "E. Ritmo / 1ª parte",
+          "items": [
+            {
+              "key": "avg_first_half_goal_pct",
+              "label": "% médio golo 1ª parte",
+              "maxPoints": 6,
+              "notes": "avgFirstHalfGoalPct = (homeFHG + awayFHG)/2",
+              "thresholds": [
+                { "at": 65, "points": 6, "status": "good" },
+                { "at": 58, "points": 4, "status": "warn" },
+                { "at": 50, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "ht_profile",
+              "label": "Perfil HT (GF+GA 1ª parte)",
+              "maxPoints": 4,
+              "notes": "htProfile = ((homeHTGF+homeHTGA)+(awayHTGF+awayHTGA))/2",
+              "thresholds": [
+                { "at": 1.35, "points": 4, "status": "good" },
+                { "at": 1.1, "points": 3, "status": "good" },
+                { "at": 0.9, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "prob_over25_low",
+          "label": "Prob. Over 2.5 < 46%",
+          "points": -10,
+          "maxPoints": 10,
+          "condition": "probOver25 < 46"
+        },
+        {
+          "key": "game_goals_profile_low",
+          "label": "Perfil de golos do jogo < 2.4",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "gameGoalsProfile < 2.4"
+        },
+        {
+          "key": "both_ga_low",
+          "label": "Ambos GA/jogo < 1.0",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "homeGA < 1.0 AND awayGA < 1.0"
+        },
+        {
+          "key": "avg_sot_for_low",
+          "label": "SOT médio a favor < 3.2",
+          "points": -5,
+          "maxPoints": 5,
+          "condition": "avgSOTFor < 3.2"
+        },
+        {
+          "key": "low_ou_line",
+          "label": "Linha O/U <= 2.0",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "ouLine <= 2.0"
+        }
+      ]
+    },
+
+    "over_1_5_match": {
+      "label": "Over 1.5 (Jogo)",
+      "mode": "match",
+      "source": "src/scoring/models/over15Match.config.ts",
+      "interpretation": {
+        "ranges": [
+          { "min": 80, "label": "excelente" },
+          { "min": 70, "max": 79, "label": "muito bom" },
+          { "min": 60, "max": 69, "label": "ok" },
+          { "max": 59, "label": "evitar" }
+        ]
+      },
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Núcleo",
+          "items": [
+            {
+              "key": "prob_over15",
+              "label": "Prob. Over 1.5",
+              "maxPoints": 35,
+              "thresholds": [
+                { "at": 71, "points": 35, "status": "good" },
+                { "at": 67, "points": 31, "status": "good" },
+                { "at": 63, "points": 27, "status": "good" },
+                { "at": 59, "points": 22, "status": "warn" },
+                { "at": 55, "points": 16, "status": "warn" },
+                { "at": 51, "points": 10, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Perfil de golos",
+          "items": [
+            {
+              "key": "game_goals_profile",
+              "label": "Perfil de golos do jogo",
+              "maxPoints": 20,
+              "notes": "gameGoalsProfile = ((homeGF+homeGA)+(awayGF+awayGA))/2",
+              "thresholds": [
+                { "at": 3.0, "points": 20, "status": "good" },
+                { "at": 2.8, "points": 17, "status": "good" },
+                { "at": 2.6, "points": 13, "status": "warn" },
+                { "at": 2.4, "points": 9, "status": "warn" },
+                { "at": 2.2, "points": 5, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Consistência a marcar",
+          "items": [
+            {
+              "key": "avg_pct_scored",
+              "label": "% médio de jogos a marcar",
+              "maxPoints": 10,
+              "notes": "avgPctScored = (homePctScored + awayPctScored)/2",
+              "thresholds": [
+                { "at": 85, "points": 10, "status": "good" },
+                { "at": 78, "points": 8, "status": "good" },
+                { "at": 70, "points": 6, "status": "warn" },
+                { "at": 62, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "max_gf_pg",
+              "label": "Máx. GF/jogo",
+              "maxPoints": 5,
+              "notes": "maxGFPerGame = max(homeGF, awayGF)",
+              "thresholds": [
+                { "at": 1.8, "points": 5, "status": "good" },
+                { "at": 1.5, "points": 4, "status": "good" },
+                { "at": 1.2, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. Remates / SOT",
+          "items": [
+            {
+              "key": "avg_sot_for",
+              "label": "SOT médio a favor",
+              "maxPoints": 12,
+              "notes": "avgSOTFor = (homeSOT + awaySOT)/2",
+              "thresholds": [
+                { "at": 4.6, "points": 12, "status": "good" },
+                { "at": 4.0, "points": 10, "status": "good" },
+                { "at": 3.4, "points": 7, "status": "warn" },
+                { "at": 2.8, "points": 4, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "avg_sot_against",
+              "label": "SOT médio sofrido",
+              "maxPoints": 8,
+              "notes": "avgSOTAgainst = (homeSOTAgainst + awaySOTAgainst)/2",
+              "thresholds": [
+                { "at": 4.4, "points": 8, "status": "good" },
+                { "at": 3.8, "points": 6, "status": "good" },
+                { "at": 3.2, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "E",
+          "label": "E. Ritmo / 1ª parte",
+          "items": [
+            {
+              "key": "avg_first_half_goal_pct",
+              "label": "% médio golo 1ª parte",
+              "maxPoints": 6,
+              "notes": "avgFirstHalfGoalPct = (homeFHG + awayFHG)/2",
+              "thresholds": [
+                { "at": 65, "points": 6, "status": "good" },
+                { "at": 58, "points": 4, "status": "warn" },
+                { "at": 50, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "ht_profile",
+              "label": "Perfil HT (GF+GA 1ª parte)",
+              "maxPoints": 4,
+              "notes": "htProfile = ((homeHTGF+homeHTGA)+(awayHTGF+awayHTGA))/2",
+              "thresholds": [
+                { "at": 1.05, "points": 4, "status": "good" },
+                { "at": 0.85, "points": 3, "status": "good" },
+                { "at": 0.65, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "prob_over15_low",
+          "label": "Prob. Over 1.5 < 66%",
+          "points": -10,
+          "maxPoints": 10,
+          "condition": "probOver15 < 66"
+        },
+        {
+          "key": "game_goals_profile_low",
+          "label": "Perfil de golos do jogo < 2.2",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "gameGoalsProfile < 2.2"
+        },
+        {
+          "key": "both_gf_low",
+          "label": "Ambos GF/jogo < 1.0",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "homeGF < 1.0 AND awayGF < 1.0"
+        },
+        {
+          "key": "avg_sot_for_low",
+          "label": "SOT médio a favor < 2.8",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "avgSOTFor < 2.8"
+        },
+        {
+          "key": "low_ou_line",
+          "label": "Linha O/U <= 2.0",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "ouLine <= 2.0"
+        }
+      ]
+    },
+
+    "over_0_5_ht_match": {
+      "label": "+0,5 HT (Jogo)",
+      "mode": "match",
+      "source": "src/scoring/models/over05HTMatch.config.ts",
+      "interpretation": {
+        "ranges": [
+          { "min": 80, "label": "excelente" },
+          { "min": 70, "max": 79, "label": "muito bom" },
+          { "min": 60, "max": 69, "label": "ok" },
+          { "max": 59, "label": "evitar" }
+        ]
+      },
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Núcleo",
+          "items": [
+            {
+              "key": "prob_over05_ht",
+              "label": "Prob. Over 0.5 HT",
+              "maxPoints": 40,
+              "thresholds": [
+                { "at": 66, "points": 40, "status": "good" },
+                { "at": 62, "points": 35, "status": "good" },
+                { "at": 58, "points": 30, "status": "good" },
+                { "at": 54, "points": 24, "status": "warn" },
+                { "at": 50, "points": 16, "status": "warn" },
+                { "at": 46, "points": 8, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. Ritmo / 1ª parte",
+          "items": [
+            {
+              "key": "avg_first_half_goal_pct",
+              "label": "% médio golo 1ª parte",
+              "maxPoints": 15,
+              "notes": "avgFirstHalfGoalPct = (homeFHG + awayFHG)/2",
+              "thresholds": [
+                { "at": 68, "points": 15, "status": "good" },
+                { "at": 62, "points": 12, "status": "good" },
+                { "at": 56, "points": 9, "status": "warn" },
+                { "at": 50, "points": 6, "status": "warn" },
+                { "at": 44, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "ht_profile",
+              "label": "Perfil HT (GF+GA 1ª parte)",
+              "maxPoints": 10,
+              "notes": "htProfile = ((homeHTGF+homeHTGA)+(awayHTGF+awayHTGA))/2",
+              "thresholds": [
+                { "at": 1.15, "points": 10, "status": "good" },
+                { "at": 0.95, "points": 8, "status": "good" },
+                { "at": 0.78, "points": 6, "status": "warn" },
+                { "at": 0.62, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Volume/pressão",
+          "items": [
+            {
+              "key": "avg_sot_for",
+              "label": "SOT médio a favor",
+              "maxPoints": 12,
+              "notes": "avgSOTFor = (homeSOT + awaySOT)/2",
+              "thresholds": [
+                { "at": 4.6, "points": 12, "status": "good" },
+                { "at": 4.0, "points": 10, "status": "good" },
+                { "at": 3.4, "points": 7, "status": "warn" },
+                { "at": 2.8, "points": 4, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "avg_corners_for",
+              "label": "Cantos médios a favor",
+              "maxPoints": 8,
+              "notes": "avgCornersFor = (homeCornersFor + awayCornersFor)/2",
+              "thresholds": [
+                { "at": 6.2, "points": 8, "status": "good" },
+                { "at": 5.4, "points": 6, "status": "good" },
+                { "at": 4.6, "points": 4, "status": "warn" },
+                { "at": 3.8, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "D",
+          "label": "D. Abertura do jogo",
+          "items": [
+            {
+              "key": "game_goals_profile",
+              "label": "Perfil de golos do jogo",
+              "maxPoints": 10,
+              "notes": "gameGoalsProfile = ((homeGF+homeGA)+(awayGF+awayGA))/2",
+              "thresholds": [
+                { "at": 3.0, "points": 10, "status": "good" },
+                { "at": 2.7, "points": 8, "status": "good" },
+                { "at": 2.4, "points": 5, "status": "warn" },
+                { "at": 2.2, "points": 2, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            },
+            {
+              "key": "over_context",
+              "label": "Contexto Over",
+              "maxPoints": 5,
+              "thresholds": [
+                { "at": 55, "points": 5, "status": "good" },
+                { "at": 48, "points": 3, "status": "warn" },
+                { "at": 0, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "prob_over05_ht_low",
+          "label": "Prob. Over 0.5 HT < 54%",
+          "points": -10,
+          "maxPoints": 10,
+          "condition": "probOver05HT < 54"
+        },
+        {
+          "key": "avg_first_half_goal_pct_low",
+          "label": "% médio golo 1ª parte < 50%",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "avgFirstHalfGoalPct < 50"
+        },
+        {
+          "key": "avg_sot_for_low",
+          "label": "SOT médio a favor < 3.0",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "avgSOTFor < 3.0"
+        },
+        {
+          "key": "ht_profile_low",
+          "label": "Perfil HT < 0.70",
+          "points": -5,
+          "maxPoints": 5,
+          "condition": "htProfile < 0.70"
+        },
+        {
+          "key": "low_over_context",
+          "label": "Linha O/U <= 2.0 ou Prob Over25 < 40%",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "ouLine <= 2.0 OR probOver25 < 40"
+        }
+      ]
+    }
+  }
+}
