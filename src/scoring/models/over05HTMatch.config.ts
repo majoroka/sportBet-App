@@ -47,12 +47,12 @@ export const OVER_05_HT_MATCH_GROUPS: ScoreGroupConfig[] = [
         maxPoints: 40,
         getValue: (input) => input.probOver05HT,
         thresholds: [
-          { at: 72, points: 40 },
-          { at: 68, points: 35 },
-          { at: 64, points: 30 },
-          { at: 60, points: 24 },
-          { at: 56, points: 16 },
-          { at: 52, points: 8 },
+          { at: 66, points: 40 },
+          { at: 62, points: 35 },
+          { at: 58, points: 30 },
+          { at: 54, points: 24 },
+          { at: 50, points: 16 },
+          { at: 46, points: 8 },
           { at: 0, points: 0 },
         ],
         formatValue: formatPercent0,
@@ -204,10 +204,10 @@ export const OVER_05_HT_MATCH_GROUPS: ScoreGroupConfig[] = [
 export const OVER_05_HT_MATCH_PENALTIES: PenaltyConfig[] = [
   {
     key: 'prob_over05_ht_low',
-    label: 'Prob. Over 0.5 HT < 60%',
+    label: 'Prob. Over 0.5 HT < 54%',
     maxPoints: 10,
     points: -10,
-    when: (input) => input.probOver05HT !== null && input.probOver05HT < 60,
+    when: (input) => input.probOver05HT !== null && input.probOver05HT < 54,
   },
   {
     key: 'avg_first_half_goal_pct_low',
