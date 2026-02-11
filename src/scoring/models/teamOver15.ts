@@ -1,4 +1,5 @@
 import { ScoringStatus, TeamOver15Inputs } from '../types';
+import { SENTINEL_LOW } from '../constants';
 
 export const TEAM_OVER_15_MARKET_KEY = 'team_over_1_5_goals' as const;
 export const TEAM_OVER_15_LABEL = 'Over 1,5 (Equipa)';
@@ -199,7 +200,7 @@ export const TEAM_OVER_15_GROUPS: ScoreGroupConfig[] = [
           { at: 1, points: 3, status: 'warn' },
           { at: 0, points: 2, status: 'warn' },
           { at: -1, points: 1, status: 'warn' },
-          { at: -999, points: 0, status: 'bad' },
+          { at: SENTINEL_LOW, points: 0, status: 'bad' },
         ],
         formatValue: formatDiff2,
       },
@@ -225,7 +226,7 @@ export const TEAM_OVER_15_GROUPS: ScoreGroupConfig[] = [
       },
       {
         key: 'opp_clean_sheet',
-        label: '% clean sheets adversário',
+        label: '% clean sheets adversário (low é melhor)',
         maxPoints: 3,
         getValue: (input) => input.oppCleanSheetPct,
         thresholds: [
@@ -266,7 +267,7 @@ export const TEAM_OVER_15_GROUPS: ScoreGroupConfig[] = [
           { at: 40, points: 3, status: 'warn' },
           { at: 10, points: 2, status: 'warn' },
           { at: -10, points: 1, status: 'warn' },
-          { at: -999, points: 0, status: 'bad' },
+          { at: SENTINEL_LOW, points: 0, status: 'bad' },
         ],
         formatValue: formatElo,
       },
