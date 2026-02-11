@@ -24,6 +24,11 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] **Card Equipas:** Logos centrados e pill de xG (derivado do correct score truncado a 6 golos).
 - [x] **Pills de ELO:** ELO + ranking no cabeçalho (ranking_elo.csv).
 - [x] **Estatísticas por equipa:** Tabela comparativa com accordions por categoria e limpeza de linhas sem dados.
+- [x] **Scorings:** Motor data-driven + ScoringHub com tabs por mercado e breakdown por grupos.
+- [x] **Best Pick Global:** Banner cross-market com highlight e navegação para o card vencedor.
+- [x] **Acordeões no FixtureDetails:** Classificação/Probabilidades/Estatísticas colapsadas por defeito.
+- [x] **Ranking no cabeçalho:** Badge #N junto aos pills de ELO/xG.
+- [x] **Odds Football-Data:** Fetch adicional `fixtures_football-data.csv` e uso no scoring 1X2 (Valor/Odds justas).
 - [x] **Métricas da liga (linha compacta):** Resumo por baixo da classificação com tooltips.
 - [x] **Logótipos:** Exibição de emblemas das equipas com fallback.
 - [x] **Normalização Avançada:** Aliases cruzados fixtures/standings + sinónimos (ex.: Farul/Viitorul, Saint‑Étienne/St Etienne) e deteção de liga por equipas.

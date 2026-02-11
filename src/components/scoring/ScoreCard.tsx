@@ -43,7 +43,7 @@ export const ScoreCard: React.FC<Props> = ({ id, title, accentClass, score, high
       </div>
 
       <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-        <div className={`h-full ${accentClass}`} style={{ width: `${pct}%` }} />
+        <div className={`h-full ${accentClass} bg-gray-900`} style={{ width: `${pct}%` }} />
       </div>
 
       <div className="mt-3 space-y-1 text-sm text-gray-700">

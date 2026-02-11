@@ -111,6 +111,58 @@ const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
   );
 };
 
+type AccordionSectionProps = {
+  id: string;
+  title: string;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+};
+
+const AccordionSection: React.FC<AccordionSectionProps> = ({ id, title, defaultOpen = false, children }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const panelId = id;
+  const buttonId = `${id}-button`;
+
+  return (
+    <div className="mb-4">
+      <button
+        id={buttonId}
+        type="button"
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="w-full flex items-center justify-between text-left px-3 py-3 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200"
+      >
+        <span className="text-sm font-semibold text-gray-700 tracking-wide">{title}</span>
+        <span className="flex items-center gap-2 text-sm font-semibold text-gray-500">
+          <svg
+            className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 8l4 4 4-4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
+      </button>
+      <div
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        className={`${isOpen ? 'mt-2 px-1' : 'hidden'}`}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
 // Helper para construir o caminho do logo
 // Usa a estratégia de Slugs normalizados.
 // Espera ficheiros em: public/logos/<slug>.png
@@ -487,6 +539,10 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
   useEffect(() => {
     const fetchStandings = async () => {
+      setTeamStatsHome(null);
+      setTeamStatsAway(null);
+      setLeagueStats(null);
+
       const leagueInfo = getLeagueInfo(fixture.country, fixture.competition, fixture.homeTeam, fixture.awayTeam);
       
       if (leagueInfo) {
@@ -889,7 +945,22 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             }
           >
             <span>{section.title}</span>
-            <span className="text-xs text-gray-600">{isOpen ? '—' : '+'}</span>
+            <span className="text-xs text-gray-600 flex items-center">
+              <svg
+                className={`h-3.5 w-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                viewBox="0 0 20 20"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M6 8l4 4 4-4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
           </button>
         </div>
       );
@@ -1348,6 +1419,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     : createEmptyOver05HTMatchScore(scoringPlaceholderReason);
   const scoringValue1x2 = computeValue1x2Score(mapToValue1x2Inputs());
 
+  const RankingBadge: React.FC<{ rank?: number | null }> = ({ rank }) => {
+    const parsedRank = Number(rank);
+    if (!Number.isFinite(parsedRank) || parsedRank <= 0) return null;
+    return (
+      <span className="hidden sm:inline-flex items-center justify-center rounded-xl bg-gray-900 text-white text-xs sm:text-sm font-normal px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-sm">
+        #{parsedRank}
+      </span>
+    );
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
       {/* Cabeçalho do jogo */}
@@ -1373,10 +1454,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-end">
                 <XgPill value={xgHome} />
                 <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} />
+                <RankingBadge rank={homeStanding?.rank ?? null} />
               </div>
               {/* Forma da equipa da casa (Esquerda do nome) */}
               {homeStanding && (
-                <div className="hidden sm:flex gap-1 mr-2 shrink-0">
+                <div className="hidden sm:flex gap-1 shrink-0">
                   {homeStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
@@ -1443,7 +1525,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </h2>
               {/* Forma da equipa de fora (Direita do nome) */}
               {awayStanding && (
-                <div className="hidden sm:flex gap-1 ml-2 shrink-0">
+                <div className="hidden sm:flex gap-1 shrink-0">
                   {awayStanding.form.map((match, i) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
@@ -1462,6 +1544,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })}
                 </div>
               )}
+              <RankingBadge rank={awayStanding?.rank ?? null} />
               <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-start">
                 <EloPill elo={awayElo?.elo ?? null} rank={awayElo?.rank ?? null} />
                 <XgPill value={xgAway} />
@@ -1473,6 +1556,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       </div>
 
       <ScoringHub
+        key={fixture.id}
         teamScores={{
           [TEAM_OVER_15_MARKET_KEY]: { home: scoringHome, away: scoringAway },
           [TEAM_OVER_05_HT_MARKET_KEY]: { home: scoringHomeHT, away: scoringAwayHT },
@@ -1490,416 +1574,410 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         homeTeam={homeTeam}
         awayTeam={awayTeam}
         marketKey={VALUE_1X2_FAIR_ODDS_MARKET_KEY}
+        fixtureId={fixture.id}
       />
 
-      {/* Separador Probabilidades */}
-      <div className="flex items-center gap-2 mb-2">
-        <span className="text-xs font-semibold text-gray-500 tracking-[0.1em]">PROBABILIDADES</span>
-        <div className="flex-1 border-t border-gray-200" />
-      </div>
-
-      {/* Layout Grid Principal (Probabilidades) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* COLUNA 1: Principal (1X2, DC, DNB) */}
-        <div className="space-y-4">
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
-            <div className="grid grid-cols-3 gap-2">
-              <OddBox label={homeTeam} value={probabilities.homeWin} />
-              <OddBox label="Empate" value={probabilities.draw} />
-              <OddBox label={awayTeam} value={probabilities.awayWin} />
-            </div>
-            <div className="mt-4 h-32">
-              <Bar data={chartData} options={chartOptions} />
-            </div>
-          </div>
-
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
-            <div className="grid grid-cols-3 gap-2">
-              <OddBox label="1X" value={probabilities.doubleChance.homeDraw} />
-              <OddBox label="12" value={probabilities.doubleChance.homeAway} />
-              <OddBox label="X2" value={probabilities.doubleChance.drawAway} />
-            </div>
-          </div>
-        </div>
-
-        {/* COLUNA 2: Golos (O/U, BTTS, Clean Sheet) */}
-        <div className="space-y-4">
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Mercado de Golos</h3>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-gray-500 border-b">
-                  <th className="pb-2 text-left">Linha</th>
-                  <th className="pb-2 text-right">Over</th>
-                  <th className="pb-2 text-right">Under</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(probabilities.overUnder).map(([line, probs]) => (
-                  <tr key={line} className="border-b last:border-0 hover:bg-gray-100">
-                    <td className="py-2 font-medium">{line}</td>
-                    <td className="py-2 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-xl text-gray-900">
-                          {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
-                          {probs.over > 0 && (
-                            <span className="text-xs text-gray-400 font-normal"> ({(probs.over * 100).toFixed(1)}%)</span>
-                          )}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-2 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <span className="font-bold font-mono text-xl text-gray-900">
-                          {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
-                          {probs.under > 0 && (
-                            <span className="text-xs text-gray-400 font-normal"> ({(probs.under * 100).toFixed(1)}%)</span>
-                          )}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <div className="bg-gray-50 p-3 rounded-lg">
-              <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Ambas Marcam</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Sim</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">
-                    {formatOdd(probabilities.bttsYes)}
-                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsYes)})</span>
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Não</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">
-                    {formatOdd(probabilities.bttsNo)}
-                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsNo)})</span>
-                  </span>
+      <AccordionSection id="accordion-classificacao" title="CLASSIFICAÇÃO">
+        {(() => {
+          const hasStandings = currentStandings.length > 0;
+          return (
+            <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col w-full min-w-0">
+              <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
+                <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
+                <div className="grid grid-cols-5 min-w-[320px] sm:min-w-[380px] rounded-md border border-gray-300 overflow-hidden">
+                  {[
+                    { key: 'overall' as StandingMode, label: 'Global' },
+                    { key: 'home' as StandingMode, label: 'Casa' },
+                    { key: 'away' as StandingMode, label: 'Fora' },
+                    { key: 'last10' as StandingMode, label: '+2,5\n(Últimos 10)' },
+                    { key: 'last10_over15' as StandingMode, label: '+1,5\n(Últimos 10)' },
+                  ].map((tab, idx) => {
+                    const active = standingsTab === tab.key;
+                    return (
+                      <button
+                        key={tab.key}
+                        onClick={() => setStandingsTab(tab.key)}
+                        className={[
+                          'relative flex items-center justify-center text-[11px] font-semibold py-2 px-2 transition-colors duration-150 text-center whitespace-pre leading-tight',
+                          active
+                            ? 'bg-[#f2f2f2] text-black after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
+                            : 'bg-white text-black hover:bg-gray-100',
+                          idx > 0 ? 'border-l border-gray-300' : '',
+                        ].join(' ')}
+                      >
+                        {tab.key === 'last10' ? (
+                          <span className="leading-tight text-center">
+                            +2,5
+                            <br />
+                            <span className="text-[11px] text-gray-500">(Últimos 10)</span>
+                          </span>
+                        ) : (
+                          tab.label
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
-            <div className="bg-gray-50 p-3 rounded-lg">
-              <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Clean Sheet</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Casa</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">
-                    {formatOdd(probabilities.cleanSheet.home)}
-                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.home)})</span>
-                  </span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Fora</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">
-                    {formatOdd(probabilities.cleanSheet.away)}
-                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.away)})</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* COLUNA 3: Especial (Handicap, Margem, Correct Score) */}
-        <div className="space-y-4">
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Heatmap de Resultados (%)</h3>
-            <Heatmap data={probabilities.correctScore} />
-          </div>
-
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos da Equipa (Over)</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
-                {['0.5', '1.5', '2.5'].map(line => (
-                  <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                    <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-xl text-gray-800">
-                      {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
-                      {probabilities.teamOver.home[line] > 0 && (
-                        <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
-                      )}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
-                {['0.5', '1.5', '2.5'].map(line => (
-                  <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                    <span className="text-sm">+{line}</span>
-                    <span className="font-bold font-mono text-xl text-gray-800">
-                      {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
-                      {probabilities.teamOver.away[line] > 0 && (
-                        <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
-                      )}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Separador Estatística */}
-      <div className="flex items-center gap-2 mt-6 mb-2">
-        <span className="text-xs font-semibold text-gray-500 tracking-[0.1em]">ESTATÍSTICA</span>
-        <div className="flex-1 border-t border-gray-200" />
-      </div>
-
-      {/* Estatística */}
-      {(() => {
-        const hasTeamStats = !!(teamStatsHome && teamStatsAway);
-        const hasStandings = currentStandings.length > 0;
-        const teamSpan = 'lg:col-span-8';
-        const tableSpan = 'lg:col-span-4';
-        return (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-            {/* Comparativo equipas */}
-            {hasTeamStats ? (
-              <div className={`bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit ${teamSpan}`}>
-            <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">EQUIPAS</div>
-            <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[360px] sm:min-w-[680px]">
-              {/* Row: main header (removed label) */}
-              <div className="col-span-3 py-1"></div>
-              <div className="col-span-1"></div>
-              <div className="col-span-3 py-1"></div>
-
-              {/* Row: logos/names (top) */}
-              {/* Linha única: nome+ xG (casa) | logos vs logos | xG + nome (fora) */}
-              <div className="col-span-3 flex items-center justify-end gap-3 py-2 pr-2">
-                <span className="font-bold text-lg">{homeTeam}</span>
-              </div>
-              <div className="flex items-center justify-center gap-3 py-2">
-                <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-12 h-12 object-contain" />
-                <span className="text-xs text-gray-500">vs</span>
-                <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-12 h-12 object-contain" />
-              </div>
-              <div className="col-span-3 flex items-center justify-start gap-3 py-2 pl-2">
-                <span className="font-bold text-lg">{awayTeam}</span>
-              </div>
-
-              {/* Row: subheader labels under logos */}
-              {['Casa','Fora','Global'].map((label,i)=>(
-                <div key={`lh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
-              ))}
-              <div className=""></div>
-              {['Global','Fora','Casa'].map((label,i)=>(
-                <div key={`rh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
-              ))}
-
-              {/* Rows: stats */}
-              {teamStatsRows}
-            </div>
-          </div>
-        ) : (
-          <div className={`bg-white border border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500 ${teamSpan}`}>
-            Informação de equipas não disponível para esta liga.
-          </div>
-        )}
-
-        {/* Classificação */}
-        <div className={`bg-gray-50 p-3 rounded-lg h-fit flex flex-col flex-1 min-w-0 ${tableSpan}`}>
-          <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
-            <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
-            <div className="grid grid-cols-5 min-w-[320px] sm:min-w-[380px] rounded-md border border-gray-300 overflow-hidden">
-              {[
-                { key: 'overall' as StandingMode, label: 'Global' },
-                { key: 'home' as StandingMode, label: 'Casa' },
-                { key: 'away' as StandingMode, label: 'Fora' },
-                { key: 'last10' as StandingMode, label: '+2,5\n(Últimos 10)' },
-                { key: 'last10_over15' as StandingMode, label: '+1,5\n(Últimos 10)' },
-              ].map((tab, idx) => {
-                const active = standingsTab === tab.key;
-                return (
-                  <button
-                    key={tab.key}
-                    onClick={() => setStandingsTab(tab.key)}
-                    className={[
-                      'relative flex items-center justify-center text-[11px] font-semibold py-2 px-2 transition-colors duration-150 text-center whitespace-pre leading-tight',
-                      active
-                        ? 'bg-[#f2f2f2] text-black after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
-                        : 'bg-white text-black hover:bg-gray-100',
-                      idx > 0 ? 'border-l border-gray-300' : '',
-                    ].join(' ')}
-                  >
-                    {tab.key === 'last10' ? (
-                      <span className="leading-tight text-center">
-                        +2,5
-                        <br />
-                        <span className="text-[11px] text-gray-500">(Últimos 10)</span>
-                      </span>
-                    ) : (
-                      tab.label
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
               {loadingStandings ? (
                 <div className="text-center py-10 text-gray-500">A carregar...</div>
               ) : hasStandings ? (
-            <div className="flex-grow flex flex-col justify-between">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    {standingsTab === 'last10' || standingsTab === 'last10_over15' ? (
-                      <tr className="text-gray-500 border-b">
-                        <th className="pb-1 text-center w-6">#</th>
-                        <th className="pb-1 text-left">Equipa</th>
-                        <th className="pb-1 text-left">Últimos 10</th>
-                        <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                      </tr>
-                    ) : (
-                      <tr className="text-gray-500 border-b">
-                        <th className="pb-1 text-center w-6">#</th>
-                        <th className="pb-1 text-left">Equipa</th>
-                        <th className="pb-1 text-center" title="Jogos">J</th>
-                        <th className="pb-1 text-center" title="Vitórias">V</th>
-                        <th className="pb-1 text-center" title="Empates">E</th>
-                        <th className="pb-1 text-center" title="Derrotas">D</th>
-                        <th className="pb-1 text-center" title="Golos Marcados">GM</th>
-                        <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
-                        <th className="pb-1 text-center" title="Diferença">Dif</th>
-                        <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                      </tr>
-                    )}
-                  </thead>
-                  <tbody className="text-gray-600">
-                    {currentStandings.map((row, index) => {
-                      const matches = (teamName: string, teamId: string | null) => {
-                        if (teamId && row.teamId) {
-                          if (row.teamId === teamId) return true;
-                          // Se os IDs diferem (ex.: clubelo vs football-data), faz fallback por nome normalizado
-                          return namesMatch(row.team, teamName);
-                        }
-                        if (teamId && !row.teamId) return namesMatch(row.team, teamName);
-                        if (!teamId && row.teamId) return namesMatch(row.team, teamName);
-                        return namesMatch(row.team, teamName);
-                      };
+                <div className="flex-grow flex flex-col justify-between">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        {standingsTab === 'last10' || standingsTab === 'last10_over15' ? (
+                          <tr className="text-gray-500 border-b">
+                            <th className="pb-1 text-center w-6">#</th>
+                            <th className="pb-1 text-left">Equipa</th>
+                            <th className="pb-1 text-left">Últimos 10</th>
+                            <th className="pb-1 text-center font-bold" title="Pontos">P</th>
+                          </tr>
+                        ) : (
+                          <tr className="text-gray-500 border-b">
+                            <th className="pb-1 text-center w-6">#</th>
+                            <th className="pb-1 text-left">Equipa</th>
+                            <th className="pb-1 text-center" title="Jogos">J</th>
+                            <th className="pb-1 text-center" title="Vitórias">V</th>
+                            <th className="pb-1 text-center" title="Empates">E</th>
+                            <th className="pb-1 text-center" title="Derrotas">D</th>
+                            <th className="pb-1 text-center" title="Golos Marcados">GM</th>
+                            <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
+                            <th className="pb-1 text-center" title="Diferença">Dif</th>
+                            <th className="pb-1 text-center font-bold" title="Pontos">P</th>
+                          </tr>
+                        )}
+                      </thead>
+                      <tbody className="text-gray-600">
+                        {currentStandings.map((row, index) => {
+                          const matches = (teamName: string, teamId: string | null) => {
+                            if (teamId && row.teamId) {
+                              if (row.teamId === teamId) return true;
+                              // Se os IDs diferem (ex.: clubelo vs football-data), faz fallback por nome normalizado
+                              return namesMatch(row.team, teamName);
+                            }
+                            if (teamId && !row.teamId) return namesMatch(row.team, teamName);
+                            if (!teamId && row.teamId) return namesMatch(row.team, teamName);
+                            return namesMatch(row.team, teamName);
+                          };
 
-                      const isMatchTeam =
-                        matches(homeTeam, homeTeamId) ||
-                        matches(awayTeam, awayTeamId);
-                      const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                          const isMatchTeam =
+                            matches(homeTeam, homeTeamId) ||
+                            matches(awayTeam, awayTeamId);
+                          const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
-                      const isLast10Mode = standingsTab === 'last10' || standingsTab === 'last10_over15';
-                      const formArray = row.form ?? [];
-                      const showLast10 = isLast10Mode;
-                      const threshold = standingsTab === 'last10_over15' ? 1.5 : 2.5;
-                      const last10Cells = showLast10 ? (
-                        <td className="py-1">
-                          <div className="flex gap-1">
-                            {(formArray.length ? formArray : Array(10).fill({ score: '0-0' })).slice(-10).map((match, idxForm, arr) => {
-                              const [hg, ag] = (match.score || '0-0').split('-').map((v: string) => Number(v));
-                              const total = (Number.isFinite(hg) ? hg : 0) + (Number.isFinite(ag) ? ag : 0);
-                              const over = total > threshold;
-                              const isLast = idxForm === arr.length - 1;
-                              const ringClass = isLast
-                                ? over
-                                  ? 'ring-[1.5px] ring-offset-1 ring-[#60A5FA]'
-                                  : 'ring-[1.5px] ring-offset-1 ring-[#F472B6]'
-                                : '';
-                              return (
-                                <div
-                                  key={idxForm}
-                                  className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-[#60A5FA] text-white' : 'bg-[#F472B6] text-white'} ${ringClass}`}
-                                  title={match.opponent ? `${match.opponent} ${match.score}` : 'Sem dados'}
-                                >
-                                  {over ? '+' : '-'}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </td>
-                      ) : null;
+                          const isLast10Mode = standingsTab === 'last10' || standingsTab === 'last10_over15';
+                          const formArray = row.form ?? [];
+                          const showLast10 = isLast10Mode;
+                          const threshold = standingsTab === 'last10_over15' ? 1.5 : 2.5;
+                          const last10Cells = showLast10 ? (
+                            <td className="py-1">
+                              <div className="flex gap-1">
+                                {(formArray.length ? formArray : Array(10).fill({ score: '0-0' })).slice(-10).map((match, idxForm, arr) => {
+                                  const [hg, ag] = (match.score || '0-0').split('-').map((v: string) => Number(v));
+                                  const total = (Number.isFinite(hg) ? hg : 0) + (Number.isFinite(ag) ? ag : 0);
+                                  const over = total > threshold;
+                                  const isLast = idxForm === arr.length - 1;
+                                  const ringClass = isLast
+                                    ? over
+                                      ? 'ring-[1.5px] ring-offset-1 ring-[#60A5FA]'
+                                      : 'ring-[1.5px] ring-offset-1 ring-[#F472B6]'
+                                    : '';
+                                  return (
+                                    <div
+                                      key={idxForm}
+                                      className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-[#60A5FA] text-white' : 'bg-[#F472B6] text-white'} ${ringClass}`}
+                                      title={match.opponent ? `${match.opponent} ${match.score}` : 'Sem dados'}
+                                    >
+                                      {over ? '+' : '-'}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </td>
+                          ) : null;
 
-                      return (
-                        <tr key={row.team} className={`border-b border-gray-100 hover:bg-gray-100 ${rowClass}`}>
-                          <td className="py-1 text-center">{row.rank}</td>
-                          <td className="py-1 font-medium truncate max-w-[100px]" title={row.team}>{row.team}</td>
-                          {isLast10Mode ? (
-                            <>
-                              {last10Cells}
-                              <td className="text-center font-bold text-gray-900">{row.points}</td>
-                            </>
-                          ) : (
-                            <>
-                              <td className="text-center">{row.played}</td>
-                              <td className="text-center text-gray-400">{row.wins}</td>
-                              <td className="text-center text-gray-400">{row.draws}</td>
-                              <td className="text-center text-gray-400">{row.losses}</td>
-                              <td className="text-center text-gray-400">{row.goalsFor}</td>
-                              <td className="text-center text-gray-400">{row.goalsAgainst}</td>
-                              <td className="text-center text-gray-500">{row.goalDiff}</td>
-                              <td className="text-center font-bold text-gray-900">{row.points}</td>
-                            </>
-                          )}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                          return (
+                            <tr key={row.team} className={`border-b border-gray-100 hover:bg-gray-100 ${rowClass}`}>
+                              <td className="py-1 text-center">{row.rank}</td>
+                              <td className="py-1 font-medium truncate max-w-[100px]" title={row.team}>{row.team}</td>
+                              {isLast10Mode ? (
+                                <>
+                                  {last10Cells}
+                                  <td className="text-center font-bold text-gray-900">{row.points}</td>
+                                </>
+                              ) : (
+                                <>
+                                  <td className="text-center">{row.played}</td>
+                                  <td className="text-center text-gray-400">{row.wins}</td>
+                                  <td className="text-center text-gray-400">{row.draws}</td>
+                                  <td className="text-center text-gray-400">{row.losses}</td>
+                                  <td className="text-center text-gray-400">{row.goalsFor}</td>
+                                  <td className="text-center text-gray-400">{row.goalsAgainst}</td>
+                                  <td className="text-center text-gray-500">{row.goalDiff}</td>
+                                  <td className="text-center font-bold text-gray-900">{row.points}</td>
+                                </>
+                              )}
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center text-gray-400 text-sm py-10 italic">
+                  Classificação indisponível para esta competição.
+                </div>
+              )}
+              {leagueStats && leagueStats.matchesPlayed > 0 ? (
+                <div className="mt-3 bg-white/70 rounded-lg px-3 py-2 shadow-sm border border-gray-200">
+                  {(() => {
+                    const mp = leagueStats.matchesPlayed || 0;
+                    const pct = (v: number) => (mp > 0 ? `${((v / mp) * 100).toFixed(1)}%` : '—');
+                    const avg = (v: number) => (mp > 0 ? (v / mp).toFixed(1) : '—');
+                    const items = [
+                      { key: 'Vc', label: 'Vc', value: pct(leagueStats.homeWins), tip: 'Vitórias em casa' },
+                      { key: 'E', label: 'E', value: pct(leagueStats.draws), tip: 'Empates' },
+                      { key: 'Vf', label: 'Vf', value: pct(leagueStats.awayWins), tip: 'Vitórias fora' },
+                      { key: 'o15', label: '+1,5', value: pct(leagueStats.over15), tip: 'Jogos com mais de 1 golo' },
+                      { key: 'o25', label: '+2,5', value: pct(leagueStats.over25), tip: 'Jogos com mais de 2 golos' },
+                      { key: 'bts', label: 'BTS', value: pct(leagueStats.btts), tip: 'Ambas marcam' },
+                      { key: 'gj', label: 'Gj', value: avg(leagueStats.goalsTotal), tip: 'Golos por jogo' },
+                      { key: 'gjc', label: 'GjC', value: avg(leagueStats.goalsHome), tip: 'Golos por jogo casa' },
+                      { key: 'gjf', label: 'GjF', value: avg(leagueStats.goalsAway), tip: 'Golos por jogo fora' },
+                    ];
+                    return (
+                      <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[12px] leading-tight text-gray-800 w-full justify-between">
+                        {items.map((item) => (
+                          <React.Fragment key={item.key}>
+                            <span className="relative group cursor-help">
+                              <span className="font-semibold">{item.label}</span>&nbsp;
+                              <span>{item.value}</span>
+                              <span className="invisible group-hover:visible absolute z-30 top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-[11px] px-2 py-1 rounded shadow-lg">
+                                {item.tip}
+                              </span>
+                            </span>
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
+              ) : (
+                <div className="text-center py-6 text-gray-500">Informação não disponível para esta liga.</div>
+              )}
+            </div>
+          );
+        })()}
+      </AccordionSection>
+
+      <AccordionSection id="accordion-probabilidades" title="PROBABILIDADES">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* COLUNA 1: Principal (1X2, DC, DNB) */}
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <OddBox label={homeTeam} value={probabilities.homeWin} />
+                <OddBox label="Empate" value={probabilities.draw} />
+                <OddBox label={awayTeam} value={probabilities.awayWin} />
+              </div>
+              <div className="mt-4 h-32">
+                <Bar data={chartData} options={chartOptions} />
               </div>
             </div>
-          ) : (
-            <div className="text-center text-gray-400 text-sm py-10 italic">
-              Classificação indisponível para esta competição.
-            </div>
-          )}
-          {leagueStats && leagueStats.matchesPlayed > 0 ? (
-            <div className="mt-3 bg-white/70 rounded-lg px-3 py-2 shadow-sm border border-gray-200">
-              {(() => {
-                const mp = leagueStats.matchesPlayed || 0;
-                const pct = (v: number) => (mp > 0 ? `${((v / mp) * 100).toFixed(1)}%` : '—');
-                const avg = (v: number) => (mp > 0 ? (v / mp).toFixed(1) : '—');
-                const items = [
-                  { key: 'Vc', label: 'Vc', value: pct(leagueStats.homeWins), tip: 'Vitórias em casa' },
-                  { key: 'E', label: 'E', value: pct(leagueStats.draws), tip: 'Empates' },
-                  { key: 'Vf', label: 'Vf', value: pct(leagueStats.awayWins), tip: 'Vitórias fora' },
-                  { key: 'o15', label: '+1,5', value: pct(leagueStats.over15), tip: 'Jogos com mais de 1 golo' },
-                  { key: 'o25', label: '+2,5', value: pct(leagueStats.over25), tip: 'Jogos com mais de 2 golos' },
-                  { key: 'bts', label: 'BTS', value: pct(leagueStats.btts), tip: 'Ambas marcam' },
-                  { key: 'gj', label: 'Gj', value: avg(leagueStats.goalsTotal), tip: 'Golos por jogo' },
-                  { key: 'gjc', label: 'GjC', value: avg(leagueStats.goalsHome), tip: 'Golos por jogo casa' },
-                  { key: 'gjf', label: 'GjF', value: avg(leagueStats.goalsAway), tip: 'Golos por jogo fora' },
-                ];
-                return (
-                  <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[12px] leading-tight text-gray-800 w-full justify-between">
-                    {items.map((item) => (
-                      <React.Fragment key={item.key}>
-                        <span className="relative group cursor-help">
-                          <span className="font-semibold">{item.label}</span>&nbsp;
-                          <span>{item.value}</span>
-                          <span className="invisible group-hover:visible absolute z-30 top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-[11px] px-2 py-1 rounded shadow-lg">
-                            {item.tip}
-                          </span>
-                        </span>
-                      </React.Fragment>
-                    ))}
-                  </div>
-                );
-              })()}
-            </div>
-          ) : (
-            <div className="text-center py-6 text-gray-500">Informação não disponível para esta liga.</div>
-          )}
+
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <OddBox label="1X" value={probabilities.doubleChance.homeDraw} />
+                <OddBox label="12" value={probabilities.doubleChance.homeAway} />
+                <OddBox label="X2" value={probabilities.doubleChance.drawAway} />
+              </div>
             </div>
           </div>
-        );
-      })()}
+
+          {/* COLUNA 2: Golos (O/U, BTTS, Clean Sheet) */}
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Mercado de Golos</h3>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-gray-500 border-b">
+                    <th className="pb-2 text-left">Linha</th>
+                    <th className="pb-2 text-right">Over</th>
+                    <th className="pb-2 text-right">Under</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(probabilities.overUnder).map(([line, probs]) => (
+                    <tr key={line} className="border-b last:border-0 hover:bg-gray-100">
+                      <td className="py-2 font-medium">{line}</td>
+                      <td className="py-2 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="font-bold font-mono text-xl text-gray-900">
+                            {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
+                            {probs.over > 0 && (
+                              <span className="text-xs text-gray-400 font-normal"> ({(probs.over * 100).toFixed(1)}%)</span>
+                            )}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-2 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="font-bold font-mono text-xl text-gray-900">
+                            {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
+                            {probs.under > 0 && (
+                              <span className="text-xs text-gray-400 font-normal"> ({(probs.under * 100).toFixed(1)}%)</span>
+                            )}
+                          </span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Ambas Marcam</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Sim</span>
+                    <span className="font-bold font-mono text-xl text-gray-900">
+                      {formatOdd(probabilities.bttsYes)}
+                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsYes)})</span>
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Não</span>
+                    <span className="font-bold font-mono text-xl text-gray-900">
+                      {formatOdd(probabilities.bttsNo)}
+                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsNo)})</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 p-3 rounded-lg">
+                <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Clean Sheet</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Casa</span>
+                    <span className="font-bold font-mono text-xl text-gray-900">
+                      {formatOdd(probabilities.cleanSheet.home)}
+                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.home)})</span>
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Fora</span>
+                    <span className="font-bold font-mono text-xl text-gray-900">
+                      {formatOdd(probabilities.cleanSheet.away)}
+                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.away)})</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* COLUNA 3: Especial (Handicap, Margem, Correct Score) */}
+          <div className="space-y-4">
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Heatmap de Resultados (%)</h3>
+              <Heatmap data={probabilities.correctScore} />
+            </div>
+
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos da Equipa (Over)</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
+                  {['0.5', '1.5', '2.5'].map(line => (
+                    <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
+                      <span className="text-sm">+{line}</span>
+                      <span className="font-bold font-mono text-xl text-gray-800">
+                        {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
+                        {probabilities.teamOver.home[line] > 0 && (
+                          <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
+                  {['0.5', '1.5', '2.5'].map(line => (
+                    <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
+                      <span className="text-sm">+{line}</span>
+                      <span className="font-bold font-mono text-xl text-gray-800">
+                        {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
+                        {probabilities.teamOver.away[line] > 0 && (
+                          <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AccordionSection>
+
+      <AccordionSection id="accordion-estatisticas" title="ESTATÍSTICAS">
+        {(() => {
+          const hasTeamStats = !!(teamStatsHome && teamStatsAway);
+          return (
+            <div className="grid grid-cols-1 gap-4 items-start">
+              {/* Comparativo equipas */}
+              {hasTeamStats ? (
+                <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit">
+                  <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">EQUIPAS</div>
+                  <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[360px] sm:min-w-[680px]">
+                    {/* Row: main header (removed label) */}
+                    <div className="col-span-3 py-1"></div>
+                    <div className="col-span-1"></div>
+                    <div className="col-span-3 py-1"></div>
+
+                    {/* Row: logos/names (top) */}
+                    {/* Linha única: nome+ xG (casa) | logos vs logos | xG + nome (fora) */}
+                    <div className="col-span-3 flex items-center justify-end gap-3 py-2 pr-2">
+                      <span className="font-bold text-lg">{homeTeam}</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-3 py-2">
+                      <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-12 h-12 object-contain" />
+                      <span className="text-xs text-gray-500">vs</span>
+                      <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-12 h-12 object-contain" />
+                    </div>
+                    <div className="col-span-3 flex items-center justify-start gap-3 py-2 pl-2">
+                      <span className="font-bold text-lg">{awayTeam}</span>
+                    </div>
+
+                    {/* Row: subheader labels under logos */}
+                    {['Casa','Fora','Global'].map((label,i)=>(
+                      <div key={`lh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
+                    ))}
+                    <div className=""></div>
+                    {['Global','Fora','Casa'].map((label,i)=>(
+                      <div key={`rh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
+                    ))}
+
+                    {/* Rows: stats */}
+                    {teamStatsRows}
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white border border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500 w-full">
+                  Informação de equipas não disponível para esta liga.
+                </div>
+              )}
+            </div>
+          );
+        })()}
+      </AccordionSection>
     </div>
   );
 };

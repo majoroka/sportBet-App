@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   createEmptyValue1x2Score,
   SCORING_MARKETS,
@@ -20,6 +20,7 @@ type Props = {
   homeTeam: string;
   awayTeam: string;
   marketKey: ScoringMarketKey;
+  fixtureId: string;
 };
 
 export const ScoringHub: React.FC<Props> = ({
@@ -29,6 +30,7 @@ export const ScoringHub: React.FC<Props> = ({
   homeTeam,
   awayTeam,
   marketKey,
+  fixtureId,
 }) => {
   const marketOptions = useMemo(
     () =>
@@ -38,7 +40,9 @@ export const ScoringHub: React.FC<Props> = ({
   const [selectedMarket, setSelectedMarket] = useState<ScoringMarketKey>(marketKey);
   const [highlightCardId, setHighlightCardId] = useState<string | null>(null);
   const [highlightVariant, setHighlightVariant] = useState<'success' | 'warning' | 'danger'>('success');
-  useEffect(() => setSelectedMarket(marketKey), [marketKey]);
+  const hasAutoSelectedRef = useRef(false);
+  const userHasSelectedRef = useRef(false);
+  const lastAutoPickSignatureRef = useRef<string | null>(null);
   const activeMarket = SCORING_MARKETS[selectedMarket] ?? SCORING_MARKETS[marketKey];
   const fallbackTeamScore = teamScores[marketKey] ?? Object.values(teamScores)[0];
   const fallbackMatchScore = matchScores?.[marketKey] ?? (matchScores ? Object.values(matchScores)[0] : undefined);
@@ -85,6 +89,7 @@ export const ScoringHub: React.FC<Props> = ({
 
   const handleBestPickClick = () => {
     if (!bestPickGlobal) return;
+    userHasSelectedRef.current = true;
     setSelectedMarket(bestPickGlobal.marketKey as ScoringMarketKey);
     setHighlightVariant(getVariant(bestPickGlobal.score));
 
@@ -102,6 +107,25 @@ export const ScoringHub: React.FC<Props> = ({
       }, 60);
     });
   };
+
+  useEffect(() => {
+    hasAutoSelectedRef.current = false;
+    userHasSelectedRef.current = false;
+    lastAutoPickSignatureRef.current = null;
+    setSelectedMarket(marketKey);
+    setHighlightCardId(null);
+    setHighlightVariant('success');
+  }, [fixtureId, homeTeam, awayTeam, marketKey]);
+
+  useEffect(() => {
+    if (userHasSelectedRef.current) return;
+    if (!bestPickGlobal) return;
+    const signature = `${bestPickGlobal.marketKey}|${bestPickGlobal.targetId}|${bestPickGlobal.outcomeKey ?? ''}|${bestPickGlobal.score}`;
+    if (lastAutoPickSignatureRef.current === signature) return;
+    setSelectedMarket(bestPickGlobal.marketKey as ScoringMarketKey);
+    hasAutoSelectedRef.current = true;
+    lastAutoPickSignatureRef.current = signature;
+  }, [bestPickGlobal]);
 
   return (
     <div className="mb-5">
@@ -132,7 +156,11 @@ export const ScoringHub: React.FC<Props> = ({
               key={market.key}
               id={`tab-${market.key}`}
               type="button"
-              onClick={() => isEnabled && setSelectedMarket(market.key)}
+              onClick={() => {
+                if (!isEnabled) return;
+                userHasSelectedRef.current = true;
+                setSelectedMarket(market.key);
+              }}
               className={[
                 'px-3 py-1 rounded-full text-xs font-semibold border transition-colors',
                 isActive ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-700 border-gray-300',

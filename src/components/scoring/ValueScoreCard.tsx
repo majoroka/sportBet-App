@@ -58,7 +58,7 @@ export const ValueScoreCard: React.FC<Props> = ({ id, title, accentClass, outcom
       </div>
 
       <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-        <div className={`h-full ${accentClass}`} style={{ width: `${pct}%` }} />
+        <div className={`h-full ${accentClass} bg-gray-900`} style={{ width: `${pct}%` }} />
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-gray-600">

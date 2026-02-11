@@ -11,12 +11,16 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 1. **Input:** CSVs estáticos alojados no repositório (`public/data/`).
    - `clubelo_latest.csv`: Dados de jogos e xG (atualizado diariamente).
    - `standings/*.csv`: Tabelas de classificação por liga (códigos E0, P1, D1, etc.).
+   - `fixtures_football-data.csv`: Fixtures + odds B365 (usado no scoring de valor 1X2).
    - `ranking_elo.csv`: Ranking ELO por clube (para pills no cabeçalho).
    - `teams_mapping_package_clean.json`: Base de dados de normalização de nomes de equipas e mapeamento de ligas/logos.
+   - `scoring-thresholds.jsonc`: Fonte de truth dos thresholds/pontos dos scorings.
 2. **Adapter:** Normaliza os dados brutos para o modelo de domínio `Fixture`.
 3. **Calculators:** Aplica modelos matemáticos (Poisson) aos dados normalizados (`xG` -> `Probabilities`).
-4. **UI Components:** Renderiza os dados processados para o utilizador.
+4. **Scoring Engine:** Aplica modelos de scoring data-driven (team/match/multi-outcome) e agrega o Best Pick Global.
+5. **UI Components:** Renderiza os dados processados para o utilizador.
    - Tabs de classificação: Global / Casa / Fora / +2,5 (Últimos 10) / +1,5 (Últimos 10) com grelha de forma colorida.
+   - ScoringHub com tabs, breakdown por grupos e banner Best Pick Global.
    - Card “Equipas”: xG por equipa calculado a partir da matriz de correct score (truncada a 6 golos), logos centrados e pill de xG.
    - Paleta coerente azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
 
@@ -34,20 +38,28 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
   - `FixtureDetails.tsx`: Vista detalhada.
   - `FilterBar.tsx`: Filtros (data/país/jogo).
   - `AppHeader.tsx`: Cabeçalho e identidade visual.
+  - `scoring/ScoringHub.tsx`: Tabs de scoring, banner Best Pick Global e ScoreCards.
 - **`hooks/`**:
   - `useFixtures.ts`: Carregamento de dados (fetch, fallback, parse, filtros).
 - **`lib/`**: Bibliotecas utilitárias.
   - `teamMapping.ts`: Sistema de normalização de nomes e resolução de IDs de equipas/ligas.
   - `logo.ts`: Resolve nomes de equipas para ficheiros de logo usando `src/lib/logoManifest.json`.
+- **`data/`**:
+  - `footballDataOdds.ts`: Loader/cache do CSV `fixtures_football-data.csv` (odds B365).
 - **`utils/`**:
   - `fetchWithCacheBust.ts`: Helper de fetch com cache normal em prod e cache-busting em dev.
 - **`config/`**:
   - `leagues.ts`: Configuração canónica de ligas (divisão, nome de exibição, aliases e `standings_url`).
   - `countries.ts`: Mapa de códigos de país para nome e bandeira.
+- **`scoring/`**:
+  - `models/` e `compute/`: Configs e funções puras por mercado.
+  - `aggregateBestPickGlobal.ts`: Agregador do Best Pick cross-market.
+  - `types.ts`: Tipos comuns do scoring.
 - **`scripts/`** (Node):
   - `scripts/data/`: fetch e atualização de dados.
     - `fetch-clubelo.js`: Atualiza `public/data/clubelo_latest.csv`.
     - `fetch-standings.js`: Atualiza `public/data/standings/*.csv`.
+    - `fetch-football-data-fixtures.js`: Atualiza `public/data/fixtures_football-data.csv`.
   - `scripts/logos/`: gestão de logos.
     - `generate-logo-manifest.js`: Indexa `public/logos` em `src/lib/logoManifest.json`.
     - `fill-logos.js`: Preenche paths no mapping.

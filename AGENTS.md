@@ -19,15 +19,20 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Dashboard de página única com filtros para **Data, País e Jogo** (datas exibidas como `DD/MMM/AA (ddd)`).
   - Filtros persistentes (URL + localStorage) para manter seleção entre refreshes.
   - Visualização imediata de probabilidades, gráficos (Chart.js) e estatísticas ao selecionar um jogo.
+  - Secção **SCORING** com múltiplos mercados (team/match/multi-outcome), tabs e breakdown por grupos.
+  - Banner **Best Pick Global** (cross-market) com navegação para o card vencedor e highlight.
+  - Auto-seleção do tab do Best Pick ao abrir um fixture (sem sobrepor cliques do utilizador).
   - Tabela de Classificação com tabs: Global, Casa, Fora, **+2,5 (Últimos 10)** e **+1,5 (Últimos 10)**, com grelha de últimos jogos colorida.
   - Linha compacta de métricas da liga por baixo da classificação, com tooltips.
+  - Classificação/Probabilidades/Estatísticas organizadas em acordeões (colapsados por defeito).
   - Secção de Estatística com tabela comparativa por equipa e accordions por categoria (resultados, consistência, remates, cantos, disciplina).
   - Card “Equipas” com xG por clube (derivado da matriz de correct score, truncada a 6 golos), logos centrados e pill de xG.
-  - Pills de ELO no cabeçalho do jogo (ranking via `public/data/ranking_elo.csv`).
+  - Pills de ELO no cabeçalho do jogo (ranking via `public/data/ranking_elo.csv`) + badge #N de classificação junto aos pills.
+  - Odds B365 para o scoring 1X2 (Valor/Odds justas) via `public/data/fixtures_football-data.csv`.
   - Logótipos dos clubes (com fallback visual) e design responsivo (forma oculta em mobile para não quebrar layout).
 
 - **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono). Paleta principal coerente: azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
-- **Dados Atualizados:** Pipeline automatizada (GitHub Actions) que atualiza diariamente, às **05:00 UTC**, os dados de jogos (ClubElo) e classificações (Football-Data).
+- **Dados Atualizados:** Pipeline automatizada (GitHub Actions) que atualiza diariamente, às **05:00 UTC**, ClubElo, standings e fixtures/odds do Football-Data.
 
 ## 🛠️ Stack Tecnológica
 
@@ -109,6 +114,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - `node scripts/logos/generate-logo-manifest.js` — reindexa todos os logos em `public/logos`.
 - `node scripts/mapping/map-fixtures.ts` — lista equipas dos fixtures e diz quais casam com o mapping/aliases.
 - Ver mais em `scripts/README.md`.
+- `node scripts/data/fetch-football-data-fixtures.js` — descarrega `public/data/fixtures_football-data.csv`.
 - `npm run build` — valida o projeto (TypeScript + Vite).
 - `npm run lint` — lint (ESLint).
 - `npm run format` — format (Prettier).
