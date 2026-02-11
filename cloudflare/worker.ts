@@ -1,6 +1,6 @@
 // Definição manual para evitar erro de TS se não tiveres @cloudflare/workers-types instalado
 interface ExecutionContext {
-  waitUntil(promise: Promise<any>): void;
+  waitUntil(promise: Promise<unknown>): void;
   passThroughOnException(): void;
 }
 

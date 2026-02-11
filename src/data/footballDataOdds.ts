@@ -43,7 +43,7 @@ const normalizeDate = (value?: string | null): string | null => {
     return base.slice(0, 10);
   }
 
-  const match = base.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2}|\d{4})$/);
+  const match = base.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2}|\d{4})$/);
   if (match) {
     const [, ddRaw, mmRaw, yyRaw] = match;
     const dd = ddRaw.padStart(2, '0');

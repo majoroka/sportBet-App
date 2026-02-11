@@ -21,7 +21,7 @@ interface MappingData {
   };
   teams: Record<string, Team>;
   alias_index: Record<string, string>;
-  needs_review: any[];
+  needs_review: unknown[];
 }
 
 // Cache singleton em memória

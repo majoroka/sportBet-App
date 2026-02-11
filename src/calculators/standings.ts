@@ -15,12 +15,28 @@ interface MatchRow {
   AG?: string;
   Res?: string;
   Season?: string;
+  HTHG?: string;
+  HTFHG?: string;
+  HTAG?: string;
+  HTFAG?: string;
+  HS?: string;
+  AS?: string;
+  HST?: string;
+  AST?: string;
+  HC?: string;
+  AC?: string;
+  HY?: string;
+  AY?: string;
+  HR?: string;
+  AR?: string;
+  HF?: string;
+  AF?: string;
 }
 
 export type StandingMode = 'overall' | 'home' | 'away' | 'last10' | 'last10_over15';
 
 export const calculateStandings = (csvText: string, mode: StandingMode = 'overall', maxForm: number = 5): StandingRow[] => {
-  const { data } = Papa.parse(csvText, {
+  const { data } = Papa.parse<MatchRow>(csvText, {
     header: true,
     skipEmptyLines: true,
   });
@@ -63,9 +79,7 @@ export const calculateStandings = (csvText: string, mode: StandingMode = 'overal
     return { canonical: name, id: null };
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data.forEach((row: any) => {
-    const match = row as MatchRow;
+  data.forEach((match) => {
     
     // Filtrar apenas a época 2025/2026 se a coluna Season existir
     // Nos ficheiros agregados (POL.csv), Season costuma ser o ano de início (2025) ou "2025/2026"
@@ -159,7 +173,7 @@ export const calculateStandings = (csvText: string, mode: StandingMode = 'overal
 };
 
 export const computeLeagueStats = (csvText: string): LeagueStats => {
-  const { data } = Papa.parse(csvText, {
+  const { data } = Papa.parse<MatchRow>(csvText, {
     header: true,
     skipEmptyLines: true,
   });
@@ -181,8 +195,7 @@ export const computeLeagueStats = (csvText: string): LeagueStats => {
 
   const teamsSet = new Set<string>();
 
-  (data as any[]).forEach((row) => {
-    const match = row as any;
+  data.forEach((match) => {
     // Restringe à época atual (mesma lógica do calculateStandings)
     if (match.Season) {
       const season = match.Season.toString().trim();
@@ -262,7 +275,7 @@ const initSide = (): TeamSideStats => ({
 });
 
 export const computeTeamStats = (csvText: string, teamName: string): TeamStats => {
-  const { data } = Papa.parse(csvText, {
+  const { data } = Papa.parse<MatchRow>(csvText, {
     header: true,
     skipEmptyLines: true,
   });
@@ -316,8 +329,7 @@ export const computeTeamStats = (csvText: string, teamName: string): TeamStats =
     return { home, away, overall: initSide() };
   }
 
-  (data as any[]).forEach((row) => {
-    const match = row as any;
+  data.forEach((match) => {
     if (match.Season) {
       const season = match.Season.toString().trim();
       if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;

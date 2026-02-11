@@ -36,7 +36,39 @@ type MappingFile = {
   };
   teams: Record<string, TeamRecord>;
   alias_index: Record<string, string>;
-  needs_review?: any[];
+  needs_review?: unknown[];
+};
+
+type FixtureCsvRow = {
+  Home?: string;
+  Away?: string;
+  home?: string;
+  away?: string;
+  homeTeam?: string;
+  awayTeam?: string;
+} & Record<string, string>;
+
+type MappedTeam = {
+  original_name: string;
+  normalized_name: string;
+  matched: boolean;
+  team_id?: string | null;
+  display_pt?: string;
+  names?: Record<string, string | null>;
+  logo_path?: string;
+};
+
+type UnmappedTeam = {
+  original_name: string;
+  normalized_name: string;
+  matched: boolean;
+};
+
+type PatchSuggestion = {
+  alias_key_clubelo: string;
+  alias_key_football_data: string;
+  original_name: string;
+  normalized_name: string;
 };
 
 // --- CONFIG (ajusta se quiseres caminhos absolutos) --- //
@@ -51,12 +83,12 @@ const readText = (p: string) => fs.readFileSync(p, 'utf8');
 
 const loadFixturesTeams = (csvPath: string): string[] => {
   const csv = readText(csvPath);
-  const { data } = Papa.parse<string[]>(csv, {
+  const { data } = Papa.parse<FixtureCsvRow>(csv, {
     header: true,
     skipEmptyLines: true,
   });
   const names = new Set<string>();
-  (data as any[]).forEach((row) => {
+  data.forEach((row) => {
     const home = row.Home || row.home || row.homeTeam;
     const away = row.Away || row.away || row.awayTeam;
     if (home) names.add(String(home).trim());
@@ -91,9 +123,9 @@ const main = () => {
   const normalize = buildNormalizer(mapping);
   const fixturesTeams = loadFixturesTeams(CLUB_ELO_CSV);
 
-  const mapped: any[] = [];
-  const unmapped: any[] = [];
-  const patchSuggestions: any[] = [];
+  const mapped: MappedTeam[] = [];
+  const unmapped: UnmappedTeam[] = [];
+  const patchSuggestions: PatchSuggestion[] = [];
 
   for (const original of fixturesTeams) {
     const normalized = normalize(original);

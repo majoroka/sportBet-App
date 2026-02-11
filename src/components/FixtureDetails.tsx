@@ -12,6 +12,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  TooltipItem,
 } from 'chart.js';
 import { getTeamLogoFilename } from '../lib/logo';
 import { resolveTeamId } from '../lib/teamMapping';
@@ -404,6 +405,116 @@ const getFormAttributes = (result: string) => {
   return { color: 'bg-red-500', label: 'Derrota' };
 };
 
+const COUNTRY_ALIASES: Record<string, string> = {
+  DEN: 'DNK', // Denmark IOC -> ISO3
+  ROM: 'ROU',
+  BUL: 'BUL', // already ISO3 but ensure uppercase handling
+  CZE: 'CZE',
+  CRO: 'CRO',
+  SUI: 'SWZ', // Swiss Super League uses SWZ code in our config
+  HUN: 'HUN',
+};
+
+const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
+  const normalizedCountry = country?.trim().toUpperCase() || '';
+  const countryKey = COUNTRY_ALIASES[normalizedCountry] || normalizedCountry;
+  let config = LEAGUE_CONFIG[countryKey];
+
+  // Se não encontrarmos o país, tentamos encontrar a competição por alias globalmente
+  if (!config) {
+    const globalMatch = Object.values(LEAGUE_CONFIG).find((c) =>
+      c.competitions.some((comp) => {
+        const normalizeName = (s: string) =>
+          s
+            ?.normalize('NFKD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/gi, ' ')
+            .replace(/\s+/g, '')
+            .toLowerCase();
+        const target = normalizeName(competitionName);
+        const base = normalizeName(comp.league_name);
+        const aliasHit = comp.aliases?.some((a) => normalizeName(a) === target);
+        return base === target || aliasHit;
+      })
+    );
+    if (globalMatch) config = globalMatch;
+    else return null;
+  }
+  const normalizeName = (s: string) =>
+    s
+      ?.normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s]/gi, ' ')
+      .replace(/\s+/g, '')
+      .toLowerCase();
+
+  const target = normalizeName(competitionName || '');
+
+  // Encontra a competição pela correspondência do nome ou aliases (se existir nome)
+  let competitionConfig = target
+    ? config.competitions.find(
+        (c: { league_name: string; aliases?: string[] }) => {
+          const base = normalizeName(c.league_name);
+          if (base === target) return true;
+          if (c.aliases) {
+            return c.aliases.some((a) => normalizeName(a) === target);
+          }
+          return false;
+        }
+      )
+    : undefined;
+
+  // Fallback 1: tentar casar pelo código do ficheiro (ex: D2, E1, I2)
+  if (!competitionConfig && target) {
+    const code = target; // já normalizado sem espaços/acentos
+    competitionConfig = config.competitions.find((c) => {
+      const basename = c.standings_url?.split('/').pop()?.replace('.csv', '')?.toLowerCase();
+      return basename && code.includes(basename.toLowerCase());
+    });
+  }
+
+  // Fallback 2: tentar inferir pela presença da equipa na lista da competição
+  if (!competitionConfig && config.competitions.length > 1) {
+    const hNorm = normalizeName(home);
+    const aNorm = normalizeName(away);
+    const matchByTeam = config.competitions.find((c) => {
+      const hasTeam = c.teams.some((t: string) => {
+        const tn = normalizeName(t);
+        return tn === hNorm || tn === aNorm;
+      });
+      return hasTeam;
+    });
+    if (matchByTeam) competitionConfig = matchByTeam;
+  }
+
+  // Fallback 3: se houver 2 competições, tenta heurística por código/indicadores (1/A vs 2/B)
+  if (!competitionConfig && config.competitions.length === 2) {
+    const isDiv2 =
+      /2\b/.test(competitionName) ||
+      target.includes('2') ||
+      /\bb\b/.test(competitionName.toLowerCase()) ||
+      target.includes('serie b') ||
+      target.includes('b');
+    const isDiv1 =
+      /1\b/.test(competitionName) ||
+      target.includes('1') ||
+      /\ba\b/.test(competitionName.toLowerCase()) ||
+      target.includes('serie a') ||
+      target.includes('a');
+
+    competitionConfig = config.competitions.find((c) =>
+      isDiv2 ? c.division === 2 : isDiv1 ? c.division === 1 : false
+    );
+  }
+
+  // Fallback 3: só usa a primeira se existir apenas uma competição para o país
+  if (!competitionConfig && config.competitions.length === 1) {
+    competitionConfig = config.competitions[0];
+  }
+
+  return competitionConfig ? { name: competitionConfig.league_name, url: competitionConfig.standings_url } : null;
+};
+
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
   const [standingsOverall, setStandingsOverall] = useState<StandingRow[]>([]);
@@ -424,118 +535,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [leagueLogoError, setLeagueLogoError] = useState(false);
   const [displayLeagueName, setDisplayLeagueName] = useState(fixture.competition);
   const [footballDataOdds, setFootballDataOdds] = useState<FootballDataOdds | null>(null);
-
-  // Função inteligente para obter a informação da Liga (Nome e URL)
-  const COUNTRY_ALIASES: Record<string, string> = {
-    DEN: 'DNK', // Denmark IOC -> ISO3
-    ROM: 'ROU',
-    BUL: 'BUL', // already ISO3 but ensure uppercase handling
-    CZE: 'CZE',
-    CRO: 'CRO',
-    SUI: 'SWZ', // Swiss Super League uses SWZ code in our config
-    HUN: 'HUN',
-  };
-
-  const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
-
-    const normalizedCountry = country?.trim().toUpperCase() || '';
-    const countryKey = COUNTRY_ALIASES[normalizedCountry] || normalizedCountry;
-    let config = LEAGUE_CONFIG[countryKey];
-
-    // Se não encontrarmos o país, tentamos encontrar a competição por alias globalmente
-    if (!config) {
-      const globalMatch = Object.values(LEAGUE_CONFIG).find((c) =>
-        c.competitions.some((comp) => {
-          const normalizeName = (s: string) =>
-            s
-              ?.normalize('NFKD')
-              .replace(/[\u0300-\u036f]/g, '')
-              .replace(/[^a-z0-9\s]/gi, ' ')
-              .replace(/\s+/g, '')
-              .toLowerCase();
-          const target = normalizeName(competitionName);
-          const base = normalizeName(comp.league_name);
-          const aliasHit = comp.aliases?.some((a) => normalizeName(a) === target);
-          return base === target || aliasHit;
-        })
-      );
-      if (globalMatch) config = globalMatch;
-      else return null;
-    }
-    const normalizeName = (s: string) =>
-      s
-        ?.normalize('NFKD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/[^a-z0-9\s]/gi, ' ')
-        .replace(/\s+/g, '')
-        .toLowerCase();
-
-    const target = normalizeName(competitionName || '');
-
-    // Encontra a competição pela correspondência do nome ou aliases (se existir nome)
-    let competitionConfig = target
-      ? config.competitions.find(
-          (c: { league_name: string; aliases?: string[] }) => {
-            const base = normalizeName(c.league_name);
-            if (base === target) return true;
-            if (c.aliases) {
-              return c.aliases.some((a) => normalizeName(a) === target);
-            }
-            return false;
-          }
-        )
-      : undefined;
-
-    // Fallback 1: tentar casar pelo código do ficheiro (ex: D2, E1, I2)
-    if (!competitionConfig && target) {
-      const code = target; // já normalizado sem espaços/acentos
-      competitionConfig = config.competitions.find((c) => {
-        const basename = c.standings_url?.split('/').pop()?.replace('.csv', '')?.toLowerCase();
-        return basename && code.includes(basename.toLowerCase());
-      });
-    }
-
-    // Fallback 2: tentar inferir pela presença da equipa na lista da competição
-    if (!competitionConfig && config.competitions.length > 1) {
-      const hNorm = normalizeName(home);
-      const aNorm = normalizeName(away);
-      const matchByTeam = config.competitions.find((c) => {
-        const hasTeam = c.teams.some((t: string) => {
-          const tn = normalizeName(t);
-          return tn === hNorm || tn === aNorm;
-        });
-        return hasTeam;
-      });
-      if (matchByTeam) competitionConfig = matchByTeam;
-    }
-
-    // Fallback 3: se houver 2 competições, tenta heurística por código/indicadores (1/A vs 2/B)
-    if (!competitionConfig && config.competitions.length === 2) {
-      const isDiv2 =
-        /2\b/.test(competitionName) ||
-        target.includes('2') ||
-        /\bb\b/.test(competitionName.toLowerCase()) ||
-        target.includes('serie b') ||
-        target.includes('b');
-      const isDiv1 =
-        /1\b/.test(competitionName) ||
-        target.includes('1') ||
-        /\ba\b/.test(competitionName.toLowerCase()) ||
-        target.includes('serie a') ||
-        target.includes('a');
-
-      competitionConfig = config.competitions.find((c) =>
-        isDiv2 ? c.division === 2 : isDiv1 ? c.division === 1 : false
-      );
-    }
-
-    // Fallback 3: só usa a primeira se existir apenas uma competição para o país
-    if (!competitionConfig && config.competitions.length === 1) {
-      competitionConfig = config.competitions[0];
-    }
-
-    return competitionConfig ? { name: competitionConfig.league_name, url: competitionConfig.standings_url } : null;
-  };
 
   useEffect(() => {
     const fetchStandings = async () => {
@@ -672,8 +671,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         if (!res.ok) return;
         const text = await res.text();
         if (text.trim().startsWith('<')) return;
-        const parsed = Papa.parse(text, { header: true, skipEmptyLines: true, delimiter: ';' });
-        const rows = (parsed.data as any[]).map((row) => {
+        const parsed = Papa.parse<Record<string, string>>(text, { header: true, skipEmptyLines: true, delimiter: ';' });
+        const rows = parsed.data.map((row) => {
           const club =
             row.Club ??
             row['\ufeffClub'] ??
@@ -875,8 +874,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            label: (context: any) => (context.raw * 100).toFixed(1) + '%',
+            label: (context: TooltipItem<'bar'>) => {
+              const value = typeof context.raw === 'number' ? context.raw : Number(context.raw);
+              const safeValue = Number.isFinite(value) ? value : 0;
+              return (safeValue * 100).toFixed(1) + '%';
+            },
           },
         },
       },
