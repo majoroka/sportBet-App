@@ -19,6 +19,7 @@ import { fetchWithCacheBust } from '../utils/fetchWithCacheBust';
 import { Bar } from 'react-chartjs-2';
 import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 import { ScoringHub } from './scoring/ScoringHub';
+import { FootballDataOdds, getFootballDataOdds, loadFootballDataOdds } from '../data/footballDataOdds';
 import {
   BTTS_YES_MARKET_KEY,
   OVER_05_HT_MATCH_MARKET_KEY,
@@ -370,6 +371,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [awayLogoError, setAwayLogoError] = useState(false);
   const [leagueLogoError, setLeagueLogoError] = useState(false);
   const [displayLeagueName, setDisplayLeagueName] = useState(fixture.competition);
+  const [footballDataOdds, setFootballDataOdds] = useState<FootballDataOdds | null>(null);
 
   // Função inteligente para obter a informação da Liga (Nome e URL)
   const COUNTRY_ALIASES: Record<string, string> = {
@@ -576,6 +578,27 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
     fetchStandings();
   }, [fixture.competition, fixture.country, fixture.homeTeam, fixture.awayTeam]);
+
+  useEffect(() => {
+    let isMounted = true;
+    loadFootballDataOdds()
+      .then(() => {
+        if (!isMounted) return;
+        const odds = getFootballDataOdds({
+          date: fixture.date,
+          homeTeam: fixture.homeTeam,
+          awayTeam: fixture.awayTeam,
+        });
+        setFootballDataOdds(odds);
+      })
+      .catch(() => {
+        if (isMounted) setFootballDataOdds(null);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [fixture.date, fixture.homeTeam, fixture.awayTeam]);
 
   // Resetar erros de imagem quando o jogo muda
   useEffect(() => {
@@ -1283,10 +1306,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       ? { HOME: directHome, DRAW: directDraw, AWAY: directAway }
       : fallbackFromScores ?? { HOME: null, DRAW: null, AWAY: null };
 
-    const oddsB365 = fixture.odds?.b365;
-    const oddHome = Number.isFinite(oddsB365?.home as number) ? Number(oddsB365?.home) : null;
-    const oddDraw = Number.isFinite(oddsB365?.draw as number) ? Number(oddsB365?.draw) : null;
-    const oddAway = Number.isFinite(oddsB365?.away as number) ? Number(oddsB365?.away) : null;
+    const oddHome = Number.isFinite(footballDataOdds?.home as number) ? Number(footballDataOdds?.home) : null;
+    const oddDraw = Number.isFinite(footballDataOdds?.draw as number) ? Number(footballDataOdds?.draw) : null;
+    const oddAway = Number.isFinite(footballDataOdds?.away as number) ? Number(footballDataOdds?.away) : null;
 
     return {
       pModel,
