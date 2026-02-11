@@ -119,3 +119,24 @@ export type Over15MatchInputs = {
   awayHtGaPerGame: number | null;
   ouLine: number | null;
 };
+
+export type Over05HTMatchInputs = {
+  probOver05HT: number | null;
+  probOver05HTEstimated: boolean;
+  probOver25: number | null;
+  ouLine: number | null;
+  homeFirstHalfGoalPct: number | null;
+  awayFirstHalfGoalPct: number | null;
+  homeGfPerGame: number | null;
+  awayGfPerGame: number | null;
+  homeGaPerGame: number | null;
+  awayGaPerGame: number | null;
+  homeSotPerGame: number | null;
+  awaySotPerGame: number | null;
+  homeCornersForPerGame: number | null;
+  awayCornersForPerGame: number | null;
+  homeHtGfPerGame: number | null;
+  homeHtGaPerGame: number | null;
+  awayHtGfPerGame: number | null;
+  awayHtGaPerGame: number | null;
+};
