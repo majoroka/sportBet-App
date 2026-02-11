@@ -112,6 +112,22 @@ const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
   );
 };
 
+const BEST_PICK_BADGE_CLASSES = 'bg-emerald-50 text-emerald-800 border-emerald-300';
+const PICKS_NEG_BADGE_CLASSES = 'bg-red-50 text-red-800 border-red-300';
+
+const OverIcon: React.FC<{ over: boolean; title?: string; ring?: boolean }> = ({ over, title, ring }) => (
+  <div
+    className={[
+      'w-5 h-5 rounded-full flex items-center justify-center text-[12px] font-semibold border',
+      over ? BEST_PICK_BADGE_CLASSES : PICKS_NEG_BADGE_CLASSES,
+      ring ? (over ? 'ring-1 ring-offset-1 ring-emerald-300' : 'ring-1 ring-offset-1 ring-red-300') : '',
+    ].join(' ')}
+    title={title}
+  >
+    {over ? '+' : '-'}
+  </div>
+);
+
 type AccordionSectionProps = {
   id: string;
   title: string;
@@ -520,7 +536,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [standingsOverall, setStandingsOverall] = useState<StandingRow[]>([]);
   const [standingsHome, setStandingsHome] = useState<StandingRow[]>([]);
   const [standingsAway, setStandingsAway] = useState<StandingRow[]>([]);
-  const [standingsLast10, setStandingsLast10] = useState<StandingRow[]>([]);
   const [standingsTab, setStandingsTab] = useState<StandingMode>('overall');
   const [leagueStats, setLeagueStats] = useState<LeagueStats | null>(null);
   const [teamStatsHome, setTeamStatsHome] = useState<TeamStats | null>(null);
@@ -557,7 +572,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         setStandingsOverall([]);
         setStandingsHome([]);
         setStandingsAway([]);
-        setStandingsLast10([]);
         return;
       }
 
@@ -566,7 +580,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         setStandingsOverall([]);
         setStandingsHome([]);
         setStandingsAway([]);
-        setStandingsLast10([]);
         return;
       }
 
@@ -594,14 +607,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
              setStandingsOverall([]);
              setStandingsHome([]);
              setStandingsAway([]);
-             setStandingsLast10([]);
              return;
           }
 
-          const dataOverall = calculateStandings(text, 'overall', 5);
-          const dataHome = calculateStandings(text, 'home', 5);
-          const dataAway = calculateStandings(text, 'away', 5);
-          const dataLast10 = calculateStandings(text, 'overall', 10);
+          const dataOverall = calculateStandings(text, 'overall', 8);
+          const dataHome = calculateStandings(text, 'home', 8);
+          const dataAway = calculateStandings(text, 'away', 8);
           const stats = computeLeagueStats(text);
           const tsHome = computeTeamStats(text, fixture.homeTeam);
           const tsAway = computeTeamStats(text, fixture.awayTeam);
@@ -609,7 +620,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setStandingsOverall(dataOverall);
           setStandingsHome(dataHome);
           setStandingsAway(dataAway);
-          setStandingsLast10(dataLast10);
           setLeagueStats(stats);
           setTeamStatsHome(tsHome);
           setTeamStatsAway(tsAway);
@@ -618,7 +628,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setStandingsOverall([]);
           setStandingsHome([]);
           setStandingsAway([]);
-          setStandingsLast10([]);
           setLeagueStats(null);
           setTeamStatsHome(null);
           setTeamStatsAway(null);
@@ -892,9 +901,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const currentStandings = useMemo(() => {
     if (standingsTab === 'home') return standingsHome;
     if (standingsTab === 'away') return standingsAway;
-    if (standingsTab === 'overall') return standingsOverall;
-    return standingsLast10;
-  }, [standingsTab, standingsHome, standingsAway, standingsOverall, standingsLast10]);
+    return standingsOverall;
+  }, [standingsTab, standingsHome, standingsAway, standingsOverall]);
 
   const detailedStatsEnabled = useMemo(
     () => isDetailedStatsLeague(fixture.competition, fixture.country),
@@ -1560,13 +1568,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col w-full min-w-0">
               <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
                 <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
-                <div className="grid grid-cols-5 min-w-[320px] sm:min-w-[380px] rounded-md border border-gray-300 overflow-hidden">
+                <div className="grid grid-cols-3 min-w-[220px] sm:min-w-[260px] rounded-md border border-gray-300 overflow-hidden">
                   {[
                     { key: 'overall' as StandingMode, label: 'Global' },
                     { key: 'home' as StandingMode, label: 'Casa' },
                     { key: 'away' as StandingMode, label: 'Fora' },
-                    { key: 'last10' as StandingMode, label: '+2,5\n(Últimos 10)' },
-                    { key: 'last10_over15' as StandingMode, label: '+1,5\n(Últimos 10)' },
                   ].map((tab, idx) => {
                     const active = standingsTab === tab.key;
                     return (
@@ -1581,15 +1587,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           idx > 0 ? 'border-l border-gray-300' : '',
                         ].join(' ')}
                       >
-                        {tab.key === 'last10' ? (
-                          <span className="leading-tight text-center">
-                            +2,5
-                            <br />
-                            <span className="text-[11px] text-gray-500">(Últimos 10)</span>
-                          </span>
-                        ) : (
-                          tab.label
-                        )}
+                        {tab.label}
                       </button>
                     );
                   })}
@@ -1603,27 +1601,20 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        {standingsTab === 'last10' || standingsTab === 'last10_over15' ? (
-                          <tr className="text-gray-500 border-b">
-                            <th className="pb-1 text-center w-6">#</th>
-                            <th className="pb-1 text-left">Equipa</th>
-                            <th className="pb-1 text-left">Últimos 10</th>
-                            <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                          </tr>
-                        ) : (
-                          <tr className="text-gray-500 border-b">
-                            <th className="pb-1 text-center w-6">#</th>
-                            <th className="pb-1 text-left">Equipa</th>
-                            <th className="pb-1 text-center" title="Jogos">J</th>
-                            <th className="pb-1 text-center" title="Vitórias">V</th>
-                            <th className="pb-1 text-center" title="Empates">E</th>
-                            <th className="pb-1 text-center" title="Derrotas">D</th>
-                            <th className="pb-1 text-center" title="Golos Marcados">GM</th>
-                            <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
-                            <th className="pb-1 text-center" title="Diferença">Dif</th>
-                            <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                          </tr>
-                        )}
+                        <tr className="text-gray-500 border-b">
+                          <th className="pb-1 text-center w-6">#</th>
+                          <th className="pb-1 text-left">Equipa</th>
+                          <th className="pb-1 text-center" title="Jogos">J</th>
+                          <th className="pb-1 text-center" title="Vitórias">V</th>
+                          <th className="pb-1 text-center" title="Empates">E</th>
+                          <th className="pb-1 text-center" title="Derrotas">D</th>
+                          <th className="pb-1 text-center" title="Golos Marcados">GM</th>
+                          <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
+                          <th className="pb-1 text-center" title="Diferença">Dif</th>
+                          <th className="pb-1 text-center font-bold" title="Pontos">P</th>
+                          <th className="pb-1 text-center whitespace-nowrap">+1,5 (Últimos 8)</th>
+                          <th className="pb-1 text-center whitespace-nowrap">+2,5 (Últimos 8)</th>
+                        </tr>
                       </thead>
                       <tbody className="text-gray-600">
                         {currentStandings.map((row, index) => {
@@ -1643,58 +1634,42 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                             matches(awayTeam, awayTeamId);
                           const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
-                          const isLast10Mode = standingsTab === 'last10' || standingsTab === 'last10_over15';
                           const formArray = row.form ?? [];
-                          const showLast10 = isLast10Mode;
-                          const threshold = standingsTab === 'last10_over15' ? 1.5 : 2.5;
-                          const last10Cells = showLast10 ? (
-                            <td className="py-1">
-                              <div className="flex gap-1">
-                                {(formArray.length ? formArray : Array(10).fill({ score: '0-0' })).slice(-10).map((match, idxForm, arr) => {
-                                  const [hg, ag] = (match.score || '0-0').split('-').map((v: string) => Number(v));
-                                  const total = (Number.isFinite(hg) ? hg : 0) + (Number.isFinite(ag) ? ag : 0);
-                                  const over = total > threshold;
-                                  const isLast = idxForm === arr.length - 1;
-                                  const ringClass = isLast
-                                    ? over
-                                      ? 'ring-[1.5px] ring-offset-1 ring-[#60A5FA]'
-                                      : 'ring-[1.5px] ring-offset-1 ring-[#F472B6]'
-                                    : '';
-                                  return (
-                                    <div
-                                      key={idxForm}
-                                      className={`w-5 h-5 flex items-center justify-center text-[10px] font-bold ${over ? 'bg-[#60A5FA] text-white' : 'bg-[#F472B6] text-white'} ${ringClass}`}
-                                      title={match.opponent ? `${match.opponent} ${match.score}` : 'Sem dados'}
-                                    >
-                                      {over ? '+' : '-'}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </td>
-                          ) : null;
+                          const last8 = formArray.slice(-8);
+                          const renderOverIcons = (threshold: number) => (
+                            <div className="flex items-center gap-1 justify-center min-w-[96px]">
+                              {last8.map((match, idxForm) => {
+                                const [hg, ag] = (match.score || '0-0').split('-').map((v: string) => Number(v));
+                                const total = (Number.isFinite(hg) ? hg : 0) + (Number.isFinite(ag) ? ag : 0);
+                                const over = total > threshold;
+                                const title = match.opponent ? `${match.opponent} ${match.score}` : 'Sem dados';
+                                const isLast = idxForm === last8.length - 1;
+                                return (
+                                  <OverIcon
+                                    key={`${row.team}-${idxForm}-${threshold}`}
+                                    over={over}
+                                    title={title}
+                                    ring={isLast}
+                                  />
+                                );
+                              })}
+                            </div>
+                          );
 
                           return (
                             <tr key={row.team} className={`border-b border-gray-100 hover:bg-gray-100 ${rowClass}`}>
                               <td className="py-1 text-center">{row.rank}</td>
                               <td className="py-1 font-medium truncate max-w-[100px]" title={row.team}>{row.team}</td>
-                              {isLast10Mode ? (
-                                <>
-                                  {last10Cells}
-                                  <td className="text-center font-bold text-gray-900">{row.points}</td>
-                                </>
-                              ) : (
-                                <>
-                                  <td className="text-center">{row.played}</td>
-                                  <td className="text-center text-gray-400">{row.wins}</td>
-                                  <td className="text-center text-gray-400">{row.draws}</td>
-                                  <td className="text-center text-gray-400">{row.losses}</td>
-                                  <td className="text-center text-gray-400">{row.goalsFor}</td>
-                                  <td className="text-center text-gray-400">{row.goalsAgainst}</td>
-                                  <td className="text-center text-gray-500">{row.goalDiff}</td>
-                                  <td className="text-center font-bold text-gray-900">{row.points}</td>
-                                </>
-                              )}
+                              <td className="text-center">{row.played}</td>
+                              <td className="text-center text-gray-400">{row.wins}</td>
+                              <td className="text-center text-gray-400">{row.draws}</td>
+                              <td className="text-center text-gray-400">{row.losses}</td>
+                              <td className="text-center text-gray-400">{row.goalsFor}</td>
+                              <td className="text-center text-gray-400">{row.goalsAgainst}</td>
+                              <td className="text-center text-gray-500">{row.goalDiff}</td>
+                              <td className="text-center font-bold text-gray-900">{row.points}</td>
+                              <td className="py-1">{renderOverIcons(1.5)}</td>
+                              <td className="py-1">{renderOverIcons(2.5)}</td>
                             </tr>
                           );
                         })}
