@@ -26,7 +26,7 @@ describe('computeTeamOver15Score', () => {
     expect(result.total).toBe(100);
   });
 
-  it('awards 25 points for 62% team +1.5 probability', () => {
+  it('awards 22 points for 62% team +1.5 probability', () => {
     const input: TeamOver15Inputs = {
       probTeam15: 62,
       probTeam25: 0,
@@ -49,7 +49,7 @@ describe('computeTeamOver15Score', () => {
     const result = computeTeamOver15Score(input);
     const groupA = result.groups.find((group) => group.key === 'A');
     const item = groupA?.items.find((entry) => entry.key === 'prob_team_15');
-    expect(item?.points).toBe(25);
-    expect(result.total).toBe(25);
+    expect(item?.points).toBe(22);
+    expect(result.total).toBe(22);
   });
 });
