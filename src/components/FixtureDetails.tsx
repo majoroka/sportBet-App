@@ -71,7 +71,7 @@ const OddBox: React.FC<{ label: string; value: number | null; highlight?: boolea
     <div className="font-bold font-mono text-xl text-gray-900">
       {value && value > 0 ? (1 / value).toFixed(2) : '-'}
       {value && value > 0 && (
-        <span className="text-sm text-gray-400 font-mono"> ({(value * 100).toFixed(1)}%)</span>
+        <span className="text-sm text-gray-400 font-mono font-normal"> ({(value * 100).toFixed(1)}%)</span>
       )}
     </div>
   </div>
@@ -1383,7 +1383,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         <span className="font-bold font-mono text-xl text-gray-900">
                           {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
                           {probs.over > 0 && (
-                            <span className="text-xs text-gray-400"> ({(probs.over * 100).toFixed(1)}%)</span>
+                            <span className="text-xs text-gray-400 font-normal"> ({(probs.over * 100).toFixed(1)}%)</span>
                           )}
                         </span>
                       </div>
@@ -1393,7 +1393,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         <span className="font-bold font-mono text-xl text-gray-900">
                           {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
                           {probs.under > 0 && (
-                            <span className="text-xs text-gray-400"> ({(probs.under * 100).toFixed(1)}%)</span>
+                            <span className="text-xs text-gray-400 font-normal"> ({(probs.under * 100).toFixed(1)}%)</span>
                           )}
                         </span>
                       </div>
@@ -1412,14 +1412,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   <span className="text-sm">Sim</span>
                   <span className="font-bold font-mono text-xl text-gray-900">
                     {formatOdd(probabilities.bttsYes)}
-                    <span className="text-xs text-gray-400 font-mono"> ({formatPct(probabilities.bttsYes)})</span>
+                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsYes)})</span>
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Não</span>
                   <span className="font-bold font-mono text-xl text-gray-900">
                     {formatOdd(probabilities.bttsNo)}
-                    <span className="text-xs text-gray-400 font-mono"> ({formatPct(probabilities.bttsNo)})</span>
+                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsNo)})</span>
                   </span>
                 </div>
               </div>
@@ -1431,14 +1431,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   <span className="text-sm">Casa</span>
                   <span className="font-bold font-mono text-xl text-gray-900">
                     {formatOdd(probabilities.cleanSheet.home)}
-                    <span className="text-xs text-gray-400 font-mono"> ({formatPct(probabilities.cleanSheet.home)})</span>
+                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.home)})</span>
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm">Fora</span>
                   <span className="font-bold font-mono text-xl text-gray-900">
                     {formatOdd(probabilities.cleanSheet.away)}
-                    <span className="text-xs text-gray-400 font-mono"> ({formatPct(probabilities.cleanSheet.away)})</span>
+                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.away)})</span>
                   </span>
                 </div>
               </div>
@@ -1464,7 +1464,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <span className="font-bold font-mono text-xl text-gray-800">
                       {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
                       {probabilities.teamOver.home[line] > 0 && (
-                        <span className="text-xs text-gray-400 font-mono"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
+                        <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
                       )}
                     </span>
                   </div>
@@ -1478,7 +1478,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <span className="font-bold font-mono text-xl text-gray-800">
                       {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
                       {probabilities.teamOver.away[line] > 0 && (
-                        <span className="text-xs text-gray-400 font-mono"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
+                        <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
                       )}
                     </span>
                   </div>
