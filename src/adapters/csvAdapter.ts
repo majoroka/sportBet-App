@@ -1,6 +1,6 @@
 import Papa from 'papaparse';
 import { Fixture, FixtureOdds, Probabilities } from '../domain/types';
-import { calculateMarkets } from '../calculators/marketsFromProbabilities';
+import { calculateMarkets, computeWinAndOver15FromScoreMatrix } from '../calculators/marketsFromProbabilities';
 import {
   applyDixonColesLowScoreCorrection,
   computeMatrixExpectedGoals,
@@ -119,6 +119,7 @@ const parseClubEloProbabilities = (row: any, homeXG?: number, awayXG?: number): 
       ? applyDixonColesLowScoreCorrection(normalizedMatrix, matrixXg.lambdaHome, matrixXg.lambdaAway, DIXON_COLES_RHO_DEFAULT)
       : normalizedMatrix;
   const didApplyDixonColes = correctedMatrix !== normalizedMatrix;
+  const winOver15 = computeWinAndOver15FromScoreMatrix(correctedMatrix);
 
   // 6. Derivar mercados a partir da matriz corrigida
   let matHomeWin = 0;
@@ -276,6 +277,7 @@ const parseClubEloProbabilities = (row: any, homeXG?: number, awayXG?: number): 
     homeGoals,
     awayGoals,
     teamOver, 
+    winOver15,
     otherScore: tailMass
   };
 };

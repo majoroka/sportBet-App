@@ -1797,6 +1797,26 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <OddBox label="X2" value={probabilities.doubleChance.drawAway} />
               </div>
             </div>
+
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Vitória + 1,5 (Jogo)</h3>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Casa &amp; +1,5</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">
+                    {formatOdd(probabilities.winOver15.home)}
+                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.home)})</span>
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm">Fora &amp; +1,5</span>
+                  <span className="font-bold font-mono text-xl text-gray-900">
+                    {formatOdd(probabilities.winOver15.away)}
+                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.away)})</span>
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* COLUNA 2: Golos (O/U, BTTS, Clean Sheet) */}

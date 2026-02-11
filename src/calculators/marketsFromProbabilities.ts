@@ -3,6 +3,24 @@ import { generateScoreMatrix, generateGoalDifferenceDistribution, calculatePoiss
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
 
+export const computeWinAndOver15FromScoreMatrix = (scoreMatrix: Record<string, number>) => {
+  let home = 0;
+  let away = 0;
+
+  Object.entries(scoreMatrix).forEach(([score, prob]) => {
+    const [h, a] = score.split('-').map(Number);
+    if (!Number.isFinite(h) || !Number.isFinite(a) || !Number.isFinite(prob)) return;
+    if (h + a < 2) return;
+    if (h > a) home += prob;
+    else if (a > h) away += prob;
+  });
+
+  return {
+    home: clamp01(home),
+    away: clamp01(away),
+  };
+};
+
 export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities => {
   // 1. CÁLCULOS BASEADOS EM GD (Goal Difference) - Cobertura Total
   // Usamos limite 5 conforme solicitado (k=-5...5)
@@ -122,6 +140,8 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
 
   const teamOver = { home: teamOverHome, away: teamOverAway };
 
+  const winOver15 = computeWinAndOver15FromScoreMatrix(matrix);
+
   // BTTS e Clean Sheet via Poisson direto (inclui cauda)
   const pHome0 = calculatePoisson(homeXG, 0);
   const pAway0 = calculatePoisson(awayXG, 0);
@@ -163,6 +183,7 @@ export const calculateMarkets = (homeXG: number, awayXG: number): Probabilities 
     homeGoals,
     awayGoals,
     teamOver,
+    winOver15,
     cleanSheet: { home: cleanSheetHome, away: cleanSheetAway },
     correctScore: matrix,
     otherScore: prob7Plus

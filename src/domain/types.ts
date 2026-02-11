@@ -113,6 +113,10 @@ export interface Probabilities {
     home: Record<string, number>; // "0.5", "1.5", "2.5"
     away: Record<string, number>;
   };
+  winOver15: {
+    home: number;
+    away: number;
+  };
   cleanSheet: {
     home: number;
     away: number;
