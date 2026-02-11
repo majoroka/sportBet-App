@@ -51,8 +51,8 @@ export const TEAM_OVER_15_GROUPS: ScoreGroupConfig[] = [
         maxPoints: 25,
         getValue: (input) => input.probTeam15,
         thresholds: [
-          { at: 70, points: 25, status: 'good' },
-          { at: 60, points: 25, status: 'good' },
+          { at: 65, points: 25, status: 'good' },
+          { at: 60, points: 22, status: 'good' },
           { at: 55, points: 20, status: 'good' },
           { at: 50, points: 15, status: 'warn' },
           { at: 45, points: 10, status: 'warn' },
