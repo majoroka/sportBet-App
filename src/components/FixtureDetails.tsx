@@ -526,7 +526,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [teamStatsHome, setTeamStatsHome] = useState<TeamStats | null>(null);
   const [teamStatsAway, setTeamStatsAway] = useState<TeamStats | null>(null);
   const [loadingStandings, setLoadingStandings] = useState(false);
-  const [openStatsSections, setOpenStatsSections] = useState<Record<string, boolean>>({});
   const [eloRankingRows, setEloRankingRows] = useState<
     Array<{ club: string; rank: number | null; elo: number | null; points: number | null; id: string | null }>
   >([]);
@@ -932,41 +931,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       const rowsWithData = section.rows.filter(rowHasData);
       if (rowsWithData.length === 0) return;
       hasAny = true;
-      const sectionKey = section.title;
-      const isOpen = !!openStatsSections[sectionKey];
       rendered.push(
         <div
           key={`sep-${sIdx}`}
           className="col-span-7 bg-white text-black font-semibold text-sm border-b border-gray-300"
         >
-          <button
-            type="button"
-            className="w-full flex items-center justify-between py-1 px-2"
-            onClick={() =>
-              setOpenStatsSections((prev) => ({ ...prev, [sectionKey]: !prev[sectionKey] }))
-            }
-          >
+          <div className="w-full py-1 px-2">
             <span>{section.title}</span>
-            <span className="text-xs text-gray-600 flex items-center">
-              <svg
-                className={`h-3.5 w-3.5 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                viewBox="0 0 20 20"
-                fill="none"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 8l4 4 4-4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </button>
+          </div>
         </div>
       );
-      if (!isOpen) return;
       rowsWithData.forEach((row) => {
         const stripe = stripeIdx % 2 === 0 ? 'bg-gray-50/70' : '';
         stripeIdx += 1;
@@ -993,7 +967,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     }
 
     return rendered;
-  }, [detailedStatsEnabled, openStatsSections, teamStatsAway, teamStatsHome]);
+  }, [detailedStatsEnabled, teamStatsAway, teamStatsHome]);
 
   const leagueLogoUrl = getLeagueLogoUrl(displayLeagueName, fixture.country);
   const scoringPlaceholderReason = loadingStandings ? 'A carregar...' : 'Sem dados suficientes';
