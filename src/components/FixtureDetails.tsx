@@ -852,7 +852,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const formatOdd = (prob: number) => (prob > 0 ? (1 / prob).toFixed(2) : '-');
   const formatPct = (prob: number) => `${(Math.max(0, prob) * 100).toFixed(1)}%`;
 
-  const outcomeCards = useMemo(
+  type OutcomeCard = {
+    key: Value1x2Outcome;
+    label: string;
+    probModel: number | null;
+    oddBook: number | null;
+  };
+
+  const outcomeCards = useMemo<OutcomeCard[]>(
     () => [
       {
         key: 'HOME' as const,
@@ -876,16 +883,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     [homeTeam, awayTeam, probabilities.homeWin, probabilities.draw, probabilities.awayWin, footballDataOdds]
   );
 
-  const favoriteOutcome = useMemo(() => {
-    let best: { key: Value1x2Outcome; prob: number } | null = null;
+  const favoriteOutcome = useMemo<Value1x2Outcome | null>(() => {
+    let bestKey: Value1x2Outcome | null = null;
+    let bestProb = -1;
     outcomeCards.forEach((card) => {
       const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : -1;
-      if (best === null || prob > best.prob) {
-        best = { key: card.key, prob };
+      if (prob > bestProb) {
+        bestProb = prob;
+        bestKey = card.key;
       }
     });
-    if (!best) return null;
-    return best.prob >= 0 ? best.key : null;
+    return bestProb >= 0 ? bestKey : null;
   }, [outcomeCards]);
 
   useEffect(() => {
