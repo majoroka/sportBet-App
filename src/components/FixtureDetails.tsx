@@ -953,15 +953,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     showBars?: boolean;
     badgeText?: string | null;
   }> = ({ title, options, showBars = false, badgeText }) => {
-    const bestEdge = options.reduce<{ key: string; edge: number } | null>((acc, opt) => {
-      const prob = opt.prob;
-      const oddBook = Number.isFinite(opt.oddBook as number) ? Number(opt.oddBook) : null;
-      if (!oddBook || !prob) return acc;
-      const edge = (prob * oddBook - 1) * 100;
-      if (!acc || edge > acc.edge) return { key: opt.key, edge };
-      return acc;
-    }, null);
-
     return (
       <div className="bg-white border border-slate-200 rounded-2xl shadow-sm">
         <div className="px-4 pt-4 pb-2 flex items-center justify-between">
