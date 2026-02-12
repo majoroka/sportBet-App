@@ -13,7 +13,8 @@
       "src/scoring/models/over15Match.config.ts",
       "src/scoring/models/over05HTMatch.config.ts",
       "src/scoring/compute/computeOver25MatchScore.ts",
-      "src/scoring/models/value1x2FairOdds.config.ts"
+      "src/scoring/models/value1x2FairOdds.config.ts",
+      "src/scoring/models/doubleChance.config.ts"
     ]
   },
   "markets": {
@@ -136,6 +137,105 @@
           "points": -6,
           "maxPoints": 6,
           "condition": "ev < 0 && edgePP < 0"
+        }
+      ]
+    },
+    "double_chance": {
+      "label": "Hipótese Dupla",
+      "tabLabel": "Hipótese Dupla",
+      "mode": "multi_outcome",
+      "outcomes": ["1X", "X2", "12"],
+      "source": "src/scoring/models/doubleChance.config.ts",
+      "interpretation": null,
+      "penaltyCap": 20,
+      "groups": [
+        {
+          "key": "A",
+          "label": "A. Prob. DC",
+          "items": [
+            {
+              "key": "p_model_dc",
+              "label": "Prob. modelo (DC)",
+              "maxPoints": 55,
+              "thresholds": [
+                { "at": 80, "points": 55, "status": "good" },
+                { "at": 75, "points": 48, "status": "good" },
+                { "at": 70, "points": 40, "status": "good" },
+                { "at": 65, "points": 32, "status": "warn" },
+                { "at": 60, "points": 24, "status": "warn" },
+                { "at": 55, "points": 14, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "B",
+          "label": "B. pWeak",
+          "items": [
+            {
+              "key": "p_weak",
+              "label": "Prob. fraca (min)",
+              "maxPoints": 20,
+              "thresholds": [
+                { "at": 22, "points": 20, "status": "good" },
+                { "at": 18, "points": 16, "status": "good" },
+                { "at": 14, "points": 12, "status": "warn" },
+                { "at": 10, "points": 8, "status": "warn" },
+                { "at": 6, "points": 4, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        },
+        {
+          "key": "C",
+          "label": "C. Edge (pp)",
+          "items": [
+            {
+              "key": "edge_pp",
+              "label": "Edge (pp)",
+              "maxPoints": 25,
+              "thresholds": [
+                { "at": 5.0, "points": 25, "status": "good" },
+                { "at": 3.5, "points": 20, "status": "good" },
+                { "at": 2.0, "points": 14, "status": "warn" },
+                { "at": 1.0, "points": 8, "status": "warn" },
+                { "at": 0.0, "points": 3, "status": "warn" },
+                { "at": -999, "points": 0, "status": "bad" }
+              ]
+            }
+          ]
+        }
+      ],
+      "penalties": [
+        {
+          "key": "pmodel_low",
+          "label": "Prob. modelo < 60%",
+          "points": -8,
+          "maxPoints": 8,
+          "condition": "pModel < 60"
+        },
+        {
+          "key": "pweak_low",
+          "label": "pWeak < 10%",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "pWeak < 10"
+        },
+        {
+          "key": "edge_negative",
+          "label": "Edge < 0",
+          "points": -6,
+          "maxPoints": 6,
+          "condition": "edgePP < 0"
+        },
+        {
+          "key": "overround_high",
+          "label": "Overround > 11%",
+          "points": -4,
+          "maxPoints": 4,
+          "condition": "overround > 11"
         }
       ]
     },

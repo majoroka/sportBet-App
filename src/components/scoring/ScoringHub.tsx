@@ -1,22 +1,31 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   createEmptyValue1x2Score,
+  createEmptyDoubleChanceScore,
+  DOUBLE_CHANCE_MARKET_KEY,
   SCORING_MARKETS,
   ScoringMarketKey,
   ScoringMarketMode,
   ScoringResult,
-  Value1x2ScoreResult,
+  MultiOutcomeScoreResult,
 } from '../../scoring';
 import { aggregateBestPickGlobal } from '../../scoring/aggregateBestPickGlobal';
 import { ScoreCard } from './ScoreCard';
 import { ValueScoreCard } from './ValueScoreCard';
 
 type TeamScorePair = { home: ScoringResult; away: ScoringResult };
+type MultiOutcomeTabConfig = {
+  outcomes: readonly string[];
+  getTitle: (outcome: string) => string;
+  accentClass: (outcome: string) => string;
+  showModel?: boolean;
+  showOverround?: boolean;
+};
 
 type Props = {
   teamScores: Partial<Record<ScoringMarketKey, TeamScorePair>>;
   matchScores?: Partial<Record<ScoringMarketKey, ScoringResult>>;
-  valueScores?: Partial<Record<ScoringMarketKey, Value1x2ScoreResult>>;
+  valueScores?: Partial<Record<ScoringMarketKey, MultiOutcomeScoreResult>>;
   homeTeam: string;
   awayTeam: string;
   marketKey: ScoringMarketKey;
@@ -46,10 +55,42 @@ export const ScoringHub: React.FC<Props> = ({
   const activeMarket = SCORING_MARKETS[selectedMarket] ?? SCORING_MARKETS[marketKey];
   const fallbackTeamScore = teamScores[marketKey] ?? Object.values(teamScores)[0];
   const fallbackMatchScore = matchScores?.[marketKey] ?? (matchScores ? Object.values(matchScores)[0] : undefined);
-  const fallbackValueScore = valueScores?.[marketKey] ?? (valueScores ? Object.values(valueScores)[0] : undefined);
   const emptyScore: ScoringResult = { total: 0, groups: [], penaltiesApplied: 0, topReasons: ['Sem dados suficientes'] };
   const emptyValueScore = createEmptyValue1x2Score('Sem dados suficientes');
-  const valueScore = valueScores?.[selectedMarket] ?? fallbackValueScore ?? emptyValueScore;
+  const emptyDoubleChanceScore = createEmptyDoubleChanceScore('Sem dados suficientes');
+
+  const multiOutcomeConfig = useMemo<Record<string, MultiOutcomeTabConfig>>(
+    () => ({
+      value_1x2_fair_odds: {
+        outcomes: ['HOME', 'DRAW', 'AWAY'],
+        getTitle: (outcome) => {
+          if (outcome === 'HOME') return `CASA · ${homeTeam}`;
+          if (outcome === 'DRAW') return 'EMPATE';
+          return `FORA · ${awayTeam}`;
+        },
+        accentClass: (outcome) => {
+          if (outcome === 'HOME') return 'bg-[#60A5FA]';
+          if (outcome === 'DRAW') return 'bg-gray-900';
+          return 'bg-[#F472B6]';
+        },
+      },
+      double_chance: {
+        outcomes: ['1X', 'X2', '12'],
+        getTitle: (outcome) => outcome,
+        accentClass: (outcome) =>
+          outcome === '1X' ? 'bg-[#60A5FA]' : outcome === 'X2' ? 'bg-gray-900' : 'bg-gray-500',
+        showModel: true,
+        showOverround: true,
+      },
+    }),
+    [homeTeam, awayTeam]
+  );
+
+  const activeMultiConfig =
+    multiOutcomeConfig[selectedMarket] ?? multiOutcomeConfig.value_1x2_fair_odds;
+  const valueScore =
+    valueScores?.[selectedMarket] ??
+    (selectedMarket === DOUBLE_CHANCE_MARKET_KEY ? emptyDoubleChanceScore : emptyValueScore);
 
   const bestPickGlobal = useMemo(
     () =>
@@ -176,39 +217,27 @@ export const ScoringHub: React.FC<Props> = ({
       {activeMarket.mode === 'multi_outcome' ? (
         <div className="space-y-3">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <ValueScoreCard
-              title={`CASA · ${homeTeam}`}
-              accentClass="bg-[#60A5FA]"
-              outcomeScore={valueScore.outcomes.HOME}
-              id={`scorecard-${selectedMarket}-HOME`}
-              highlightClass={
-                highlightCardId === `scorecard-${selectedMarket}-HOME`
-                  ? variantStyles[highlightVariant].highlight
-                  : undefined
-              }
-            />
-            <ValueScoreCard
-              title="EMPATE"
-              accentClass="bg-gray-900"
-              outcomeScore={valueScore.outcomes.DRAW}
-              id={`scorecard-${selectedMarket}-DRAW`}
-              highlightClass={
-                highlightCardId === `scorecard-${selectedMarket}-DRAW`
-                  ? variantStyles[highlightVariant].highlight
-                  : undefined
-              }
-            />
-            <ValueScoreCard
-              title={`FORA · ${awayTeam}`}
-              accentClass="bg-[#F472B6]"
-              outcomeScore={valueScore.outcomes.AWAY}
-              id={`scorecard-${selectedMarket}-AWAY`}
-              highlightClass={
-                highlightCardId === `scorecard-${selectedMarket}-AWAY`
-                  ? variantStyles[highlightVariant].highlight
-                  : undefined
-              }
-            />
+            {activeMultiConfig.outcomes.map((outcomeKey) => {
+              const outcomeScore = valueScore.outcomes[outcomeKey as keyof typeof valueScore.outcomes];
+              if (!outcomeScore) return null;
+
+              return (
+                <ValueScoreCard
+                  key={outcomeKey}
+                  title={activeMultiConfig.getTitle(outcomeKey)}
+                  accentClass={activeMultiConfig.accentClass(outcomeKey)}
+                  outcomeScore={outcomeScore}
+                  id={`scorecard-${selectedMarket}-${outcomeKey}`}
+                  showModel={activeMultiConfig.showModel}
+                  showOverround={activeMultiConfig.showOverround}
+                  highlightClass={
+                    highlightCardId === `scorecard-${selectedMarket}-${outcomeKey}`
+                      ? variantStyles[highlightVariant].highlight
+                      : undefined
+                  }
+                />
+              );
+            })}
           </div>
         </div>
       ) : activeMarket.mode === 'match' ? (

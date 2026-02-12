@@ -135,6 +135,24 @@ export type Over15MatchInputs = {
 };
 
 export type Value1x2Outcome = 'HOME' | 'DRAW' | 'AWAY';
+export type DoubleChanceOutcome = '1X' | 'X2' | '12';
+
+export type OutcomeMetricsBase = {
+  outcome: string;
+  pModel: number | null;
+  pFair: number | null;
+  oddBook: number | null;
+  oddFair: number | null;
+  edgePP: number | null;
+  ev: number | null;
+  overround: number | null;
+};
+
+export type OutcomeScoreBase<TOutcome extends string = string> = {
+  outcome: TOutcome;
+  score: ScoringResult;
+  metrics: OutcomeMetricsBase & { outcome: TOutcome };
+};
 
 export type Value1x2Inputs = {
   pModel: Record<Value1x2Outcome, number | null>;
@@ -149,27 +167,36 @@ export type Value1x2OutcomeInputs = {
   oddBook: number | null;
 };
 
-export type ValueOutcomeMetrics = {
-  outcome: Value1x2Outcome;
+export type ValueOutcomeMetrics = OutcomeMetricsBase & { outcome: Value1x2Outcome };
+
+export type ValueOutcomeScore = OutcomeScoreBase<Value1x2Outcome>;
+
+export type MultiOutcomeScoreResult<TOutcome extends string = string> = {
+  outcomes: Record<TOutcome, OutcomeScoreBase<TOutcome>>;
+  bestPick: { outcome: TOutcome; score: number; reasons: string[] } | null;
+  overround: number | null;
+};
+
+export type Value1x2ScoreResult = MultiOutcomeScoreResult<Value1x2Outcome>;
+
+export type DoubleChanceOutcomeMetrics = OutcomeMetricsBase & { outcome: DoubleChanceOutcome };
+export type DoubleChanceOutcomeScore = OutcomeScoreBase<DoubleChanceOutcome>;
+export type DoubleChanceScoreResult = MultiOutcomeScoreResult<DoubleChanceOutcome>;
+
+export type DoubleChanceInputs = {
+  pModel: Record<Value1x2Outcome, number | null>;
+  oddsBook: Record<Value1x2Outcome, number | null>;
+  oddsBookDc?: Partial<Record<DoubleChanceOutcome, number | null>>;
+};
+
+export type DoubleChanceOutcomeInputs = {
   pModel: number | null;
-  pFair: number | null;
+  pWeak: number | null;
+  edgePP: number | null;
+  overround: number | null;
   oddBook: number | null;
   oddFair: number | null;
-  edgePP: number | null;
   ev: number | null;
-  overround: number | null;
-};
-
-export type ValueOutcomeScore = {
-  outcome: Value1x2Outcome;
-  score: ScoringResult;
-  metrics: ValueOutcomeMetrics;
-};
-
-export type Value1x2ScoreResult = {
-  outcomes: Record<Value1x2Outcome, ValueOutcomeScore>;
-  bestPick: { outcome: Value1x2Outcome; score: number; reasons: string[] } | null;
-  overround: number | null;
 };
 
 export type Over05HTMatchInputs = {

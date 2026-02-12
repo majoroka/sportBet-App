@@ -29,6 +29,7 @@ import {
   TeamOver05HTInputs,
   TeamOver15Inputs,
   computeBttsYesScore,
+  computeDoubleChanceScore,
   computeOver05HTMatchScore,
   computeOver15MatchScore,
   computeOver25MatchScore,
@@ -43,6 +44,7 @@ import {
   createEmptyTeamOver05HTScore,
   createEmptyTeamOver15Score,
   createEmptyWinPlusOver15TeamScore,
+  DOUBLE_CHANCE_MARKET_KEY,
   Value1x2Outcome,
 } from '../scoring';
 import { HOME_ELO_ADVANTAGE } from '../scoring/constants';
@@ -1528,6 +1530,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     ? computeOver05HTMatchScore(mapToOver05HTMatchInputs())
     : createEmptyOver05HTMatchScore(scoringPlaceholderReason);
   const scoringValue1x2 = computeValue1x2Score(mapToValue1x2Inputs());
+  const scoringDoubleChance = computeDoubleChanceScore(mapToValue1x2Inputs());
 
   const RankingBadge: React.FC<{ rank?: number | null }> = ({ rank }) => {
     const parsedRank = Number(rank);
@@ -1680,6 +1683,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         }}
         valueScores={{
           [VALUE_1X2_FAIR_ODDS_MARKET_KEY]: scoringValue1x2,
+          [DOUBLE_CHANCE_MARKET_KEY]: scoringDoubleChance,
         }}
         homeTeam={homeTeam}
         awayTeam={awayTeam}

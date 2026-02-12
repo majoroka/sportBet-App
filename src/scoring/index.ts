@@ -6,6 +6,7 @@ import { OVER_15_MATCH_LABEL, OVER_15_MATCH_MARKET_KEY } from './models/over15Ma
 import { OVER_05_HT_MATCH_LABEL, OVER_05_HT_MATCH_MARKET_KEY } from './models/over05HTMatch.config';
 import { WIN_PLUS_OVER_15_TEAM_LABEL, WIN_PLUS_OVER_15_TEAM_MARKET_KEY } from './models/winPlusOver15Team.config';
 import { VALUE_1X2_FAIR_ODDS_LABEL, VALUE_1X2_FAIR_ODDS_MARKET_KEY } from './models/value1x2FairOdds.config';
+import { DOUBLE_CHANCE_LABEL, DOUBLE_CHANCE_MARKET_KEY } from './models/doubleChance.config';
 
 export * from './types';
 export { computeTeamOver15Score, createEmptyTeamOver15Score } from './compute/computeTeamOver15Score';
@@ -32,9 +33,12 @@ export {
   VALUE_1X2_FAIR_ODDS_MARKET_KEY,
   VALUE_1X2_FAIR_ODDS_GROUPS,
 } from './models/value1x2FairOdds.config';
+export { computeDoubleChanceScore, createEmptyDoubleChanceScore } from './compute/computeDoubleChanceScore';
+export { DOUBLE_CHANCE_LABEL, DOUBLE_CHANCE_MARKET_KEY, DOUBLE_CHANCE_GROUPS } from './models/doubleChance.config';
 
 export type ScoringMarketKey =
   | typeof VALUE_1X2_FAIR_ODDS_MARKET_KEY
+  | typeof DOUBLE_CHANCE_MARKET_KEY
   | typeof TEAM_OVER_15_MARKET_KEY
   | typeof TEAM_OVER_05_HT_MARKET_KEY
   | typeof WIN_PLUS_OVER_15_TEAM_MARKET_KEY
@@ -48,6 +52,11 @@ export const SCORING_MARKETS = {
   [VALUE_1X2_FAIR_ODDS_MARKET_KEY]: {
     key: VALUE_1X2_FAIR_ODDS_MARKET_KEY,
     label: VALUE_1X2_FAIR_ODDS_LABEL,
+    mode: 'multi_outcome' as const,
+  },
+  [DOUBLE_CHANCE_MARKET_KEY]: {
+    key: DOUBLE_CHANCE_MARKET_KEY,
+    label: DOUBLE_CHANCE_LABEL,
     mode: 'multi_outcome' as const,
   },
   [TEAM_OVER_05_HT_MARKET_KEY]: {

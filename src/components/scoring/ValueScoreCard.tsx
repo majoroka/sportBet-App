@@ -1,13 +1,15 @@
 import React from 'react';
-import { ValueOutcomeScore } from '../../scoring';
+import { OutcomeScoreBase } from '../../scoring';
 import { BreakdownAccordion } from './BreakdownAccordion';
 
 type Props = {
   id?: string;
   title: string;
   accentClass: string;
-  outcomeScore: ValueOutcomeScore;
+  outcomeScore: OutcomeScoreBase;
   highlightClass?: string;
+  showModel?: boolean;
+  showOverround?: boolean;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -19,6 +21,10 @@ const getScoreTint = (score: number) => {
 };
 
 const formatOdd = (value: number | null) => (value !== null && Number.isFinite(value) ? value.toFixed(2) : 'N/A');
+const formatPercent = (value: number | null) =>
+  value !== null && Number.isFinite(value) ? `${value.toFixed(1)}%` : 'N/A';
+const formatOverround = (value: number | null) =>
+  value !== null && Number.isFinite(value) ? `${value.toFixed(1)}%` : 'N/A';
 
 const formatEdge = (value: number | null) => {
   if (value === null || !Number.isFinite(value)) return 'N/A';
@@ -32,7 +38,15 @@ const formatEv = (value: number | null) => {
   return `${sign}${(value * 100).toFixed(1)}%`;
 };
 
-export const ValueScoreCard: React.FC<Props> = ({ id, title, accentClass, outcomeScore, highlightClass }) => {
+export const ValueScoreCard: React.FC<Props> = ({
+  id,
+  title,
+  accentClass,
+  outcomeScore,
+  highlightClass,
+  showModel,
+  showOverround,
+}) => {
   const { score, metrics } = outcomeScore;
   const pct = clamp(Math.round(score.total), 0, 100);
   const reasons = score.topReasons.length ? score.topReasons.slice(0, 3) : ['Sem dados suficientes'];
@@ -62,6 +76,18 @@ export const ValueScoreCard: React.FC<Props> = ({ id, title, accentClass, outcom
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-gray-600">
+        {showModel && (
+          <div className="flex items-baseline gap-2">
+            <span>Prob. modelo</span>
+            <span className="font-semibold text-gray-800 tabular-nums">{formatPercent(metrics.pModel)}</span>
+          </div>
+        )}
+        {showOverround && (
+          <div className="flex items-baseline gap-2">
+            <span>Overround</span>
+            <span className="font-semibold text-gray-800 tabular-nums">{formatOverround(metrics.overround)}</span>
+          </div>
+        )}
         <div className="flex items-baseline gap-2">
           <span>Odd book</span>
           <span className="font-semibold text-gray-800 tabular-nums">{formatOdd(metrics.oddBook)}</span>

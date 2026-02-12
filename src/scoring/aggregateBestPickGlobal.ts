@@ -1,4 +1,4 @@
-import { ScoringGroup, ScoringResult, Value1x2ScoreResult } from './types';
+import { ScoringGroup, ScoringResult, MultiOutcomeScoreResult } from './types';
 
 type ScoringMarketMode = 'team' | 'match' | 'multi_outcome';
 type ScoringMarketKey = string;
@@ -8,8 +8,8 @@ export type BestPickGlobal = {
   marketKey: ScoringMarketKey;
   tabLabel: string;
   targetType: 'team' | 'match' | 'outcome';
-  targetId: 'home' | 'away' | 'match' | 'draw';
-  outcomeKey?: 'HOME' | 'DRAW' | 'AWAY';
+  targetId: string;
+  outcomeKey?: string;
   score: number;
   penaltiesApplied?: number;
   corePoints?: number;
@@ -24,7 +24,7 @@ type TeamScorePair = { home: ScoringResult; away: ScoringResult };
 type AggregatorInput = {
   teamScores: Partial<Record<ScoringMarketKey, TeamScorePair>>;
   matchScores?: Partial<Record<ScoringMarketKey, ScoringResult>>;
-  valueScores?: Partial<Record<ScoringMarketKey, Value1x2ScoreResult>>;
+  valueScores?: Partial<Record<ScoringMarketKey, MultiOutcomeScoreResult>>;
   markets: Record<ScoringMarketKey, { key: ScoringMarketKey; label: string; mode: ScoringMarketMode }>;
   homeTeam: string;
   awayTeam: string;
@@ -36,7 +36,7 @@ type Candidate = {
   mode: ScoringMarketMode;
   targetType: BestPickGlobal['targetType'];
   targetId: BestPickGlobal['targetId'];
-  outcomeKey?: 'HOME' | 'DRAW' | 'AWAY';
+  outcomeKey?: string;
   score: ScoringResult;
 };
 
@@ -53,7 +53,8 @@ const buildCandidateLabel = (candidate: Candidate, homeTeam: string, awayTeam: s
   if (candidate.mode === 'match') return 'JOGO';
   if (candidate.outcomeKey === 'DRAW') return 'Empate';
   if (candidate.outcomeKey === 'HOME') return `Casa · ${homeTeam}`;
-  return `Fora · ${awayTeam}`;
+  if (candidate.outcomeKey === 'AWAY') return `Fora · ${awayTeam}`;
+  return candidate.outcomeKey ?? 'Outcome';
 };
 
 export const aggregateBestPickGlobal = ({
@@ -111,39 +112,26 @@ export const aggregateBestPickGlobal = ({
     const value = valueScores?.[market.key];
     if (!value) return;
     const outcomes = value.outcomes;
-    if (outcomes?.HOME) {
-        candidates.push({
-          marketKey: market.key,
-          tabLabel: market.label,
-          mode: market.mode,
-          targetType: 'outcome',
-          targetId: 'home',
-          outcomeKey: 'HOME',
-          score: outcomes.HOME.score,
-        });
-      }
-      if (outcomes?.DRAW) {
-        candidates.push({
-          marketKey: market.key,
-          tabLabel: market.label,
-          mode: market.mode,
-          targetType: 'outcome',
-          targetId: 'draw',
-          outcomeKey: 'DRAW',
-          score: outcomes.DRAW.score,
-        });
-      }
-      if (outcomes?.AWAY) {
-        candidates.push({
-          marketKey: market.key,
-          tabLabel: market.label,
-          mode: market.mode,
-          targetType: 'outcome',
-          targetId: 'away',
-          outcomeKey: 'AWAY',
-          score: outcomes.AWAY.score,
-        });
-      }
+    Object.entries(outcomes).forEach(([outcomeKey, outcomeScore]) => {
+      if (!outcomeScore?.score) return;
+      const targetId =
+        outcomeKey === 'HOME'
+          ? 'home'
+          : outcomeKey === 'AWAY'
+            ? 'away'
+            : outcomeKey === 'DRAW'
+              ? 'draw'
+              : outcomeKey;
+      candidates.push({
+        marketKey: market.key,
+        tabLabel: market.label,
+        mode: market.mode,
+        targetType: 'outcome',
+        targetId,
+        outcomeKey,
+        score: outcomeScore.score,
+      });
+    });
   });
 
   let best: Candidate | null = null;
