@@ -884,7 +884,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         best = { key: card.key, prob };
       }
     });
-    return best?.prob !== undefined && best.prob >= 0 ? best.key : null;
+    if (!best) return null;
+    return best.prob >= 0 ? best.key : null;
   }, [outcomeCards]);
 
   useEffect(() => {
