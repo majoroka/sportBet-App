@@ -1,23 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Papa from 'papaparse';
 import { Fixture, StandingRow } from '../domain/types';
 import { calculateStandings, computeLeagueStats, computeTeamStats, StandingMode } from '../calculators/standings';
 import { Heatmap } from './Heatmap';
 import { LEAGUE_CONFIG } from '../config/leagues';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  TooltipItem,
-} from 'chart.js';
+ 
 import { getTeamLogoFilename } from '../lib/logo';
 import { resolveTeamId } from '../lib/teamMapping';
 import { fetchWithCacheBust } from '../utils/fetchWithCacheBust';
-import { Bar } from 'react-chartjs-2';
 import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 import { ScoringHub } from './scoring/ScoringHub';
 import { FootballDataOdds, getFootballDataOdds, loadFootballDataOdds } from '../data/footballDataOdds';
@@ -53,17 +43,9 @@ import {
   createEmptyTeamOver05HTScore,
   createEmptyTeamOver15Score,
   createEmptyWinPlusOver15TeamScore,
+  Value1x2Outcome,
 } from '../scoring';
 import { HOME_ELO_ADVANTAGE } from '../scoring/constants';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 interface Props {
   fixture: Fixture;
@@ -561,6 +543,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [leagueLogoError, setLeagueLogoError] = useState(false);
   const [displayLeagueName, setDisplayLeagueName] = useState(fixture.competition);
   const [footballDataOdds, setFootballDataOdds] = useState<FootballDataOdds | null>(null);
+  const [selectedOutcome, setSelectedOutcome] = useState<Value1x2Outcome>('HOME');
+  const userSelectedOutcomeRef = useRef(false);
 
   useEffect(() => {
     const fetchStandings = async () => {
@@ -674,6 +658,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       isMounted = false;
     };
   }, [fixture.date, fixture.homeTeam, fixture.awayTeam]);
+
 
   // Resetar erros de imagem quando o jogo muda
   useEffect(() => {
@@ -867,48 +852,51 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const formatOdd = (prob: number) => (prob > 0 ? (1 / prob).toFixed(2) : '-');
   const formatPct = (prob: number) => `${(Math.max(0, prob) * 100).toFixed(1)}%`;
 
-  const chartData = useMemo(
-    () => ({
-      labels: [homeTeam, 'Empate', awayTeam],
-      datasets: [
-        {
-          label: 'Probabilidade',
-          data: [probabilities.homeWin, probabilities.draw, probabilities.awayWin],
-          backgroundColor: [
-            '#60A5FA', // Azul claro
-            '#9CA3AF', // Cinza
-            '#F472B6', // Rosa
-          ],
-          borderRadius: 4,
-        },
-      ],
-    }),
-    [homeTeam, awayTeam, probabilities.homeWin, probabilities.draw, probabilities.awayWin]
+  const outcomeCards = useMemo(
+    () => [
+      {
+        key: 'HOME' as const,
+        label: homeTeam,
+        probModel: probabilities.homeWin,
+        oddBook: Number.isFinite(footballDataOdds?.home as number) ? Number(footballDataOdds?.home) : null,
+      },
+      {
+        key: 'DRAW' as const,
+        label: 'EMPATE',
+        probModel: probabilities.draw,
+        oddBook: Number.isFinite(footballDataOdds?.draw as number) ? Number(footballDataOdds?.draw) : null,
+      },
+      {
+        key: 'AWAY' as const,
+        label: awayTeam,
+        probModel: probabilities.awayWin,
+        oddBook: Number.isFinite(footballDataOdds?.away as number) ? Number(footballDataOdds?.away) : null,
+      },
+    ],
+    [homeTeam, awayTeam, probabilities.homeWin, probabilities.draw, probabilities.awayWin, footballDataOdds]
   );
 
-  const chartOptions = useMemo(
-    () => ({
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: (context: TooltipItem<'bar'>) => {
-              const value = typeof context.raw === 'number' ? context.raw : Number(context.raw);
-              const safeValue = Number.isFinite(value) ? value : 0;
-              return (safeValue * 100).toFixed(1) + '%';
-            },
-          },
-        },
-      },
-      scales: {
-        y: { display: false, beginAtZero: true },
-        x: { grid: { display: false } },
-      },
-    }),
-    []
-  );
+  const favoriteOutcome = useMemo(() => {
+    let best: { key: Value1x2Outcome; prob: number } | null = null;
+    outcomeCards.forEach((card) => {
+      const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : -1;
+      if (best === null || prob > best.prob) {
+        best = { key: card.key, prob };
+      }
+    });
+    return best?.prob !== undefined && best.prob >= 0 ? best.key : null;
+  }, [outcomeCards]);
+
+  useEffect(() => {
+    userSelectedOutcomeRef.current = false;
+    setSelectedOutcome('HOME');
+  }, [fixture.id]);
+
+  useEffect(() => {
+    if (userSelectedOutcomeRef.current) return;
+    if (!favoriteOutcome) return;
+    setSelectedOutcome(favoriteOutcome);
+  }, [favoriteOutcome]);
 
   const currentStandings = useMemo(() => {
     if (standingsTab === 'home') return standingsHome;
@@ -1750,13 +1738,82 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           <div className="space-y-4">
             <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
-              <div className="grid grid-cols-3 gap-2">
-                <OddBox label={homeTeam} value={probabilities.homeWin} />
-                <OddBox label="Empate" value={probabilities.draw} />
-                <OddBox label={awayTeam} value={probabilities.awayWin} />
-              </div>
-              <div className="mt-4 h-32">
-                <Bar data={chartData} options={chartOptions} />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {outcomeCards.map((outcome) => {
+                  const prob = Number.isFinite(outcome.probModel) ? (outcome.probModel as number) : null;
+                  const hasOddBook = Number.isFinite(outcome.oddBook as number) && (outcome.oddBook as number) > 0;
+                  const fairOdd = prob && prob > 0 ? 1 / prob : null;
+                  const edgePercent =
+                    hasOddBook && prob !== null ? (prob * (outcome.oddBook as number) - 1) * 100 : null;
+                  const isFavorite = outcome.key === favoriteOutcome;
+                  const isSelected = outcome.key === selectedOutcome;
+                  const edgeClass =
+                    edgePercent === null
+                      ? ''
+                      : Math.abs(edgePercent) < 0.5
+                        ? 'bg-slate-100 text-slate-600 border-slate-200'
+                        : edgePercent > 0
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                          : 'bg-rose-50 text-rose-700 border-rose-200';
+
+                  return (
+                    <button
+                      key={outcome.key}
+                      type="button"
+                      onClick={() => {
+                        userSelectedOutcomeRef.current = true;
+                        setSelectedOutcome(outcome.key);
+                      }}
+                      className={[
+                        'relative text-left bg-white border border-slate-200 rounded-2xl shadow-sm p-5 transition',
+                        'hover:shadow-md hover:-translate-y-[1px]',
+                        isSelected ? 'ring-2 ring-slate-300 border-slate-300' : '',
+                        !isSelected && isFavorite ? 'ring-1 ring-slate-200' : '',
+                      ].join(' ')}
+                    >
+                      {isFavorite && (
+                        <span className="absolute top-3 left-3 text-[10px] uppercase tracking-wide bg-slate-900 text-white px-2 py-1 rounded-full">
+                          Favorito
+                        </span>
+                      )}
+                      {edgePercent !== null && hasOddBook && (
+                        <span
+                          className={[
+                            'absolute top-3 right-3 text-xs font-medium px-2 py-1 rounded-full border',
+                            edgeClass,
+                          ].join(' ')}
+                        >
+                          Edge: {edgePercent > 0 ? '+' : ''}
+                          {edgePercent.toFixed(1)}%
+                        </span>
+                      )}
+
+                      <div className="text-xs uppercase tracking-wide text-slate-500">
+                        {outcome.label}
+                      </div>
+                      <div className="mt-2 flex items-end gap-2">
+                        <div className="text-3xl font-semibold text-slate-900 tabular-nums">
+                          {hasOddBook ? (outcome.oddBook as number).toFixed(2) : '-'}
+                        </div>
+                        <div className="text-sm text-slate-500">
+                          {prob !== null ? formatPct(prob) : 'N/A'}
+                        </div>
+                      </div>
+                      <div className="mt-1 text-sm text-slate-600">
+                        Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
+                      </div>
+
+                      {isFavorite && prob !== null && (
+                        <div className="mt-4 h-1 w-full rounded-full bg-slate-100">
+                          <div
+                            className="h-full rounded-full bg-slate-900"
+                            style={{ width: `${Math.min(100, Math.max(0, prob * 100))}%` }}
+                          />
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
