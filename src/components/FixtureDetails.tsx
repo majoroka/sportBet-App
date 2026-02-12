@@ -125,6 +125,7 @@ const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
 
 const POSITIVE_BADGE_CLASSES = 'bg-sky-50 text-sky-600 border-sky-600';
 const NEGATIVE_BADGE_CLASSES = 'bg-rose-50 text-rose-600 border-rose-600';
+const PROB_CARD_CLASS = 'bg-white border border-gray-200 rounded-lg shadow-sm p-3';
 
 const OverIcon: React.FC<{ over: boolean; title?: string; ring?: boolean }> = ({ over, title, ring }) => (
   <div
@@ -1747,7 +1748,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* COLUNA 1: Principal (1X2, DC, DNB) */}
           <div className="space-y-4">
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
               <div className="grid grid-cols-3 gap-2">
                 <OddBox label={homeTeam} value={probabilities.homeWin} />
@@ -1759,7 +1760,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
             </div>
 
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
               <div className="grid grid-cols-3 gap-2">
                 <OddBox label="1X" value={probabilities.doubleChance.homeDraw} />
@@ -1768,7 +1769,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
             </div>
 
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Vitória + 1,5 (Jogo)</h3>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
@@ -1791,7 +1792,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
           {/* COLUNA 2: Golos (O/U, BTTS, Clean Sheet) */}
           <div className="space-y-4">
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Mercado de Golos</h3>
               <table className="w-full text-sm">
                 <thead>
@@ -1832,7 +1833,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             </div>
 
             <div className="grid grid-cols-2 gap-2">
-              <div className="bg-gray-50 p-3 rounded-lg">
+              <div className={PROB_CARD_CLASS}>
                 <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Ambas Marcam</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
@@ -1851,7 +1852,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 p-3 rounded-lg">
+              <div className={PROB_CARD_CLASS}>
                 <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Clean Sheet</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
@@ -1875,12 +1876,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
           {/* COLUNA 3: Especial (Handicap, Margem, Correct Score) */}
           <div className="space-y-4">
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Heatmap de Resultados (%)</h3>
               <Heatmap data={probabilities.correctScore} />
             </div>
 
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos da Equipa (Over)</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
