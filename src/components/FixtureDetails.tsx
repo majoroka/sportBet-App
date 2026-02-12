@@ -1858,8 +1858,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
-              <div className="divide-y divide-slate-100">
-                {doubleChanceCards.map((card) => {
+              <div>
+                {doubleChanceCards.map((card, idx) => {
                   const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : null;
                   const hasOddBook = Number.isFinite(card.oddBook as number) && (card.oddBook as number) > 0;
                   const fairOdd = prob && prob > 0 ? 1 / prob : null;
@@ -1885,7 +1885,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                       key={card.key}
                       className={[
                         'py-3',
-                        isBest ? 'ring-1 ring-slate-200 rounded-xl px-2' : '',
+                        idx === 0 ? '' : 'border-t border-slate-100',
+                        isBest ? 'bg-slate-50/60 rounded-xl px-2' : '',
                       ].join(' ')}
                     >
                       <div className="flex items-center justify-between">
