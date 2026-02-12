@@ -92,7 +92,13 @@ const formatEloValue = (value?: number | null) => {
   return String(rounded).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 };
 
-const EloPill: React.FC<{ elo?: number | null; rank?: number | null }> = ({ elo, rank }) => (
+const formatSigned = (value: number) => (value >= 0 ? `+${value}` : `${value}`);
+
+const EloPill: React.FC<{ elo?: number | null; rank?: number | null; diff?: number | null }> = ({
+  elo,
+  rank,
+  diff,
+}) => (
   <div className="flex items-center rounded-xl border border-gray-300 bg-white text-xs sm:text-sm font-normal text-black px-2.5 py-1.5 sm:px-3 sm:py-2 gap-2">
     <div>
       ELO: <span className="font-bold">{formatEloValue(elo)}</span>
@@ -100,6 +106,11 @@ const EloPill: React.FC<{ elo?: number | null; rank?: number | null }> = ({ elo,
     <div>
       #{rank && rank > 0 ? rank : '—'}
     </div>
+    {typeof diff === 'number' && Number.isFinite(diff) && (
+      <div className={diff >= 0 ? 'font-semibold text-sky-600' : 'font-semibold text-rose-600'}>
+        {formatSigned(diff)}
+      </div>
+    )}
   </div>
 );
 
@@ -112,15 +123,15 @@ const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
   );
 };
 
-const BEST_PICK_BADGE_CLASSES = 'bg-emerald-50 text-emerald-800 border-emerald-300';
-const PICKS_NEG_BADGE_CLASSES = 'bg-red-50 text-red-800 border-red-300';
+const POSITIVE_BADGE_CLASSES = 'bg-sky-50 text-sky-600 border-sky-600';
+const NEGATIVE_BADGE_CLASSES = 'bg-rose-50 text-rose-600 border-rose-600';
 
 const OverIcon: React.FC<{ over: boolean; title?: string; ring?: boolean }> = ({ over, title, ring }) => (
   <div
     className={[
-      'w-5 h-5 rounded-full flex items-center justify-center text-[12px] font-semibold border',
-      over ? BEST_PICK_BADGE_CLASSES : PICKS_NEG_BADGE_CLASSES,
-      ring ? (over ? 'ring-1 ring-offset-1 ring-emerald-300' : 'ring-1 ring-offset-1 ring-red-300') : '',
+      'w-5 h-5 rounded-full flex items-center justify-center text-[17px] font-semibold border',
+      over ? POSITIVE_BADGE_CLASSES : NEGATIVE_BADGE_CLASSES,
+      ring ? (over ? 'ring-1 ring-offset-1 ring-sky-600' : 'ring-1 ring-offset-1 ring-rose-600') : '',
     ].join(' ')}
     title={title}
   >
@@ -416,9 +427,9 @@ const TEAM_STATS_SECTIONS: TeamStatSection[] = [
 
 // Helper para obter a cor e texto da forma
 const getFormAttributes = (result: string) => {
-  if (result === 'W') return { color: 'bg-green-500', label: 'Vitória' };
+  if (result === 'W') return { color: 'bg-sky-600', label: 'Vitória' };
   if (result === 'D') return { color: 'bg-[#c1c1c1]', label: 'Empate' }; // Cor personalizada
-  return { color: 'bg-red-500', label: 'Derrota' };
+  return { color: 'bg-rose-600', label: 'Derrota' };
 };
 
 const COUNTRY_ALIASES: Record<string, string> = {
@@ -999,6 +1010,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const homeEloWithAdvantage = homeEloValue + HOME_ELO_ADVANTAGE;
   const homeEloRaw = Number.isFinite(homeElo?.elo as number) ? Number(homeElo?.elo) : null;
   const awayEloRaw = Number.isFinite(awayElo?.elo as number) ? Number(awayElo?.elo) : null;
+  const diffHome =
+    homeEloRaw !== null && awayEloRaw !== null
+      ? Math.round(homeEloRaw + HOME_ELO_ADVANTAGE - awayEloRaw)
+      : null;
+  const diffAway =
+    homeEloRaw !== null && awayEloRaw !== null
+      ? Math.round(awayEloRaw - (homeEloRaw + HOME_ELO_ADVANTAGE))
+      : null;
 
   const inferProbOver15Match = () => {
     const probOver15Direct = probabilities.overUnder?.['1.5']?.over;
@@ -1437,17 +1456,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <div className="flex items-center justify-end gap-2 flex-nowrap min-w-0">
               <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-end">
                 <XgPill value={xgHome} />
-                <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} />
+                <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} diff={diffHome} />
                 <RankingBadge rank={homeStanding?.rank ?? null} />
               </div>
               {/* Forma da equipa da casa (Esquerda do nome) */}
               {homeStanding && (
                 <div className="hidden sm:flex gap-1 shrink-0">
-                  {homeStanding.form.map((match, i) => {
+                  {homeStanding.form.slice(-6).map((match, i, arr) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
                     const ringColor = match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
-                    const isLast = i === homeStanding.form.length - 1;
+                    const isLast = i === arr.length - 1;
                     const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
                     const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
                     return (
@@ -1510,11 +1529,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               {/* Forma da equipa de fora (Direita do nome) */}
               {awayStanding && (
                 <div className="hidden sm:flex gap-1 shrink-0">
-                  {awayStanding.form.map((match, i) => {
+                  {awayStanding.form.slice(-6).map((match, i, arr) => {
                     const { color, label } = getFormAttributes(match.result);
                     const side = match.side === 'A' ? 'A' : 'H';
                     const ringColor = match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
-                    const isLast = i === awayStanding.form.length - 1;
+                    const isLast = i === arr.length - 1;
                     const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
                     const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
                     return (
@@ -1530,7 +1549,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               )}
               <RankingBadge rank={awayStanding?.rank ?? null} />
               <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-start">
-                <EloPill elo={awayElo?.elo ?? null} rank={awayElo?.rank ?? null} />
+                <EloPill elo={awayElo?.elo ?? null} rank={awayElo?.rank ?? null} diff={diffAway} />
                 <XgPill value={xgAway} />
               </div>
             </div>
