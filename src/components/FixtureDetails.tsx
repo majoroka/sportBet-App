@@ -90,7 +90,7 @@ const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
 
 const POSITIVE_BADGE_CLASSES = 'bg-sky-50 text-sky-600 border-sky-600';
 const NEGATIVE_BADGE_CLASSES = 'bg-rose-50 text-rose-600 border-rose-600';
-const PROB_CARD_CLASS = 'bg-white border border-gray-200 rounded-lg shadow-sm p-3';
+const PROB_CARD_CLASS = 'bg-white border border-slate-200 rounded-2xl shadow-sm p-4';
 
 const OverIcon: React.FC<{ over: boolean; title?: string; ring?: boolean }> = ({ over, title, ring }) => (
   <div
@@ -1860,11 +1860,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       </AccordionSection>
 
       <AccordionSection id="accordion-probabilidades" title="PROBABILIDADES">
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-          {/* COLUNA ESQUERDA (larga): 1X2 + cards secundários */}
-          <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* COLUNA ESQUERDA (col-span-8) */}
+          <div className="lg:col-span-8 grid grid-cols-1 gap-6">
             <div className={PROB_CARD_CLASS}>
-              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
+              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                Resultado Final (1X2)
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {outcomeCards.map((outcome) => {
                   const prob = Number.isFinite(outcome.probModel) ? (outcome.probModel as number) : null;
@@ -1937,9 +1939,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
-                <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className={PROB_CARD_CLASS}>
+                <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                  Dupla Hipótese
+                </h3>
                 <div>
                   {doubleChanceCards.map((card, idx) => {
                     const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : null;
@@ -1967,7 +1971,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                       <div
                         key={card.key}
                         className={[
-                          'py-2',
+                          'py-3',
                           idx === 0 ? '' : 'border-t border-slate-100',
                           isBest ? 'bg-slate-50/60 rounded-xl px-2' : '',
                         ].join(' ')}
@@ -2015,7 +2019,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
 
               <div className={PROB_CARD_CLASS}>
-                <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Vitória + 1,5 (Jogo)</h3>
+                <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                  Vitória + 1,5 (Jogo)
+                </h3>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Casa &amp; +1,5</span>
@@ -2036,88 +2042,94 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             </div>
           </div>
 
-          {/* COLUNA DIREITA: Heatmap + restantes cards */}
-          <div className="space-y-4">
+          {/* COLUNA DIREITA (col-span-4) */}
+          <div className="lg:col-span-4 grid grid-cols-1 gap-6">
             <div className={PROB_CARD_CLASS}>
-              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Heatmap de Resultados (%)</h3>
+              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                Heatmap de Resultados (%)
+              </h3>
               <Heatmap data={probabilities.correctScore} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className={PROB_CARD_CLASS}>
-                <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Mercado de Golos</h3>
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-gray-500 border-b">
-                      <th className="pb-2 text-left">Linha</th>
-                      <th className="pb-2 text-right">Over</th>
-                      <th className="pb-2 text-right">Under</th>
+            <div className={PROB_CARD_CLASS}>
+              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                Mercado de Golos
+              </h3>
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-gray-500 border-b">
+                    <th className="pb-2 text-left">Linha</th>
+                    <th className="pb-2 text-right">Over</th>
+                    <th className="pb-2 text-right">Under</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(probabilities.overUnder).map(([line, probs]) => (
+                    <tr key={line} className="border-b last:border-0 hover:bg-gray-100">
+                      <td className="py-1.5 font-medium">{line}</td>
+                      <td className="py-1.5 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="font-bold font-mono text-xl text-gray-900">
+                            {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
+                            {probs.over > 0 && (
+                              <span className="text-xs text-gray-400 font-normal"> ({(probs.over * 100).toFixed(1)}%)</span>
+                            )}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-1.5 text-right">
+                        <div className="flex items-center justify-end gap-2">
+                          <span className="font-bold font-mono text-xl text-gray-900">
+                            {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
+                            {probs.under > 0 && (
+                              <span className="text-xs text-gray-400 font-normal"> ({(probs.under * 100).toFixed(1)}%)</span>
+                            )}
+                          </span>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(probabilities.overUnder).map(([line, probs]) => (
-                      <tr key={line} className="border-b last:border-0 hover:bg-gray-100">
-                        <td className="py-2 font-medium">{line}</td>
-                        <td className="py-2 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="font-bold font-mono text-xl text-gray-900">
-                              {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
-                              {probs.over > 0 && (
-                                <span className="text-xs text-gray-400 font-normal"> ({(probs.over * 100).toFixed(1)}%)</span>
-                              )}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="py-2 text-right">
-                          <div className="flex items-center justify-end gap-2">
-                            <span className="font-bold font-mono text-xl text-gray-900">
-                              {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
-                              {probs.under > 0 && (
-                                <span className="text-xs text-gray-400 font-normal"> ({(probs.under * 100).toFixed(1)}%)</span>
-                              )}
-                            </span>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
-              <div className={PROB_CARD_CLASS}>
-                <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Golos da Equipa (Over)</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
-                    {['0.5', '1.5', '2.5'].map(line => (
-                      <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                        <span className="text-sm">+{line}</span>
-                        <span className="font-bold font-mono text-xl text-gray-800">
-                          {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
-                          {probabilities.teamOver.home[line] > 0 && (
-                            <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
-                          )}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
-                    {['0.5', '1.5', '2.5'].map(line => (
-                      <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                        <span className="text-sm">+{line}</span>
-                        <span className="font-bold font-mono text-xl text-gray-800">
-                          {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
-                          {probabilities.teamOver.away[line] > 0 && (
-                            <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
-                          )}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+            <div className={PROB_CARD_CLASS}>
+              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
+                Golos da Equipa (Over)
+              </h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
+                  {['0.5', '1.5', '2.5'].map(line => (
+                    <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
+                      <span className="text-sm">+{line}</span>
+                      <span className="font-bold font-mono text-xl text-gray-800">
+                        {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
+                        {probabilities.teamOver.home[line] > 0 && (
+                          <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
+                  {['0.5', '1.5', '2.5'].map(line => (
+                    <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
+                      <span className="text-sm">+{line}</span>
+                      <span className="font-bold font-mono text-xl text-gray-800">
+                        {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
+                        {probabilities.teamOver.away[line] > 0 && (
+                          <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
+                        )}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
+            </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <TwoOptionMarketCard
                 title="Ambas Marcam"
                 showBars
