@@ -1856,58 +1856,72 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
             </div>
 
-            <div className={PROB_CARD_CLASS}>
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
-              <div className="space-y-3">
+              <div className="divide-y divide-slate-100">
                 {doubleChanceCards.map((card) => {
                   const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : null;
                   const hasOddBook = Number.isFinite(card.oddBook as number) && (card.oddBook as number) > 0;
                   const fairOdd = prob && prob > 0 ? 1 / prob : null;
                   const edgePercent =
                     hasOddBook && prob !== null ? (prob * (card.oddBook as number) - 1) * 100 : null;
-                  const edgeClass = getEdgeClass(edgePercent);
+                  const edgeInlineClass =
+                    edgePercent === null
+                      ? 'text-slate-500'
+                      : Math.abs(edgePercent) < 0.5
+                        ? 'text-slate-500'
+                        : edgePercent > 0
+                          ? 'text-teal-600'
+                          : 'text-rose-600';
                   const isBest = card.key === favoriteDoubleChance;
+                  const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
+                  const isNarrow = pct < 12;
+                  const fillClass = card.key === '1X' ? 'bg-blue-500/80' : 'bg-slate-500/60';
+                  const edgeLabel =
+                    edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
 
                   return (
                     <div
                       key={card.key}
                       className={[
-                        'rounded-xl border border-slate-100 bg-white p-4 transition',
-                        'hover:shadow-sm',
-                        isBest ? 'ring-1 ring-slate-200' : '',
+                        'py-3',
+                        isBest ? 'ring-1 ring-slate-200 rounded-xl px-2' : '',
                       ].join(' ')}
                     >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1">
-                          <div className="text-sm font-semibold text-slate-700">{card.label}</div>
-                          <div className="mt-2 flex items-end gap-2">
-                            <div className="text-2xl font-semibold text-slate-900 tabular-nums">
-                              {hasOddBook ? (card.oddBook as number).toFixed(2) : '-'}
-                            </div>
-                            <div className="text-sm text-slate-500">
-                              {prob !== null ? formatPct(prob) : 'N/A'}
-                            </div>
-                          </div>
-                          <div className="mt-1 text-xs text-slate-500">
-                            Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
-                          </div>
-                          <div className="mt-3 h-2 w-full rounded-full bg-slate-100">
-                            <div
-                              className="h-full rounded-full bg-teal-500"
-                              style={{ width: `${Math.min(100, Math.max(0, (prob ?? 0) * 100))}%` }}
-                            />
-                          </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-semibold text-slate-800">{card.label}</div>
+                        <div className="text-sm font-medium text-slate-500">
+                          {prob !== null ? formatPct(prob) : 'N/A'}
                         </div>
-                        {edgePercent !== null && hasOddBook && (
+                      </div>
+
+                      <div className="mt-2 h-12 rounded-xl bg-slate-100 relative overflow-hidden">
+                        <div
+                          className={`absolute inset-y-0 left-0 rounded-xl ${fillClass}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                        <div
+                          className={[
+                            'absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-semibold tabular-nums',
+                            isNarrow ? 'text-slate-900' : 'text-white',
+                          ].join(' ')}
+                        >
+                          {hasOddBook ? (card.oddBook as number).toFixed(2) : '—'}
+                        </div>
+                        {edgePercent !== null && hasOddBook && fairOdd && (
                           <span
-                            className={[
-                              'text-xs font-medium px-2 py-1 rounded-full border',
-                              edgeClass,
-                            ].join(' ')}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium px-3 py-1 rounded-full bg-white/90 border border-slate-200 shadow-sm text-slate-700"
                           >
-                            Edge: {edgePercent > 0 ? '+' : ''}
-                            {edgePercent.toFixed(1)}%
+                            Edge | {fairOdd.toFixed(2)}{' '}
+                            <span className={edgeInlineClass}>{edgeLabel}</span>
                           </span>
+                        )}
+                      </div>
+
+                      <div className="mt-1 text-xs text-slate-500">
+                        Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}{' '}
+                        {edgePercent !== null && hasOddBook && (
+                          <span className={edgeInlineClass}>{edgeLabel}</span>
                         )}
                       </div>
                     </div>
