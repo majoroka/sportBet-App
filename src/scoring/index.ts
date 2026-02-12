@@ -50,39 +50,39 @@ export const SCORING_MARKETS = {
     label: VALUE_1X2_FAIR_ODDS_LABEL,
     mode: 'multi_outcome' as const,
   },
-  [TEAM_OVER_15_MARKET_KEY]: {
-    key: TEAM_OVER_15_MARKET_KEY,
-    label: TEAM_OVER_15_LABEL,
-    mode: 'team' as const,
-  },
   [TEAM_OVER_05_HT_MARKET_KEY]: {
     key: TEAM_OVER_05_HT_MARKET_KEY,
     label: TEAM_OVER_05_HT_LABEL,
     mode: 'team' as const,
   },
-  [WIN_PLUS_OVER_15_TEAM_MARKET_KEY]: {
-    key: WIN_PLUS_OVER_15_TEAM_MARKET_KEY,
-    label: WIN_PLUS_OVER_15_TEAM_LABEL,
+  [OVER_05_HT_MATCH_MARKET_KEY]: {
+    key: OVER_05_HT_MATCH_MARKET_KEY,
+    label: OVER_05_HT_MATCH_LABEL,
+    mode: 'match' as const,
+  },
+  [TEAM_OVER_15_MARKET_KEY]: {
+    key: TEAM_OVER_15_MARKET_KEY,
+    label: TEAM_OVER_15_LABEL,
     mode: 'team' as const,
-  },
-  [BTTS_YES_MARKET_KEY]: {
-    key: BTTS_YES_MARKET_KEY,
-    label: BTTS_YES_LABEL,
-    mode: 'match' as const,
-  },
-  [OVER_25_MATCH_MARKET_KEY]: {
-    key: OVER_25_MATCH_MARKET_KEY,
-    label: OVER_25_MATCH_LABEL,
-    mode: 'match' as const,
   },
   [OVER_15_MATCH_MARKET_KEY]: {
     key: OVER_15_MATCH_MARKET_KEY,
     label: OVER_15_MATCH_LABEL,
     mode: 'match' as const,
   },
-  [OVER_05_HT_MATCH_MARKET_KEY]: {
-    key: OVER_05_HT_MATCH_MARKET_KEY,
-    label: OVER_05_HT_MATCH_LABEL,
+  [WIN_PLUS_OVER_15_TEAM_MARKET_KEY]: {
+    key: WIN_PLUS_OVER_15_TEAM_MARKET_KEY,
+    label: WIN_PLUS_OVER_15_TEAM_LABEL,
+    mode: 'team' as const,
+  },
+  [OVER_25_MATCH_MARKET_KEY]: {
+    key: OVER_25_MATCH_MARKET_KEY,
+    label: OVER_25_MATCH_LABEL,
+    mode: 'match' as const,
+  },
+  [BTTS_YES_MARKET_KEY]: {
+    key: BTTS_YES_MARKET_KEY,
+    label: BTTS_YES_LABEL,
     mode: 'match' as const,
   },
 } as const;
