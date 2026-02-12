@@ -1780,7 +1780,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
       <AccordionSection id="accordion-probabilidades" title="PROBABILIDADES">
         <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-          {/* COLUNA ESQUERDA (larga): 1X2 + Dupla Hipótese */}
+          {/* COLUNA ESQUERDA (larga): 1X2 + cards secundários */}
           <div className="space-y-4">
             <div className={PROB_CARD_CLASS}>
               <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Resultado Final (1X2)</h3>
@@ -1856,41 +1856,42 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
-              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
-              <div>
-                {doubleChanceCards.map((card, idx) => {
-                  const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : null;
-                  const hasOddBook = Number.isFinite(card.oddBook as number) && (card.oddBook as number) > 0;
-                  const fairOdd = prob && prob > 0 ? 1 / prob : null;
-                  const edgePercent =
-                    hasOddBook && prob !== null ? (prob * (card.oddBook as number) - 1) * 100 : null;
-                  const edgeInlineClass =
-                    edgePercent === null
-                      ? 'text-slate-500'
-                      : Math.abs(edgePercent) < 0.5
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
+                <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Dupla Hipótese</h3>
+                <div>
+                  {doubleChanceCards.map((card, idx) => {
+                    const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : null;
+                    const hasOddBook = Number.isFinite(card.oddBook as number) && (card.oddBook as number) > 0;
+                    const fairOdd = prob && prob > 0 ? 1 / prob : null;
+                    const displayOdd = hasOddBook ? (card.oddBook as number) : fairOdd;
+                    const edgePercent =
+                      hasOddBook && prob !== null ? (prob * (card.oddBook as number) - 1) * 100 : null;
+                    const edgeInlineClass =
+                      edgePercent === null
                         ? 'text-slate-500'
-                        : edgePercent > 0
-                          ? 'text-teal-600'
-                          : 'text-rose-600';
-                  const isBest = card.key === favoriteDoubleChance;
-                  const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
-                  const isNarrow = pct < 12;
-                  const fillClass = card.key === '1X' ? 'bg-blue-500/80' : 'bg-slate-500/60';
-                  const edgeLabel =
-                    edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
+                        : Math.abs(edgePercent) < 0.5
+                          ? 'text-slate-500'
+                          : edgePercent > 0
+                            ? 'text-teal-600'
+                            : 'text-rose-600';
+                    const isBest = card.key === favoriteDoubleChance;
+                    const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
+                    const isNarrow = pct < 12;
+                    const fillClass = card.key === '1X' ? 'bg-blue-500/80' : 'bg-slate-500/60';
+                    const edgeLabel =
+                      edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
 
-                  return (
-                    <div
-                      key={card.key}
-                      className={[
-                        'py-2',
-                        idx === 0 ? '' : 'border-t border-slate-100',
-                        isBest ? 'bg-slate-50/60 rounded-xl px-2' : '',
-                      ].join(' ')}
-                    >
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center justify-between">
+                    return (
+                      <div
+                        key={card.key}
+                        className={[
+                          'py-2',
+                          idx === 0 ? '' : 'border-t border-slate-100',
+                          isBest ? 'bg-slate-50/60 rounded-xl px-2' : '',
+                        ].join(' ')}
+                      >
+                        <div className="flex items-center justify-between mb-2">
                           <div className="text-sm font-semibold text-slate-800">{card.label}</div>
                           <div className="text-sm font-medium text-slate-500">
                             {prob !== null ? formatPct(prob) : 'N/A'}
@@ -1908,7 +1909,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                               isNarrow ? 'text-slate-900' : 'text-white',
                             ].join(' ')}
                           >
-                            {hasOddBook ? (card.oddBook as number).toFixed(2) : '—'}
+                            {displayOdd ? displayOdd.toFixed(2) : '—'}
                           </div>
                           {edgePercent !== null && hasOddBook && fairOdd && (
                             <span
@@ -1920,34 +1921,35 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           )}
                         </div>
 
-                        <div className="text-xs text-slate-500">
+                        <div className="mt-1 text-xs text-slate-500">
                           Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}{' '}
                           {edgePercent !== null && hasOddBook && (
                             <span className={edgeInlineClass}>{edgeLabel}</span>
                           )}
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className={PROB_CARD_CLASS}>
-              <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Vitória + 1,5 (Jogo)</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Casa &amp; +1,5</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">
-                    {formatOdd(probabilities.winOver15.home)}
-                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.home)})</span>
-                  </span>
+                    );
+                  })}
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm">Fora &amp; +1,5</span>
-                  <span className="font-bold font-mono text-xl text-gray-900">
-                    {formatOdd(probabilities.winOver15.away)}
-                    <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.away)})</span>
-                  </span>
+              </div>
+
+              <div className={PROB_CARD_CLASS}>
+                <h3 className="font-bold text-gray-700 mb-2 border-b border-gray-200 pb-1">Vitória + 1,5 (Jogo)</h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Casa &amp; +1,5</span>
+                    <span className="font-bold font-mono text-xl text-gray-900">
+                      {formatOdd(probabilities.winOver15.home)}
+                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.home)})</span>
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm">Fora &amp; +1,5</span>
+                    <span className="font-bold font-mono text-xl text-gray-900">
+                      {formatOdd(probabilities.winOver15.away)}
+                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.away)})</span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
