@@ -1884,46 +1884,48 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     <div
                       key={card.key}
                       className={[
-                        'py-3',
+                        'py-2',
                         idx === 0 ? '' : 'border-t border-slate-100',
                         isBest ? 'bg-slate-50/60 rounded-xl px-2' : '',
                       ].join(' ')}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="text-sm font-semibold text-slate-800">{card.label}</div>
-                        <div className="text-sm font-medium text-slate-500">
-                          {prob !== null ? formatPct(prob) : 'N/A'}
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center justify-between">
+                          <div className="text-sm font-semibold text-slate-800">{card.label}</div>
+                          <div className="text-sm font-medium text-slate-500">
+                            {prob !== null ? formatPct(prob) : 'N/A'}
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="mt-2 h-12 rounded-xl bg-slate-100 relative overflow-hidden">
-                        <div
-                          className={`absolute inset-y-0 left-0 rounded-xl ${fillClass}`}
-                          style={{ width: `${pct}%` }}
-                        />
-                        <div
-                          className={[
-                            'absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-semibold tabular-nums',
-                            isNarrow ? 'text-slate-900' : 'text-white',
-                          ].join(' ')}
-                        >
-                          {hasOddBook ? (card.oddBook as number).toFixed(2) : '—'}
-                        </div>
-                        {edgePercent !== null && hasOddBook && fairOdd && (
-                          <span
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium px-3 py-1 rounded-full bg-white/90 border border-slate-200 shadow-sm text-slate-700"
+                        <div className="relative h-11 rounded-xl bg-slate-100 overflow-hidden">
+                          <div
+                            className={`absolute inset-y-0 left-0 rounded-xl ${fillClass}`}
+                            style={{ width: `${pct}%` }}
+                          />
+                          <div
+                            className={[
+                              'absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-semibold tabular-nums',
+                              isNarrow ? 'text-slate-900' : 'text-white',
+                            ].join(' ')}
                           >
-                            Edge | {fairOdd.toFixed(2)}{' '}
-                            <span className={edgeInlineClass}>{edgeLabel}</span>
-                          </span>
-                        )}
-                      </div>
+                            {hasOddBook ? (card.oddBook as number).toFixed(2) : '—'}
+                          </div>
+                          {edgePercent !== null && hasOddBook && fairOdd && (
+                            <span
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium px-3 py-1 rounded-full bg-white/90 border border-slate-200 shadow-sm text-slate-700"
+                            >
+                              Edge | {fairOdd.toFixed(2)}{' '}
+                              <span className={edgeInlineClass}>{edgeLabel}</span>
+                            </span>
+                          )}
+                        </div>
 
-                      <div className="mt-1 text-xs text-slate-500">
-                        Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}{' '}
-                        {edgePercent !== null && hasOddBook && (
-                          <span className={edgeInlineClass}>{edgeLabel}</span>
-                        )}
+                        <div className="text-xs text-slate-500">
+                          Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}{' '}
+                          {edgePercent !== null && hasOddBook && (
+                            <span className={edgeInlineClass}>{edgeLabel}</span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
