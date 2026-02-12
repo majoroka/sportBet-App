@@ -4,6 +4,7 @@ on:
   workflow_dispatch: # Permite o acionamento manual
   schedule:
     - cron: '0 5 * * *' # Corre todos os dias às 5 da manhã UTC
+    - cron: '0 */8 * * *' # Verifica de 8 em 8 horas UTC
 
 permissions:
   contents: write # Necessário para fazer commit das alterações de volta para o repositório
