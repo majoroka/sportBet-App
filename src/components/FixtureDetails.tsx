@@ -840,6 +840,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     if (edgePercent > 0) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     return 'bg-rose-50 text-rose-700 border-rose-200';
   };
+  const getEdgePillClass = (edgePercent: number | null) => {
+    if (edgePercent === null) return 'bg-slate-100 text-slate-600';
+    if (Math.abs(edgePercent) < 0.5) return 'bg-slate-100 text-slate-600';
+    if (edgePercent > 0) return 'bg-teal-100 text-teal-700';
+    return 'bg-rose-100 text-rose-700';
+  };
 
   type OutcomeCard = {
     key: Value1x2Outcome;
@@ -932,6 +938,81 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     });
     return bestProb >= 0 ? bestKey : null;
   }, [doubleChanceCards]);
+
+  type TwoOption = {
+    key: string;
+    label: string;
+    prob: number | null;
+    oddBook?: number | null;
+    barColor?: string;
+  };
+
+  const TwoOptionMarketCard: React.FC<{
+    title: string;
+    options: TwoOption[];
+    showBars?: boolean;
+    badgeText?: string | null;
+  }> = ({ title, options, showBars = false, badgeText }) => {
+    const bestEdge = options.reduce<{ key: string; edge: number } | null>((acc, opt) => {
+      const prob = opt.prob;
+      const oddBook = Number.isFinite(opt.oddBook as number) ? Number(opt.oddBook) : null;
+      if (!oddBook || !prob) return acc;
+      const edge = (prob * oddBook - 1) * 100;
+      if (!acc || edge > acc.edge) return { key: opt.key, edge };
+      return acc;
+    }, null);
+
+    return (
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm">
+        <div className="px-4 pt-4 pb-2 flex items-center justify-between">
+          <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+          {badgeText ? (
+            <span className="text-xs font-semibold px-2 py-1 rounded-md bg-teal-600 text-white">{badgeText}</span>
+          ) : null}
+        </div>
+        <div className="px-4 pb-4">
+          {options.map((opt, idx) => {
+            const prob = opt.prob;
+            const oddBook = Number.isFinite(opt.oddBook as number) ? Number(opt.oddBook) : null;
+            const fairOdd = prob && prob > 0 ? 1 / prob : null;
+            const edgePercent = oddBook && prob ? (prob * oddBook - 1) * 100 : null;
+            const edgeLabel =
+              edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
+            const displayOdd = oddBook ?? fairOdd;
+            const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
+            const edgeClass = getEdgePillClass(edgePercent);
+
+            return (
+              <div key={opt.key} className={`py-2 ${idx === 0 ? '' : 'border-t border-slate-100'}`}>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-slate-700">{opt.label}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl font-semibold text-slate-900 leading-none tabular-nums">
+                      {displayOdd ? displayOdd.toFixed(2) : '—'}
+                    </span>
+                    <span className="text-sm text-slate-500">{prob !== null ? formatPct(prob) : 'N/A'}</span>
+                    {edgePercent !== null && oddBook && (
+                      <span className={`text-xs font-semibold px-2 py-1 rounded-md ${edgeClass}`}>
+                        {edgeLabel}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {showBars && (
+                  <div className="mt-2 h-2 rounded-full bg-slate-200">
+                    <div
+                      className={`h-2 rounded-full ${opt.barColor ?? 'bg-blue-500'}`}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
 
   useEffect(() => {
     userSelectedOutcomeRef.current = false;
@@ -2037,45 +2118,40 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 </div>
               </div>
 
-              <div className={PROB_CARD_CLASS}>
-                <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Ambas Marcam</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Sim</span>
-                    <span className="font-bold font-mono text-xl text-gray-900">
-                      {formatOdd(probabilities.bttsYes)}
-                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsYes)})</span>
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Não</span>
-                    <span className="font-bold font-mono text-xl text-gray-900">
-                      {formatOdd(probabilities.bttsNo)}
-                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.bttsNo)})</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <TwoOptionMarketCard
+                title="Ambas Marcam"
+                showBars
+                options={[
+                  {
+                    key: 'btts-yes',
+                    label: 'Sim',
+                    prob: probabilities.bttsYes,
+                    barColor: 'bg-blue-500',
+                  },
+                  {
+                    key: 'btts-no',
+                    label: 'Não',
+                    prob: probabilities.bttsNo,
+                    barColor: 'bg-blue-500',
+                  },
+                ]}
+              />
 
-              <div className={PROB_CARD_CLASS}>
-                <h3 className="font-bold text-gray-700 mb-2 text-sm uppercase">Clean Sheet</h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Casa</span>
-                    <span className="font-bold font-mono text-xl text-gray-900">
-                      {formatOdd(probabilities.cleanSheet.home)}
-                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.home)})</span>
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Fora</span>
-                    <span className="font-bold font-mono text-xl text-gray-900">
-                      {formatOdd(probabilities.cleanSheet.away)}
-                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.cleanSheet.away)})</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
+              <TwoOptionMarketCard
+                title="Sem Sofrer"
+                options={[
+                  {
+                    key: 'cs-home',
+                    label: 'Casa',
+                    prob: probabilities.cleanSheet.home,
+                  },
+                  {
+                    key: 'cs-away',
+                    label: 'Fora',
+                    prob: probabilities.cleanSheet.away,
+                  },
+                ]}
+              />
             </div>
           </div>
         </div>
