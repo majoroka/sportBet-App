@@ -53,6 +53,7 @@ const TEAM_ALIASES: Record<string, string> = {
   "eintracht-frankfurt": "bundesliga (ger)/eintracht-frankfurt",
   "atletico": "atletico-madrid",
   "nacional": "primeira liga (por)/cd-nacional",
+  "sion": "fc-sion",
 };
 
 export const getTeamLogoFilename = (name: string): string => {
@@ -77,8 +78,8 @@ export const getTeamLogoFilename = (name: string): string => {
   const bySlug = slugMap.get(normalized);
   if (bySlug) return bySlug;
 
-  // 2) fuzzy inclui no path
-  const fuzzyMatch = logoIndex.find(({ lower, slug }) => slug === normalized || lower.includes(normalized));
+  // 2) fuzzy apenas no slug do ficheiro (evita matches acidentais no nome da liga/pasta)
+  const fuzzyMatch = logoIndex.find(({ slug }) => slug === normalized || slug.includes(normalized));
   if (fuzzyMatch) return fuzzyMatch.raw;
 
   return `${normalized}.png`;

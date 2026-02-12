@@ -31646,31 +31646,6 @@
         ]
       }
     },
-    "team_b6cd7bd2b79e": {
-      "id": "team_b6cd7bd2b79e",
-      "display": {
-        "pt": "Sion"
-      },
-      "country": "SWZ",
-      "league": "SWZ",
-      "names": {
-        "football-data": "Sion",
-        "clubelo": "Sion"
-      },
-      "aliases": {
-        "football-data": [
-          "Sion"
-        ],
-        "clubelo": [
-          "Sion"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "sion"
-        ]
-      }
-    },
     "team_a39e274880bd": {
       "id": "team_a39e274880bd",
       "display": {
@@ -35538,8 +35513,8 @@
       "display": {
         "pt": "Sion"
       },
-      "country": "CH",
-      "league": "Swiss Super League",
+      "country": "SWZ",
+      "league": "SWZ",
       "names": {
         "football-data": "Sion",
         "clubelo": "Sion"
@@ -35556,6 +35531,9 @@
         "norm": [
           "sion"
         ]
+      },
+      "logo": {
+        "path": "Swiss Super League (SUI)/Fc-sion.png"
       }
     },
     "team_bc3ce5a4ceb9": {
