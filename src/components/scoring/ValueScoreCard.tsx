@@ -90,11 +90,11 @@ export const ValueScoreCard: React.FC<Props> = ({
         )}
         <div className="flex items-baseline gap-2">
           <span>Odd book</span>
-          <span className="font-semibold text-gray-800 tabular-nums">{formatOdd(metrics.oddBook)}</span>
+          <span className="font-semibold text-gray-800 odd-text">{formatOdd(metrics.oddBook)}</span>
         </div>
         <div className="flex items-baseline gap-2">
           <span>Odd justa</span>
-          <span className="font-semibold text-gray-800 tabular-nums">{formatOdd(metrics.oddFair)}</span>
+          <span className="font-semibold text-gray-800 odd-text">{formatOdd(metrics.oddFair)}</span>
         </div>
         <div className="flex items-baseline gap-2">
           <span>Edge</span>

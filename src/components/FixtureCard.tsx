@@ -7,10 +7,10 @@ interface Props {
 
 const ProbPill: React.FC<{ prob: number }> = ({ prob }) => (
   <div className="flex flex-col items-center justify-center">
-    <span className="font-mono font-bold text-lg leading-none">
+    <span className="font-mono font-bold text-lg odd-text">
       {prob > 0 ? (1 / prob).toFixed(2) : '-'}
     </span>
-    <span className="text-xs text-gray-500 mt-1">({(prob * 100).toFixed(1)}%)</span>
+    <span className="text-xs text-gray-500 mt-1 tabular-nums leading-none">({(prob * 100).toFixed(1)}%)</span>
   </div>
 );
 

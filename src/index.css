@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .odd-text {
+    @apply tabular-nums leading-none tracking-tight;
+  }
+  .odd-wrap {
+    @apply flex items-baseline justify-end gap-2;
+  }
+  .probabilities-font {
+    font-family: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+}

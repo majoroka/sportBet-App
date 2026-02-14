@@ -92,7 +92,6 @@ const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
 
 const POSITIVE_BADGE_CLASSES = 'bg-sky-50 text-sky-600 border-sky-600';
 const NEGATIVE_BADGE_CLASSES = 'bg-rose-50 text-rose-600 border-rose-600';
-const PROB_CARD_CLASS = 'bg-white border border-slate-200 rounded-2xl shadow-sm p-4';
 
 const OverIcon: React.FC<{ over: boolean; title?: string; ring?: boolean }> = ({ over, title, ring }) => (
   <div
@@ -530,6 +529,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const [footballDataOdds, setFootballDataOdds] = useState<FootballDataOdds | null>(null);
   const [selectedOutcome, setSelectedOutcome] = useState<Value1x2Outcome>('HOME');
   const userSelectedOutcomeRef = useRef(false);
+  const [showAllGoalLines, setShowAllGoalLines] = useState(false);
 
   useEffect(() => {
     const fetchStandings = async () => {
@@ -834,19 +834,21 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const homeElo = findEloEntry(homeTeam);
   const awayElo = findEloEntry(awayTeam);
 
-  const formatOdd = (prob: number) => (prob > 0 ? (1 / prob).toFixed(2) : '-');
   const formatPct = (prob: number) => `${(Math.max(0, prob) * 100).toFixed(1)}%`;
-  const getEdgeClass = (edgePercent: number | null) => {
-    if (edgePercent === null) return '';
-    if (Math.abs(edgePercent) < 0.5) return 'bg-slate-100 text-slate-600 border-slate-200';
-    if (edgePercent > 0) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    return 'bg-rose-50 text-rose-700 border-rose-200';
-  };
   const getEdgePillClass = (edgePercent: number | null) => {
-    if (edgePercent === null) return 'bg-slate-100 text-slate-600';
-    if (Math.abs(edgePercent) < 0.5) return 'bg-slate-100 text-slate-600';
-    if (edgePercent > 0) return 'bg-teal-100 text-teal-700';
-    return 'bg-rose-100 text-rose-700';
+    if (edgePercent === null) return 'bg-slate-100 text-slate-600 border border-slate-200';
+    if (Math.abs(edgePercent) < 0.5) return 'bg-slate-100 text-slate-600 border border-slate-200';
+    if (edgePercent > 0) return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
+    return 'bg-rose-100 text-rose-700 border border-rose-200';
+  };
+
+  const getProbTextClass = (prob: number | null) =>
+    prob !== null && prob >= 0.55 ? 'text-blue-600' : 'text-slate-500';
+
+  const getBarFillClass = (pct: number) => {
+    if (pct < 40) return 'bg-slate-400';
+    if (pct >= 60) return 'bg-gradient-to-r from-blue-600 to-blue-700';
+    return 'bg-gradient-to-r from-blue-500 to-blue-600';
   };
 
   type OutcomeCard = {
@@ -928,18 +930,57 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     ]
   );
 
-  const favoriteDoubleChance = useMemo(() => {
-    let bestKey: DoubleChanceCard['key'] | null = null;
+  // bestDoubleChanceKey removed (unused)
+
+  const winOver15Rows = useMemo(
+    () => [
+      {
+        key: 'home',
+        label: 'Casa & +1,5',
+        prob: probabilities.winOver15.home,
+      },
+      {
+        key: 'away',
+        label: 'Fora & +1,5',
+        prob: probabilities.winOver15.away,
+      },
+    ],
+    [probabilities.winOver15.home, probabilities.winOver15.away]
+  );
+
+  const bestWinOver15Key = useMemo(() => {
+    let bestKey: string | null = null;
     let bestProb = -1;
-    doubleChanceCards.forEach((card) => {
-      const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : -1;
+    winOver15Rows.forEach((row) => {
+      const prob = Number.isFinite(row.prob as number) ? Number(row.prob) : -1;
       if (prob > bestProb) {
         bestProb = prob;
-        bestKey = card.key;
+        bestKey = row.key;
       }
     });
     return bestProb >= 0 ? bestKey : null;
-  }, [doubleChanceCards]);
+  }, [winOver15Rows]);
+
+  const goalLines = useMemo(() => {
+    const preferred = ['0.5', '1.5', '2.5'].filter((line) => probabilities.overUnder?.[line]);
+    if (preferred.length) return preferred;
+    return Object.keys(probabilities.overUnder).slice(0, 3);
+  }, [probabilities.overUnder]);
+
+  const balancedGoalLine = useMemo(() => {
+    let bestLine: string | null = null;
+    let bestDiff = Number.POSITIVE_INFINITY;
+    goalLines.forEach((line) => {
+      const probs = probabilities.overUnder?.[line];
+      if (!probs) return;
+      const diff = Math.abs(probs.over - 0.5);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        bestLine = line;
+      }
+    });
+    return bestLine;
+  }, [goalLines, probabilities.overUnder]);
 
   type TwoOption = {
     key: string;
@@ -949,52 +990,98 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     barColor?: string;
   };
 
+  const MarketCard: React.FC<{
+    title: string;
+    chipText?: string | null;
+    children: React.ReactNode;
+    className?: string;
+    titleClassName?: string;
+  }> = ({ title, chipText, children, className, titleClassName }) => {
+    return (
+      <div
+        className={[
+          'bg-white border border-slate-200 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-[1px]',
+          className ?? '',
+        ].join(' ')}
+      >
+        <div className="p-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h3 className={titleClassName ?? 'text-lg font-semibold tracking-tight text-slate-900'}>{title}</h3>
+            {chipText ? (
+              <span className="text-xs font-semibold px-2 py-1 rounded-md bg-slate-100 text-slate-700">
+                {chipText}
+              </span>
+            ) : null}
+          </div>
+          <div className="pt-3 space-y-3">{children}</div>
+        </div>
+      </div>
+    );
+  };
+
   const TwoOptionMarketCard: React.FC<{
     title: string;
     options: TwoOption[];
     showBars?: boolean;
     badgeText?: string | null;
-  }> = ({ title, options, showBars = false, badgeText }) => {
+    className?: string;
+  }> = ({ title, options, showBars = false, badgeText, className }) => {
+    const bestKey = options.reduce<string | null>((best, opt) => {
+      const prob = Number.isFinite(opt.prob as number) ? Number(opt.prob) : -1;
+      const bestProb = best
+        ? Number.isFinite(options.find((item) => item.key === best)?.prob as number)
+          ? Number(options.find((item) => item.key === best)?.prob)
+          : -1
+        : -1;
+      return prob > bestProb ? opt.key : best;
+    }, null);
+
+    const resolvedBadgeText = badgeText ?? (bestKey ? 'Melhor pick' : null);
+
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm">
-        <div className="px-4 pt-4 pb-2 flex items-center justify-between">
-          <h3 className="text-base font-semibold text-slate-900">{title}</h3>
-          {badgeText ? (
-            <span className="text-xs font-semibold px-2 py-1 rounded-md bg-teal-600 text-white">{badgeText}</span>
-          ) : null}
-        </div>
-        <div className="px-4 pb-4">
+      <MarketCard title={title} chipText={resolvedBadgeText} className={className}>
+        <div className="space-y-0">
           {options.map((opt, idx) => {
             const prob = opt.prob;
             const oddBook = Number.isFinite(opt.oddBook as number) ? Number(opt.oddBook) : null;
             const fairOdd = prob && prob > 0 ? 1 / prob : null;
             const edgePercent = oddBook && prob ? (prob * oddBook - 1) * 100 : null;
-            const edgeLabel =
-              edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
-            const displayOdd = oddBook ?? fairOdd;
-            const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
-            const edgeClass = getEdgePillClass(edgePercent);
+            const edgeLabel = edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
+          const displayOdd = oddBook ?? fairOdd;
+          const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
+          const edgeClass = getEdgePillClass(edgePercent);
+          const barFillClass = opt.barColor ?? getBarFillClass(pct);
+          const isBest = bestKey === opt.key;
 
             return (
-              <div key={opt.key} className={`py-2 ${idx === 0 ? '' : 'border-t border-slate-100'}`}>
+              <div
+                key={opt.key}
+                className={`py-2 ${idx === 0 ? '' : 'border-t border-slate-100'} hover:bg-slate-50 transition`}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-slate-700">{opt.label}</span>
+                  <span className={`text-sm ${isBest ? 'font-medium text-slate-900' : 'text-slate-700'}`}>
+                    {opt.label}
+                  </span>
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl font-semibold text-slate-900 leading-none tabular-nums">
-                      {displayOdd ? displayOdd.toFixed(2) : '—'}
-                    </span>
-                    <span className="text-sm text-slate-500">{prob !== null ? formatPct(prob) : 'N/A'}</span>
+                    <div className="odd-wrap">
+                      <span className="block text-3xl font-bold text-slate-900 odd-text">
+                        {displayOdd ? displayOdd.toFixed(2) : '—'}
+                      </span>
+                      <span className={`text-sm font-medium tabular-nums leading-none ${getProbTextClass(prob)}`}>
+                        {prob !== null ? formatPct(prob) : 'N/A'}
+                      </span>
+                    </div>
                     {edgePercent !== null && oddBook && (
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-md ${edgeClass}`}>
+                      <span className={`text-xs font-semibold px-3 py-1 rounded-full shadow-sm ${edgeClass}`}>
                         {edgeLabel}
                       </span>
                     )}
                   </div>
                 </div>
                 {showBars && (
-                  <div className="mt-2 h-2 rounded-full bg-slate-200">
+                  <div className="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden">
                     <div
-                      className={`h-2 rounded-full ${opt.barColor ?? 'bg-blue-500'}`}
+                      className={`relative h-2 rounded-full ${barFillClass} after:absolute after:inset-0 after:bg-white/10 after:content-['']`}
                       style={{ width: `${pct}%` }}
                     />
                   </div>
@@ -1003,7 +1090,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             );
           })}
         </div>
-      </div>
+      </MarketCard>
     );
   };
 
@@ -1855,14 +1942,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       </AccordionSection>
 
       <AccordionSection id="accordion-probabilidades" title="PROBABILIDADES">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* COLUNA ESQUERDA (col-span-8) */}
-          <div className="lg:col-span-8 grid grid-cols-1 gap-6">
-            <div className={PROB_CARD_CLASS}>
-              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-                Resultado Final (1X2)
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-8 probabilities-font">
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-7">
+            <MarketCard
+              title="Resultado Final (1X2)"
+              className="min-h-[320px]"
+              titleClassName="text-xl font-semibold tracking-tight text-slate-900"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 {outcomeCards.map((outcome) => {
                   const prob = Number.isFinite(outcome.probModel) ? (outcome.probModel as number) : null;
                   const hasOddBook = Number.isFinite(outcome.oddBook as number) && (outcome.oddBook as number) > 0;
@@ -1871,7 +1959,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     hasOddBook && prob !== null ? (prob * (outcome.oddBook as number) - 1) * 100 : null;
                   const isFavorite = outcome.key === favoriteOutcome;
                   const isSelected = outcome.key === selectedOutcome;
-                  const edgeClass = getEdgeClass(edgePercent);
+                  const edgeClass = getEdgePillClass(edgePercent);
+                  const probClass = getProbTextClass(prob);
 
                   return (
                     <button
@@ -1882,65 +1971,72 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         setSelectedOutcome(outcome.key);
                       }}
                       className={[
-                        'relative text-left bg-white border border-slate-200 rounded-2xl shadow-sm p-5 transition',
-                        'hover:shadow-md hover:-translate-y-[1px]',
-                        isSelected ? 'ring-2 ring-slate-300 border-slate-300' : '',
-                        !isSelected && isFavorite ? 'ring-1 ring-slate-200' : '',
+                        'relative text-left bg-white border border-slate-200 rounded-2xl p-4 transition-all duration-200 hover:shadow-md hover:-translate-y-[1px]',
+                        isFavorite ? 'ring-2 ring-emerald-400/40' : '',
+                        !isFavorite && isSelected ? 'ring-2 ring-slate-300 border-slate-300' : '',
                       ].join(' ')}
                     >
                       {isFavorite && (
-                        <span className="absolute top-3 left-3 text-[10px] uppercase tracking-wide bg-teal-600 text-white px-3 py-1 rounded-full font-semibold">
+                        <span className="absolute top-4 left-4 text-xs font-semibold bg-teal-600 text-white px-3 py-1 rounded-full">
                           Favorito
                         </span>
-                      )}
-                      {edgePercent !== null && hasOddBook && (
-                        <span
-                          className={[
-                            'absolute top-3 right-3 text-xs font-medium px-2 py-1 rounded-full border',
-                            edgeClass,
-                          ].join(' ')}
-                        >
-                          Edge: {edgePercent > 0 ? '+' : ''}
-                          {edgePercent.toFixed(1)}%
-                        </span>
-                      )}
+                        )}
+                        {edgePercent !== null && hasOddBook && (
+                          <span
+                            className={[
+                              'absolute top-4 right-4 text-xs font-semibold px-3 py-1 rounded-full shadow-sm',
+                              edgeClass,
+                            ].join(' ')}
+                          >
+                            Edge: {edgePercent > 0 ? '+' : ''}
+                            {edgePercent.toFixed(1)}%
+                          </span>
+                        )}
 
-                      <div className="text-xs uppercase tracking-wide text-slate-500">
-                        {outcome.label}
-                      </div>
-                      <div className="mt-2 flex items-end gap-2">
-                        <div className="text-3xl font-semibold text-slate-900 tabular-nums">
+                      <div className="text-xs uppercase tracking-wide text-slate-500">{outcome.label}</div>
+                      <div className="mt-2 odd-wrap justify-start">
+                        <span className="block text-4xl font-bold text-slate-900 odd-text">
                           {hasOddBook ? (outcome.oddBook as number).toFixed(2) : '-'}
-                        </div>
-                        <div className="text-sm text-slate-500">
+                        </span>
+                        <span className={`text-sm font-medium tabular-nums leading-none ${probClass}`}>
                           {prob !== null ? formatPct(prob) : 'N/A'}
+                        </span>
+                      </div>
+                        <div className="mt-1 text-xs text-slate-500 tabular-nums">
+                          Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
                         </div>
-                      </div>
-                      <div className="mt-1 text-sm text-slate-600">
-                        Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
-                      </div>
 
                       {isFavorite && prob !== null && (
-                        <div className="mt-4 h-1 w-full rounded-full bg-slate-100">
+                        <div className="mt-4 h-3 w-full rounded-full bg-slate-100 overflow-hidden">
                           <div
-                            className="h-full rounded-full bg-teal-600"
+                            className={`relative h-3 rounded-full ${getBarFillClass(prob * 100)} after:absolute after:inset-0 after:bg-white/10 after:content-['']`}
                             style={{ width: `${Math.min(100, Math.max(0, prob * 100))}%` }}
                           />
                         </div>
                       )}
-                    </button>
-                  );
-                })}
-              </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </MarketCard>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className={PROB_CARD_CLASS}>
-                <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-                  Dupla Hipótese
-                </h3>
-                <div>
-                  {doubleChanceCards.map((card, idx) => {
+            <div className="col-span-5">
+            <MarketCard
+              title="Heatmap de Resultados (%)"
+              className="min-h-[320px] bg-slate-50/60"
+              titleClassName="text-base font-medium tracking-tight text-slate-700"
+            >
+              <Heatmap data={probabilities.correctScore} />
+            </MarketCard>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-6">
+              <MarketCard title="Dupla Hipótese" className="min-h-[260px]">
+                <div className="divide-y divide-slate-100">
+                  {doubleChanceCards.map((card) => {
                     const prob = Number.isFinite(card.probModel) ? (card.probModel as number) : null;
                     const hasOddBook = Number.isFinite(card.oddBook as number) && (card.oddBook as number) > 0;
                     const fairOdd = prob && prob > 0 ? 1 / prob : null;
@@ -1953,199 +2049,253 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         : Math.abs(edgePercent) < 0.5
                           ? 'text-slate-500'
                           : edgePercent > 0
-                            ? 'text-teal-600'
+                            ? 'text-emerald-600'
                             : 'text-rose-600';
-                    const isBest = card.key === favoriteDoubleChance;
                     const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
-                    const isNarrow = pct < 12;
                     const fillClass = card.key === '1X' ? 'bg-blue-500/80' : 'bg-slate-500/60';
                     const edgeLabel =
                       edgePercent !== null ? `${edgePercent > 0 ? '+' : ''}${edgePercent.toFixed(1)}%` : '';
+                    return (
+                      <div key={card.key} className="py-2">
+                        <div className="flex items-center justify-between mb-1">
+                          <div className="text-sm font-semibold text-slate-800">{card.label}</div>
+                          <div className="odd-wrap">
+                            <span className="block text-lg font-semibold text-slate-900 odd-text">
+                              {displayOdd ? displayOdd.toFixed(2) : '—'}
+                            </span>
+                            <span className={`text-xs font-medium tabular-nums leading-none ${getProbTextClass(prob)}`}>
+                              {prob !== null ? formatPct(prob) : 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="relative h-2 rounded-full bg-slate-100 overflow-hidden">
+                          <div
+                            className={`absolute inset-y-0 left-0 rounded-full ${fillClass}`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                        <div className="mt-1 text-[11px] text-slate-500 tabular-nums flex items-baseline gap-2">
+                          <span>Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}</span>
+                          {edgePercent !== null && hasOddBook && <span className={edgeInlineClass}>{edgeLabel}</span>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </MarketCard>
+            </div>
+
+            <div className="col-span-6">
+              <MarketCard title="Golos da Equipa (Over)" className="min-h-[260px]">
+                <div className="grid grid-cols-3 text-xs font-semibold uppercase tracking-wide text-slate-500 mb-2">
+                  <span>{homeTeam}</span>
+                  <span className="text-center">Linha</span>
+                  <span className="text-right">{awayTeam}</span>
+                </div>
+                <div className="space-y-0">
+                  {['0.5', '1.5', '2.5'].map((line, idx) => {
+                    const homeProb = probabilities.teamOver.home[line];
+                    const awayProb = probabilities.teamOver.away[line];
+                    const homeOdd = homeProb > 0 ? (1 / homeProb).toFixed(2) : '-';
+                    const awayOdd = awayProb > 0 ? (1 / awayProb).toFixed(2) : '-';
+                    const homePct = homeProb > 0 ? homeProb * 100 : null;
+                    const awayPct = awayProb > 0 ? awayProb * 100 : null;
+                    const homeProbClass = getProbTextClass(homePct !== null ? homePct / 100 : null);
+                    const awayProbClass = getProbTextClass(awayPct !== null ? awayPct / 100 : null);
 
                     return (
                       <div
-                        key={card.key}
-                        className={[
-                          'py-3',
-                          idx === 0 ? '' : 'border-t border-slate-100',
-                          isBest ? 'bg-slate-50/60 rounded-xl px-2' : '',
-                        ].join(' ')}
+                        key={line}
+                        className={`grid grid-cols-3 items-center py-2 ${
+                          idx === 0 ? '' : 'border-t border-slate-100'
+                        } hover:bg-slate-50 transition`}
                       >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="text-sm font-semibold text-slate-800">{card.label}</div>
-                          <div className="text-sm font-medium text-slate-500">
-                            {prob !== null ? formatPct(prob) : 'N/A'}
-                          </div>
-                        </div>
-
-                        <div className="relative h-11 rounded-xl bg-slate-100 overflow-hidden">
-                          <div
-                            className={`absolute inset-y-0 left-0 rounded-xl ${fillClass}`}
-                            style={{ width: `${pct}%` }}
-                          />
-                          <div
-                            className={[
-                              'absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-semibold tabular-nums',
-                              isNarrow ? 'text-slate-900' : 'text-white',
-                            ].join(' ')}
-                          >
-                            {displayOdd ? displayOdd.toFixed(2) : '—'}
-                          </div>
-                          {edgePercent !== null && hasOddBook && fairOdd && (
-                            <span
-                              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium px-3 py-1 rounded-full bg-white/90 border border-slate-200 shadow-sm text-slate-700"
-                            >
-                              Edge | {fairOdd.toFixed(2)}{' '}
-                              <span className={edgeInlineClass}>{edgeLabel}</span>
+                        <div className="text-left">
+                          <div className="odd-wrap justify-start">
+                            <span className="block text-3xl font-bold text-slate-900 odd-text">{homeOdd}</span>
+                            <span className={`text-xs font-medium tabular-nums leading-none ${homeProbClass}`}>
+                              {homePct !== null ? `${homePct.toFixed(1)}%` : 'N/A'}
                             </span>
+                          </div>
+                          {homePct !== null && (
+                            <div className="mt-1 h-2 rounded-full bg-slate-100">
+                              <div className="h-2 rounded-full bg-blue-600/80" style={{ width: `${homePct}%` }} />
+                            </div>
                           )}
                         </div>
-
-                        <div className="mt-1 text-xs text-slate-500">
-                          Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}{' '}
-                          {edgePercent !== null && hasOddBook && (
-                            <span className={edgeInlineClass}>{edgeLabel}</span>
+                        <div className="text-center">
+                          <span className="inline-flex px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+                            +{line}
+                          </span>
+                        </div>
+                        <div className="text-right">
+                          <div className="odd-wrap">
+                            <span className="block text-3xl font-bold text-slate-900 odd-text">{awayOdd}</span>
+                            <span className={`text-xs font-medium tabular-nums leading-none ${awayProbClass}`}>
+                              {awayPct !== null ? `${awayPct.toFixed(1)}%` : 'N/A'}
+                            </span>
+                          </div>
+                          {awayPct !== null && (
+                            <div className="mt-1 h-2 rounded-full bg-slate-100">
+                              <div className="h-2 rounded-full bg-rose-500/70" style={{ width: `${awayPct}%` }} />
+                            </div>
                           )}
                         </div>
                       </div>
                     );
                   })}
                 </div>
-              </div>
-
-              <div className={PROB_CARD_CLASS}>
-                <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-                  Vitória + 1,5 (Jogo)
-                </h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Casa &amp; +1,5</span>
-                    <span className="font-bold font-mono text-xl text-gray-900">
-                      {formatOdd(probabilities.winOver15.home)}
-                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.home)})</span>
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Fora &amp; +1,5</span>
-                    <span className="font-bold font-mono text-xl text-gray-900">
-                      {formatOdd(probabilities.winOver15.away)}
-                      <span className="text-xs text-gray-400 font-mono font-normal"> ({formatPct(probabilities.winOver15.away)})</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
+              </MarketCard>
             </div>
           </div>
 
-          {/* COLUNA DIREITA (col-span-4) */}
-          <div className="lg:col-span-4 grid grid-cols-1 gap-6">
-            <div className={PROB_CARD_CLASS}>
-              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-                Heatmap de Resultados (%)
-              </h3>
-              <Heatmap data={probabilities.correctScore} />
-            </div>
-
-            <div className={PROB_CARD_CLASS}>
-              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-                Mercado de Golos
-              </h3>
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-gray-500 border-b">
-                    <th className="pb-2 text-left">Linha</th>
-                    <th className="pb-2 text-right">Over</th>
-                    <th className="pb-2 text-right">Under</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(probabilities.overUnder).map(([line, probs]) => (
-                    <tr key={line} className="border-b last:border-0 hover:bg-gray-100">
-                      <td className="py-1.5 font-medium">{line}</td>
-                      <td className="py-1.5 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <span className="font-bold font-mono text-xl text-gray-900">
-                            {probs.over > 0 ? (1 / probs.over).toFixed(2) : '-'}
-                            {probs.over > 0 && (
-                              <span className="text-xs text-gray-400 font-normal"> ({(probs.over * 100).toFixed(1)}%)</span>
-                            )}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-1.5 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <span className="font-bold font-mono text-xl text-gray-900">
-                            {probs.under > 0 ? (1 / probs.under).toFixed(2) : '-'}
-                            {probs.under > 0 && (
-                              <span className="text-xs text-gray-400 font-normal"> ({(probs.under * 100).toFixed(1)}%)</span>
-                            )}
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className={PROB_CARD_CLASS}>
-              <h3 className="text-base font-semibold text-slate-900 mb-3 border-b border-slate-200 pb-2">
-                Golos da Equipa (Over)
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <div className="text-xs font-bold text-blue-700 mb-1 text-center uppercase">{homeTeam}</div>
-                  {['0.5', '1.5', '2.5'].map(line => (
-                    <div key={`h-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                      <span className="text-sm">+{line}</span>
-                      <span className="font-bold font-mono text-xl text-gray-800">
-                        {probabilities.teamOver.home[line] > 0 ? (1 / probabilities.teamOver.home[line]).toFixed(2) : '-'}
-                        {probabilities.teamOver.home[line] > 0 && (
-                          <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.home[line] * 100).toFixed(1)}%)</span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-8">
+              <MarketCard title="Mercado de Golos" chipText={showAllGoalLines ? 'Todas' : null} className="min-h-[260px]">
+                <div className="grid grid-cols-[70px_1fr_1fr] text-xs text-slate-500 font-semibold uppercase tracking-wide mb-2">
+                  <span>Linha</span>
+                  <span className="text-right">Over</span>
+                  <span className="text-right">Under</span>
                 </div>
-                <div>
-                  <div className="text-xs font-bold text-red-700 mb-1 text-center uppercase">{awayTeam}</div>
-                  {['0.5', '1.5', '2.5'].map(line => (
-                    <div key={`a-over-${line}`} className="flex justify-between items-center border-b border-gray-200 last:border-0 py-1">
-                      <span className="text-sm">+{line}</span>
-                      <span className="font-bold font-mono text-xl text-gray-800">
-                        {probabilities.teamOver.away[line] > 0 ? (1 / probabilities.teamOver.away[line]).toFixed(2) : '-'}
-                        {probabilities.teamOver.away[line] > 0 && (
-                          <span className="text-xs text-gray-400 font-mono font-normal"> ({(probabilities.teamOver.away[line] * 100).toFixed(1)}%)</span>
-                        )}
-                      </span>
-                    </div>
-                  ))}
+                <div className="space-y-0">
+                  {(showAllGoalLines ? Object.keys(probabilities.overUnder) : goalLines).map((line, idx) => {
+                    const probs = probabilities.overUnder[line];
+                    const isBalanced = balancedGoalLine === line;
+                    const overOdd = probs?.over ? (1 / probs.over).toFixed(2) : '-';
+                    const underOdd = probs?.under ? (1 / probs.under).toFixed(2) : '-';
+                    const overPctValue = probs?.over ? probs.over * 100 : null;
+                    const underPctValue = probs?.under ? probs.under * 100 : null;
+                    const overPct = overPctValue !== null ? overPctValue.toFixed(1) : null;
+                    const underPct = underPctValue !== null ? underPctValue.toFixed(1) : null;
+                    const overProbClass =
+                      overPctValue !== null && overPctValue >= 55 ? 'text-blue-600' : 'text-slate-500';
+                    const underProbClass =
+                      underPctValue !== null && underPctValue >= 60
+                        ? 'text-rose-600'
+                        : underPctValue !== null && underPctValue >= 55
+                          ? 'text-blue-600'
+                          : 'text-slate-500';
+                    const highlightRow = isBalanced ? 'bg-amber-50 border-l-4 border-amber-400' : '';
+
+                    return (
+                      <div
+                        key={line}
+                        className={`grid grid-cols-[70px_1fr_1fr] items-center py-2 ${
+                          idx === 0 ? '' : 'border-t border-slate-100'
+                        } hover:bg-slate-50 transition ${highlightRow}`}
+                      >
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+                          <span>{line}</span>
+                          {isBalanced && (
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">
+                              Mais equilibrado
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-right">
+                          <div className="odd-wrap">
+                            <span className="block text-3xl font-bold text-slate-900 odd-text">{overOdd}</span>
+                            <span className={`text-xs font-medium tabular-nums leading-none ${overProbClass}`}>
+                              {overPct ? `${overPct}%` : 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="odd-wrap">
+                            <span className="block text-3xl font-bold text-slate-900 odd-text">{underOdd}</span>
+                            <span className={`text-xs font-medium tabular-nums leading-none ${underProbClass}`}>
+                              {underPct ? `${underPct}%` : 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
+                <button
+                  type="button"
+                  className="mt-3 text-xs font-semibold text-slate-500 hover:text-slate-700"
+                  onClick={() => setShowAllGoalLines((prev) => !prev)}
+                >
+                  {showAllGoalLines ? 'Mostrar menos' : 'Mostrar todas'}
+                </button>
+              </MarketCard>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="col-span-4">
               <TwoOptionMarketCard
                 title="Ambas Marcam"
                 showBars
+                className="min-h-[210px]"
                 options={[
                   {
                     key: 'btts-yes',
                     label: 'Sim',
                     prob: probabilities.bttsYes,
-                    barColor: 'bg-blue-500',
                   },
                   {
                     key: 'btts-no',
                     label: 'Não',
                     prob: probabilities.bttsNo,
-                    barColor: 'bg-blue-500',
                   },
                 ]}
               />
+            </div>
+          </div>
 
+          <div className="grid grid-cols-12 gap-6">
+            <div className="col-span-8">
+              <MarketCard title="Vitória +1,5 (Jogo)" className="min-h-[210px]">
+                <div className="space-y-0">
+                  {winOver15Rows.map((row, idx) => {
+                    const prob = Number.isFinite(row.prob as number) ? Number(row.prob) : null;
+                    const fairOdd = prob && prob > 0 ? 1 / prob : null;
+                    const pct = prob !== null ? Math.min(100, Math.max(0, prob * 100)) : 0;
+                    const probClass = getProbTextClass(prob);
+                    const isBest = row.key === bestWinOver15Key;
+
+                    return (
+                      <div
+                        key={row.key}
+                        className={`py-2 ${idx === 0 ? '' : 'border-t border-slate-100'} hover:bg-slate-50 transition`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm ${isBest ? 'font-medium text-slate-900' : 'text-slate-700'}`}>
+                              {row.label}
+                            </span>
+                            {isBest && (
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                Melhor
+                              </span>
+                            )}
+                          </div>
+                          <div className="odd-wrap">
+                            <span className="block text-3xl font-bold text-slate-900 odd-text">
+                              {fairOdd ? fairOdd.toFixed(2) : '—'}
+                            </span>
+                            <span className={`text-sm font-medium tabular-nums leading-none ${probClass}`}>
+                              {prob !== null ? formatPct(prob) : 'N/A'}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mt-2 h-2 rounded-full bg-slate-100 overflow-hidden">
+                          <div
+                            className={`relative h-2 rounded-full ${getBarFillClass(pct)} after:absolute after:inset-0 after:bg-white/10 after:content-['']`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </MarketCard>
+            </div>
+
+            <div className="col-span-4">
               <TwoOptionMarketCard
                 title="Sem Sofrer"
+                className="min-h-[210px]"
                 options={[
                   {
                     key: 'cs-home',
