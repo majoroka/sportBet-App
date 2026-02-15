@@ -61,10 +61,21 @@ const getParsedMatchCore = (match: MatchRow): ParsedMatchCore | null => {
   const awayTeamName = match.AwayTeam || match.Away || match['Away Team'];
   if (!homeTeamName || !awayTeamName) return null;
 
-  let hg = Number(match.FTHG ?? match.HG);
-  let ag = Number(match.FTAG ?? match.AG);
+  const rawHg = match.FTHG ?? match.HG;
+  const rawAg = match.FTAG ?? match.AG;
+  const hasClassicScore =
+    rawHg !== undefined &&
+    rawAg !== undefined &&
+    String(rawHg).trim() !== '' &&
+    String(rawAg).trim() !== '';
 
-  if (Number.isNaN(hg) || Number.isNaN(ag)) {
+  let hg = Number.NaN;
+  let ag = Number.NaN;
+
+  if (hasClassicScore) {
+    hg = Number(rawHg);
+    ag = Number(rawAg);
+  } else {
     const parsed = parseResultScore(match.Result);
     if (!parsed) return null;
     hg = parsed.hg;

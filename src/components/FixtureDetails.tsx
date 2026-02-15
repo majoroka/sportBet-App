@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Papa from 'papaparse';
 import { Fixture, StandingRow } from '../domain/types';
 import { calculateStandings, computeLeagueStats, computeTeamStats, StandingMode } from '../calculators/standings';
@@ -415,6 +415,7 @@ const getLeagueInfo = (country: string, competitionName: string, home: string, a
   const normalizedCountry = country?.trim().toUpperCase() || '';
   const countryKey = COUNTRY_ALIASES[normalizedCountry] || normalizedCountry;
   let config = LEAGUE_CONFIG[countryKey];
+  const safeCompetitionName = (competitionName || '').trim();
 
   // Se não encontrarmos o país, tentamos encontrar a competição por alias globalmente
   if (!config) {
@@ -427,7 +428,7 @@ const getLeagueInfo = (country: string, competitionName: string, home: string, a
             .replace(/[^a-z0-9\s]/gi, ' ')
             .replace(/\s+/g, '')
             .toLowerCase();
-        const target = normalizeName(competitionName);
+        const target = normalizeName(safeCompetitionName);
         const base = normalizeName(comp.league_name);
         const aliasHit = comp.aliases?.some((a) => normalizeName(a) === target);
         return base === target || aliasHit;
@@ -444,7 +445,8 @@ const getLeagueInfo = (country: string, competitionName: string, home: string, a
       .replace(/\s+/g, '')
       .toLowerCase();
 
-  const target = normalizeName(competitionName || '');
+  const targetRaw = normalizeName(safeCompetitionName);
+  const target = targetRaw === 'unk' || targetRaw === 'unknown' ? '' : targetRaw;
 
   // Encontra a competição pela correspondência do nome ou aliases (se existir nome)
   let competitionConfig = target
@@ -485,22 +487,32 @@ const getLeagueInfo = (country: string, competitionName: string, home: string, a
 
   // Fallback 3: se houver 2 competições, tenta heurística por código/indicadores (1/A vs 2/B)
   if (!competitionConfig && config.competitions.length === 2) {
+    const competitionNameLower = safeCompetitionName.toLowerCase();
     const isDiv2 =
-      /2\b/.test(competitionName) ||
+      /2\b/.test(safeCompetitionName) ||
       target.includes('2') ||
-      /\bb\b/.test(competitionName.toLowerCase()) ||
+      /\bb\b/.test(competitionNameLower) ||
       target.includes('serie b') ||
       target.includes('b');
     const isDiv1 =
-      /1\b/.test(competitionName) ||
+      /1\b/.test(safeCompetitionName) ||
       target.includes('1') ||
-      /\ba\b/.test(competitionName.toLowerCase()) ||
+      /\ba\b/.test(competitionNameLower) ||
       target.includes('serie a') ||
       target.includes('a');
 
     competitionConfig = config.competitions.find((c) =>
       isDiv2 ? c.division === 2 : isDiv1 ? c.division === 1 : false
     );
+  }
+
+  // Fallback adicional: competição desconhecida em países com múltiplas divisões.
+  // Preferimos uma divisão com standings_url disponível para não devolver vazio.
+  if (!competitionConfig && config.competitions.length > 1) {
+    competitionConfig =
+      config.competitions.find((c) => !!c.standings_url && c.division === 1) ||
+      config.competitions.find((c) => !!c.standings_url) ||
+      config.competitions[0];
   }
 
   // Fallback 3: só usa a primeira se existir apenas uma competição para o país
@@ -526,6 +538,13 @@ const resolveStandingsCsvPath = (standingsUrl: string): string | null => {
 
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
+  const isDev = import.meta.env.DEV;
+  const debugLog = useCallback((...args: unknown[]) => {
+    if (isDev) console.log(...args);
+  }, [isDev]);
+  const debugWarn = useCallback((...args: unknown[]) => {
+    if (isDev) console.warn(...args);
+  }, [isDev]);
   const [standingsOverall, setStandingsOverall] = useState<StandingRow[]>([]);
   const [standingsHome, setStandingsHome] = useState<StandingRow[]>([]);
   const [standingsAway, setStandingsAway] = useState<StandingRow[]>([]);
@@ -563,7 +582,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
       if (!leagueInfo) {
         if (fixture.competition) {
-          console.log(`⚠️ [Debug] Caminho não encontrado para: "${fixture.competition}" (${fixture.country})`);
+          debugLog(`⚠️ [Debug] Caminho não encontrado para: "${fixture.competition}" (${fixture.country})`);
         }
         setStandingsOverall([]);
         setStandingsHome([]);
@@ -591,19 +610,19 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       try {
         const baseUrl = `${import.meta.env.BASE_URL}${csvPath}`;
         const { response: res, primaryUrl, finalUrl, didRetry } = await fetchWithCacheBust(baseUrl);
-        console.log(`📂 [Debug] Tentando carregar CSV de: ${primaryUrl}`);
+        debugLog(`📂 [Debug] Tentando carregar CSV de: ${primaryUrl}`);
         if (didRetry) {
-          console.warn(`⚠️ [Debug] Retry cache-bust: ${finalUrl}`);
+          debugWarn(`⚠️ [Debug] Retry cache-bust: ${finalUrl}`);
         }
 
-        console.log(`📡 [Debug] Status do fetch: ${res.status} (${res.statusText})`);
+        debugLog(`📡 [Debug] Status do fetch: ${res.status} (${res.statusText})`);
 
         if (res.ok) {
           const text = await res.text();
           
           // Verificação de segurança: Se o servidor devolver HTML (ex: 404 page), não é um CSV válido
           if (text.trim().startsWith('<')) {
-             console.warn(`❌ [Debug] O ficheiro recebido parece ser HTML (provavelmente 404 Soft Error): ${res.url || finalUrl}`);
+             debugWarn(`❌ [Debug] O ficheiro recebido parece ser HTML (provavelmente 404 Soft Error): ${res.url || finalUrl}`);
              setStandingsOverall([]);
              setStandingsHome([]);
              setStandingsAway([]);
@@ -616,7 +635,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           const stats = computeLeagueStats(text);
           const tsHome = computeTeamStats(text, fixture.homeTeam);
           const tsAway = computeTeamStats(text, fixture.awayTeam);
-          console.log(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${dataOverall.length}`);
+          debugLog(`✅ [Debug] Classificação carregada com sucesso. Equipas encontradas: ${dataOverall.length}`);
           setStandingsOverall(dataOverall);
           setStandingsHome(dataHome);
           setStandingsAway(dataAway);
@@ -624,7 +643,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           setTeamStatsHome(tsHome);
           setTeamStatsAway(tsAway);
         } else {
-          console.warn(`❌ [Debug] Falha ao carregar ficheiro CSV: ${res.url || finalUrl}`);
+          debugWarn(`❌ [Debug] Falha ao carregar ficheiro CSV: ${res.url || finalUrl}`);
           setStandingsOverall([]);
           setStandingsHome([]);
           setStandingsAway([]);
@@ -640,7 +659,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     };
 
     fetchStandings();
-  }, [fixture.competition, fixture.country, fixture.homeTeam, fixture.awayTeam]);
+  }, [fixture.competition, fixture.country, fixture.homeTeam, fixture.awayTeam, debugLog, debugWarn]);
 
   useEffect(() => {
     let isMounted = true;
@@ -1711,9 +1730,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   className="w-14 h-14 object-contain shrink-0"
                   onError={() => {
                     const attempt = getTeamLogoFilename(homeTeam);
-                    console.warn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
+                    debugWarn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
                     if (!attempt.includes('/')) {
-                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/logos/generate-logo-manifest.js" para atualizar o índice.`);
+                      debugWarn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/logos/generate-logo-manifest.js" para atualizar o índice.`);
                     }
                     setHomeLogoError(true);
                   }}
@@ -1734,9 +1753,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   className="w-14 h-14 object-contain shrink-0"
                   onError={() => {
                     const attempt = getTeamLogoFilename(awayTeam);
-                    console.warn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
+                    debugWarn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
                     if (!attempt.includes('/')) {
-                      console.warn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/logos/generate-logo-manifest.js" para atualizar o índice.`);
+                      debugWarn(`⚠️ Dica: Se o logo estiver numa subpasta, corre "node scripts/logos/generate-logo-manifest.js" para atualizar o índice.`);
                     }
                     setAwayLogoError(true);
                   }}
