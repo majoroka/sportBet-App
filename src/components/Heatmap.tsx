@@ -7,22 +7,22 @@ interface Props {
 
 // Helper para obter a cor com base na probabilidade
 const getColorForProbability = (prob: number, maxProb: number, isTop: boolean) => {
-  if (prob === 0) return 'bg-gray-50 text-gray-300';
+  if (prob === 0) return 'bg-slate-50 text-slate-400';
   const intensity = Math.min(prob / maxProb, 1);
   
   // Apenas o resultado mais provável fica mais escuro
-  if (isTop) return 'bg-blue-500 text-white';
+  if (isTop) return 'bg-blue-600 text-white';
 
   // Mais provável (restante escala) -> Azul harmonizado
-  if (intensity > 0.75) return 'bg-blue-400 text-white';
-  if (intensity > 0.50) return 'bg-blue-200 text-gray-800';
+  if (intensity > 0.75) return 'bg-blue-500 text-white';
+  if (intensity > 0.50) return 'bg-blue-200 text-slate-800';
   
   // Intermédio -> Cinzento (Harmonizado com #9CA3AF)
-  if (intensity > 0.25) return 'bg-gray-300 text-gray-800';
+  if (intensity > 0.25) return 'bg-slate-300 text-slate-800';
   
   // Menos provável -> Rosa (Harmonizado com #F472B6)
-  if (intensity > 0.10) return 'bg-pink-200 text-gray-800';
-  return 'bg-pink-50 text-gray-600';
+  if (intensity > 0.10) return 'bg-pink-200 text-slate-800';
+  return 'bg-pink-50 text-slate-800';
 };
 
 export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
@@ -30,16 +30,16 @@ export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
   const maxProb = Math.max(...Object.values(data));
 
   return (
-    <div className="grid gap-1" style={{ gridTemplateColumns: `auto repeat(${maxGoals + 1}, 1fr)` }}>
+    <div className="grid gap-1.5" style={{ gridTemplateColumns: `auto repeat(${maxGoals + 1}, 1fr)` }}>
       {/* Canto superior esquerdo vazio e cabeçalho Golos Fora */}
-      <div className="text-xs text-gray-400 self-end text-right pr-1">C\F</div>
+      <div className="text-xs sm:text-sm font-semibold text-slate-500 self-end text-right pr-1">C\F</div>
       {scores.map(awayScore => (
-        <div key={`away-h-${awayScore}`} className="text-center text-xs font-bold text-gray-500">{awayScore}</div>
+        <div key={`away-h-${awayScore}`} className="text-center text-xs sm:text-sm font-semibold text-slate-600">{awayScore}</div>
       ))}
 
       {scores.map(homeScore => (
         <React.Fragment key={`row-${homeScore}`}>
-          <div className="text-center text-xs font-bold text-gray-500 self-center">{homeScore}</div>
+          <div className="text-center text-xs sm:text-sm font-semibold text-slate-600 self-center">{homeScore}</div>
           {scores.map(awayScore => {
             const scoreKey = `${homeScore}-${awayScore}`;
             const prob = data[scoreKey] || 0;
@@ -47,7 +47,7 @@ export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
             return (
               <div
                 key={scoreKey}
-                className={`p-1 rounded text-center text-[10px] font-mono ${getColorForProbability(prob, maxProb, isTop)}`}
+                className={`rounded px-3 py-2.5 text-center text-xs sm:text-sm font-semibold tabular-nums ${getColorForProbability(prob, maxProb, isTop)}`}
                 title={`Resultado: ${homeScore}-${awayScore}, Prob: ${(prob * 100).toFixed(1)}%`}
               >
                 {(prob * 100).toFixed(1)}%
