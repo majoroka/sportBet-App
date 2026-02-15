@@ -6,7 +6,7 @@ import { Heatmap } from './Heatmap';
 import { LEAGUE_CONFIG } from '../config/leagues';
  
 import { getTeamLogoFilename } from '../lib/logo';
-import { resolveTeamId } from '../lib/teamMapping';
+import { getDisplayNamePt, resolveTeamId } from '../lib/teamMapping';
 import { fetchWithCacheBust } from '../utils/fetchWithCacheBust';
 import { LeagueStats, TeamStats, TeamSideStats } from '../domain/types';
 import { ScoringHub } from './scoring/ScoringHub';
@@ -829,6 +829,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     resolveTeamId('clubelo', awayTeam) ||
     resolveTeamId('football-data', awayTeam) ||
     null;
+  const homeDisplayName = (homeTeamId ? getDisplayNamePt(homeTeamId) : null) ?? homeTeam;
+  const awayDisplayName = (awayTeamId ? getDisplayNamePt(awayTeamId) : null) ?? awayTeam;
   const homeStanding = findStanding(homeTeam);
   const awayStanding = findStanding(awayTeam);
   const homeElo = findEloEntry(homeTeam);
@@ -1678,7 +1680,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 </div>
               )}
               <h2 className="text-2xl font-bold text-gray-800 truncate max-w-[140px] sm:max-w-[180px] lg:max-w-[240px]">
-                {homeTeam}
+                {homeDisplayName}
               </h2>
               {homeLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
@@ -1721,7 +1723,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 />
               )}
               <h2 className="text-2xl font-bold text-gray-800 truncate max-w-[140px] sm:max-w-[180px] lg:max-w-[240px]">
-                {awayTeam}
+                {awayDisplayName}
               </h2>
               {/* Forma da equipa de fora (Direita do nome) */}
               {awayStanding && (

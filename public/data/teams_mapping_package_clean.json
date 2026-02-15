@@ -16234,22 +16234,31 @@
     "team_deb338bd73f0": {
       "id": "team_deb338bd73f0",
       "display": {
-        "pt": "Levadeiakos"
+        "pt": "Levadiakos"
       },
       "country": "GRE",
       "league": "Super League 1 (GRE)",
       "names": {
         "football-data": "Levadeiakos",
-        "clubelo": null
+        "clubelo": "Levadiaikos"
       },
       "aliases": {
         "football-data": [
+          "Levadeiakos",
+          "Levadiaikos",
+          "Levadiakos"
+        ],
+        "clubelo": [
+          "Levadiaikos",
+          "Levadiakos",
           "Levadeiakos"
         ]
       },
       "keys": {
         "norm": [
-          "levadeiakos"
+          "levadiakos",
+          "levadeiakos",
+          "levadiaikos"
         ]
       },
       "logo": {
@@ -39637,7 +39646,12 @@
     "football-data:panserraikos": "team_94a6e4711034",
     "football-data:ofi crete": "team_8c754a63fa11",
     "football-data:kifisia": "team_53d801776de6",
-    "football-data:levadeiakos": "team_2a4f7fdf3a8a",
+    "football-data:levadeiakos": "team_deb338bd73f0",
+    "football-data:levadiakos": "team_deb338bd73f0",
+    "football-data:levadiaikos": "team_deb338bd73f0",
+    "clubelo:levadeiakos": "team_deb338bd73f0",
+    "clubelo:levadiakos": "team_deb338bd73f0",
+    "clubelo:levadiaikos": "team_deb338bd73f0",
     "football-data:olympiakos": "team_26d1cc7fbbb4",
     "clubelo:olympiakos": "team_26d1cc7fbbb4",
     "football-data:volos nfc": "team_db4f94399fc6",
