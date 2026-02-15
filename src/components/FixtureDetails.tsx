@@ -2079,15 +2079,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                             </span>
                           </div>
                         )}
-                        {outcome.key === 'HOME' && (
-                          <div className="mt-3 text-xs font-semibold text-pink-600 tabular-nums">
-                            Overround: {overroundPercent !== null ? `${overroundPercent.toFixed(2)}%` : '—'}
-                          </div>
-                        )}
                       </div>
                     </button>
                     );
                   })}
+              </div>
+              <div className="mt-3 grid grid-cols-1 md:grid-cols-3">
+                <div className="text-xs font-semibold text-pink-600 tabular-nums">
+                  Overround: {overroundPercent !== null ? `${overroundPercent.toFixed(2)}%` : '—'}
+                </div>
               </div>
             </MarketCard>
             </div>
