@@ -9805,12 +9805,14 @@
       },
       "aliases": {
         "football-data": [
-          "Schalke 04"
+          "Schalke 04",
+          "Shalke 04"
         ]
       },
       "keys": {
         "norm": [
-          "schalke 04"
+          "schalke 04",
+          "shalke 04"
         ]
       },
       "logo": {
@@ -10104,16 +10106,22 @@
       "league": "Bundesliga2 (GER)",
       "names": {
         "football-data": "Holstein Kiel",
-        "clubelo": null
+        "clubelo": "Holstein"
       },
       "aliases": {
         "football-data": [
-          "Holstein Kiel"
+          "Holstein Kiel",
+          "Hostein Kiel"
+        ],
+        "clubelo": [
+          "Holstein"
         ]
       },
       "keys": {
         "norm": [
-          "holstein kiel"
+          "holstein kiel",
+          "hostein kiel",
+          "holstein"
         ]
       },
       "logo": {
@@ -39263,6 +39271,7 @@
     "football-data:dresden": "team_93ec8b8af9a0",
     "clubelo:dresden": "team_93ec8b8af9a0",
     "football-data:schalke 04": "team_985080e27e31",
+    "football-data:shalke 04": "team_985080e27e31",
     "football-data:hannover": "team_67b2a450735b",
     "clubelo:hannover": "team_67b2a450735b",
     "football-data:kaiserslautern": "team_bafe70bce507",
@@ -39281,6 +39290,7 @@
     "clubelo:braunschweig": "team_f277009b6c65",
     "football-data:preußen munster": "team_7908dacfe2d4",
     "football-data:holstein kiel": "team_04b5d610f652",
+    "football-data:hostein kiel": "team_04b5d610f652",
     "football-data:greuther furth": "team_510e75d8cab5",
     "football-data:paderborn": "team_4f196e4f100e",
     "clubelo:paderborn": "team_4f196e4f100e",
@@ -40115,7 +40125,7 @@
     "clubelo:atletico": "team_c435cd0431c9",
     "clubelo:nuernberg": "team_456c51a44022",
     "clubelo:schalke": "team_9b0f448e96d7",
-    "clubelo:holstein": "team_b9fc40887421",
+    "clubelo:holstein": "team_04b5d610f652",
     "clubelo:mlada boleslav": "team_e9ea6c10a78b",
     "clubelo:gladbach": "team_ac7c23436f77",
     "clubelo:slovacko": "team_88536505da41",
