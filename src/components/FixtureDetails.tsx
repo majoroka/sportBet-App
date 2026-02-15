@@ -935,6 +935,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     return bestProb >= 0 ? bestKey : null;
   }, [outcomeCards]);
 
+  const overroundPercent = useMemo<number | null>(() => {
+    const homeOdd = Number.isFinite(footballDataOdds?.home as number) ? Number(footballDataOdds?.home) : null;
+    const drawOdd = Number.isFinite(footballDataOdds?.draw as number) ? Number(footballDataOdds?.draw) : null;
+    const awayOdd = Number.isFinite(footballDataOdds?.away as number) ? Number(footballDataOdds?.away) : null;
+    if (!homeOdd || !drawOdd || !awayOdd) return null;
+    if (homeOdd <= 0 || drawOdd <= 0 || awayOdd <= 0) return null;
+    return ((1 / homeOdd) + (1 / drawOdd) + (1 / awayOdd) - 1) * 100;
+  }, [footballDataOdds]);
+
   type DoubleChanceCard = {
     key: '1X' | '12' | 'X2';
     label: string;
@@ -2068,6 +2077,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                             <span className="inline-flex items-center rounded-full bg-teal-600 px-3 py-1 text-xs font-semibold text-white">
                               FAVORITO
                             </span>
+                          </div>
+                        )}
+                        {outcome.key === 'HOME' && (
+                          <div className="mt-3 text-xs font-semibold text-pink-600 tabular-nums">
+                            Overround: {overroundPercent !== null ? `${overroundPercent.toFixed(2)}%` : '—'}
                           </div>
                         )}
                       </div>
