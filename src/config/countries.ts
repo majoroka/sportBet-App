@@ -64,6 +64,9 @@ export const countryCodeToNameMap: Record<string, string> = {
   GHA: 'Gana',
   SEN: 'Senegal',
   CIV: 'Costa do Marfim',
+  UCL: 'UEFA Champions League',
+  UEL: 'UEFA Europa League',
+  UECL: 'UEFA Conference League',
 };
 
 export const countryCodeToFlagMap: Record<string, string> = {
@@ -132,4 +135,7 @@ export const countryCodeToFlagMap: Record<string, string> = {
   GHA: '🇬🇭',
   SEN: '🇸🇳',
   CIV: '🇨🇮',
+  UCL: '🏆',
+  UEL: '🏆',
+  UECL: '🏆',
 };

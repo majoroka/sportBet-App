@@ -407,6 +407,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
   CRO: 'CRO',
   SUI: 'SWZ', // Swiss Super League uses SWZ code in our config
   HUN: 'HUN',
+  UEC: 'UECL', // fallback defensivo para Conference League
 };
 
 const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
@@ -509,6 +510,19 @@ const getLeagueInfo = (country: string, competitionName: string, home: string, a
   return competitionConfig ? { name: competitionConfig.league_name, url: competitionConfig.standings_url } : null;
 };
 
+const resolveStandingsCsvPath = (standingsUrl: string): string | null => {
+  if (!standingsUrl) return null;
+
+  if (/^https?:\/\//i.test(standingsUrl)) {
+    const filename = standingsUrl.split('/').pop()?.split('?')[0];
+    return filename ? `data/standings/${filename}` : null;
+  }
+
+  const normalized = standingsUrl.replace(/^\.?\//, '');
+  if (!normalized) return null;
+  return normalized.startsWith('data/') ? normalized : `data/${normalized}`;
+};
+
 export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   const { probabilities, homeTeam, awayTeam } = fixture;
   const [standingsOverall, setStandingsOverall] = useState<StandingRow[]>([]);
@@ -564,9 +578,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         return;
       }
 
-      // Extrair apenas o nome do ficheiro (ex: E0.csv) da URL completa
-      const filename = leagueInfo.url.split('/').pop();
-      const csvPath = `data/standings/${filename}`;
+      const csvPath = resolveStandingsCsvPath(leagueInfo.url);
+      if (!csvPath) {
+        setStandingsOverall([]);
+        setStandingsHome([]);
+        setStandingsAway([]);
+        return;
+      }
 
       setLoadingStandings(true);
       try {

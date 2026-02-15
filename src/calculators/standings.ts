@@ -8,9 +8,12 @@ interface MatchRow {
   FTHG?: string; // Full Time Home Goals
   FTAG?: string; // Full Time Away Goals
   FTR?: string;  // Full Time Result (H, D, A)
+  Result?: string; // Formato alternativo com score textual (ex: "2 - 1")
   // Campos alternativos para ligas "new" (ex: Polónia, Roménia)
   Home?: string;
   Away?: string;
+  'Home Team'?: string;
+  'Away Team'?: string;
   HG?: string;
   AG?: string;
   Res?: string;
@@ -34,6 +37,54 @@ interface MatchRow {
 }
 
 export type StandingMode = 'overall' | 'home' | 'away' | 'last10' | 'last10_over15';
+
+type ParsedMatchCore = {
+  homeTeamName: string;
+  awayTeamName: string;
+  result: 'H' | 'D' | 'A';
+  hg: number;
+  ag: number;
+};
+
+const parseResultScore = (value?: string): { hg: number; ag: number } | null => {
+  if (!value) return null;
+  const match = value.match(/^\s*(\d+)\s*[-:]\s*(\d+)\s*$/);
+  if (!match) return null;
+  return {
+    hg: Number(match[1]),
+    ag: Number(match[2]),
+  };
+};
+
+const getParsedMatchCore = (match: MatchRow): ParsedMatchCore | null => {
+  const homeTeamName = match.HomeTeam || match.Home || match['Home Team'];
+  const awayTeamName = match.AwayTeam || match.Away || match['Away Team'];
+  if (!homeTeamName || !awayTeamName) return null;
+
+  let hg = Number(match.FTHG ?? match.HG);
+  let ag = Number(match.FTAG ?? match.AG);
+
+  if (Number.isNaN(hg) || Number.isNaN(ag)) {
+    const parsed = parseResultScore(match.Result);
+    if (!parsed) return null;
+    hg = parsed.hg;
+    ag = parsed.ag;
+  }
+
+  if (Number.isNaN(hg) || Number.isNaN(ag)) return null;
+
+  const rawResult = (match.FTR || match.Res || '').toString().trim().toUpperCase();
+  const result =
+    rawResult === 'H' || rawResult === 'D' || rawResult === 'A'
+      ? rawResult
+      : hg > ag
+        ? 'H'
+        : hg < ag
+          ? 'A'
+          : 'D';
+
+  return { homeTeamName, awayTeamName, result, hg, ag };
+};
 
 export const calculateStandings = (csvText: string, mode: StandingMode = 'overall', maxForm: number = 5): StandingRow[] => {
   const { data } = Papa.parse<MatchRow>(csvText, {
@@ -88,14 +139,9 @@ export const calculateStandings = (csvText: string, mode: StandingMode = 'overal
       if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;
     }
 
-    // Suporte para formatos "Standard" (HomeTeam, FTR) e "New" (Home, Res) do football-data.co.uk
-    const homeTeamName = match.HomeTeam || match.Home;
-    const awayTeamName = match.AwayTeam || match.Away;
-    const result = match.FTR || match.Res;
-    const fthg = match.FTHG || match.HG;
-    const ftag = match.FTAG || match.AG;
-
-    if (!homeTeamName || !awayTeamName || !result || fthg === undefined || ftag === undefined) return;
+    const parsed = getParsedMatchCore(match);
+    if (!parsed) return;
+    const { homeTeamName, awayTeamName, result, hg, ag } = parsed;
 
     const { canonical: canonicalHomeName, id: homeId } = getCanonicalName(homeTeamName);
     const { canonical: canonicalAwayName, id: awayId } = getCanonicalName(awayTeamName);
@@ -105,9 +151,6 @@ export const calculateStandings = (csvText: string, mode: StandingMode = 'overal
 
     const home = teams[canonicalHomeName];
     const away = teams[canonicalAwayName];
-    const hg = parseInt(fthg, 10);
-    const ag = parseInt(ftag, 10);
-
     const includeHome = mode !== 'away';
     const includeAway = mode !== 'home';
 
@@ -201,15 +244,9 @@ export const computeLeagueStats = (csvText: string): LeagueStats => {
       const season = match.Season.toString().trim();
       if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;
     }
-    const homeTeamName = match.HomeTeam || match.Home;
-    const awayTeamName = match.AwayTeam || match.Away;
-    const fthg = match.FTHG ?? match.HG;
-    const ftag = match.FTAG ?? match.AG;
-    if (!homeTeamName || !awayTeamName || fthg === undefined || ftag === undefined) return;
-
-    const hg = Number(fthg);
-    const ag = Number(ftag);
-    if (Number.isNaN(hg) || Number.isNaN(ag)) return;
+    const parsed = getParsedMatchCore(match);
+    if (!parsed) return;
+    const { homeTeamName, awayTeamName, hg, ag } = parsed;
 
     teamsSet.add(homeTeamName);
     teamsSet.add(awayTeamName);
@@ -334,10 +371,9 @@ export const computeTeamStats = (csvText: string, teamName: string): TeamStats =
       const season = match.Season.toString().trim();
       if (season !== '2025' && season !== '2025/2026' && season !== '25/26') return;
     }
-    const homeTeamName = match.HomeTeam || match.Home;
-    const awayTeamName = match.AwayTeam || match.Away;
-    const fthg = match.FTHG ?? match.HG;
-    const ftag = match.FTAG ?? match.AG;
+    const parsed = getParsedMatchCore(match);
+    if (!parsed) return;
+    const { homeTeamName, awayTeamName, hg, ag } = parsed;
     const hthg = match.HTHG ?? match.HTFHG ?? match.HTHG;
     const htag = match.HTAG ?? match.HTFAG ?? match.HTAG;
     const hs = match.HS;
@@ -352,8 +388,6 @@ export const computeTeamStats = (csvText: string, teamName: string): TeamStats =
     const ar = match.AR;
     const hf = match.HF;
     const af = match.AF;
-    if (!homeTeamName || !awayTeamName || fthg === undefined || ftag === undefined) return;
-
     const homeId =
       resolveTeamId('football-data', homeTeamName) ||
       resolveTeamId('clubelo', homeTeamName) ||
@@ -405,10 +439,6 @@ export const computeTeamStats = (csvText: string, teamName: string): TeamStats =
          tokenMatch(targetTokens, awayTokens) ||
          tokenMatch(targetTokens, awayDisplayTokens));
     if (!isHome && !isAway) return;
-
-    const hg = Number(fthg);
-    const ag = Number(ftag);
-    if (Number.isNaN(hg) || Number.isNaN(ag)) return;
 
     const side = isHome ? home : away;
     side.played += 1;

@@ -64,6 +64,9 @@ export const LEAGUE_CONFIG: Record<string, {
     "CHN": {"country": "China", "competitions": [{"division": 1, "league_name": "Chinese SL (CHN)", "aliases": ["Chinese SL", "Chinese Super League (CHN)", "CSL", "CHN"], "standings_url": "https://www.football-data.co.uk/new/CHN.csv", "teams": []}]},
     "JPN": {"country": "Japão", "competitions": [{"division": 1, "league_name": "J1 League (JPN)", "aliases": ["J1 League", "J League", "J League (JAP)", "JAP"], "standings_url": "https://www.football-data.co.uk/new/JPN.csv", "teams": []}]},
     "MEX": {"country": "México", "competitions": [{"division": 1, "league_name": "Liga MX (MEX)", "aliases": ["Liga MX", "MEX"], "standings_url": "https://www.football-data.co.uk/new/MEX.csv", "teams": []}]},
+    "UCL": {"country": "Europa", "competitions": [{"division": 1, "league_name": "UEFA Champions League", "aliases": ["UCL", "Champions League"], "standings_url": "data/champions-league-2025.csv", "teams": []}]},
+    "UEL": {"country": "Europa", "competitions": [{"division": 1, "league_name": "UEFA Europa League", "aliases": ["UEL", "Europa League"], "standings_url": "data/europa-league-2025.csv", "teams": []}]},
+    "UECL": {"country": "Europa", "competitions": [{"division": 1, "league_name": "UEFA Conference League", "aliases": ["UECL", "Europa Conference League", "Conference League"], "standings_url": "data/conference-league-2025.csv", "teams": []}]},
     "CRO": {"country": "Croácia", "competitions": [{"division": 1, "league_name": "Super Sport HNL (CRO)", "aliases": ["Prva HNL", "Super Sport HNL", "CRO"], "standings_url": null, "teams": []}]},
     "CZE": {
       "country": "República Checa",
