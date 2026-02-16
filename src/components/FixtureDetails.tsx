@@ -1814,6 +1814,67 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
             </div>
           </div>
+
+          <div className="sm:hidden mt-2 grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-2">
+              <div className="text-[11px] font-semibold text-slate-600 truncate">{homeDisplayName}</div>
+              <div className="mt-1 overflow-x-auto">
+                <div className="flex min-w-max items-center gap-1.5 pr-1">
+                  <XgPill value={xgHome} />
+                  <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} diff={diffHome} />
+                  {Number.isFinite(Number(homeStanding?.rank)) && Number(homeStanding?.rank) > 0 && (
+                    <span className="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white text-xs font-normal px-2.5 py-1.5 shadow-sm">
+                      #{Number(homeStanding?.rank)}
+                    </span>
+                  )}
+                </div>
+              </div>
+              {homeStanding && (
+                <div className="mt-2 flex items-center gap-1">
+                  {homeStanding.form.slice(-6).map((match, i, arr) => {
+                    const { color, label } = getFormAttributes(match.result);
+                    const side = match.side === 'A' ? 'A' : 'H';
+                    const ringColor =
+                      match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
+                    const isLast = i === arr.length - 1;
+                    const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
+                    const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
+                    return <span key={`home-form-mobile-${i}`} className={`rounded-full w-2.5 h-2.5 ${color} ${extraClass}`} title={tooltip} />;
+                  })}
+                </div>
+              )}
+            </div>
+
+            <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-2">
+              <div className="text-[11px] font-semibold text-slate-600 truncate text-right">{awayDisplayName}</div>
+              <div className="mt-1 overflow-x-auto">
+                <div className="flex min-w-max items-center gap-1.5 justify-end pl-1">
+                  {Number.isFinite(Number(awayStanding?.rank)) && Number(awayStanding?.rank) > 0 && (
+                    <span className="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white text-xs font-normal px-2.5 py-1.5 shadow-sm">
+                      #{Number(awayStanding?.rank)}
+                    </span>
+                  )}
+                  <EloPill elo={awayElo?.elo ?? null} rank={awayElo?.rank ?? null} diff={diffAway} />
+                  <XgPill value={xgAway} />
+                </div>
+              </div>
+              {awayStanding && (
+                <div className="mt-2 flex items-center justify-end gap-1">
+                  {awayStanding.form.slice(-6).map((match, i, arr) => {
+                    const { color, label } = getFormAttributes(match.result);
+                    const side = match.side === 'A' ? 'A' : 'H';
+                    const ringColor =
+                      match.result === 'W' ? 'ring-green-500' : match.result === 'D' ? 'ring-[#c1c1c1]' : 'ring-red-500';
+                    const isLast = i === arr.length - 1;
+                    const extraClass = isLast ? `ring-1 ${ringColor} ring-offset-1` : '';
+                    const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
+                    return <span key={`away-form-mobile-${i}`} className={`rounded-full w-2.5 h-2.5 ${color} ${extraClass}`} title={tooltip} />;
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
           <p className="text-sm text-gray-500 text-center">{new Date(fixture.date).toLocaleDateString()}</p>
         </div>
       </div>
