@@ -24,4 +24,7 @@
     font-family: 'Rajdhani', sans-serif;
     font-weight: 400 !important;
   }
+  .probabilities-font .odd-text.odd-text-1x2 {
+    font-weight: 600 !important;
+  }
 }

@@ -2122,7 +2122,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
                       <div className="mt-4 flex items-baseline justify-between gap-3">
                         <div className="flex items-baseline gap-3 min-w-0 odd-wrap justify-start">
-                          <span className="block text-4xl sm:text-5xl font-bold leading-none tabular-nums text-slate-900 odd-text">
+                          <span className="block text-4xl sm:text-5xl font-semibold leading-none tabular-nums text-slate-900 odd-text odd-text-1x2">
                             {hasOddBook ? (outcome.oddBook as number).toFixed(2) : '-'}
                           </span>
                           <span

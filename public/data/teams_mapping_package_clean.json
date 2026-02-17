@@ -37936,22 +37936,30 @@
     "team_41536cb9a9b1": {
       "id": "team_41536cb9a9b1",
       "display": {
-        "pt": "Razgrad"
+        "pt": "Ludogorets"
       },
       "country": "BUL",
       "league": "Parva Liga (BUL)",
       "names": {
-        "football-data": null,
+        "football-data": "Ludogorets",
         "clubelo": "Razgrad"
       },
       "aliases": {
         "clubelo": [
-          "Razgrad"
+          "Razgrad",
+          "Ludogorets",
+          "Ludogorets Razgrad"
+        ],
+        "football-data": [
+          "Ludogorets",
+          "Ludogorets Razgrad"
         ]
       },
       "keys": {
         "norm": [
-          "razgrad"
+          "razgrad",
+          "ludogorets",
+          "ludogorets razgrad"
         ]
       }
     },
@@ -40094,6 +40102,10 @@
     "clubelo:lech": "team_bdf4228be97e",
     "clubelo:gijon": "team_9d4704dace8e",
     "clubelo:razgrad": "team_41536cb9a9b1",
+    "clubelo:ludogorets": "team_41536cb9a9b1",
+    "clubelo:ludogorets razgrad": "team_41536cb9a9b1",
+    "football-data:ludogorets": "team_41536cb9a9b1",
+    "football-data:ludogorets razgrad": "team_41536cb9a9b1",
     "clubelo:arka": "team_8036fbccf601",
     "clubelo:cherno more": "team_b5c6dc27c68c",
     "clubelo:lechia": "team_25751e9bdd53",
