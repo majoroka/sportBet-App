@@ -243,6 +243,27 @@ const getLeagueLogoUrl = (leagueName: string, countryCode: string) => {
     keyName,
     normalizeKey(`${leagueName} ${countryCode}`),
   ];
+  if (candidates.some((key) => key === 'ucl' || key.includes('championsleague'))) {
+    return `${base}logos/UEFA/UEFA_Champions_League_logo.png`;
+  }
+  if (
+    candidates.some(
+      (key) =>
+        key === 'uecl' ||
+        key === 'uec' ||
+        key.includes('conferenceleague') ||
+        key.includes('europaconferenceleague')
+    )
+  ) {
+    return `${base}logos/UEFA/UEFA_Europa_Conference_League_logo.png`;
+  }
+  if (
+    candidates.some(
+      (key) => key === 'uel' || (key.includes('europaleague') && !key.includes('conference'))
+    )
+  ) {
+    return `${base}logos/UEFA/UEFA_Europa_League_logo.png`;
+  }
   for (const key of candidates) {
     const filename = leagueLogoMap[key];
     if (filename) return `${base}logos/Ligas/${filename}`;

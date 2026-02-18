@@ -9,11 +9,11 @@ export const AppHeader = ({ title, subtitle }: AppHeaderProps) => {
 
   return (
     <header className="text-center mb-4">
-      <h1 className="inline-flex items-center justify-center gap-3 text-4xl font-bold font-rajdhani text-[#60A5FA]">
+      <h1 className="inline-flex items-center justify-center gap-3 text-4xl leading-none font-bold font-rajdhani text-[#60A5FA]">
         <img src={logoUrl} alt="Logo da aplicação" className="w-14 h-14 object-contain shrink-0" />
         <span>{title}</span>
       </h1>
-      <p className="text-gray-500">
+      <p className="-mt-2 text-gray-500">
         {subtitle}
       </p>
     </header>
