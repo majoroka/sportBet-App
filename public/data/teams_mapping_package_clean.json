@@ -13791,33 +13791,6 @@
         ]
       }
     },
-    "team_8acfc8359271": {
-      "id": "team_8acfc8359271",
-      "display": {
-        "pt": "Bodo/Glimt"
-      },
-      "country": "NO",
-      "league": "Eliteserien",
-      "names": {
-        "football-data": "Bodo/Glimt",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Bodo/Glimt"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "bodo glimt"
-        ]
-      },
-      "logo": {
-        "key": "Bodo-glimt",
-        "file": "Bodo-glimt.png",
-        "path": "/logos/Eliteserien/Bodo-glimt.png"
-      }
-    },
     "team_1ac105eeefe4": {
       "id": "team_1ac105eeefe4",
       "display": {
@@ -23894,16 +23867,23 @@
       "league": "NOR",
       "names": {
         "football-data": "Bodo/Glimt",
-        "clubelo": null
+        "clubelo": "Bodoe Glimt"
       },
       "aliases": {
         "football-data": [
           "Bodo/Glimt"
+        ],
+        "clubelo": [
+          "Bodoe Glimt",
+          "Bodo Glimt",
+          "Bodø/Glimt",
+          "Bodø Glimt"
         ]
       },
       "keys": {
         "norm": [
-          "bodo glimt"
+          "bodo glimt",
+          "bodoe glimt"
         ]
       },
       "logo": {
@@ -40368,7 +40348,9 @@
     "football-data:dundee utd": "team_8f60697dbf3e",
     "clubelo:dundee utd": "team_8f60697dbf3e",
     "football-data:dundee fc": "team_c86895699221",
-    "clubelo:dundee fc": "team_c86895699221"
+    "clubelo:dundee fc": "team_c86895699221",
+    "clubelo:bodoe glimt": "team_27c9f9982bed",
+    "clubelo:bodo glimt": "team_27c9f9982bed"
   },
   "needs_review": [
     {

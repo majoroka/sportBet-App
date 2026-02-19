@@ -1204,7 +1204,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     if (!teamStatsHome || !teamStatsAway) return null;
     if (!detailedStatsEnabled) {
       return (
-        <div className="col-span-7 text-center py-10 text-gray-500">
+        <div className="col-span-7 rounded-xl border border-dashed border-slate-300 bg-slate-50/70 text-center py-10 text-slate-500">
           Informação não disponível
         </div>
       );
@@ -1233,25 +1233,39 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       rendered.push(
         <div
           key={`sep-${sIdx}`}
-          className="col-span-7 bg-white text-black font-semibold text-sm border-b border-gray-300"
+          className={`col-span-7 ${sIdx === 0 ? 'mt-0' : 'mt-3'} rounded-xl border border-slate-200 bg-gradient-to-r from-slate-100/90 to-white`}
         >
-          <div className="w-full py-1 px-2">
-            <span>{section.title}</span>
+          <div className="w-full py-2 px-3">
+            <span className="text-[16px] font-semibold uppercase tracking-wide text-slate-700">{section.title}</span>
           </div>
         </div>
       );
       rowsWithData.forEach((row) => {
-        const stripe = stripeIdx % 2 === 0 ? 'bg-gray-50/70' : '';
+        const stripe = stripeIdx % 2 === 0 ? 'bg-slate-50/70' : 'bg-white';
         stripeIdx += 1;
         rendered.push(
           <React.Fragment key={`${section.title}-${row.label}`}>
-            <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.home))}</div>
-            <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsHome.away))}</div>
-            <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsHome.overall))}</div>
-            <div className={`text-center py-1 font-semibold text-gray-700 whitespace-nowrap ${stripe}`}>{row.label}</div>
-            <div className={`text-center py-1 font-semibold ${stripe}`}>{row.fmt(row.value(teamStatsAway.overall))}</div>
-            <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.away))}</div>
-            <div className={`text-center py-1 ${stripe}`}>{row.fmt(row.value(teamStatsAway.home))}</div>
+            <div className={`text-center py-2 px-1 text-[16px] text-blue-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+              {row.fmt(row.value(teamStatsHome.home))}
+            </div>
+            <div className={`text-center py-2 px-1 text-[16px] text-pink-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+              {row.fmt(row.value(teamStatsHome.away))}
+            </div>
+            <div className={`text-center py-2 px-1 text-[16px] font-semibold text-slate-900 tabular-nums border-b border-slate-100 ${stripe}`}>
+              {row.fmt(row.value(teamStatsHome.overall))}
+            </div>
+            <div className={`text-center py-2 px-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap border-b border-slate-100 ${stripe}`}>
+              {row.label}
+            </div>
+            <div className={`text-center py-2 px-1 text-[16px] font-semibold text-slate-900 tabular-nums border-b border-slate-100 ${stripe}`}>
+              {row.fmt(row.value(teamStatsAway.overall))}
+            </div>
+            <div className={`text-center py-2 px-1 text-[16px] text-pink-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+              {row.fmt(row.value(teamStatsAway.away))}
+            </div>
+            <div className={`text-center py-2 px-1 text-[16px] text-blue-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+              {row.fmt(row.value(teamStatsAway.home))}
+            </div>
           </React.Fragment>
         );
       });
@@ -1259,7 +1273,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
     if (!hasAny) {
       return (
-        <div className="col-span-7 text-center py-10 text-gray-500">
+        <div className="col-span-7 rounded-xl border border-dashed border-slate-300 bg-slate-50/70 text-center py-10 text-slate-500">
           Informação não disponível
         </div>
       );
@@ -1927,10 +1941,10 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {(() => {
           const hasStandings = currentStandings.length > 0;
           return (
-            <div className="bg-gray-50 p-3 rounded-lg h-fit flex flex-col w-full min-w-0">
+            <div className="bg-gradient-to-b from-white to-slate-50 border border-slate-200 p-4 rounded-2xl h-fit flex flex-col w-full min-w-0 shadow-sm">
               <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
-                <h3 className="font-bold text-gray-700 border-b border-gray-200 pb-1">Classificação</h3>
-                <div className="grid grid-cols-3 min-w-[220px] sm:min-w-[260px] rounded-md border border-gray-300 overflow-hidden">
+                <h3 className="text-base font-semibold tracking-tight text-slate-900 border-b border-slate-200 pb-1">Classificação</h3>
+                <div className="grid grid-cols-3 min-w-[220px] sm:min-w-[260px] rounded-xl border border-slate-300 bg-white overflow-hidden shadow-sm">
                   {[
                     { key: 'overall' as StandingMode, label: 'Global' },
                     { key: 'home' as StandingMode, label: 'Casa' },
@@ -1944,9 +1958,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         className={[
                           'relative flex items-center justify-center text-[11px] font-semibold py-2 px-2 transition-colors duration-150 text-center whitespace-pre leading-tight',
                           active
-                            ? 'bg-[#f2f2f2] text-black after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
-                            : 'bg-white text-black hover:bg-gray-100',
-                          idx > 0 ? 'border-l border-gray-300' : '',
+                            ? 'bg-slate-100 text-slate-900 after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
+                            : 'bg-white text-slate-700 hover:bg-slate-50',
+                          idx > 0 ? 'border-l border-slate-300' : '',
                         ].join(' ')}
                       >
                         {tab.label}
@@ -1957,28 +1971,28 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
 
               {loadingStandings ? (
-                <div className="text-center py-10 text-gray-500">A carregar...</div>
+                <div className="text-center py-10 text-slate-500">A carregar...</div>
               ) : hasStandings ? (
                 <div className="flex-grow flex flex-col justify-between">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
+                  <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+                    <table className="w-full text-[15px]">
                       <thead>
-                        <tr className="text-gray-500 border-b">
-                          <th className="pb-1 text-center w-6">#</th>
-                          <th className="pb-1 text-left">Equipa</th>
-                          <th className="pb-1 text-center" title="Jogos">J</th>
-                          <th className="pb-1 text-center" title="Vitórias">V</th>
-                          <th className="pb-1 text-center" title="Empates">E</th>
-                          <th className="pb-1 text-center" title="Derrotas">D</th>
-                          <th className="pb-1 text-center" title="Golos Marcados">GM</th>
-                          <th className="pb-1 text-center" title="Golos Sofridos">GS</th>
-                          <th className="pb-1 text-center" title="Diferença">Dif</th>
-                          <th className="pb-1 text-center font-bold" title="Pontos">P</th>
-                          <th className="pb-1 text-center whitespace-nowrap">+1,5 (Últimos 8)</th>
-                          <th className="pb-1 text-center whitespace-nowrap">+2,5 (Últimos 8)</th>
+                        <tr className="text-slate-500 border-b border-slate-200 bg-slate-50/80">
+                          <th className="py-2 text-center w-6 text-[12px] font-semibold uppercase tracking-wide">#</th>
+                          <th className="py-2 text-left text-[12px] font-semibold uppercase tracking-wide">Equipa</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Jogos">J</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Vitórias">V</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Empates">E</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Derrotas">D</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Golos Marcados">GM</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Golos Sofridos">GS</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Diferença">Dif</th>
+                          <th className="py-2 text-center text-[12px] font-bold uppercase tracking-wide" title="Pontos">P</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide whitespace-nowrap">+1,5 (Últimos 8)</th>
+                          <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide whitespace-nowrap">+2,5 (Últimos 8)</th>
                         </tr>
                       </thead>
-                      <tbody className="text-gray-600">
+                      <tbody className="text-slate-700">
                         {currentStandings.map((row, index) => {
                           const matches = (teamName: string, teamId: string | null) => {
                             if (teamId && row.teamId) {
@@ -1994,7 +2008,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           const isMatchTeam =
                             matches(homeTeam, homeTeamId) ||
                             matches(awayTeam, awayTeamId);
-                          const rowClass = isMatchTeam ? 'bg-blue-100' : index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                          const rowClass = isMatchTeam ? 'bg-blue-50/80' : index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50';
 
                           const formArray = row.form ?? [];
                           const last8 = formArray.slice(-8);
@@ -2019,19 +2033,19 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           );
 
                           return (
-                            <tr key={row.team} className={`border-b border-gray-100 hover:bg-gray-100 ${rowClass}`}>
-                              <td className="py-1 text-center">{row.rank}</td>
-                              <td className="py-1 font-medium truncate max-w-[100px]" title={row.team}>{row.team}</td>
-                              <td className="text-center">{row.played}</td>
-                              <td className="text-center text-gray-400">{row.wins}</td>
-                              <td className="text-center text-gray-400">{row.draws}</td>
-                              <td className="text-center text-gray-400">{row.losses}</td>
-                              <td className="text-center text-gray-400">{row.goalsFor}</td>
-                              <td className="text-center text-gray-400">{row.goalsAgainst}</td>
-                              <td className="text-center text-gray-500">{row.goalDiff}</td>
-                              <td className="text-center font-bold text-gray-900">{row.points}</td>
-                              <td className="py-1">{renderOverIcons(1.5)}</td>
-                              <td className="py-1">{renderOverIcons(2.5)}</td>
+                            <tr key={row.team} className={`border-b border-slate-100 hover:bg-slate-100/70 transition-colors ${rowClass}`}>
+                              <td className="py-1.5 text-center tabular-nums">{row.rank}</td>
+                              <td className="py-1.5 font-medium truncate max-w-[100px] text-slate-800" title={row.team}>{row.team}</td>
+                              <td className="text-center tabular-nums text-slate-700">{row.played}</td>
+                              <td className="text-center tabular-nums text-blue-600">{row.wins}</td>
+                              <td className="text-center tabular-nums text-slate-500">{row.draws}</td>
+                              <td className="text-center tabular-nums text-pink-500">{row.losses}</td>
+                              <td className="text-center tabular-nums text-blue-700">{row.goalsFor}</td>
+                              <td className="text-center tabular-nums text-pink-600">{row.goalsAgainst}</td>
+                              <td className="text-center tabular-nums text-slate-600">{row.goalDiff}</td>
+                              <td className="text-center font-bold tabular-nums text-slate-900">{row.points}</td>
+                              <td className="py-1.5">{renderOverIcons(1.5)}</td>
+                              <td className="py-1.5">{renderOverIcons(2.5)}</td>
                             </tr>
                           );
                         })}
@@ -2040,12 +2054,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 </div>
               ) : (
-                <div className="text-center text-gray-400 text-sm py-10 italic">
+                <div className="text-center text-slate-500 text-sm py-10 italic">
                   Classificação indisponível para esta competição.
                 </div>
               )}
               {leagueStats && leagueStats.matchesPlayed > 0 ? (
-                <div className="mt-3 bg-white/70 rounded-lg px-3 py-2 shadow-sm border border-gray-200">
+                <div className="mt-3 bg-gradient-to-r from-slate-50 to-white rounded-xl px-3 py-2 shadow-sm border border-slate-200">
                   {(() => {
                     const mp = leagueStats.matchesPlayed || 0;
                     const pct = (v: number) => (mp > 0 ? `${((v / mp) * 100).toFixed(1)}%` : '—');
@@ -2062,13 +2076,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                       { key: 'gjf', label: 'GjF', value: avg(leagueStats.goalsAway), tip: 'Golos por jogo fora' },
                     ];
                     return (
-                      <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[12px] leading-tight text-gray-800 w-full justify-between">
+                      <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[13px] leading-tight text-slate-800 w-full justify-between">
                         {items.map((item) => (
                           <React.Fragment key={item.key}>
                             <span className="relative group cursor-help">
                               <span className="font-semibold">{item.label}</span>&nbsp;
                               <span>{item.value}</span>
-                              <span className="invisible group-hover:visible absolute z-30 top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black text-white text-[11px] px-2 py-1 rounded shadow-lg">
+                              <span className="invisible group-hover:visible absolute z-30 top-full mt-1 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-900 text-white text-[11px] px-2 py-1 rounded shadow-lg">
                                 {item.tip}
                               </span>
                             </span>
@@ -2079,7 +2093,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })()}
                 </div>
               ) : (
-                <div className="text-center py-6 text-gray-500">Informação não disponível para esta liga.</div>
+                <div className="text-center py-6 text-slate-500">Informação não disponível para esta liga.</div>
               )}
             </div>
           );
@@ -2534,9 +2548,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <div className="grid grid-cols-1 gap-4 items-start">
               {/* Comparativo equipas */}
               {hasTeamStats ? (
-                <div className="bg-white border border-gray-200 rounded-lg p-3 w-full min-w-0 shadow-sm overflow-x-auto h-fit">
-                  <div className="text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">EQUIPAS</div>
-                  <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-sm text-gray-800 min-w-[360px] sm:min-w-[680px]">
+                <div className="bg-gradient-to-b from-white to-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 w-full min-w-0 shadow-sm overflow-x-auto h-fit">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+                    <div className="text-base font-semibold tracking-tight text-slate-900">EQUIPAS</div>
+                    <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                      Comparativo
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-[18px] text-slate-800 min-w-[360px] sm:min-w-[680px]">
                     {/* Row: main header (removed label) */}
                     <div className="col-span-3 py-1"></div>
                     <div className="col-span-1"></div>
@@ -2549,7 +2568,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     </div>
                     <div className="flex items-center justify-center gap-3 py-2">
                       <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-12 h-12 object-contain" />
-                      <span className="text-xs text-gray-500">vs</span>
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">vs</span>
                       <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-12 h-12 object-contain" />
                     </div>
                     <div className="col-span-3 flex items-center justify-start gap-3 py-2 pl-2">
@@ -2558,11 +2577,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
                     {/* Row: subheader labels under logos */}
                     {['Casa','Fora','Global'].map((label,i)=>(
-                      <div key={`lh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
+                      <div key={`lh-${i}`} className="text-center text-[13px] font-semibold uppercase tracking-wide text-slate-500 pb-2">{label}</div>
                     ))}
                     <div className=""></div>
                     {['Global','Fora','Casa'].map((label,i)=>(
-                      <div key={`rh-${i}`} className="text-center text-[11px] uppercase text-gray-500 pb-1">{label}</div>
+                      <div key={`rh-${i}`} className="text-center text-[13px] font-semibold uppercase tracking-wide text-slate-500 pb-2">{label}</div>
                     ))}
 
                     {/* Rows: stats */}
@@ -2570,7 +2589,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white border border-dashed border-gray-300 rounded-lg p-4 text-center text-gray-500 w-full">
+                <div className="bg-slate-50/70 border border-dashed border-slate-300 rounded-xl p-5 text-center text-slate-500 w-full">
                   Informação de equipas não disponível para esta liga.
                 </div>
               )}

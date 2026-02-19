@@ -34,6 +34,12 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] **Normalização Avançada:** Aliases cruzados fixtures/standings + sinónimos (ex.: Farul/Viitorul, Saint‑Étienne/St Etienne) e deteção de liga por equipas.
 - [x] **Persistência de filtros:** URL + localStorage (data/país/jogo).
 - [x] **Lint/Format:** ESLint + Prettier + workflow de CI.
+- [x] **Bloco Probabilidades - UI v2:** Reforço visual dos cards 1X2/Heatmap/mercados e alinhamento por blocos.
+- [x] **1X2 - Overround:** Exibição do overround das odds do book no card de Resultado Final.
+- [x] **Heatmap - Paleta final:** Escala azul/rosa com destaque único do resultado top (estrela na célula principal).
+- [x] **Branding Header:** Logo da app no título principal.
+- [x] **Competições UEFA:** Logos dedicados (UCL/UEL/UECL) e integração de CSVs específicos por competição.
+- [x] **Higienização de naming no mapping:** unificação de nomes canónicos e aliases em equipas com variantes (ex.: `Ludogorets/Razgrad`, `Bodo/Glimt/Bodoe Glimt`).
 - [ ] **Favoritos:** Permitir guardar jogos numa "Watchlist" (usando `localStorage`).
 - [ ] **Dark Mode:** Implementar alternância de tema claro/escuro.
 

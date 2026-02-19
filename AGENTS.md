@@ -29,6 +29,10 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Card “Equipas” com xG por clube (derivado da matriz de correct score, truncada a 6 golos), logos centrados e pill de xG.
   - Pills de ELO no cabeçalho do jogo (ranking via `public/data/ranking_elo.csv`) + badge #N de classificação junto aos pills.
   - Odds B365 para o scoring 1X2 (Valor/Odds justas) via `public/data/fixtures_football-data.csv`.
+  - Bloco de Probabilidades redesenhado: 1X2 com subcards destacados, Overround do book e cards de mercados alinhados por blocos (Dupla Hipótese, Golos da Equipa, Mercado de Golos, Vitória +1,5, BTTS e Sem Sofrer).
+  - Heatmap de Resultados com paleta azul/rosa e destaque único para o resultado mais provável (estrela no canto da célula top).
+  - Cabeçalho da app com logo (`public/logos/logo-app.png`) ao lado do título.
+  - Logos UEFA no cabeçalho da competição (UCL/UEL/UECL) via `public/logos/UEFA/`.
   - Logótipos dos clubes (com fallback visual) e design responsivo (forma oculta em mobile para não quebrar layout).
 
 - **Design:** Interface responsiva com tema "Tech" (Fontes Rajdhani e Share Tech Mono). Paleta principal coerente: azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
@@ -95,7 +99,11 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - Base principal: `public/data/teams_mapping_package_clean.json`
 
   - Contém IDs, nomes canónicos, aliases (football-data / clubelo), país, liga e caminho do logo.
+  - Inclui normalização cruzada de nomes (ex.: **Ludogorets** como canónico e **Razgrad** como alias ClubElo).
   - Pastas de logos devem incluir o código do país entre parêntesis. Ex.: `public/logos/Bundesliga (GER)/Bayern-munchen.png`.
+- Competições UEFA:
+  - Standings/fases dedicadas em `public/data/champions-league-2025.csv`, `public/data/europa-league-2025.csv` e `public/data/conference-league-2025.csv`.
+  - Logos em `public/logos/UEFA/`.
 
 - Manifesto de logos: `src/lib/logoManifest.json` (gerado por `scripts/logos/generate-logo-manifest.js`).
 
@@ -122,7 +130,9 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 ## 🩹 Troubleshooting rápido
 
 - **Logo não aparece**: confirma nome/pasta em `public/logos`, corre `node scripts/logos/generate-logo-manifest.js` e volta a abrir a UI.
+- **Logo UEFA não aparece no cabeçalho da competição**: confirma os ficheiros em `public/logos/UEFA/` (`UEFA_Champions_League_logo.png`, `UEFA_Europa_League_logo.png`, `UEFA_Europa_Conference_League_logo.png`).
 - **Sem FORMA/destaque na classificação**: acrescenta alias no `teams_mapping_package_clean.json` (football-data/clubelo) e garante que a liga existe em `src/config/leagues.ts` com aliases/código correto.
+- **Equipa duplicada por naming (ex.: Razgrad/Ludogorets)**: unifica no `teams_mapping_package_clean.json` com um nome canónico e aliases por fonte.
 - **Logs “Caminho não encontrado”**: verifica se a competição está em `src/config/leagues.ts` com `standings_url` ou `aliases` que coincidam com o nome do fixture.
 - **Tooltip de FORMA**: a dica do rato mostra agora o resultado e o lado (H/A) do jogo; se vês “H/A” trocado, verifica o parsing em `src/calculators/standings.ts`.
 

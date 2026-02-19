@@ -1,4 +1,4 @@
-export const DIXON_COLES_RHO_DEFAULT = -0.1;
+export const DIXON_COLES_RHO_DEFAULT = -0.01;
 const DIXON_COLES_RHO_MIN = -0.25;
 const DIXON_COLES_RHO_MAX = 0.25;
 

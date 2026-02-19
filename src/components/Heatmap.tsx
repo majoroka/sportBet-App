@@ -55,7 +55,7 @@ export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
                   'relative rounded px-3 py-2.5 text-center text-xs sm:text-sm font-semibold tabular-nums border transition-all duration-200',
                   getColorForProbability(prob, maxProb),
                   isTop
-                    ? 'border-blue-700 shadow-[inset_0_0_0_1px_rgba(29,78,216,0.25),0_4px_10px_rgba(29,78,216,0.18)]'
+                    ? 'bg-[#0855d3] text-white border-[#0855d3] shadow-[inset_0_0_0_1px_rgba(8,85,211,0.3),0_4px_10px_rgba(8,85,211,0.22)]'
                     : 'border-transparent',
                 ].join(' ')}
                 title={`Resultado: ${homeScore}-${awayScore}, Prob: ${(prob * 100).toFixed(1)}%`}
