@@ -31,7 +31,10 @@ export const parseCsvFixtures = (csvText: string): Fixture[] => {
     // Se a competição for desconhecida ou vazia, tenta descobrir pelo nome da equipa da casa
     const homeTeamId = resolveTeamId('clubelo', homeTeam);
     if (!competition || competition === 'Unknown') {
-      if (homeTeamId) {
+      const countryCode = String(country || '').trim().toUpperCase();
+      if (countryCode === 'ECL' || countryCode === 'UECL' || countryCode === 'UEC' || countryCode === 'UEL' || countryCode === 'UCL') {
+        competition = countryCode;
+      } else if (homeTeamId) {
         competition = getTeamLeague(homeTeamId) || 'Unknown';
       }
     }
