@@ -66,6 +66,7 @@ export const countryCodeToNameMap: Record<string, string> = {
   CIV: 'Costa do Marfim',
   UCL: 'UEFA Champions League',
   UEL: 'UEFA Europa League',
+  ECL: 'UEFA Conference League',
   UECL: 'UEFA Conference League',
 };
 
@@ -137,5 +138,6 @@ export const countryCodeToFlagMap: Record<string, string> = {
   CIV: '🇨🇮',
   UCL: '🏆',
   UEL: '🏆',
+  ECL: '🏆',
   UECL: '🏆',
 };
