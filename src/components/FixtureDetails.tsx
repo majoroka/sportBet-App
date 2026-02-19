@@ -250,6 +250,7 @@ const getLeagueLogoUrl = (leagueName: string, countryCode: string) => {
     candidates.some(
       (key) =>
         key === 'uecl' ||
+        key === 'ecl' ||
         key === 'uec' ||
         key.includes('conferenceleague') ||
         key.includes('europaconferenceleague')
@@ -430,6 +431,7 @@ const COUNTRY_ALIASES: Record<string, string> = {
   SUI: 'SWZ', // Swiss Super League uses SWZ code in our config
   HUN: 'HUN',
   UEC: 'UECL', // fallback defensivo para Conference League
+  ECL: 'UECL', // ClubElo usa ECL para a UEFA Conference League
 };
 
 const getLeagueInfo = (country: string, competitionName: string, home: string, away: string) => {
