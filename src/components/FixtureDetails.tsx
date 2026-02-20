@@ -66,11 +66,11 @@ const EloPill: React.FC<{ elo?: number | null; rank?: number | null; diff?: numb
   rank,
   diff,
 }) => (
-  <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50/80 text-[11px] sm:text-sm font-medium text-slate-700 px-2.5 py-1.5 sm:px-3 sm:py-2 gap-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+  <div className="inline-flex items-center rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/60 text-[11px] sm:text-sm font-medium text-slate-700 dark:text-slate-200 px-2.5 py-1.5 sm:px-3 sm:py-2 gap-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:shadow-none">
     <div>
-      ELO: <span className="font-semibold tabular-nums text-slate-900">{formatEloValue(elo)}</span>
+      ELO: <span className="font-semibold tabular-nums text-slate-900 dark:text-slate-100">{formatEloValue(elo)}</span>
     </div>
-    <div className="tabular-nums text-slate-800">
+    <div className="tabular-nums text-slate-800 dark:text-slate-100">
       #{rank && rank > 0 ? rank : '—'}
     </div>
     {typeof diff === 'number' && Number.isFinite(diff) && (
@@ -84,14 +84,14 @@ const EloPill: React.FC<{ elo?: number | null; rank?: number | null; diff?: numb
 const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
   if (!value || value <= 0) return null;
   return (
-    <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50/80 text-[11px] sm:text-sm font-semibold text-slate-800 px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-      xG <span className="ml-1 tabular-nums text-slate-900">{value.toFixed(2)}</span>
+    <div className="inline-flex items-center rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/60 text-[11px] sm:text-sm font-semibold text-slate-800 dark:text-slate-100 px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] dark:shadow-none">
+      xG <span className="ml-1 tabular-nums text-slate-900 dark:text-slate-100">{value.toFixed(2)}</span>
     </div>
   );
 };
 
-const POSITIVE_BADGE_CLASSES = 'bg-sky-50 text-sky-600 border-sky-600';
-const NEGATIVE_BADGE_CLASSES = 'bg-rose-50 text-rose-600 border-rose-600';
+const POSITIVE_BADGE_CLASSES = 'bg-sky-50 dark:bg-sky-900/30 text-sky-600 dark:text-sky-300 border-sky-600 dark:border-sky-500/70';
+const NEGATIVE_BADGE_CLASSES = 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-300 border-rose-600 dark:border-rose-500/70';
 
 const OverIcon: React.FC<{ over: boolean; title?: string; ring?: boolean }> = ({ over, title, ring }) => (
   <div
@@ -126,10 +126,10 @@ const AccordionSection: React.FC<AccordionSectionProps> = ({ id, title, defaultO
         aria-expanded={isOpen}
         aria-controls={panelId}
         onClick={() => setIsOpen((prev) => !prev)}
-        className="w-full flex items-center justify-between text-left px-3 py-3 rounded-lg bg-gray-50 hover:bg-gray-100 border border-gray-200"
+        className="w-full flex items-center justify-between text-left px-3 py-3 rounded-lg bg-gray-50 dark:bg-slate-800/80 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700"
       >
-        <span className="text-sm font-semibold text-gray-700 tracking-wide">{title}</span>
-        <span className="flex items-center gap-2 text-sm font-semibold text-gray-500">
+        <span className="text-sm font-semibold text-gray-700 dark:text-slate-200 tracking-wide">{title}</span>
+        <span className="flex items-center gap-2 text-sm font-semibold text-gray-500 dark:text-slate-400">
           <svg
             className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             viewBox="0 0 20 20"
@@ -340,7 +340,7 @@ const formatNumber2 = (v: number | null) => (v === null ? '—' : v.toFixed(2));
 const formatPercent0 = (v: number | null) => (v === null ? '—' : `${(v * 100).toFixed(0)}%`);
 const formatDiff2 = (v: number | null) =>
   v === null ? '—' : `${v >= 0 ? '+' : ''}${v.toFixed(2)}`;
-const PROB_CARD_TITLE_CLASS = 'text-xl font-semibold tracking-tight text-slate-900';
+const PROB_CARD_TITLE_CLASS = 'text-xl font-semibold tracking-tight text-slate-900 dark:text-slate-100';
 const safeNumber = (value?: number | null, fallback = 0) =>
   Number.isFinite(value as number) ? Number(value) : fallback;
 const toPercentValue = (value: number | null) => (value === null ? 0 : value * 100);
@@ -899,14 +899,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
   const formatPct = (prob: number) => `${(Math.max(0, prob) * 100).toFixed(1)}%`;
   const getEdgePillClass = (edgePercent: number | null) => {
-    if (edgePercent === null) return 'bg-slate-100 text-slate-600 border border-slate-200';
-    if (Math.abs(edgePercent) < 0.5) return 'bg-slate-100 text-slate-600 border border-slate-200';
-    if (edgePercent > 0) return 'bg-emerald-100 text-emerald-700 border border-emerald-200';
-    return 'bg-rose-100 text-rose-700 border border-rose-200';
+    if (edgePercent === null) return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
+    if (Math.abs(edgePercent) < 0.5) return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
+    if (edgePercent > 0) return 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700/60';
+    return 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-700/60';
   };
 
   const getProbTextClass = (prob: number | null) =>
-    prob !== null && prob >= 0.55 ? 'text-blue-600' : 'text-slate-500';
+    prob !== null && prob >= 0.55 ? 'text-blue-600' : 'text-slate-500 dark:text-slate-400';
 
   const getBarFillClass = (pct: number) => {
     if (pct < 40) return 'bg-slate-400';
@@ -1072,15 +1072,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     return (
       <div
         className={[
-          'bg-white border border-slate-200 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-[1px]',
+          'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-[1px]',
           className ?? '',
         ].join(' ')}
       >
         <div className="p-4">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
             <h3 className={titleClassName ?? PROB_CARD_TITLE_CLASS}>{title}</h3>
             {chipText ? (
-              <span className="text-xs font-semibold px-2 py-1 rounded-md bg-slate-100 text-slate-700">
+              <span className="text-xs font-semibold px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200">
                 {chipText}
               </span>
             ) : null}
@@ -1130,20 +1130,20 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               ? [
                   'rounded-xl border p-3 sm:p-4 shadow-sm',
                   isBest
-                    ? 'border-teal-200 bg-gradient-to-b from-teal-50/70 to-white ring-1 ring-teal-300/50'
-                    : 'border-slate-200 bg-gradient-to-b from-white to-slate-50',
+                    ? 'border-teal-200 dark:border-teal-700/50 bg-gradient-to-b from-teal-50/70 dark:from-teal-900/20 to-white dark:to-slate-900 ring-1 ring-teal-300/50 dark:ring-teal-700/50'
+                    : 'border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60',
                 ].join(' ')
-              : `py-2 ${idx === 0 ? '' : 'border-t border-slate-100'} hover:bg-slate-50 transition`;
+              : `py-2 ${idx === 0 ? '' : 'border-t border-slate-100 dark:border-slate-800'} hover:bg-slate-50 dark:hover:bg-slate-800/70 transition`;
 
             return (
               <div key={opt.key} className={baseRowClass}>
                 <div className="flex items-center justify-between gap-3">
-                  <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-sm font-semibold text-slate-700">
+                  <div className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
                     {opt.label}
                   </div>
                   <div className="flex items-center gap-2 min-w-0">
                     <div className="odd-wrap">
-                      <span className={`block text-slate-900 odd-text ${boostVisual ? 'text-2xl sm:text-3xl font-semibold' : 'text-3xl font-bold'}`}>
+                      <span className={`block text-slate-900 dark:text-slate-100 odd-text ${boostVisual ? 'text-2xl sm:text-3xl font-semibold' : 'text-3xl font-bold'}`}>
                         {displayOdd ? displayOdd.toFixed(2) : '—'}
                       </span>
                       <span
@@ -1160,7 +1160,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 </div>
                 {showBars && (
-                  <div className={`overflow-hidden ${boostVisual ? 'mt-3 h-2.5 rounded-full bg-slate-200/70' : 'mt-2 h-2 rounded-full bg-slate-100'}`}>
+                  <div className={`overflow-hidden ${boostVisual ? 'mt-3 h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60' : 'mt-2 h-2 rounded-full bg-slate-100 dark:bg-slate-800'}`}>
                     <div
                       className={`relative ${boostVisual ? 'h-2.5' : 'h-2'} rounded-full ${barFillClass} after:absolute after:inset-0 after:bg-white/10 after:content-['']`}
                       style={{ width: `${pct}%` }}
@@ -1168,7 +1168,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 )}
                 {boostVisual && (
-                  <div className="mt-2 text-xs text-slate-500 tabular-nums">
+                  <div className="mt-2 text-xs text-slate-500 dark:text-slate-400 tabular-nums">
                     Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
                   </div>
                 )}
@@ -1206,7 +1206,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     if (!teamStatsHome || !teamStatsAway) return null;
     if (!detailedStatsEnabled) {
       return (
-        <div className="col-span-7 rounded-xl border border-dashed border-slate-300 bg-slate-50/70 text-center py-10 text-slate-500">
+        <div className="col-span-7 rounded-xl border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50/70 dark:bg-slate-900/60 text-center py-10 text-slate-500 dark:text-slate-400">
           Informação não disponível
         </div>
       );
@@ -1235,37 +1235,37 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
       rendered.push(
         <div
           key={`sep-${sIdx}`}
-          className={`col-span-7 ${sIdx === 0 ? 'mt-0' : 'mt-3'} rounded-xl border border-slate-200 bg-gradient-to-r from-slate-100/90 to-white`}
+          className={`col-span-7 ${sIdx === 0 ? 'mt-0' : 'mt-3'} rounded-xl border border-slate-200 dark:border-slate-700 bg-gradient-to-r from-slate-100/90 to-white dark:to-slate-900`}
         >
           <div className="w-full py-2 px-3">
-            <span className="text-[16px] font-semibold uppercase tracking-wide text-slate-700">{section.title}</span>
+            <span className="text-[16px] font-semibold uppercase tracking-wide text-slate-800">{section.title}</span>
           </div>
         </div>
       );
       rowsWithData.forEach((row) => {
-        const stripe = stripeIdx % 2 === 0 ? 'bg-slate-50/70' : 'bg-white';
+        const stripe = stripeIdx % 2 === 0 ? 'bg-slate-50/70 dark:bg-slate-900/60' : 'bg-white dark:bg-slate-900';
         stripeIdx += 1;
         rendered.push(
           <React.Fragment key={`${section.title}-${row.label}`}>
-            <div className={`text-center py-2 px-1 text-[16px] text-blue-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-1 text-[16px] text-blue-600 tabular-nums border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.fmt(row.value(teamStatsHome.home))}
             </div>
-            <div className={`text-center py-2 px-1 text-[16px] text-pink-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-1 text-[16px] text-pink-600 tabular-nums border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.fmt(row.value(teamStatsHome.away))}
             </div>
-            <div className={`text-center py-2 px-1 text-[16px] font-semibold text-slate-900 tabular-nums border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-1 text-[16px] font-semibold text-slate-900 dark:text-slate-100 tabular-nums border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.fmt(row.value(teamStatsHome.overall))}
             </div>
-            <div className={`text-center py-2 px-2 text-[15px] font-semibold text-slate-700 whitespace-nowrap border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-2 text-[15px] font-semibold text-slate-700 dark:text-slate-200 whitespace-nowrap border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.label}
             </div>
-            <div className={`text-center py-2 px-1 text-[16px] font-semibold text-slate-900 tabular-nums border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-1 text-[16px] font-semibold text-slate-900 dark:text-slate-100 tabular-nums border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.fmt(row.value(teamStatsAway.overall))}
             </div>
-            <div className={`text-center py-2 px-1 text-[16px] text-pink-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-1 text-[16px] text-pink-600 tabular-nums border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.fmt(row.value(teamStatsAway.away))}
             </div>
-            <div className={`text-center py-2 px-1 text-[16px] text-blue-600 tabular-nums border-b border-slate-100 ${stripe}`}>
+            <div className={`text-center py-2 px-1 text-[16px] text-blue-600 tabular-nums border-b border-slate-100 dark:border-slate-800 ${stripe}`}>
               {row.fmt(row.value(teamStatsAway.home))}
             </div>
           </React.Fragment>
@@ -1275,7 +1275,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
     if (!hasAny) {
       return (
-        <div className="col-span-7 rounded-xl border border-dashed border-slate-300 bg-slate-50/70 text-center py-10 text-slate-500">
+        <div className="col-span-7 rounded-xl border border-dashed border-slate-300 dark:border-slate-600 bg-slate-50/70 dark:bg-slate-900/60 text-center py-10 text-slate-500 dark:text-slate-400">
           Informação não disponível
         </div>
       );
@@ -1730,10 +1730,10 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
+    <div className="bg-white dark:bg-slate-900 rounded-lg shadow-lg p-5 w-full mx-auto text-base">
       {/* Cabeçalho do jogo */}
-      <div className="mb-5 w-full rounded-2xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white px-2.5 py-3 sm:px-4 sm:py-5 lg:px-5 shadow-sm">
-        <div className="flex items-center justify-center gap-2 sm:gap-2.5 border-b border-slate-200/80 pb-3 sm:pb-4">
+      <div className="mb-5 w-full rounded-2xl border border-slate-200 dark:border-slate-700/90 bg-gradient-to-b from-slate-50 dark:from-slate-900 to-white dark:to-slate-900 px-2.5 py-3 sm:px-4 sm:py-5 lg:px-5 shadow-sm">
+        <div className="flex items-center justify-center gap-2 sm:gap-2.5 border-b border-slate-200 dark:border-slate-700/80 pb-3 sm:pb-4">
           {leagueLogoUrl && !leagueLogoError ? (
             <img
               src={leagueLogoUrl}
@@ -1742,15 +1742,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               onError={() => setLeagueLogoError(true)}
             />
           ) : (
-            <span className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-slate-300 bg-white text-xs sm:text-sm">🏆</span>
+            <span className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-xs sm:text-sm">🏆</span>
           )}
-          <span className="max-w-[220px] truncate text-sm sm:max-w-none sm:text-lg font-semibold tracking-tight text-slate-800">{displayLeagueName}</span>
+          <span className="max-w-[220px] truncate text-sm sm:max-w-none sm:text-lg font-semibold tracking-tight text-slate-800 dark:text-slate-100">{displayLeagueName}</span>
         </div>
 
         <div className="pt-3 sm:pt-4 text-center w-full">
           <div className="grid grid-cols-[minmax(0,1fr)_54px_minmax(0,1fr)] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch sm:items-center gap-1.5 sm:gap-3">
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
-            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-1.5 sm:gap-3 flex-nowrap min-w-0 rounded-2xl border border-slate-200/70 bg-white/85 px-2 py-2 sm:px-3.5 sm:py-2.5">
+            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-1.5 sm:gap-3 flex-nowrap min-w-0 rounded-2xl border border-slate-200 dark:border-slate-700/70 bg-white dark:bg-slate-900/85 px-2 py-2 sm:px-3.5 sm:py-2.5">
               <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-end">
                 <XgPill value={xgHome} />
                 <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} diff={diffHome} />
@@ -1769,7 +1769,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     return (
                       <div key={i} className="relative group cursor-pointer">
                         <div className={`rounded-full w-3.5 h-3.5 ${color} ${extraClass}`}></div>
-                        <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 whitespace-nowrap z-50">
+                        <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-200 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 dark:border-slate-700 whitespace-nowrap z-50">
                           {tooltip}
                         </div>
                       </div>
@@ -1777,7 +1777,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })}
                 </div>
               )}
-              <h2 className="order-2 sm:order-none text-xl sm:text-3xl leading-tight sm:leading-none font-semibold tracking-tight text-slate-800 truncate max-w-[118px] sm:max-w-[180px] lg:max-w-[240px]">
+              <h2 className="order-2 sm:order-none text-xl sm:text-3xl leading-tight sm:leading-none font-semibold tracking-tight text-slate-800 dark:text-slate-100 truncate max-w-[118px] sm:max-w-[180px] lg:max-w-[240px]">
                 {homeDisplayName}
               </h2>
               {homeLogoError ? (
@@ -1800,16 +1800,16 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-1.5 sm:gap-2 px-0.5 sm:px-1">
-              <span className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-2 py-1 sm:px-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-slate-500 shadow-sm">
+              <span className="inline-flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-2 py-1 sm:px-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-slate-500 dark:text-slate-400 shadow-sm">
                 VS
               </span>
-              <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 sm:px-3 text-[10px] sm:text-xs font-medium text-slate-600">
+              <span className="inline-flex items-center rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-2 py-1 sm:px-3 text-[10px] sm:text-xs font-medium text-slate-600 dark:text-slate-300">
                 {new Date(fixture.date).toLocaleDateString()}
               </span>
             </div>
 
             {/* Fora: Logo + Nome (Logo à esquerda do nome) */}
-            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-1.5 sm:gap-3 flex-nowrap min-w-0 rounded-2xl border border-slate-200/70 bg-white/85 px-2 py-2 sm:px-3.5 sm:py-2.5">
+            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-1.5 sm:gap-3 flex-nowrap min-w-0 rounded-2xl border border-slate-200 dark:border-slate-700/70 bg-white dark:bg-slate-900/85 px-2 py-2 sm:px-3.5 sm:py-2.5">
               {awayLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
               ) : (
@@ -1827,7 +1827,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   }}
                 />
               )}
-              <h2 className="text-xl sm:text-3xl leading-tight sm:leading-none font-semibold tracking-tight text-slate-800 truncate max-w-[118px] sm:max-w-[180px] lg:max-w-[240px]">
+              <h2 className="text-xl sm:text-3xl leading-tight sm:leading-none font-semibold tracking-tight text-slate-800 dark:text-slate-100 truncate max-w-[118px] sm:max-w-[180px] lg:max-w-[240px]">
                 {awayDisplayName}
               </h2>
               {/* Forma da equipa de fora (Direita do nome) */}
@@ -1843,7 +1843,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     return (
                       <div key={i} className="relative group cursor-pointer">
                         <div className={`rounded-full w-3.5 h-3.5 ${color} ${extraClass}`}></div>
-                        <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 whitespace-nowrap z-50">
+                        <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-200 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 dark:border-slate-700 whitespace-nowrap z-50">
                           {tooltip}
                         </div>
                       </div>
@@ -1860,8 +1860,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
           </div>
 
           <div className="sm:hidden mt-3 grid grid-cols-2 gap-2">
-            <div className="rounded-xl border border-slate-200/90 bg-white/90 p-2 shadow-sm">
-              <div className="text-[11px] font-semibold text-slate-600 truncate">{homeDisplayName}</div>
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700/90 bg-white dark:bg-slate-900/90 p-2 shadow-sm">
+              <div className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 truncate">{homeDisplayName}</div>
               <div className="mt-1">
                 <div className="flex flex-wrap items-center gap-1.5">
                   <XgPill value={xgHome} />
@@ -1889,8 +1889,8 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               )}
             </div>
 
-            <div className="rounded-xl border border-slate-200/90 bg-white/90 p-2 shadow-sm">
-              <div className="text-[11px] font-semibold text-slate-600 truncate text-right">{awayDisplayName}</div>
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700/90 bg-white dark:bg-slate-900/90 p-2 shadow-sm">
+              <div className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 truncate text-right">{awayDisplayName}</div>
               <div className="mt-1">
                 <div className="flex flex-wrap items-center justify-end gap-1.5">
                   {Number.isFinite(Number(awayStanding?.rank)) && Number(awayStanding?.rank) > 0 && (
@@ -1948,10 +1948,10 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
         {(() => {
           const hasStandings = currentStandings.length > 0;
           return (
-            <div className="bg-gradient-to-b from-white to-slate-50 border border-slate-200 p-4 rounded-2xl h-fit flex flex-col w-full min-w-0 shadow-sm">
+            <div className="bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60 border border-slate-200 dark:border-slate-700 p-4 rounded-2xl h-fit flex flex-col w-full min-w-0 shadow-sm">
               <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-center sm:justify-between">
-                <h3 className="text-base font-semibold tracking-tight text-slate-900 border-b border-slate-200 pb-1">Classificação</h3>
-                <div className="grid grid-cols-3 min-w-[220px] sm:min-w-[260px] rounded-xl border border-slate-300 bg-white overflow-hidden shadow-sm">
+                <h3 className="text-base font-semibold tracking-tight text-slate-900 dark:text-slate-100 border-b border-slate-200 dark:border-slate-700 pb-1">Classificação</h3>
+                <div className="grid grid-cols-3 min-w-[220px] sm:min-w-[260px] rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
                   {[
                     { key: 'overall' as StandingMode, label: 'Global' },
                     { key: 'home' as StandingMode, label: 'Casa' },
@@ -1965,9 +1965,9 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         className={[
                           'relative flex items-center justify-center text-[11px] font-semibold py-2 px-2 transition-colors duration-150 text-center whitespace-pre leading-tight',
                           active
-                            ? 'bg-slate-100 text-slate-900 after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
-                            : 'bg-white text-slate-700 hover:bg-slate-50',
-                          idx > 0 ? 'border-l border-slate-300' : '',
+                            ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 after:absolute after:top-0 after:left-0 after:right-0 after:h-0.5 after:bg-blue-500'
+                            : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/70',
+                          idx > 0 ? 'border-l border-slate-300 dark:border-slate-600' : '',
                         ].join(' ')}
                       >
                         {tab.label}
@@ -1978,13 +1978,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               </div>
 
               {loadingStandings ? (
-                <div className="text-center py-10 text-slate-500">A carregar...</div>
+                <div className="text-center py-10 text-slate-500 dark:text-slate-400">A carregar...</div>
               ) : hasStandings ? (
                 <div className="flex-grow flex flex-col justify-between">
-                  <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+                  <div className="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900">
                     <table className="w-full text-[15px]">
                       <thead>
-                        <tr className="text-slate-500 border-b border-slate-200 bg-slate-50/80">
+                        <tr className="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/60">
                           <th className="py-2 text-center w-6 text-[12px] font-semibold uppercase tracking-wide">#</th>
                           <th className="py-2 text-left text-[12px] font-semibold uppercase tracking-wide">Equipa</th>
                           <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide" title="Jogos">J</th>
@@ -1999,7 +1999,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           <th className="py-2 text-center text-[12px] font-semibold uppercase tracking-wide whitespace-nowrap">+2,5 (Últimos 8)</th>
                         </tr>
                       </thead>
-                      <tbody className="text-slate-700">
+                      <tbody className="text-slate-700 dark:text-slate-200">
                         {currentStandings.map((row, index) => {
                           const matches = (teamName: string, teamId: string | null) => {
                             if (teamId && row.teamId) {
@@ -2015,7 +2015,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           const isMatchTeam =
                             matches(homeTeam, homeTeamId) ||
                             matches(awayTeam, awayTeamId);
-                          const rowClass = isMatchTeam ? 'bg-blue-50/80' : index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50';
+                          const rowClass = isMatchTeam ? 'bg-blue-50/80 dark:bg-blue-900/25' : index % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50';
 
                           const formArray = row.form ?? [];
                           const last8 = formArray.slice(-8);
@@ -2040,17 +2040,17 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           );
 
                           return (
-                            <tr key={row.team} className={`border-b border-slate-100 hover:bg-slate-100/70 transition-colors ${rowClass}`}>
+                            <tr key={row.team} className={`border-b border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-colors ${rowClass}`}>
                               <td className="py-1.5 text-center tabular-nums">{row.rank}</td>
-                              <td className="py-1.5 font-medium truncate max-w-[100px] text-slate-800" title={row.team}>{row.team}</td>
-                              <td className="text-center tabular-nums text-slate-700">{row.played}</td>
+                              <td className="py-1.5 font-medium truncate max-w-[100px] text-slate-800 dark:text-slate-100" title={row.team}>{row.team}</td>
+                              <td className="text-center tabular-nums text-slate-700 dark:text-slate-200">{row.played}</td>
                               <td className="text-center tabular-nums text-blue-600">{row.wins}</td>
-                              <td className="text-center tabular-nums text-slate-500">{row.draws}</td>
+                              <td className="text-center tabular-nums text-slate-500 dark:text-slate-400">{row.draws}</td>
                               <td className="text-center tabular-nums text-pink-500">{row.losses}</td>
                               <td className="text-center tabular-nums text-blue-700">{row.goalsFor}</td>
                               <td className="text-center tabular-nums text-pink-600">{row.goalsAgainst}</td>
-                              <td className="text-center tabular-nums text-slate-600">{row.goalDiff}</td>
-                              <td className="text-center font-bold tabular-nums text-slate-900">{row.points}</td>
+                              <td className="text-center tabular-nums text-slate-600 dark:text-slate-300">{row.goalDiff}</td>
+                              <td className="text-center font-bold tabular-nums text-slate-900 dark:text-slate-100">{row.points}</td>
                               <td className="py-1.5">{renderOverIcons(1.5)}</td>
                               <td className="py-1.5">{renderOverIcons(2.5)}</td>
                             </tr>
@@ -2061,12 +2061,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 </div>
               ) : (
-                <div className="text-center text-slate-500 text-sm py-10 italic">
+                <div className="text-center text-slate-500 dark:text-slate-400 text-sm py-10 italic">
                   Classificação indisponível para esta competição.
                 </div>
               )}
               {leagueStats && leagueStats.matchesPlayed > 0 ? (
-                <div className="mt-3 bg-gradient-to-r from-slate-50 to-white rounded-xl px-3 py-2 shadow-sm border border-slate-200">
+                <div className="mt-3 bg-gradient-to-r from-slate-50 dark:from-slate-900 to-white dark:to-slate-900 rounded-xl px-3 py-2 shadow-sm border border-slate-200 dark:border-slate-700">
                   {(() => {
                     const mp = leagueStats.matchesPlayed || 0;
                     const pct = (v: number) => (mp > 0 ? `${((v / mp) * 100).toFixed(1)}%` : '—');
@@ -2083,7 +2083,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                       { key: 'gjf', label: 'GjF', value: avg(leagueStats.goalsAway), tip: 'Golos por jogo fora' },
                     ];
                     return (
-                      <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[13px] leading-tight text-slate-800 w-full justify-between">
+                      <div className="flex flex-wrap md:flex-nowrap items-center gap-1 text-[13px] leading-tight text-slate-800 dark:text-slate-100 w-full justify-between">
                         {items.map((item) => (
                           <React.Fragment key={item.key}>
                             <span className="relative group cursor-help">
@@ -2100,7 +2100,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })()}
                 </div>
               ) : (
-                <div className="text-center py-6 text-slate-500">Informação não disponível para esta liga.</div>
+                <div className="text-center py-6 text-slate-500 dark:text-slate-400">Informação não disponível para esta liga.</div>
               )}
             </div>
           );
@@ -2140,14 +2140,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         setSelectedOutcome(outcome.key);
                       }}
                       className={[
-                        'h-full flex flex-col text-left rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-[1px]',
-                        isFavorite ? 'ring-2 ring-teal-500/30 bg-gradient-to-b from-teal-50/60 to-white' : '',
-                        !isFavorite && isSelected ? 'ring-2 ring-slate-300 border-slate-300' : '',
+                        'h-full flex flex-col text-left rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 sm:p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-[1px]',
+                        isFavorite ? 'ring-2 ring-teal-500/30 dark:ring-teal-700/60 bg-gradient-to-b from-teal-50/60 dark:from-teal-900/20 to-white dark:to-slate-900' : '',
+                        !isFavorite && isSelected ? 'ring-2 ring-slate-300 border-slate-300 dark:border-slate-600' : '',
                       ].join(' ')}
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="truncate text-sm font-medium text-slate-700">{outcome.label}</span>
+                          <span className="truncate text-sm font-medium text-slate-700 dark:text-slate-200">{outcome.label}</span>
                         </div>
                         {edgePercent !== null && hasOddBook && (
                           <span
@@ -2164,7 +2164,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
                       <div className="mt-4 flex items-baseline justify-between gap-3">
                         <div className="flex items-baseline gap-3 min-w-0 odd-wrap justify-start">
-                          <span className="block text-4xl sm:text-5xl font-semibold leading-none tabular-nums text-slate-900 odd-text odd-text-1x2">
+                          <span className="block text-4xl sm:text-5xl font-semibold leading-none tabular-nums text-slate-900 dark:text-slate-100 odd-text odd-text-1x2">
                             {hasOddBook ? (outcome.oddBook as number).toFixed(2) : '-'}
                           </span>
                           <span
@@ -2177,12 +2177,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                         </div>
                       </div>
 
-                      <div className="mt-3 text-sm text-slate-500 tabular-nums">
+                      <div className="mt-3 text-sm text-slate-500 dark:text-slate-400 tabular-nums">
                         Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
                       </div>
 
                       <div className="mt-auto pt-3">
-                        <div className="h-3 w-full rounded-full bg-slate-100 overflow-hidden">
+                        <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                           <div
                             className={`h-3 rounded-full ${progressFillClass}`}
                             style={{ width: `${pct}%` }}
@@ -2211,7 +2211,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <div className="lg:col-span-5 h-full flex flex-col">
             <MarketCard
               title="Heatmap de Resultados (%)"
-              className="h-full flex flex-col min-h-[260px] md:min-h-[300px] lg:min-h-[320px] bg-slate-50/60"
+              className="h-full flex flex-col min-h-[260px] md:min-h-[300px] lg:min-h-[320px] bg-slate-50/60 dark:bg-slate-900/60"
               titleClassName={PROB_CARD_TITLE_CLASS}
             >
               <div className="h-full overflow-auto">
@@ -2245,14 +2245,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     return (
                       <div
                         key={card.key}
-                        className="rounded-xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-3 sm:p-4 shadow-sm"
+                        className="rounded-xl border border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60 p-3 sm:p-4 shadow-sm"
                       >
                         <div className="flex items-center justify-between gap-3">
-                          <div className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-sm font-semibold text-slate-700">
+                          <div className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
                             {card.label}
                           </div>
                           <div className="odd-wrap">
-                            <span className="block text-2xl sm:text-3xl font-semibold text-slate-900 odd-text">
+                            <span className="block text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-100 odd-text">
                               {displayOdd ? displayOdd.toFixed(2) : '—'}
                             </span>
                             <span className={`text-sm sm:text-base font-medium tabular-nums leading-none ${getProbTextClass(prob)}`}>
@@ -2260,14 +2260,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                             </span>
                           </div>
                         </div>
-                        <div className="mt-3 relative h-2.5 rounded-full bg-slate-200/70 overflow-hidden">
+                        <div className="mt-3 relative h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60 overflow-hidden">
                           <div
                             className={`absolute inset-y-0 left-0 rounded-full ${fillClass}`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
                         <div className="mt-2 flex items-center justify-between gap-2 text-xs tabular-nums">
-                          <span className="text-slate-500">Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}</span>
+                          <span className="text-slate-500 dark:text-slate-400">Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}</span>
                           {edgePercent !== null && hasOddBook && (
                             <span className={`rounded-full px-2.5 py-1 font-semibold ${edgePillClass}`}>{edgeLabel}</span>
                           )}
@@ -2285,7 +2285,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 className="h-full flex flex-col min-h-[240px] lg:min-h-[260px]"
                 titleClassName={PROB_CARD_TITLE_CLASS}
               >
-                <div className="grid grid-cols-3 text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1">
+                <div className="grid grid-cols-3 text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1">
                   <span>{homeTeam}</span>
                   <span className="text-center">Linha</span>
                   <span className="text-right">{awayTeam}</span>
@@ -2302,35 +2302,35 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const awayProbClass = getProbTextClass(awayPct !== null ? awayPct / 100 : null);
 
                     return (
-                      <div key={line} className="rounded-xl border border-slate-200 bg-gradient-to-b from-white to-slate-50 p-3 sm:p-4 shadow-sm">
+                      <div key={line} className="rounded-xl border border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60 p-3 sm:p-4 shadow-sm">
                         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
                           <div className="min-w-0 text-left">
                             <div className="odd-wrap justify-start">
-                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 odd-text">{homeOdd}</span>
+                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 dark:text-slate-100 odd-text">{homeOdd}</span>
                               <span className={`text-sm font-medium tabular-nums leading-none ${homeProbClass}`}>
                                 {homePct !== null ? `${homePct.toFixed(1)}%` : 'N/A'}
                               </span>
                             </div>
                             {homePct !== null && (
-                              <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 overflow-hidden">
+                              <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60 overflow-hidden">
                                 <div className="h-2.5 rounded-full bg-blue-500" style={{ width: `${homePct}%` }} />
                               </div>
                             )}
                           </div>
                           <div className="text-center">
-                            <span className="inline-flex px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+                            <span className="inline-flex px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold">
                               +{line}
                             </span>
                           </div>
                           <div className="min-w-0 text-right">
                             <div className="odd-wrap">
-                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 odd-text">{awayOdd}</span>
+                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 dark:text-slate-100 odd-text">{awayOdd}</span>
                               <span className={`text-sm font-medium tabular-nums leading-none ${awayProbClass}`}>
                                 {awayPct !== null ? `${awayPct.toFixed(1)}%` : 'N/A'}
                               </span>
                             </div>
                             {awayPct !== null && (
-                              <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 overflow-hidden">
+                              <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60 overflow-hidden">
                                 <div className="h-2.5 rounded-full bg-pink-500" style={{ width: `${awayPct}%` }} />
                               </div>
                             )}
@@ -2350,7 +2350,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 className="h-full flex flex-col min-h-[240px] lg:min-h-[260px]"
                 titleClassName={PROB_CARD_TITLE_CLASS}
               >
-                <div className="grid grid-cols-[64px_1fr_1fr] text-[11px] text-slate-500 font-semibold uppercase tracking-wide mb-1">
+                <div className="grid grid-cols-[64px_1fr_1fr] text-[11px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wide mb-1">
                   <span>Linha</span>
                   <span className="text-right">Over</span>
                   <span className="text-right">Under</span>
@@ -2366,42 +2366,42 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const overPct = overPctValue !== null ? overPctValue.toFixed(1) : null;
                     const underPct = underPctValue !== null ? underPctValue.toFixed(1) : null;
                     const overProbClass =
-                      overPctValue !== null && overPctValue >= 55 ? 'text-blue-600' : 'text-slate-500';
+                      overPctValue !== null && overPctValue >= 55 ? 'text-blue-600' : 'text-slate-500 dark:text-slate-400';
                     const underProbClass =
                       underPctValue !== null && underPctValue >= 60
                         ? 'text-rose-600'
                         : underPctValue !== null && underPctValue >= 55
                           ? 'text-blue-600'
-                          : 'text-slate-500';
+                          : 'text-slate-500 dark:text-slate-400';
 
                     return (
                       <div
                         key={line}
                         className={`rounded-xl border p-3 sm:p-4 shadow-sm ${
                           isBalanced
-                            ? 'border-amber-200 bg-gradient-to-b from-amber-50/70 to-white ring-1 ring-amber-300/60'
-                            : 'border-slate-200 bg-gradient-to-b from-white to-slate-50'
+                            ? 'border-amber-200 dark:border-amber-700/50 bg-gradient-to-b from-amber-50/70 dark:from-amber-900/20 to-white dark:to-slate-900 ring-1 ring-amber-300/60 dark:ring-amber-700/50'
+                            : 'border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60'
                         }`}
                       >
                         <div className="grid grid-cols-[64px_1fr_1fr] items-center gap-3">
                           <div className="flex flex-col items-start gap-1">
-                            <span className="inline-flex px-2 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
+                            <span className="inline-flex px-2 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-semibold">
                               {line}
                             </span>
                             {isBalanced && (
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-100 text-amber-700">
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">
                                 Melhor
                               </span>
                             )}
                           </div>
                           <div className="text-right">
                             <div className="odd-wrap">
-                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 odd-text">{overOdd}</span>
+                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 dark:text-slate-100 odd-text">{overOdd}</span>
                               <span className={`text-sm font-medium tabular-nums leading-none ${overProbClass}`}>
                                 {overPct ? `${overPct}%` : 'N/A'}
                               </span>
                             </div>
-                            <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 overflow-hidden">
+                            <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60 overflow-hidden">
                               <div
                                 className="h-2.5 rounded-full bg-blue-500"
                                 style={{ width: `${Math.min(100, Math.max(0, overPctValue ?? 0))}%` }}
@@ -2410,12 +2410,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           </div>
                           <div className="text-right">
                             <div className="odd-wrap">
-                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 odd-text">{underOdd}</span>
+                              <span className="block text-2xl sm:text-[2rem] font-semibold text-slate-900 dark:text-slate-100 odd-text">{underOdd}</span>
                               <span className={`text-sm font-medium tabular-nums leading-none ${underProbClass}`}>
                                 {underPct ? `${underPct}%` : 'N/A'}
                               </span>
                             </div>
-                            <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 overflow-hidden">
+                            <div className="mt-2 h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60 overflow-hidden">
                               <div
                                 className="h-2.5 rounded-full bg-pink-500"
                                 style={{ width: `${Math.min(100, Math.max(0, underPctValue ?? 0))}%` }}
@@ -2429,7 +2429,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 </div>
                 <button
                   type="button"
-                  className="mt-3 text-xs font-semibold text-slate-500 hover:text-slate-700"
+                  className="mt-3 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                   onClick={() => setShowAllGoalLines((prev) => !prev)}
                 >
                   {showAllGoalLines ? 'Mostrar menos' : 'Mostrar todas'}
@@ -2455,25 +2455,25 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const rowCardClass = [
                       'rounded-xl border p-3 sm:p-4 shadow-sm',
                       isBest
-                        ? 'border-amber-200 bg-gradient-to-b from-amber-50/70 to-white ring-1 ring-amber-300/50'
-                        : 'border-slate-200 bg-gradient-to-b from-white to-slate-50',
+                        ? 'border-amber-200 dark:border-amber-700/50 bg-gradient-to-b from-amber-50/70 dark:from-amber-900/20 to-white dark:to-slate-900 ring-1 ring-amber-300/50 dark:ring-amber-700/50'
+                        : 'border-slate-200 dark:border-slate-700 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60',
                     ].join(' ');
 
                     return (
                       <div key={row.key} className={rowCardClass}>
                         <div className="flex items-center justify-between gap-3">
                           <div className="flex items-center gap-2 min-w-0">
-                            <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-sm font-semibold text-slate-700">
+                            <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-sm font-semibold text-slate-700 dark:text-slate-200">
                               {row.label}
                             </span>
                             {isBest && (
-                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-100 text-amber-700">
+                              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300">
                                 Melhor
                               </span>
                             )}
                           </div>
                           <div className="odd-wrap">
-                            <span className="block text-2xl sm:text-3xl font-semibold text-slate-900 odd-text">
+                            <span className="block text-2xl sm:text-3xl font-semibold text-slate-900 dark:text-slate-100 odd-text">
                               {fairOdd ? fairOdd.toFixed(2) : '—'}
                             </span>
                             <span className={`text-sm sm:text-base font-medium tabular-nums leading-none ${probClass}`}>
@@ -2481,13 +2481,13 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                             </span>
                           </div>
                         </div>
-                        <div className="mt-3 h-2.5 rounded-full bg-slate-200/70 overflow-hidden">
+                        <div className="mt-3 h-2.5 rounded-full bg-slate-200/70 dark:bg-slate-700/60 overflow-hidden">
                           <div
                             className={`relative h-2.5 rounded-full ${getBarFillClass(pct)} after:absolute after:inset-0 after:bg-white/10 after:content-['']`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
-                        <div className="mt-2 text-xs text-slate-500 tabular-nums">
+                        <div className="mt-2 text-xs text-slate-500 dark:text-slate-400 tabular-nums">
                           Fair odd: {fairOdd ? fairOdd.toFixed(2) : '-'}
                         </div>
                       </div>
@@ -2555,14 +2555,14 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             <div className="grid grid-cols-1 gap-4 items-start">
               {/* Comparativo equipas */}
               {hasTeamStats ? (
-                <div className="bg-gradient-to-b from-white to-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 w-full min-w-0 shadow-sm overflow-x-auto h-fit">
-                  <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
-                    <div className="text-base font-semibold tracking-tight text-slate-900">EQUIPAS</div>
-                    <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600">
+                <div className="bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-900/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 sm:p-5 w-full min-w-0 shadow-sm overflow-x-auto h-fit">
+                  <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2 mb-3">
+                    <div className="text-base font-semibold tracking-tight text-slate-900 dark:text-slate-100">EQUIPAS</div>
+                    <span className="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-300">
                       Comparativo
                     </span>
                   </div>
-                  <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-[18px] text-slate-800 min-w-[360px] sm:min-w-[680px]">
+                  <div className="grid grid-cols-[repeat(3,1fr)_5fr_repeat(3,1fr)] text-[18px] text-slate-800 dark:text-slate-100 min-w-[360px] sm:min-w-[680px]">
                     {/* Row: main header (removed label) */}
                     <div className="col-span-3 py-1"></div>
                     <div className="col-span-1"></div>
@@ -2575,7 +2575,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     </div>
                     <div className="flex items-center justify-center gap-3 py-2">
                       <img src={getTeamLogoUrl(fixture.competition, homeTeam)} alt={homeTeam} className="w-12 h-12 object-contain" />
-                      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">vs</span>
+                      <span className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">vs</span>
                       <img src={getTeamLogoUrl(fixture.competition, awayTeam)} alt={awayTeam} className="w-12 h-12 object-contain" />
                     </div>
                     <div className="col-span-3 flex items-center justify-start gap-3 py-2 pl-2">
@@ -2584,11 +2584,11 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
 
                     {/* Row: subheader labels under logos */}
                     {['Casa','Fora','Global'].map((label,i)=>(
-                      <div key={`lh-${i}`} className="text-center text-[13px] font-semibold uppercase tracking-wide text-slate-500 pb-2">{label}</div>
+                      <div key={`lh-${i}`} className="text-center text-[13px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 pb-2">{label}</div>
                     ))}
                     <div className=""></div>
                     {['Global','Fora','Casa'].map((label,i)=>(
-                      <div key={`rh-${i}`} className="text-center text-[13px] font-semibold uppercase tracking-wide text-slate-500 pb-2">{label}</div>
+                      <div key={`rh-${i}`} className="text-center text-[13px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 pb-2">{label}</div>
                     ))}
 
                     {/* Rows: stats */}
@@ -2596,7 +2596,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   </div>
                 </div>
               ) : (
-                <div className="bg-slate-50/70 border border-dashed border-slate-300 rounded-xl p-5 text-center text-slate-500 w-full">
+                <div className="bg-slate-50/70 dark:bg-slate-900/60 border border-dashed border-slate-300 dark:border-slate-600 rounded-xl p-5 text-center text-slate-500 dark:text-slate-400 w-full">
                   Informação de equipas não disponível para esta liga.
                 </div>
               )}

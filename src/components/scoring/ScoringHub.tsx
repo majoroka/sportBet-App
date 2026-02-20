@@ -70,7 +70,7 @@ export const ScoringHub: React.FC<Props> = ({
         },
         accentClass: (outcome) => {
           if (outcome === 'HOME') return 'bg-[#60A5FA]';
-          if (outcome === 'DRAW') return 'bg-gray-900';
+          if (outcome === 'DRAW') return 'bg-slate-900';
           return 'bg-[#F472B6]';
         },
       },
@@ -78,7 +78,7 @@ export const ScoringHub: React.FC<Props> = ({
         outcomes: ['1X', 'X2', '12'],
         getTitle: (outcome) => outcome,
         accentClass: (outcome) =>
-          outcome === '1X' ? 'bg-[#60A5FA]' : outcome === 'X2' ? 'bg-gray-900' : 'bg-gray-500',
+          outcome === '1X' ? 'bg-[#60A5FA]' : outcome === 'X2' ? 'bg-slate-900' : 'bg-slate-500',
         showModel: true,
         showOverround: true,
       },
@@ -113,16 +113,16 @@ export const ScoringHub: React.FC<Props> = ({
 
   const variantStyles = {
     success: {
-      banner: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
-      highlight: 'ring-2 ring-emerald-400 ring-offset-2 shadow-[0_0_0_6px_rgba(16,185,129,0.25)]',
+      banner: 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100 dark:bg-emerald-900/25 dark:text-emerald-200 dark:border-emerald-700/50 dark:hover:bg-emerald-900/35',
+      highlight: 'ring-2 ring-emerald-400 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 shadow-[0_0_0_6px_rgba(16,185,129,0.25)]',
     },
     warning: {
-      banner: 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100',
-      highlight: 'ring-2 ring-amber-400 ring-offset-2 shadow-[0_0_0_6px_rgba(251,191,36,0.28)]',
+      banner: 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100 dark:bg-amber-900/25 dark:text-amber-200 dark:border-amber-700/50 dark:hover:bg-amber-900/35',
+      highlight: 'ring-2 ring-amber-400 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 shadow-[0_0_0_6px_rgba(251,191,36,0.28)]',
     },
     danger: {
-      banner: 'bg-red-50 text-red-800 border-red-200 hover:bg-red-100',
-      highlight: 'ring-2 ring-red-400 ring-offset-2 shadow-[0_0_0_6px_rgba(248,113,113,0.28)]',
+      banner: 'bg-red-50 text-red-800 border-red-200 hover:bg-red-100 dark:bg-rose-900/25 dark:text-rose-200 dark:border-rose-700/50 dark:hover:bg-rose-900/35',
+      highlight: 'ring-2 ring-red-400 ring-offset-2 ring-offset-white dark:ring-offset-slate-900 shadow-[0_0_0_6px_rgba(248,113,113,0.28)]',
     },
   } as const;
   const bannerVariant = bestPickGlobal ? getVariant(bestPickGlobal.score) : null;
@@ -171,8 +171,8 @@ export const ScoringHub: React.FC<Props> = ({
   return (
     <div className="mb-5">
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-xs font-semibold text-gray-500 tracking-[0.1em]">SCORINGS</span>
-        <div className="flex-1 border-t border-gray-200" />
+        <span className="text-xs font-semibold text-gray-500 dark:text-slate-400 tracking-[0.1em]">SCORINGS</span>
+        <div className="flex-1 border-t border-gray-200 dark:border-slate-700" />
       </div>
 
       {bestPickGlobal && bannerStyles && (
@@ -204,8 +204,10 @@ export const ScoringHub: React.FC<Props> = ({
               }}
               className={[
                 'px-3 py-1 rounded-full text-xs font-semibold border transition-colors',
-                isActive ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-700 border-gray-300',
-                !isEnabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100',
+                isActive
+                  ? 'bg-gray-900 text-white border-gray-900 dark:bg-slate-100 dark:text-slate-900 dark:border-slate-100'
+                  : 'bg-white dark:bg-slate-900 text-gray-700 dark:text-slate-200 border-gray-300 dark:border-slate-600',
+                !isEnabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-slate-800/70',
               ].join(' ')}
             >
               {market.label}
@@ -244,7 +246,7 @@ export const ScoringHub: React.FC<Props> = ({
         <div className="grid grid-cols-1 gap-4">
           <ScoreCard
             title="JOGO"
-            accentClass="bg-gray-900"
+            accentClass="bg-slate-900"
             score={matchScores?.[selectedMarket] ?? fallbackMatchScore ?? fallbackTeamScore?.home ?? emptyScore}
             id={`scorecard-${selectedMarket}-match`}
             highlightClass={

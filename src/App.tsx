@@ -3,9 +3,11 @@ import { AppHeader } from './components/AppHeader';
 import { FilterBar } from './components/FilterBar';
 import { FixtureDetails } from './components/FixtureDetails';
 import { useFixtures } from './hooks/useFixtures';
+import { applyThemeToDocument, getInitialTheme, UI_THEME_STORAGE_KEY, UiTheme } from './lib/theme';
 
 function App() {
   const { fixtures, loading, error } = useFixtures();
+  const [theme, setTheme] = useState<UiTheme>(() => getInitialTheme());
 
   const [selectedCountry, setSelectedCountry] = useState<string>(() => {
     if (typeof window === 'undefined') return '';
@@ -63,19 +65,31 @@ function App() {
     }
   }, [fixtures, loading, selectedCountry, selectedDate, selectedFixtureId]);
 
+  useEffect(() => {
+    applyThemeToDocument(theme);
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem(UI_THEME_STORAGE_KEY, theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50 p-4 font-sans text-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50 dark:from-slate-950 dark:to-slate-900 p-4 font-sans text-gray-900 dark:text-slate-100 transition-colors duration-300">
       <AppHeader
         title="Observatório Prob & Stats"
         subtitle="Probabilidades • Estatística • xG • Elo"
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       <main className="w-full mx-auto">
-        {loading && <div className="text-center p-10 text-lg">A carregar jogos...</div>}
+        {loading && <div className="text-center p-10 text-lg text-slate-700 dark:text-slate-300">A carregar jogos...</div>}
         {error && (
           <div
-            className={`p-4 rounded-md my-4 ${
-              error.startsWith('Nota:') ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
+            className={`p-4 rounded-md my-4 border ${
+              error.startsWith('Nota:')
+                ? 'bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-200 dark:border-yellow-700/60'
+                : 'bg-red-100 text-red-800 border-red-200 dark:bg-rose-900/30 dark:text-rose-200 dark:border-rose-700/60'
             }`}
           >
             {error}
@@ -94,7 +108,7 @@ function App() {
               onFixtureChange={setSelectedFixtureId}
             />
 
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent dark:via-slate-700" />
 
             {selectedFixture && <FixtureDetails fixture={selectedFixture} />}
           </div>

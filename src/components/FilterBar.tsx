@@ -87,15 +87,17 @@ const SelectDropdown = ({ value, options, placeholder, onChange, disabled }: Sel
         onClick={() => setOpen((prev) => !prev)}
         className={[
           'w-full min-h-[52px] rounded-xl border px-3 py-2 text-left flex items-center justify-between gap-2',
-          'bg-white text-slate-800 shadow-sm transition-all duration-150',
-          open ? 'border-sky-300 ring-2 ring-sky-100' : 'border-slate-200 hover:border-slate-300',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200',
-          'disabled:opacity-50 disabled:bg-slate-100 disabled:border-slate-200 disabled:cursor-not-allowed',
+          'bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 shadow-sm transition-all duration-150',
+          open
+            ? 'border-sky-300 dark:border-sky-500 ring-2 ring-sky-100 dark:ring-sky-500/30'
+            : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200 dark:focus-visible:ring-sky-500/30',
+          'disabled:opacity-50 disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:border-slate-200 dark:disabled:border-slate-700 disabled:cursor-not-allowed',
         ].join(' ')}
       >
-        <span className={`truncate ${value ? 'text-slate-900' : 'text-slate-500'}`}>{label}</span>
+        <span className={`truncate ${value ? 'text-slate-900 dark:text-slate-100' : 'text-slate-500 dark:text-slate-400'}`}>{label}</span>
         <svg
-          className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
+          className={`h-4 w-4 shrink-0 text-slate-500 dark:text-slate-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
           viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"
@@ -111,7 +113,7 @@ const SelectDropdown = ({ value, options, placeholder, onChange, disabled }: Sel
       </button>
 
       {open && !disabled && (
-        <div className="absolute z-30 mt-2 w-full rounded-xl border border-slate-200 bg-white shadow-xl max-h-72 overflow-auto">
+        <div className="absolute z-30 mt-2 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl max-h-72 overflow-auto">
           {options.map((option) => {
             const isSelected = option.value === value;
             return (
@@ -120,15 +122,15 @@ const SelectDropdown = ({ value, options, placeholder, onChange, disabled }: Sel
                 type="button"
                 disabled={option.disabled}
                 onClick={() => handleSelect(option.value)}
-                className="w-full px-3 py-2.5 flex items-center gap-2 text-left text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50"
+                className="w-full px-3 py-2.5 flex items-center gap-2 text-left text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/70 disabled:opacity-50"
               >
                 <span
                   className={[
                     'h-2.5 w-2.5 rounded-full border',
-                    isSelected ? 'bg-slate-900 border-slate-900' : 'border-slate-300',
+                    isSelected ? 'bg-slate-900 dark:bg-slate-100 border-slate-900 dark:border-slate-100' : 'border-slate-300 dark:border-slate-600',
                   ].join(' ')}
                 />
-                <span className={`truncate ${isSelected ? 'font-semibold text-slate-900' : ''}`}>{option.label}</span>
+                <span className={`truncate ${isSelected ? 'font-semibold text-slate-900 dark:text-white' : ''}`}>{option.label}</span>
               </button>
             );
           })}
@@ -203,10 +205,10 @@ export const FilterBar = ({
   }, [availableGames]);
 
   return (
-    <div className="mb-3 max-w-5xl mx-auto rounded-2xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/80 p-3 sm:p-4 shadow-sm">
+    <div className="mb-3 max-w-5xl mx-auto rounded-2xl border border-slate-200/90 dark:border-slate-700/70 bg-gradient-to-b from-white to-slate-50/80 dark:from-slate-900 dark:to-slate-900/60 p-3 sm:p-4 shadow-sm dark:shadow-slate-950/30 transition-colors duration-300">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
         <div className="space-y-1.5">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 font-semibold">1. Data</p>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400 font-semibold">1. Data</p>
           <SelectDropdown
             value={selectedDate}
             options={dateOptions}
@@ -221,7 +223,7 @@ export const FilterBar = ({
         </div>
 
         <div className="space-y-1.5">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 font-semibold">2. País</p>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400 font-semibold">2. País</p>
           <SelectDropdown
             value={selectedCountry}
             options={countryOptions}
@@ -235,7 +237,7 @@ export const FilterBar = ({
         </div>
 
         <div className="space-y-1.5">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 font-semibold">3. Jogo</p>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400 font-semibold">3. Jogo</p>
           <SelectDropdown
             value={selectedFixtureId}
             options={gameOptions}

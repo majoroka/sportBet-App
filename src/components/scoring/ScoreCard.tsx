@@ -26,12 +26,12 @@ export const ScoreCard: React.FC<Props> = ({ id, title, accentClass, score, high
     <div
       id={id}
       className={[
-        'bg-white border border-gray-200 rounded-lg p-4 shadow-sm transition',
+        'bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg p-4 shadow-sm transition',
         highlightClass ?? '',
       ].join(' ')}
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</span>
+        <span className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-slate-400">{title}</span>
         {score.penaltiesApplied > 0 && (
           <span className="text-xs text-red-500">Penalizações -{score.penaltiesApplied}</span>
         )}
@@ -39,17 +39,17 @@ export const ScoreCard: React.FC<Props> = ({ id, title, accentClass, score, high
 
       <div className="flex items-end gap-2 mb-3">
         <div className={`text-4xl font-bold ${getScoreTint(pct)}`}>{pct}</div>
-        <div className="text-sm text-gray-400">/100</div>
+        <div className="text-sm text-gray-400 dark:text-slate-500">/100</div>
       </div>
 
-      <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-        <div className={`h-full ${accentClass} bg-gray-900`} style={{ width: `${pct}%` }} />
+      <div className="h-2 w-full bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+        <div className={`h-full ${accentClass}`} style={{ width: `${pct}%` }} />
       </div>
 
-      <div className="mt-3 space-y-1 text-sm text-gray-700">
+      <div className="mt-3 space-y-1 text-sm text-gray-700 dark:text-slate-200">
         {reasons.map((reason, idx) => (
           <div key={`${reason}-${idx}`} className="flex items-start gap-2">
-            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400" />
+            <span className="mt-1 h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-slate-500" />
             <span>{reason}</span>
           </div>
         ))}

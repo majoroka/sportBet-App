@@ -7,14 +7,14 @@ interface Props {
 
 // Heatmap em paleta azul/rosa
 const getColorForProbability = (prob: number, maxProb: number) => {
-  if (prob <= 0 || maxProb <= 0) return 'bg-pink-50 text-pink-300';
+  if (prob <= 0 || maxProb <= 0) return 'bg-pink-50 dark:bg-slate-800 text-pink-300 dark:text-slate-500';
 
   const intensity = Math.min(prob / maxProb, 1);
 
   if (intensity >= 0.75) return 'bg-blue-500 text-white';
-  if (intensity >= 0.5) return 'bg-blue-300 text-slate-900';
-  if (intensity >= 0.25) return 'bg-pink-300 text-slate-900';
-  return 'bg-pink-100 text-slate-800';
+  if (intensity >= 0.5) return 'bg-blue-300 dark:bg-blue-700 text-slate-900 dark:text-blue-50';
+  if (intensity >= 0.25) return 'bg-pink-300 dark:bg-pink-700/70 text-slate-900 dark:text-pink-50';
+  return 'bg-pink-100 dark:bg-slate-700/70 text-slate-800 dark:text-slate-200';
 };
 
 export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
@@ -36,14 +36,14 @@ export const Heatmap: React.FC<Props> = ({ data, maxGoals = 4 }) => {
   return (
     <div className="grid gap-1.5" style={{ gridTemplateColumns: `auto repeat(${maxGoals + 1}, 1fr)` }}>
       {/* Canto superior esquerdo vazio e cabeçalho Golos Fora */}
-      <div className="text-xs sm:text-sm font-semibold text-slate-500 self-end text-right pr-1">C\F</div>
+      <div className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400 self-end text-right pr-1">C\F</div>
       {scores.map(awayScore => (
-        <div key={`away-h-${awayScore}`} className="text-center text-xs sm:text-sm font-semibold text-slate-600">{awayScore}</div>
+        <div key={`away-h-${awayScore}`} className="text-center text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300">{awayScore}</div>
       ))}
 
       {scores.map(homeScore => (
         <React.Fragment key={`row-${homeScore}`}>
-          <div className="text-center text-xs sm:text-sm font-semibold text-slate-600 self-center">{homeScore}</div>
+          <div className="text-center text-xs sm:text-sm font-semibold text-slate-600 dark:text-slate-300 self-center">{homeScore}</div>
           {scores.map(awayScore => {
             const scoreKey = `${homeScore}-${awayScore}`;
             const prob = data[scoreKey] || 0;

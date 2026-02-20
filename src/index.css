@@ -10,6 +10,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html,
+  body {
+    @apply transition-colors duration-300;
+  }
+}
+
 @layer utilities {
   .odd-text {
     @apply tabular-nums leading-none tracking-tight;
