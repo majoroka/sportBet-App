@@ -66,15 +66,15 @@ const EloPill: React.FC<{ elo?: number | null; rank?: number | null; diff?: numb
   rank,
   diff,
 }) => (
-  <div className="flex items-center rounded-xl border border-gray-300 bg-white text-xs sm:text-sm font-normal text-black px-2.5 py-1.5 sm:px-3 sm:py-2 gap-2">
+  <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50/80 text-[11px] sm:text-sm font-medium text-slate-700 px-2.5 py-1.5 sm:px-3 sm:py-2 gap-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
     <div>
-      ELO: <span className="font-bold">{formatEloValue(elo)}</span>
+      ELO: <span className="font-semibold tabular-nums text-slate-900">{formatEloValue(elo)}</span>
     </div>
-    <div>
+    <div className="tabular-nums text-slate-800">
       #{rank && rank > 0 ? rank : '—'}
     </div>
     {typeof diff === 'number' && Number.isFinite(diff) && (
-      <div className={diff >= 0 ? 'font-semibold text-sky-600' : 'font-semibold text-rose-600'}>
+      <div className={diff >= 0 ? 'font-semibold tabular-nums text-sky-600' : 'font-semibold tabular-nums text-rose-600'}>
         {formatSigned(diff)}
       </div>
     )}
@@ -84,8 +84,8 @@ const EloPill: React.FC<{ elo?: number | null; rank?: number | null; diff?: numb
 const XgPill: React.FC<{ value: number | null }> = ({ value }) => {
   if (!value || value <= 0) return null;
   return (
-    <div className="flex items-center rounded-xl border border-gray-300 bg-white text-xs sm:text-sm font-semibold text-black px-2.5 py-1.5 sm:px-3 sm:py-2">
-      xG {value.toFixed(2)}
+    <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50/80 text-[11px] sm:text-sm font-semibold text-slate-800 px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+      xG <span className="ml-1 tabular-nums text-slate-900">{value.toFixed(2)}</span>
     </div>
   );
 };
@@ -1723,7 +1723,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
     const parsedRank = Number(rank);
     if (!Number.isFinite(parsedRank) || parsedRank <= 0) return null;
     return (
-      <span className="hidden sm:inline-flex items-center justify-center rounded-xl bg-gray-900 text-white text-xs sm:text-sm font-normal px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-sm">
+      <span className="hidden sm:inline-flex items-center justify-center rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold tabular-nums px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-sm">
         #{parsedRank}
       </span>
     );
@@ -1732,25 +1732,25 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-5 w-full mx-auto text-base">
       {/* Cabeçalho do jogo */}
-      <div className="flex flex-col items-center gap-3 mb-4 border-b pb-4 w-full">
-        <div className="flex items-center gap-3">
+      <div className="mb-5 w-full rounded-2xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white px-2.5 py-3 sm:px-4 sm:py-5 lg:px-5 shadow-sm">
+        <div className="flex items-center justify-center gap-2 sm:gap-2.5 border-b border-slate-200/80 pb-3 sm:pb-4">
           {leagueLogoUrl && !leagueLogoError ? (
             <img
               src={leagueLogoUrl}
               alt={displayLeagueName}
-              className="w-10 h-10 object-contain"
+              className="h-8 w-8 sm:h-10 sm:w-10 object-contain"
               onError={() => setLeagueLogoError(true)}
             />
           ) : (
-            <span className="text-base font-semibold text-gray-700">{displayLeagueName}</span>
+            <span className="inline-flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-slate-300 bg-white text-xs sm:text-sm">🏆</span>
           )}
-          <span className="text-lg font-semibold text-gray-800">{displayLeagueName}</span>
+          <span className="max-w-[220px] truncate text-sm sm:max-w-none sm:text-lg font-semibold tracking-tight text-slate-800">{displayLeagueName}</span>
         </div>
 
-        <div className="text-center w-full">
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 mb-1">
+        <div className="pt-3 sm:pt-4 text-center w-full">
+          <div className="grid grid-cols-[minmax(0,1fr)_54px_minmax(0,1fr)] sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-stretch sm:items-center gap-1.5 sm:gap-3">
             {/* Casa: Nome + Logo (Logo à direita do nome) */}
-            <div className="flex items-center justify-end gap-2 flex-nowrap min-w-0">
+            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-end gap-1.5 sm:gap-3 flex-nowrap min-w-0 rounded-2xl border border-slate-200/70 bg-white/85 px-2 py-2 sm:px-3.5 sm:py-2.5">
               <div className="hidden sm:flex items-center gap-2 shrink-0 min-w-[180px] justify-end">
                 <XgPill value={xgHome} />
                 <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} diff={diffHome} />
@@ -1768,7 +1768,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
                     return (
                       <div key={i} className="relative group cursor-pointer">
-                        <div className={`rounded-full w-3 h-3 ${color} ${extraClass}`}></div>
+                        <div className={`rounded-full w-3.5 h-3.5 ${color} ${extraClass}`}></div>
                         <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 whitespace-nowrap z-50">
                           {tooltip}
                         </div>
@@ -1777,7 +1777,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   })}
                 </div>
               )}
-              <h2 className="text-2xl font-bold text-gray-800 truncate max-w-[140px] sm:max-w-[180px] lg:max-w-[240px]">
+              <h2 className="order-2 sm:order-none text-xl sm:text-3xl leading-tight sm:leading-none font-semibold tracking-tight text-slate-800 truncate max-w-[118px] sm:max-w-[180px] lg:max-w-[240px]">
                 {homeDisplayName}
               </h2>
               {homeLogoError ? (
@@ -1786,7 +1786,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                 <img
                   src={getTeamLogoUrl(fixture.competition, homeTeam)}
                   alt={homeTeam}
-                  className="w-14 h-14 object-contain shrink-0"
+                  className="order-1 sm:order-none w-12 h-12 sm:w-14 sm:h-14 object-contain shrink-0"
                   onError={() => {
                     const attempt = getTeamLogoFilename(homeTeam);
                     debugWarn(`Falha Logo Casa. Original: "${homeTeam}" | Tentativa: "${attempt}"`);
@@ -1799,17 +1799,24 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               )}
             </div>
 
-            <span className="text-gray-400 text-lg font-normal">vs</span>
+            <div className="flex flex-col items-center justify-center gap-1.5 sm:gap-2 px-0.5 sm:px-1">
+              <span className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-2 py-1 sm:px-3 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-slate-500 shadow-sm">
+                VS
+              </span>
+              <span className="inline-flex items-center rounded-full border border-slate-200 bg-white px-2 py-1 sm:px-3 text-[10px] sm:text-xs font-medium text-slate-600">
+                {new Date(fixture.date).toLocaleDateString()}
+              </span>
+            </div>
 
             {/* Fora: Logo + Nome (Logo à esquerda do nome) */}
-            <div className="flex items-center justify-start gap-2 flex-nowrap min-w-0">
+            <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-1.5 sm:gap-3 flex-nowrap min-w-0 rounded-2xl border border-slate-200/70 bg-white/85 px-2 py-2 sm:px-3.5 sm:py-2.5">
               {awayLogoError ? (
                 <span className="text-2xl" role="img" aria-label="Bola de Futebol">⚽</span>
               ) : (
                 <img
                   src={getTeamLogoUrl(fixture.competition, awayTeam)}
                   alt={awayTeam}
-                  className="w-14 h-14 object-contain shrink-0"
+                  className="w-12 h-12 sm:w-14 sm:h-14 object-contain shrink-0"
                   onError={() => {
                     const attempt = getTeamLogoFilename(awayTeam);
                     debugWarn(`Falha Logo Fora. Original: "${awayTeam}" | Tentativa: "${attempt}"`);
@@ -1820,7 +1827,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                   }}
                 />
               )}
-              <h2 className="text-2xl font-bold text-gray-800 truncate max-w-[140px] sm:max-w-[180px] lg:max-w-[240px]">
+              <h2 className="text-xl sm:text-3xl leading-tight sm:leading-none font-semibold tracking-tight text-slate-800 truncate max-w-[118px] sm:max-w-[180px] lg:max-w-[240px]">
                 {awayDisplayName}
               </h2>
               {/* Forma da equipa de fora (Direita do nome) */}
@@ -1835,7 +1842,7 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                     const tooltip = `${label} (${side}) vs ${match.opponent} (${match.score})`;
                     return (
                       <div key={i} className="relative group cursor-pointer">
-                        <div className={`rounded-full w-3 h-3 ${color} ${extraClass}`}></div>
+                        <div className={`rounded-full w-3.5 h-3.5 ${color} ${extraClass}`}></div>
                         <div className="absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-white text-gray-700 text-xs px-2 py-1 rounded shadow-lg border border-gray-200 whitespace-nowrap z-50">
                           {tooltip}
                         </div>
@@ -1852,15 +1859,15 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
             </div>
           </div>
 
-          <div className="sm:hidden mt-2 grid grid-cols-2 gap-2">
-            <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-2">
+          <div className="sm:hidden mt-3 grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-slate-200/90 bg-white/90 p-2 shadow-sm">
               <div className="text-[11px] font-semibold text-slate-600 truncate">{homeDisplayName}</div>
-              <div className="mt-1 overflow-x-auto">
-                <div className="flex min-w-max items-center gap-1.5 pr-1">
+              <div className="mt-1">
+                <div className="flex flex-wrap items-center gap-1.5">
                   <XgPill value={xgHome} />
                   <EloPill elo={homeElo?.elo ?? null} rank={homeElo?.rank ?? null} diff={diffHome} />
                   {Number.isFinite(Number(homeStanding?.rank)) && Number(homeStanding?.rank) > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white text-xs font-normal px-2.5 py-1.5 shadow-sm">
+                    <span className="inline-flex items-center justify-center rounded-xl bg-slate-900 text-white text-xs font-semibold tabular-nums px-2.5 py-1.5 shadow-sm">
                       #{Number(homeStanding?.rank)}
                     </span>
                   )}
@@ -1882,12 +1889,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               )}
             </div>
 
-            <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-2">
+            <div className="rounded-xl border border-slate-200/90 bg-white/90 p-2 shadow-sm">
               <div className="text-[11px] font-semibold text-slate-600 truncate text-right">{awayDisplayName}</div>
-              <div className="mt-1 overflow-x-auto">
-                <div className="flex min-w-max items-center gap-1.5 justify-end pl-1">
+              <div className="mt-1">
+                <div className="flex flex-wrap items-center justify-end gap-1.5">
                   {Number.isFinite(Number(awayStanding?.rank)) && Number(awayStanding?.rank) > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-xl bg-gray-900 text-white text-xs font-normal px-2.5 py-1.5 shadow-sm">
+                    <span className="inline-flex items-center justify-center rounded-xl bg-slate-900 text-white text-xs font-semibold tabular-nums px-2.5 py-1.5 shadow-sm">
                       #{Number(awayStanding?.rank)}
                     </span>
                   )}
@@ -1911,8 +1918,6 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
               )}
             </div>
           </div>
-
-          <p className="text-sm text-gray-500 text-center">{new Date(fixture.date).toLocaleDateString()}</p>
         </div>
       </div>
 
