@@ -85,11 +85,17 @@ const SelectDropdown = ({ value, options, placeholder, onChange, disabled }: Sel
         disabled={disabled}
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
-        className="w-full p-2 border rounded-md bg-white text-left flex items-center justify-between gap-2 disabled:opacity-50 disabled:bg-gray-100"
+        className={[
+          'w-full min-h-[52px] rounded-xl border px-3 py-2 text-left flex items-center justify-between gap-2',
+          'bg-white text-slate-800 shadow-sm transition-all duration-150',
+          open ? 'border-sky-300 ring-2 ring-sky-100' : 'border-slate-200 hover:border-slate-300',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-200',
+          'disabled:opacity-50 disabled:bg-slate-100 disabled:border-slate-200 disabled:cursor-not-allowed',
+        ].join(' ')}
       >
-        <span className={value ? 'text-gray-900' : 'text-gray-500'}>{label}</span>
+        <span className={`truncate ${value ? 'text-slate-900' : 'text-slate-500'}`}>{label}</span>
         <svg
-          className="h-4 w-4 text-gray-500"
+          className={`h-4 w-4 shrink-0 text-slate-500 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
           viewBox="0 0 20 20"
           fill="none"
           aria-hidden="true"
@@ -105,7 +111,7 @@ const SelectDropdown = ({ value, options, placeholder, onChange, disabled }: Sel
       </button>
 
       {open && !disabled && (
-        <div className="absolute z-30 mt-2 w-full rounded-md border border-gray-200 bg-white shadow-lg max-h-72 overflow-auto">
+        <div className="absolute z-30 mt-2 w-full rounded-xl border border-slate-200 bg-white shadow-xl max-h-72 overflow-auto">
           {options.map((option) => {
             const isSelected = option.value === value;
             return (
@@ -114,15 +120,15 @@ const SelectDropdown = ({ value, options, placeholder, onChange, disabled }: Sel
                 type="button"
                 disabled={option.disabled}
                 onClick={() => handleSelect(option.value)}
-                className="w-full px-3 py-2 flex items-center gap-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                className="w-full px-3 py-2.5 flex items-center gap-2 text-left text-sm text-slate-700 hover:bg-slate-50 disabled:opacity-50"
               >
                 <span
                   className={[
                     'h-2.5 w-2.5 rounded-full border',
-                    isSelected ? 'bg-gray-900 border-gray-900' : 'border-gray-300',
+                    isSelected ? 'bg-slate-900 border-slate-900' : 'border-slate-300',
                   ].join(' ')}
                 />
-                <span className={isSelected ? 'font-semibold text-gray-900' : ''}>{option.label}</span>
+                <span className={`truncate ${isSelected ? 'font-semibold text-slate-900' : ''}`}>{option.label}</span>
               </button>
             );
           })}
@@ -197,37 +203,48 @@ export const FilterBar = ({
   }, [availableGames]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3 max-w-4xl mx-auto">
-      <SelectDropdown
-        value={selectedDate}
-        options={dateOptions}
-        placeholder="1. Selecione a Data"
-        disabled={availableDates.length === 0}
-        onChange={(value) => {
-          onDateChange(value);
-          onCountryChange('');
-          onFixtureChange('');
-        }}
-      />
+    <div className="mb-3 max-w-5xl mx-auto rounded-2xl border border-slate-200/90 bg-gradient-to-b from-white to-slate-50/80 p-3 sm:p-4 shadow-sm">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+        <div className="space-y-1.5">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 font-semibold">1. Data</p>
+          <SelectDropdown
+            value={selectedDate}
+            options={dateOptions}
+            placeholder="1. Selecione a Data"
+            disabled={availableDates.length === 0}
+            onChange={(value) => {
+              onDateChange(value);
+              onCountryChange('');
+              onFixtureChange('');
+            }}
+          />
+        </div>
 
-      <SelectDropdown
-        value={selectedCountry}
-        options={countryOptions}
-        placeholder="2. Selecione o País (opcional)"
-        disabled={!selectedDate || availableCountries.length === 0}
-        onChange={(value) => {
-          onCountryChange(value);
-          onFixtureChange('');
-        }}
-      />
+        <div className="space-y-1.5">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 font-semibold">2. País</p>
+          <SelectDropdown
+            value={selectedCountry}
+            options={countryOptions}
+            placeholder="2. Selecione o País (opcional)"
+            disabled={!selectedDate || availableCountries.length === 0}
+            onChange={(value) => {
+              onCountryChange(value);
+              onFixtureChange('');
+            }}
+          />
+        </div>
 
-      <SelectDropdown
-        value={selectedFixtureId}
-        options={gameOptions}
-        placeholder="3. Selecione o Jogo"
-        disabled={!selectedDate || availableGames.length === 0}
-        onChange={(value) => onFixtureChange(value)}
-      />
+        <div className="space-y-1.5">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-slate-500 font-semibold">3. Jogo</p>
+          <SelectDropdown
+            value={selectedFixtureId}
+            options={gameOptions}
+            placeholder="3. Selecione o Jogo"
+            disabled={!selectedDate || availableGames.length === 0}
+            onChange={(value) => onFixtureChange(value)}
+          />
+        </div>
+      </div>
     </div>
   );
 };

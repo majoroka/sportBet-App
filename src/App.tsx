@@ -64,7 +64,7 @@ function App() {
   }, [fixtures, loading, selectedCountry, selectedDate, selectedFixtureId]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 font-sans text-gray-900">
+    <div className="min-h-screen bg-gradient-to-b from-slate-100 to-slate-50 p-4 font-sans text-gray-900">
       <AppHeader
         title="Observatório Prob & Stats"
         subtitle="Probabilidades • Estatística • xG • Elo"
@@ -94,7 +94,7 @@ function App() {
               onFixtureChange={setSelectedFixtureId}
             />
 
-            <div className="border-t border-gray-200 w-full" />
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
 
             {selectedFixture && <FixtureDetails fixture={selectedFixture} />}
           </div>
