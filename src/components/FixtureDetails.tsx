@@ -2012,10 +2012,26 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                             return namesMatch(row.team, teamName);
                           };
 
-                          const isMatchTeam =
-                            matches(homeTeam, homeTeamId) ||
-                            matches(awayTeam, awayTeamId);
-                          const rowClass = isMatchTeam ? 'bg-blue-50/80 dark:bg-blue-900/25' : index % 2 === 0 ? 'bg-white dark:bg-slate-900' : 'bg-slate-50/50 dark:bg-slate-900/50';
+                          const isHomeMatchTeam = matches(homeTeam, homeTeamId);
+                          const isAwayMatchTeam = matches(awayTeam, awayTeamId);
+                          const isMatchTeam = isHomeMatchTeam || isAwayMatchTeam;
+                          const rowClass = isHomeMatchTeam
+                            ? 'bg-blue-100/95 dark:bg-blue-900/55 border-l-4 border-l-blue-500 dark:border-l-blue-400'
+                            : isAwayMatchTeam
+                              ? 'bg-pink-100/95 dark:bg-pink-900/50 border-l-4 border-l-pink-500 dark:border-l-pink-400'
+                              : index % 2 === 0
+                                ? 'bg-white dark:bg-slate-900 border-l-4 border-l-transparent'
+                                : 'bg-slate-50/50 dark:bg-slate-900/50 border-l-4 border-l-transparent';
+                          const rowHoverClass = isHomeMatchTeam
+                            ? 'hover:bg-blue-200/90 dark:hover:bg-blue-900/70'
+                            : isAwayMatchTeam
+                              ? 'hover:bg-pink-200/90 dark:hover:bg-pink-900/65'
+                              : 'hover:bg-slate-100 dark:hover:bg-slate-800/70';
+                          const teamCellClass = isHomeMatchTeam
+                            ? 'text-blue-900 dark:text-blue-100 font-semibold'
+                            : isAwayMatchTeam
+                              ? 'text-pink-900 dark:text-pink-100 font-semibold'
+                              : 'text-slate-800 dark:text-slate-100 font-medium';
 
                           const formArray = row.form ?? [];
                           const last8 = formArray.slice(-8);
@@ -2040,9 +2056,12 @@ export const FixtureDetails: React.FC<Props> = ({ fixture }) => {
                           );
 
                           return (
-                            <tr key={row.team} className={`border-b border-slate-100 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800/70 transition-colors ${rowClass}`}>
-                              <td className="py-1.5 text-center tabular-nums">{row.rank}</td>
-                              <td className="py-1.5 font-medium truncate max-w-[100px] text-slate-800 dark:text-slate-100" title={row.team}>{row.team}</td>
+                            <tr
+                              key={row.team}
+                              className={`border-b border-slate-100 dark:border-slate-800 transition-colors ${rowClass} ${rowHoverClass}`}
+                            >
+                              <td className={`py-1.5 text-center tabular-nums ${isMatchTeam ? 'font-semibold text-slate-900 dark:text-slate-100' : ''}`}>{row.rank}</td>
+                              <td className={`py-1.5 truncate max-w-[100px] ${teamCellClass}`} title={row.team}>{row.team}</td>
                               <td className="text-center tabular-nums text-slate-700 dark:text-slate-200">{row.played}</td>
                               <td className="text-center tabular-nums text-blue-600">{row.wins}</td>
                               <td className="text-center tabular-nums text-slate-500 dark:text-slate-400">{row.draws}</td>
