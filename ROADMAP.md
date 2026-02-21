@@ -40,8 +40,9 @@ Este documento lista as funcionalidades planeadas e o estado atual do desenvolvi
 - [x] **Branding Header:** Logo da app no título principal.
 - [x] **Competições UEFA:** Logos dedicados (UCL/UEL/UECL) e integração de CSVs específicos por competição.
 - [x] **Higienização de naming no mapping:** unificação de nomes canónicos e aliases em equipas com variantes (ex.: `Ludogorets/Razgrad`, `Bodo/Glimt/Bodoe Glimt`).
+- [x] **Dark Mode:** Alternância de tema claro/escuro implementada com ajustes de contraste nas secções principais.
+- [x] **Auto-sync local (macOS):** Automação opcional de `git pull --ff-only` via `launchd`.
 - [ ] **Favoritos:** Permitir guardar jogos numa "Watchlist" (usando `localStorage`).
-- [ ] **Dark Mode:** Implementar alternância de tema claro/escuro.
 
 ## 📅 Curto Prazo (Fase 3 - Dados Reais)
 

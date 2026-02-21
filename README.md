@@ -28,6 +28,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
   - Odds B365 para o scoring 1X2 (Valor/Odds justas) via `public/data/fixtures_football-data.csv`.
   - Bloco de Probabilidades redesenhado: 1X2 com subcards destacados, Overround do book e cards de mercados alinhados por blocos (Dupla Hipótese, Golos da Equipa, Mercado de Golos, Vitória +1,5, BTTS e Sem Sofrer).
   - Heatmap de Resultados com paleta azul/rosa e destaque único para o resultado mais provável (estrela no canto da célula top).
+  - **Dark Mode** com alternância claro/escuro e persistência da preferência do utilizador.
   - Cabeçalho da app com logo (`public/logos/logo-app.png`) ao lado do título.
   - Logos UEFA no cabeçalho da competição (UCL/UEL/UECL) via `public/logos/UEFA/`.
   - Logótipos dos clubes (com fallback visual) e design responsivo (forma oculta em mobile para não quebrar layout).
@@ -41,7 +42,7 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - **Dados:** PapaParse (CSV Parsing)
 - **Normalização:** Sistema personalizado de mapeamento de equipas (JSON)
 - **Testes:** Vitest
-- **Automação:** GitHub Actions (Data Fetching diário)
+- **Automação:** GitHub Actions (Data Fetching diário) + `launchd` (auto-pull local opcional no macOS)
 - **Deploy:** GitHub Actions -> GitHub Pages
 - **Backend (Opcional):** Cloudflare Workers (para proxy de APIs e gestão de segredos).
 
@@ -112,6 +113,8 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - `node scripts/logos/generate-logo-manifest.js` — reindexa todos os logos em `public/logos`.
 - `node scripts/mapping/map-fixtures.ts` — lista equipas dos fixtures e diz quais casam com o mapping/aliases.
 - `node scripts/data/fetch-football-data-fixtures.js` — descarrega `public/data/fixtures_football-data.csv`.
+- `scripts/automation/install-auto-pull-macos.sh` — instala um `LaunchAgent` macOS para `git pull --ff-only` automático a cada 30 minutos (com proteções para branch/dirty tree).
+- `scripts/automation/uninstall-auto-pull-macos.sh` — remove o `LaunchAgent` de auto-pull.
 - Ver mais em `scripts/README.md`.
 - `npm run build` — valida o projeto (TypeScript + Vite).
 - `npm run lint` — lint (ESLint).
@@ -125,9 +128,11 @@ Uma aplicação web estática (SPA) alojada no GitHub Pages, desenhada para calc
 - **Equipa duplicada por naming (ex.: Razgrad/Ludogorets)**: unifica no `teams_mapping_package_clean.json` com um nome canónico e aliases por fonte.
 - **Logs “Caminho não encontrado”**: verifica se a competição está em `src/config/leagues.ts` com `standings_url` ou `aliases` que coincidam com o nome do fixture.
 - **Tooltip de FORMA**: a dica do rato mostra agora o resultado e o lado (H/A) do jogo; se vês “H/A” trocado, verifica o parsing em `src/calculators/standings.ts`.
+- **Auto-pull local não está a correr**: verifica `launchctl print gui/$(id -u)/com.sportbet.autopull` e os logs em `.git/auto-pull.log`.
 
 ## 📈 Pipeline e Deploy
 
 - **Atualização diária**: `.github/workflows/fetch-clubelo-data.yml` busca ClubElo + standings e faz commit dos CSVs.
 - **Deploy**: `.github/workflows/deploy.yml` (GitHub Pages) após push para `main` ou conclusão bem-sucedida do fetch.
 - **Cloudflare Worker** opcional para proxy de odds / CORS (`cloudflare/worker.ts`).
+- **Sincronização local opcional**: `scripts/automation/install-auto-pull-macos.sh` configura auto-pull periódico no ambiente macOS de desenvolvimento.

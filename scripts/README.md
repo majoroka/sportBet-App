@@ -15,6 +15,10 @@ Organização por domínio para evitar caminhos quebrados e facilitar manutenç�
   - `map-fixtures.ts` — gera relatórios de equipas mapeadas/não mapeadas.
   - `report-unmatched.js`, `apply-batch-aliases.js`, `autofill-fixture-aliases.js` — utilitários de aliases.
   - `fix-*.js` — scripts pontuais de correção (usar apenas quando necessário).
+- `scripts/automation/`
+  - `auto-pull.sh` — faz `fetch` + `pull --ff-only` na `main` quando há updates e a árvore tracked está limpa.
+  - `install-auto-pull-macos.sh` — instala/arranca `LaunchAgent` (`com.sportbet.autopull`) a cada 30 minutos.
+  - `uninstall-auto-pull-macos.sh` — remove o `LaunchAgent`.
 
 ## Exemplos (executar na raiz do projeto)
 
@@ -25,8 +29,11 @@ node scripts/logos/generate-logo-manifest.js
 node scripts/logos/fill-logos.js
 npx ts-node scripts/mapping/map-fixtures.ts
 node scripts/mapping/report-unmatched.js
+scripts/automation/install-auto-pull-macos.sh
+scripts/automation/uninstall-auto-pull-macos.sh
 ```
 
 ## Nota
 
 Alguns scripts fazem alterações diretas em `public/data/` ou no mapping JSON. Antes de correr em produção, idealmente cria um backup ou corre numa branch.
+Para a automação local de pull no macOS, valida estado/logs com `launchctl print gui/$(id -u)/com.sportbet.autopull` e `.git/auto-pull.log`.
