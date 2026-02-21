@@ -1581,33 +1581,6 @@
         ]
       }
     },
-    "team_19ba9900f560": {
-      "id": "team_19ba9900f560",
-      "display": {
-        "pt": "Tirol"
-      },
-      "country": "AUT",
-      "league": "AUT",
-      "names": {
-        "football-data": "Tirol",
-        "clubelo": null
-      },
-      "aliases": {
-        "football-data": [
-          "Tirol"
-        ]
-      },
-      "keys": {
-        "norm": [
-          "tirol"
-        ]
-      },
-      "logo": {
-        "key": "Tirol",
-        "file": "Tirol.png",
-        "path": "/logos/Bundesliga (AUT)/Tirol.png"
-      }
-    },
     "team_2d81374496a2": {
       "id": "team_2d81374496a2",
       "display": {
@@ -5355,16 +5328,26 @@
       "league": "Bundesliga (AUT)",
       "names": {
         "football-data": "Tirol",
-        "clubelo": null
+        "clubelo": "Wattens"
       },
       "aliases": {
         "football-data": [
-          "Tirol"
+          "Tirol",
+          "Wattens"
+        ],
+        "clubelo": [
+          "Tirol",
+          "Wattens",
+          "WSG Tirol",
+          "WSG Wattens"
         ]
       },
       "keys": {
         "norm": [
-          "tirol"
+          "tirol",
+          "wattens",
+          "wsg tirol",
+          "wsg wattens"
         ]
       },
       "logo": {
@@ -39114,6 +39097,11 @@
     "football-data:neustadt": "team_9b5c833a0c88",
     "football-data:a lustenau": "team_b04bcb3a8075",
     "football-data:tirol": "team_0475501b31ff",
+    "football-data:wattens": "team_0475501b31ff",
+    "clubelo:tirol": "team_0475501b31ff",
+    "clubelo:wattens": "team_0475501b31ff",
+    "clubelo:wsg tirol": "team_0475501b31ff",
+    "clubelo:wsg wattens": "team_0475501b31ff",
     "football-data:st polten": "team_406c92f2777c",
     "football-data:ried": "team_3697cab68b41",
     "clubelo:ried": "team_3697cab68b41",
