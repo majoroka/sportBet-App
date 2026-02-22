@@ -21,5 +21,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src", "scripts/fix_json_syntax_v2.js", "public/data/useTeamMapping.ts"]
 }

@@ -12,7 +12,6 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
    - `clubelo_latest.csv`: Dados de jogos e xG (atualizado diariamente).
    - `standings/*.csv`: Tabelas de classificação por liga (códigos E0, P1, D1, etc.).
    - `fixtures_football-data.csv`: Fixtures + odds B365 (usado no scoring de valor 1X2).
-   - `champions-league-2025.csv`, `europa-league-2025.csv`, `conference-league-2025.csv`: Tabelas/dados dedicados para competições UEFA.
    - `ranking_elo.csv`: Ranking ELO por clube (para pills no cabeçalho).
    - `teams_mapping_package_clean.json`: Base de dados de normalização de nomes de equipas e mapeamento de ligas/logos.
    - `scoring-thresholds.jsonc`: Fonte de truth dos thresholds/pontos dos scorings.
@@ -23,9 +22,6 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
    - Tabs de classificação: Global / Casa / Fora / +2,5 (Últimos 10) / +1,5 (Últimos 10) com grelha de forma colorida.
    - ScoringHub com tabs, breakdown por grupos e banner Best Pick Global.
    - Card “Equipas”: xG por equipa calculado a partir da matriz de correct score (truncada a 6 golos), logos centrados e pill de xG.
-   - Secção de Probabilidades em blocos com cards alinhados e visual reforçado (1X2, Dupla Hipótese, Mercado de Golos, Golos da Equipa, Vitória +1,5, BTTS, Sem Sofrer).
-   - Heatmap com gradiente azul/rosa e destaque único da célula mais provável.
-   - Suporte de tema claro/escuro (Dark Mode) com persistência da preferência no cliente.
    - Paleta coerente azul `#60A5FA` (over/positivo) e rosa `#F472B6` (under/negativo) aplicada em gráficos, quadrados de forma e cards de golos/BTTS/Clean Sheet.
 
 ## 📂 Estrutura de Pastas (`src/`)
@@ -48,7 +44,6 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
 - **`lib/`**: Bibliotecas utilitárias.
   - `teamMapping.ts`: Sistema de normalização de nomes e resolução de IDs de equipas/ligas.
   - `logo.ts`: Resolve nomes de equipas para ficheiros de logo usando `src/lib/logoManifest.json`.
-  - Normalização de aliases por fonte com casos de unificação (ex.: `Razgrad`/`Ludogorets`).
 - **`data/`**:
   - `footballDataOdds.ts`: Loader/cache do CSV `fixtures_football-data.csv` (odds B365).
 - **`utils/`**:
@@ -70,10 +65,6 @@ A aplicação segue uma arquitetura modular focada no frontend (Client-Side), on
     - `fill-logos.js`: Preenche paths no mapping.
   - `scripts/mapping/`: normalização e relatórios.
     - `map-fixtures.ts`: Gera relatórios de equipas mapeadas/não mapeadas entre fixtures e o JSON.
-  - `scripts/automation/`: automações locais de sincronização Git.
-    - `auto-pull.sh`: executa `fetch` + `pull --ff-only` na branch `main` com guards (sem alterações locais tracked).
-    - `install-auto-pull-macos.sh`: instala `LaunchAgent` (`com.sportbet.autopull`) para execução periódica.
-    - `uninstall-auto-pull-macos.sh`: remove o `LaunchAgent`.
 - **`services/`**: (Planeado) Gestão de fetch e caching.
 
 ## 🧮 Modelo Matemático
@@ -98,8 +89,6 @@ O núcleo da aplicação baseia-se na **Distribuição de Poisson**.
   - Segurança: Armazena API Keys (ex: The Odds API) que não podem estar no frontend.
   - CORS: Gere os cabeçalhos para permitir pedidos do domínio GitHub Pages.
   - Proxy de CSV: Endpoint para contornar CORS ao buscar classificações de sites externos.
-- **Automação local opcional (macOS):**
-  - `launchd` com `StartInterval=1800` para manter o repositório sincronizado via auto-pull em desenvolvimento.
 
 ## 🎨 Design System
 
@@ -107,9 +96,4 @@ O núcleo da aplicação baseia-se na **Distribuição de Poisson**.
 - **Tipografia:**
   - *Rajdhani*: Títulos e textos gerais.
   - *Share Tech Mono*: Dados numéricos, percentagens e odds.
-- **Temas:**
-  - Modo claro/escuro com tokens/classes adaptadas para manter contraste e legibilidade em cards e tabelas.
-- **Assets de marca/competições:**
-  - Logo da app em `public/logos/logo-app.png` (header principal).
-  - Logos UEFA em `public/logos/UEFA/*.png` (resolução por competição no cabeçalho do fixture).
   
